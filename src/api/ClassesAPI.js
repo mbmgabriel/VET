@@ -8,6 +8,13 @@ export default class ClassesAPI extends Base {
     });
   };
 
+  getAllClass = async() => {
+    return this.sendRequest({
+      path: '/api/Class',
+      method: 'GET'
+    })
+  }
+
   getClassesStudent = async (id) => {
     return this.sendRequest({
       path: `/api/Student/${id}/class`,

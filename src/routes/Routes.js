@@ -48,6 +48,7 @@ import ExamCreation from "../views/exam-creation/ExamCreation";
 import  Profile from "../views/profile/Profile";
 import Dashboard from "../views/dashboard/Dashboard";
 import SchoolProfile from "../views/school-profile/SchoolProfile";
+import SchoolAdminClasses from '../views/school-profile/SchoolAdminClasses';
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -103,6 +104,7 @@ export default function Routes() {
             
             <PrivateRoute path='/dashboard' exact component={Dashboard}/>
             <PrivateRoute path='/school' exact component={SchoolProfile}/>
+            <PrivateRoute path='/schoolAdminClasses' exact component={SchoolAdminClasses} />
 
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>

@@ -11,6 +11,7 @@ export default function SchoolAdminLinks({activeHeader}) {
       <div className="header-links">
         <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link>
         <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
+        <Link className={activeHeader === "classes" && 'active'} to="/schoolAdminClasses">Classes</Link>
       </div>
     )
   }

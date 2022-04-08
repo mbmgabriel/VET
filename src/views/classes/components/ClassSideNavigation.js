@@ -40,6 +40,8 @@ export default function ClassSideNavigation({children}) {
     setLoading(false)
   }
 
+  console.log(user?.role, user?.role != 'Student', 's-----')
+
   const renderTooltipFeed = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Feed
@@ -152,7 +154,7 @@ export default function ClassSideNavigation({children}) {
           Links
         </Link>
           { 
-            (user?.teacher != null) && 
+            (user?.role != 'Student') && 
             <>
                <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
                 Class List
@@ -234,7 +236,7 @@ export default function ClassSideNavigation({children}) {
             <i className='fa fa-link' />
           </OverlayTrigger>
         </Link>
-          {(user?.teacher != null)
+          {(user?.role != 'Student')
           &&
           <>
             <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
