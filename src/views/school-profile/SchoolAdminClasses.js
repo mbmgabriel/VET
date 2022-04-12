@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import { CardGroup } from 'react-bootstrap'
 import ClassesAPI from '../../api/ClassesAPI'
 import MainContainer from '../../components/layouts/MainContainer'
-import ClassCard from '../classes/components/Classes/ClassCard'
+import ClassCard from './school-class/components/ClassCard';
 import ClassHeader from '../classes/components/Classes/ClassHeader'
 import EditClassModal from '../classes/components/Classes/EditClassModal'
 import { UserContext } from '../../context/UserContext'
