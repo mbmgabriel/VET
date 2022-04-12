@@ -13,10 +13,10 @@ export default function ClassAdminSideNavigation({active}) {
       <Link to={`/school_classes/${id}/discussion`} className={`side-navigation-item ${active === "discussion" ? "active" : ""}`}>Discussion</Link>
       <Link to={`/school_classes/${id}/assignment`} className={`side-navigation-item ${active === "assignment" ? "active" : ""}`}>Assignment</Link>
       <Link to={`/school_classes/${id}/task`} className={`side-navigation-item ${active === "task" ? "active" : ""}`}>Task</Link>
-      <Link to="school" className={`side-navigation-item ${active === "interactives" ? "active" : ""}`}>Class Interactives</Link>
-      <Link to="school" className={`side-navigation-item ${active === "links" ? "active" : ""}`}>Links</Link>
-      <Link to="school" className={`side-navigation-item ${active === "list" ? "active" : ""}`}>Class List</Link>
-      <Link to="school" className={`side-navigation-item ${active === "files" ? "active" : ""}`}>Class files</Link>
+      <Link to={`/school_classes/${id}/interactives`} className={`side-navigation-item ${active === "interactives" ? "active" : ""}`}>Class Interactives</Link>
+      <Link to={`/school_classes/${id}/links`} className={`side-navigation-item ${active === "links" ? "active" : ""}`}>Links</Link>
+      <Link to={`/school_classes/${id}/classList`} className={`side-navigation-item ${active === "list" ? "active" : ""}`}>Class List</Link>
+      <Link to={`/school_classes/${id}/files`} className={`side-navigation-item ${active === "files" ? "active" : ""}`}>Class files</Link>
     </div>
   )
 }

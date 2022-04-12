@@ -14,7 +14,7 @@ export default function SchoolAdminList() {
     <MainContainer title="School" activeHeader={"classes"}>
       <Row className="mt-4">
         <Col sm={3}>
-          <ClassAdminSideNavigation active="learn"/>
+          <ClassAdminSideNavigation active="list"/>
         </Col>
         <Col sm={9}>
         

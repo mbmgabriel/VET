@@ -56,7 +56,10 @@ import AdminClassExam from '../views/school-profile/school-class/ClassExam';
 import AdminClassDiscussion from '../views/school-profile/school-class/ClassDiscussion';
 import AdminClassAssignment from '../views/school-profile/school-class/ClassAssignment';
 import AdminClassTask from '../views/school-profile/school-class/ClassTask';
-
+import AdminClassInteractives from '../views/school-profile/school-class/ClassInteractives';
+import AdminClassLinks from '../views/school-profile/school-class/ClassLinks';
+import AdminClassList from '../views/school-profile/school-class/ClassList';
+import AdminClassFiles from '../views/school-profile/school-class/ClassFiles';
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -121,10 +124,10 @@ export default function Routes() {
             <PrivateRoute path='/school_classes/:id/discussion' exact component={AdminClassDiscussion} />
             <PrivateRoute path='/school_classes/:id/assignment' exact component={AdminClassAssignment} />
             <PrivateRoute path='/school_classes/:id/task' exact component={AdminClassTask} />
-            <PrivateRoute path='/school_classes/:id/interactives' exact component={ClassInteractive} />
-            <PrivateRoute path='/school_classes/:id/links' exact component={ClassLinks} />
-            <PrivateRoute path='/school_classes/:id/classList' exact component={ClassList} />
-            <PrivateRoute path='/school_classes/:id/files' exact component={ClassFiles} />
+            <PrivateRoute path='/school_classes/:id/interactives' exact component={AdminClassInteractives} />
+            <PrivateRoute path='/school_classes/:id/links' exact component={AdminClassLinks} />
+            <PrivateRoute path='/school_classes/:id/classList' exact component={AdminClassList} />
+            <PrivateRoute path='/school_classes/:id/files' exact component={AdminClassFiles} />
 
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>
