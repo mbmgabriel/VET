@@ -131,12 +131,12 @@ const getComment = (item, item1, item3) => {
   )
 
   return (
-    <MainContainer title="School" activeHeader={"classes"}>
-      <Row className="mt-4">
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
+      <Row className="mt-4 not-scrollable">
         <Col sm={3}>
           <ClassAdminSideNavigation active="feed"/>
         </Col>
-        <Col sm={9}>
+        <Col sm={9} className='scrollable vh-85'>
           <div className='rounded-white-container'>
             <SweetAlert
               warning
@@ -151,9 +151,6 @@ const getComment = (item, item1, item3) => {
             >
               You will not be able to recover this imaginary file!
             </SweetAlert>
-              {(user?.teacher === null)?(
-              <></>
-              ):(
               <>
                 <Card className='calendar-card'>
                   <Card.Body>
@@ -169,9 +166,8 @@ const getComment = (item, item1, item3) => {
                   </Card.Body>
               </Card>
               </>
-              )}
           
-          {feedClass.length == 0 && <p>No class feed to display</p>}
+          {/* {feedClass.length == 0 && <p>No class feed to display</p>} */}
           {feedClass?.map(item => {
             return(
               <>

@@ -15,13 +15,12 @@ const toggle = () =>{
     <div>
       <div className="row m-b-20" style={{paddingTop:'10px'}}>
 			<div className="col-md-10 pages-header"><p className='title-header'>Assignment </p>
-			{(user?.teacher === null)?(
-			<>
-			</>):(
-			<>
-					<p className='title-header'><Button className='btn-create-task' Button variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Assignment  </Button></p>
-			</>
-			)}
+			{
+        user.isTeacher || user.isSchoolAdmin ?
+          <p className='title-header'><Button className='btn-create-task' Button variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Assignment  </Button></p>
+        :
+		    null
+			}
 		
 			</div>
 			</div>

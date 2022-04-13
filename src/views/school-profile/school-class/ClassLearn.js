@@ -74,12 +74,12 @@ export default function SchoolAdminFeed() {
   }
 
   return (
-    <MainContainer title="School" activeHeader={"classes"}>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="learn"/>
         </Col>
-        <Col sm={9}>
+        <Col sm={9} className='scrollable vh-85'>
         <div style={{position:'relative'}} className='not-scrollable'>
         <Row>
           <Col className='scrollable vh-80 pb-5' style={{marginLeft:'15px'}} >

@@ -31,12 +31,12 @@ export default function SchoolAdminFiles() {
   }
 
   return (
-    <MainContainer title="School" activeHeader={"classes"}>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="files"/>
         </Col>
-        <Col sm={9}>
+        <Col sm={9} className='scrollable vh-85'>
           <div className="row m-b-20 file-content">
             <FileHeader type='Class' id={id} doneUpload={()=> handleRefetch()}/>
             <FilesContent data={filesToDisplay} type='Class' id={id} deleted={()=> handleRefetch()} />

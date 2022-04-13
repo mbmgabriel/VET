@@ -170,12 +170,12 @@ export default function SchoolAdminDiscussion() {
   )
 
   return (
-    <MainContainer title="School" activeHeader={"classes"}>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="discussion"/>
         </Col>
-        <Col sm={9}>
+        <Col sm={9} className='scrollable vh-85'>
         <HeaderDiscussion onSearch={onSearch} getDiscussionUnit={getDiscussionUnit} module={module} />
         <Accordion>
         <SweetAlert

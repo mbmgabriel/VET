@@ -60,6 +60,7 @@ import AdminClassInteractives from '../views/school-profile/school-class/ClassIn
 import AdminClassLinks from '../views/school-profile/school-class/ClassLinks';
 import AdminClassList from '../views/school-profile/school-class/ClassList';
 import AdminClassFiles from '../views/school-profile/school-class/ClassFiles';
+import AdminClassExamCreation from '../views/school-profile/school-class/AdminClassExamCreation';
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -118,7 +119,7 @@ export default function Routes() {
 
             <PrivateRoute path='/schoolAdminClasses' exact component={SchoolAdminClasses} />
             <PrivateRoute path='/school_classes/:id/feed' exact component={AdminClassFeed}/>
-            <PrivateRoute path='/school_classes/:id/exam/:examid' exact component={ClassExamCreation}/>
+            <PrivateRoute path='/school_classes/:id/exam/:examid' exact component={AdminClassExamCreation}/>
             <PrivateRoute path='/school_classes/:id/learn' exact component={AdminClassLearn} />
             <PrivateRoute path='/school_classes/:id/exam' exact component={AdminClassExam} />
             <PrivateRoute path='/school_classes/:id/discussion' exact component={AdminClassDiscussion} />

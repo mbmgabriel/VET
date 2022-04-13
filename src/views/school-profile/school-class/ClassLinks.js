@@ -70,12 +70,12 @@ export default function SchoolAdminLinks() {
   }, [])
 
   return (
-    <MainContainer title="School" activeHeader={"classes"}>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="links"/>
         </Col>
-        <Col sm={9}>
+        <Col sm={9} className='scrollable vh-85'>
           <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  />
           <div style={{paddingBottom:'10px'}}>
             <AccordionConference  searchTerm={searchTerm} getConfe={getConfe} conference={conference} setOpenEditModal={setOpenEditModal}  setEditLinks={setEditLinks} />
