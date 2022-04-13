@@ -45,7 +45,8 @@ export default function SchoolAdminAssignment() {
   const [assignmentName, setAssignmentName] = useState('')
   const [instructions, setInstructions] = useState('')
   const [unit, setUnit] = useState('')
-  const [xmoduleId, setXModuleId] = useState(null)
+  const [xmoduleId, setXModuleId] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -56,7 +57,7 @@ export default function SchoolAdminAssignment() {
   }, [])
 
   const getClassInfo = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       console.log({response})
@@ -66,7 +67,7 @@ export default function SchoolAdminAssignment() {
     }else{
       alert("Something went wrong while fetching all courses")
     }
-    // setLoading(false)
+    setLoading(false)
   }
 
   console.log('this is assignment:', assignment)
@@ -182,7 +183,7 @@ export default function SchoolAdminAssignment() {
   )
 
   return (
-    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="assignment"/>

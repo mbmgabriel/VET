@@ -20,7 +20,7 @@ export default function SchoolAdminList() {
   const [filesToUpload, setFilesToUpload] = useState({});
   const [loading, setLoading] = useState(false);
   const userContext = useContext(UserContext)
-  const {user} = userContext.data
+  const {user} = userContext.data;
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -38,6 +38,7 @@ export default function SchoolAdminList() {
   }
 
   const getStudentWaiting = async() =>{
+    setLoading(true)
     let isAccepted = false
     let response = await new ClassesAPI().getStudentList(id, isAccepted)
     if(response.ok){
@@ -45,7 +46,7 @@ export default function SchoolAdminList() {
     }else{
       alert("Something went wrong while fetching all Waiting Student")
     }
-    
+    setLoading(false)
   }
 
   useEffect(() => {

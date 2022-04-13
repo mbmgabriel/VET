@@ -21,13 +21,14 @@ export default function SchoolAdminLinks() {
   const [confeDescriptionItem, setConfeDescriptoinItem] = useState('')
   const [confeUrlItem, setConfeUrlItem] = useState('')
   const [itemId, setItemId] = useState()
-
+  const [loading, setLoading] = useState(false)
 
   const onSearch = (text) => {
     setSearchTerm(text)
   }
   
   const getConfe = async() => {
+    setLoading(true)
     let typeId = '1'
     let response = await new ClassesAPI().getLink(id, typeId)
     if(response.ok){
@@ -35,6 +36,7 @@ export default function SchoolAdminLinks() {
     }else{
       alert("Something went wrong while fetching all Conference")
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function SchoolAdminLinks() {
   }, [])
 
   return (
-    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="links"/>

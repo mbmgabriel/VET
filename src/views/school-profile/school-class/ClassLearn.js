@@ -14,9 +14,10 @@ export default function SchoolAdminFeed() {
   const [content, setContent] = useState([]);
   const [classInfo, setClassInfo] = useState({});
   const {id} = useParams()
+  const [loading, setLoading] = useState(true);
 
   const getClassInfo = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       console.log({response})
@@ -26,7 +27,7 @@ export default function SchoolAdminFeed() {
     }else{
       alert("Something went wrong while fetching all courses")
     }
-    // setLoading(false)
+    setLoading(false)
   }
 
   const getModules = async(id) => {
@@ -74,7 +75,7 @@ export default function SchoolAdminFeed() {
   }
 
   return (
-    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="learn"/>

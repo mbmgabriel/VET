@@ -44,7 +44,7 @@ export default function SchoolAdminTask() {
   const [instructions, setInstructions] = useState('')
   const [taskId, setTaskId] = useState('')
   const [moduleName, setModuleName] = useState('')
-
+  const [loading, setLoading] = useState(false)
   const onSearch = (text) => {
     setSearchTerm(text)
   }
@@ -54,7 +54,7 @@ export default function SchoolAdminTask() {
     }, [])
 
   const getClassInfo = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       console.log({response})
@@ -64,7 +64,7 @@ export default function SchoolAdminTask() {
     }else{
       alert("Something went wrong while fetching all courses")
     }
-    // setLoading(false)
+    setLoading(false)
   }
   
   const viewTaskTaggle = (item, item1,) => {
@@ -168,7 +168,7 @@ export default function SchoolAdminTask() {
   )
 
   return (
-    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="task"/>

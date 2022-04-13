@@ -30,6 +30,8 @@ function ClassFeed() {
   const [typeId, setTypeId] = useState('')
   const [commentName, setCommentName] = useState([])
   const [commentInfo, setCommentInfo] = useState([])
+  const [loading, setLoading] = useState(false)
+
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -64,6 +66,7 @@ const getComment = (item, item1, item3) => {
 
   const getFeedClass = async () => {
     console.log(id, 'classssssssss')
+    setLoading(true)
     let response = await new ClassesAPI().getFeedClass(id)
     if(response.ok){
     setFeedClass(response.data)
@@ -73,6 +76,7 @@ const getComment = (item, item1, item3) => {
   }else{
     alert(response.data.errorMessage)
    }
+   setLoading(false)
   }
   useEffect(() => {
     getFeedClass();
@@ -131,7 +135,7 @@ const getComment = (item, item1, item3) => {
   )
 
   return (
-    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
       <Row className="mt-4 not-scrollable">
         <Col sm={3}>
           <ClassAdminSideNavigation active="feed"/>

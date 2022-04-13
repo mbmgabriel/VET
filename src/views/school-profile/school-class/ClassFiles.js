@@ -15,6 +15,7 @@ export default function SchoolAdminFiles() {
   const [selectedName, setSelectedName] = useState('');
   const [filter, setFilter] = useState("");
   const subFolderDirectory = breadCrumbsItemClass.map(item => { return `/${item.value}`})
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     handleGetClassFiles('')
@@ -25,12 +26,12 @@ export default function SchoolAdminFiles() {
   }
 
   const handleGetClassFiles = async(name) => {
-    // setLoading(true)
+    setLoading(true)
     let data = {
       "subFolderLocation": name
     }
     let response = await new FilesAPI().getClassFiles(id, data)
-    // setLoading(false)
+    setLoading(false)
     if(response.ok){
       setFilesToDisplay(response.data.files);
       setFolderToDisplay(response.data.folders)
@@ -67,7 +68,7 @@ export default function SchoolAdminFiles() {
   }
 
   return (
-    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="files"/>
