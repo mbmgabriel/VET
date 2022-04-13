@@ -228,21 +228,22 @@ color:#BCBCBC !important;
   top: 178px;
 }
 .file-upload-content{
+  color: var(--primary-color) !important;
   padding-left: 10px !important;
   display: inline-flex;
 }
 .fileupload{
-  padding-top: 10px;
+  padding-top: 12px;
   padding-left: 12px;
 }
 .file-content{
   background-color:#ffffff !important;
   border: 0px !important;
-  margin-top: 20px !important;
+  /* margin-top: 20px !important; */
   border-radius: 10px;
   opacity: 1;
   top: 178px;
-  margin-left: 35px !important;
+  /* margin-left: 35px !important; */
   display: inline-flex;
 }
 .file-content-font{
@@ -1436,4 +1437,10 @@ select {
 }
 option:not(:first-of-type) {
   color: black !important;
+}
+
+.href-link{
+  color: var(--primary-color) !important;
+  text-decoration: none !important;
+
 }

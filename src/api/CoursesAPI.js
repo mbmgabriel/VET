@@ -39,7 +39,7 @@ export default class CoursesAPI extends Base {
     });
   };
 
-  getCourseUnit = async (id, data) => {
+  getCourseUnit = async (id) => {
     return this.sendRequest({
       path: `/api/Module/course/${id}/item/1`,
       method: 'GET',
@@ -230,5 +230,19 @@ export default class CoursesAPI extends Base {
       data
     });
   };
+
+  getInterActive = async (moduleId) => {
+    return this.sendRequest({
+      path:`/api/Interactive/module/${moduleId}`,
+      method: 'GET'
+    })
+  }
+
+  getFiles = async (id) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/files`,
+      method: 'GET'
+    })
+  }
 
 }

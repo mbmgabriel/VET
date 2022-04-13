@@ -31,7 +31,7 @@ const toggle = () =>{
 					</InputGroup>
 				</div>
 			</div>
-				<CreateDiscussion getDiscussionUnit={getDiscussionUnit} module={module} toggle={toggle} modal={modal} />
+				<CreateDiscussion setModal={setModal} getDiscussionUnit={getDiscussionUnit} module={module} toggle={toggle} modal={modal} />
 		</div>
 	)
 }

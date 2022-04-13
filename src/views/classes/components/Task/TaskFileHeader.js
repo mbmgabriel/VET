@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {Button, Modal,Table, ProgressBar, Col, Row,  InputGroup, FormControl, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FilesAPI from '../../api/FilesApi';
+import FilesAPI from '../../../../api/FilesApi';
 
 function FileHeader(props) {
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -16,11 +16,12 @@ function FileHeader(props) {
     return itm.progress != 100
   })
 
+  console.log(props.subFolder, 'heeeeeeeere')
   const handlefilesUpload = (file) => {
     if(file != ''){
       
       Object.values(file).map((itm, index) => {
-        // console.log(itm, index)
+        console.log(itm, index)
         let temp = []
         getBase64(itm).then(
           data => {
@@ -28,8 +29,7 @@ function FileHeader(props) {
               fileName: itm.name,
               base64String: data,
               size: itm.size,
-              progress: 0,
-              status: ''
+              progress: 0
             };
             files.push(toAdd)
             setFiles([...files]);
@@ -75,17 +75,11 @@ function FileHeader(props) {
             setDoneUpload(allUploaded.length == 0 ? true : false)
             setUploadStarted(allUploaded.length == 0 ? false : true)
           }else{
+            setShowUploadModal(false)
             setFiles([])
             setDoneUpload(false)
             setUploadStarted(false)
-            if(response.data?.errorMessage.includes('exist')){
-              files[index].progress = 100;
-              files[index].status = 'failed';
-              setFiles([...files])
-            }else{
-              setShowUploadModal(false)
-              toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
-            }
+            toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
           }
         }
       })
@@ -115,18 +109,11 @@ function FileHeader(props) {
             setDoneUpload(allUploaded.length == 0 ? true : false)
             setUploadStarted(allUploaded.length == 0 ? false : true)
           }else{
+            setShowUploadModal(false)
             setFiles([])
             setDoneUpload(false)
             setUploadStarted(false)
-            if(response.data?.errorMessage.includes('exist')){
-              files[index].progress = 100;
-              files[index].status = 'failed';
-              setFiles([...files])
-            }else{
-              setShowUploadModal(false)
-              toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
-            }
-            // toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
+            toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
           }
         }
       })
@@ -162,11 +149,11 @@ function FileHeader(props) {
       }
       let response = await new FilesAPI().createCourseFolder(props.id, data)
       if(response.ok){
+        console.log(response, 'herrrrrrrree')
         props.doneUpload()
         setShowAddFolderModal(false)
       }else{
-        setShowAddFolderModal(false)
-        toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+        toast.error('Something went wrong while creating folder.'); 
       }
     }
     if(props.type == 'Class'){
@@ -176,11 +163,11 @@ function FileHeader(props) {
       }
       let response = await new FilesAPI().createCLassFolder(props.id, data)
       if(response.ok){
+        console.log(response, 'herrrrrrrree')
         props.doneUpload()
         setShowAddFolderModal(false)
       }else{
-        setShowAddFolderModal(false)
-        toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
+        toast.error('Something went wrong while creating folder.'); 
       }
     }
   }
@@ -189,9 +176,9 @@ function FileHeader(props) {
     <div>
       <div style={{flexDirection: 'row', paddingLeft: 0}} className="pages-header file-content">
         <div>
-          <p className='title-header'>{props.title}</p>
+          <p className='title-header'>Files</p>
         </div>
-        <div>
+        {/* <div>
           <OverlayTrigger
             placement="right"
             delay={{ show: 1, hide: 0 }}
@@ -205,7 +192,7 @@ function FileHeader(props) {
         </div>
         <div>
           <h5 style={{paddingTop: 15}} className="fileupload"> OR </h5>
-        </div>
+        </div> */}
         <div>
           <p><Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button></p>
         </div>
@@ -245,8 +232,7 @@ function FileHeader(props) {
               return(
                 <tr key={item.fileName}>
                   <td>{item.fileName}</td>
-                  {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="warning" now={item.progress} /></td>}
-                  {/* <td><ProgressBar variant="warning" now={item.progress} /></td> */}
+                  <td><ProgressBar variant="warning" now={item.progress} /></td>
                   <td>{item.size} KB <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                 </tr>
               );
@@ -298,7 +284,7 @@ function FileHeader(props) {
                 return(
                   <tr key={item.fileName}>
                     <td>{item.fileName}</td>
-                   {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="warning" now={item.progress} /></td>}
+                    <td><ProgressBar variant="warning" now={item.progress} /></td>
                     <td>{item.size} KB <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                   </tr>
                 );

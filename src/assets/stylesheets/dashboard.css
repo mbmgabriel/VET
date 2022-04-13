@@ -294,7 +294,7 @@ code {
 }
 
 .active-nav-item{
-  background-color: #EE9337 !important;
+  background-color: var(--primary-color);
   border: 0 !important;
   color: white !important;
   border-radius: 10px !important;
@@ -376,4 +376,44 @@ code {
 
 .mq-scaled.mq-paren{
   transform: scale(1) !important;
+}
+
+.font-10{
+  font-size: 10px;
+}
+
+.font-16{
+  font-size: 16px !important;
+}
+
+.font-size-35{
+  font-size: 35px !important;
+}
+
+.pl-20{
+  padding-left: 20px !important;
+}
+
+.colored-files-bread{
+  cursor: pointer;
+  color: var(--primary-color);
+  font-size: 20px;
+  padding-left: 15px;
+}
+
+.fix-color-bread{
+  cursor: pointer;
+  color: #7D7D7D;
+  font-size: 20px;
+  padding-left: 15px;
+}
+
+.colored-class{
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 25px;
+}
+
+.font-size-22{
+  font-size: 22px !important;
 }

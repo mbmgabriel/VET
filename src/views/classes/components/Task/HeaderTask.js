@@ -32,7 +32,7 @@ const toggle = () =>{
 					</InputGroup>
 				</div>
 			</div>
-				<CreateTask refModuleId={refModuleId} module={module} classId={id} toggle={toggle} modal={modal} getTaskModule={getTaskModule} />
+				<CreateTask setModal={setModal} refModuleId={refModuleId} module={module} classId={id} toggle={toggle} modal={modal} getTaskModule={getTaskModule} />
 		</div>
 	)
 }

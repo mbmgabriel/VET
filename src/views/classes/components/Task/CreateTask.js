@@ -3,23 +3,32 @@ import Modal from 'react-bootstrap/Modal'
 import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import FilesAPI from '../../../../api/FilesApi';
-import FileHeader from '../../../files/FileHeader';
+import FileHeader from './TaskFileHeader';
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import ContentField from '../../../../components/content_field/ContentField';
+import { toast } from 'react-toastify';
 
-function CreateTask({modal, toggle, module, getTaskModule, classId}) {
+function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
   const [moduleId, setModuleId] = useState('')
   const [taskName, setTaskName] = useState('')
   const [instructions, setInstructions] = useState('')
   const [addNotify, setAddNotity] = useState(false);
   const [displayFiles, setDisplayFiles] = useState([]);
-  const [showFiles, setShowFiles] = useState(false)
+  const [showFiles, setShowFiles] = useState(false);
+  const [displayFolder, setDisplayFolder] = useState([]);
   const allowLate = true
   const {id} = useParams();
 
   const closeNotify = () =>{
     setAddNotity(false)
+  }
+
+  const handleCloseModal = () => {
+    setModal(false)
+    setModuleId('')
+    setTaskName('')
+    setInstructions('')
   }
 
   useEffect(() => {
@@ -31,7 +40,8 @@ function CreateTask({modal, toggle, module, getTaskModule, classId}) {
     let response = await new FilesAPI().getClassFiles(classId)
     // setLoading(false)
     if(response.ok){
-      setDisplayFiles(response.data)
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
     }else{
       alert("Something went wrong while fetching class files ;;.")
     }
@@ -39,22 +49,43 @@ function CreateTask({modal, toggle, module, getTaskModule, classId}) {
 
   const saveTask = async (e) =>{
     e.preventDefault()
-    let response = await new ClassesAPI().creatTask(moduleId, id, {task:{taskName, instructions,}, taskAssignment:{allowLate}} )
-    if(response.ok){
-      setAddNotity(true)
-      setModuleId("")
-      setTaskName("")
-      setInstructions("")
-      getTaskModule(null, moduleId)
-      toggle(e)
+    if(instructions === '' || instructions === '{{type=equation}}' || moduleId === ''){
+      toast.error('Please input all the required fields.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }else{
-      alert(response.data.errorMessage)
+      let response = await new ClassesAPI().creatTask(moduleId, id, {task:{taskName, instructions,}, taskAssignment:{allowLate}} )
+      if(response.ok){
+        setAddNotity(true)
+        setModuleId("")
+        setTaskName("")
+        setInstructions("")
+        getTaskModule(null, moduleId)
+        toggle(e)
+      }else{
+        // alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+      }
     }
   }
 
 	return (
     <div>
-    	<Modal size="lg" show={modal} onHide={toggle} aria-labelledby="example-modal-sizes-title-lg">
+    	<Modal size="lg" show={modal} onHide={handleCloseModal} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
             Create Task
@@ -63,14 +94,31 @@ function CreateTask({modal, toggle, module, getTaskModule, classId}) {
         <Modal.Body>
         <Form onSubmit={saveTask} >  
           <div className={showFiles ? 'mb-3' : 'd-none'}>
-            <FileHeader type='Class' id={classId} doneUpload={()=> handleGetClassFiles()} />
-            {
+            <FileHeader type='Class' id={classId}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
+            {/* {
               displayFiles.map( (item,ind) => {
                 return(
-                  <img src={item.path_Base.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
+                  <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
                 )
               })
-            }
+            } */}
+             {
+                displayFiles.map( (item,ind) => {
+                  return(
+                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
+                    :
+                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
+                  )
+                })
+              }
+              {
+                displayFolder.map((itm) => {
+                  return(
+                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
+                  )
+                })
+              }
           </div>
           <Form.Group className="mb-3">
           <Form.Label>Unit</Form.Label>
@@ -86,14 +134,14 @@ function CreateTask({modal, toggle, module, getTaskModule, classId}) {
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Task Name</Form.Label>
-              <Form.Control onChange={(e) => setTaskName(e.target.value)} type="text" placeholder='Enter discussion name here'/>
+              <Form.Control onChange={(e) => setTaskName(e.target.value)} type="text" placeholder='Enter Task name here'/>
                 </Form.Group>
                 <Form.Group className="mb-4">
                   <Form.Label >Instruction</Form.Label>
-                    <ContentField value={instructions} onChange={value => setInstructions(value)} />
+                    <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
                   </Form.Group>
               <Form.Group className='right-btn'>
-              <Button className={moduleId == '' ? 'disabled' : 'tficolorbg-button'} type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Save</Button>
             </Form.Group>
         </Form> 
         </Modal.Body>

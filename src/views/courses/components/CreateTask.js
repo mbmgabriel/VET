@@ -5,7 +5,7 @@ import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FilesAPI from '../../../api/FilesApi';
-import FileHeader from '../../files/FileHeader';
+import FileHeader from './AssignmentFileHeader';
 import { useParams } from "react-router";
 export default function CreateTask({openCreateTaskModal, setCreateTaskModal, setTaskInfo}){
 
@@ -14,7 +14,8 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
 	const [taskName, setTaskName] = useState('')
 	const [instructions, setInstructions] = useState('')
   const [displayFiles, setDisplayFiles] = useState([]);
-  const [showFiles, setShowFiles] = useState(false)
+  const [showFiles, setShowFiles] = useState(false);
+  const [displayFolder, setDisplayFolder] = useState([]);
   const {id} = useParams()
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
@@ -88,9 +89,10 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
     // setLoading(false)
     if(response.ok){
       console.log(response, '-----------------------')
-      setDisplayFiles(response.data)
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files ----------.")
+      alert("Something went wrong while fetching class files.")
     }
   } 
 	return (
@@ -102,14 +104,31 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveTask}>
               <div className={showFiles ? 'mb-3' : 'd-none'}>
-                <FileHeader type='Course' id={id} doneUpload={()=> handleGetCourseFiles()} />
-                {
+                <FileHeader type='Course' id={id}  subFolder={''} doneUpload={()=> handleGetCourseFiles()} />
+                {/* {
                   displayFiles.map( (item,ind) => {
                     return(
-                      <img src={item.path_Base.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
+                      <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
                     )
                   })
-                }
+                } */}
+                {
+                displayFiles.map( (item,ind) => {
+                  return(
+                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
+                    :
+                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
+                  )
+                })
+              }
+              {
+                displayFolder.map((itm) => {
+                  return(
+                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
+                  )
+                })
+              }
               </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">

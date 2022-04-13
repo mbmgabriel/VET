@@ -4,8 +4,9 @@ import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
-function CreateDiscussion({modal, toggle, classInfo, module, getDiscussionUnit}) {
+function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscussionUnit}) {
   const [moduleId, setModuleId] = useState('')
   const [discussionName, setDiscussionName] = useState('')
   const [instructions, setInstructions] = useState('')
@@ -18,8 +19,26 @@ function CreateDiscussion({modal, toggle, classInfo, module, getDiscussionUnit})
     setAddNotity(false)
   }
 
+  const handleCloseModal = () => {
+    setDiscussionName('')
+    setInstructions('')
+    setModuleId('')
+    setModal(false)
+  }
+
   const saveDiscussion = async (e) =>{
     e.preventDefault()
+    if(moduleId === ''){
+      toast.error('Please input all the required fields.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }); 
+    }
     let response = await new ClassesAPI().createDiscussionModule(moduleId, id, {discussion:{discussionName, instructions,}, discussionAssignment:{allowLate}} )
     if(response.ok){
       // alert('Save Discussion')
@@ -30,13 +49,21 @@ function CreateDiscussion({modal, toggle, classInfo, module, getDiscussionUnit})
       getDiscussionUnit(null, moduleId)
       toggle(e)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   }
 
 	return (
     <div>
-    	<Modal size="lg" show={modal} onHide={toggle} aria-labelledby="example-modal-sizes-title-lg">
+    	<Modal size="lg" show={modal} onHide={handleCloseModal} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
             Create Discussion

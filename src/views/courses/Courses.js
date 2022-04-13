@@ -103,9 +103,6 @@ export default function Courses() {
     setSubjectAreaName(subject)
   }
 
-
-  console.log('aralinPanlipunanItem:', aralinPanlipunanItem)
-
   useEffect(() => {
     if (user.isStudent) return (window.location.href = "/404");
   }, []);
@@ -114,12 +111,22 @@ export default function Courses() {
     <MainContainer loading={loading} activeHeader={'courses'}>
       <div className="page-container">
         <div className="containerpages">
+          {user.isTeacher &&
+            <>
           <div className="row m-b-20">
               {/* <div className="col-md-10 pages-header"><h1>Courses <Button variant="outline-warning" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button></h1></div> */}
               <div className="col-md-10 pages-header"><h1>Courses <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button></h1></div>
-              <div className="col-md-2">
-              </div>
           </div>
+            </>
+          }
+          {user.isSchoolAdmin &&
+            <>
+          <div className="row m-b-20">
+              {/* <div className="col-md-10 pages-header"><h1>Courses <Button variant="outline-warning" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button></h1></div> */}
+              <div className="col-md-10 pages-header"><h1>Courses List </h1></div>
+          </div>
+            </>
+          }
           <div className="row m-b-20 m-t-30" onSearch={onSearch}>
             <div className="col-md-12">
               <InputGroup size="lg">

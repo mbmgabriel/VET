@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import FilesAPI from '../../../../api/FilesApi';
-import FileHeader from '../../../files/FileHeader';
+import FileHeader from '../Task/TaskFileHeader';
 import ContentField from '../../../../components/content_field/ContentField'
 
 function CreateAssignment({modal, toggle, module, getAssignmentList, question, setQuestion}) {
@@ -14,7 +14,8 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   const [instructions, setInstructions] = useState('')
   const [addNotify, setAddNotity] = useState(false)
   const [displayFiles, setDisplayFiles] = useState([]);
-  const [showFiles, setShowFiles] = useState(false)
+  const [showFiles, setShowFiles] = useState(false);
+  const [displayFolder, setDisplayFolder] = useState([])
   const {id} = useParams();
 
   const closeNotify = () =>{
@@ -45,11 +46,15 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
 
   const handleGetClassFiles = async() => {
     // setLoading(true)
-    let response = await new FilesAPI().getAllCourseFiles(id)
+    let data = {
+      "subFolderLocation": ''
+    }
+    let response = await new FilesAPI().getClassFiles(id, data)
     // setLoading(false)
     if(response.ok){
-      console.log(response)
-      setDisplayFiles(response.data)
+      console.log(response, 'heeeeeeeere')
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
     }else{
       alert("Something went wrong while fetching class files.")
     }
@@ -65,11 +70,21 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
         </Modal.Header>
         <Modal.Body>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
-              <FileHeader type='Class' id={id} doneUpload={()=> handleGetClassFiles()} />
+              <FileHeader type={'Class'}  title='Files' id={id} subFolder={''} doneUpload={()=> handleGetClassFiles()}/>
               {
                 displayFiles.map( (item,ind) => {
                   return(
-                    <img key={ind+item.filename} src={item.path_Base.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
+                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+                    <img key={ind+item.filename} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
+                    :
+                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
+                  )
+                })
+              }
+              {
+                displayFolder.map((itm) => {
+                  return(
+                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
                   )
                 })
               }

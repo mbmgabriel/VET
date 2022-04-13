@@ -4,6 +4,7 @@ import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import ContentField from '../../../../components/content_field/ContentField';
+import { toast } from 'react-toastify';
 
 function EditTask({moduleName, setTaskName, taskName, setInstructions, instructions, taskId, modal, toggle, module, editTask, getTaskModule, moduleId, setModal}){
   const isShared = null
@@ -15,16 +16,37 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
 
   const updateTask = async (e) =>{
     e.preventDefault()
-    let id = taskId
-    let response = await new ClassesAPI().updateTask(id, {taskName, instructions, isShared})
-      if(response.ok){
-        // alert('Task Updated')
-        setEditNotify(true)
-        getTaskModule(null, moduleId)
-        setModal(false)
-      }else{
-        alert(response.data.errorMessage)
-      }
+    if(instructions === '' || instructions === '{{type=equation}}'){
+      toast.error('Please input all the required fields.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else{
+      let id = taskId
+      let response = await new ClassesAPI().updateTask(id, {taskName, instructions, isShared})
+        if(response.ok){
+          // alert('Task Updated')
+          setEditNotify(true)
+          getTaskModule(null, moduleId)
+          setModal(false)
+        }else{
+          // alert(response.data.errorMessage)
+          toast.error(response.data.errorMessage, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        }
+    }
   }
 
 
@@ -49,11 +71,11 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Task Name</Form.Label>
-              <Form.Control onChange={(e) => setTaskName(e.target.value)}  type="text" defaultValue={taskName}/>
+              <Form.Control placeholder='Enter Task name here' onChange={(e) => setTaskName(e.target.value)}  type="text" defaultValue={taskName}/>
                 </Form.Group>
                 <Form.Group className="mb-4">
                   <Form.Label >Instruction</Form.Label>
-                  <ContentField value={instructions} onChange={value => setInstructions(value)} />
+                  <ContentField value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
                   </Form.Group>
               <Form.Group className='right-btn'>
               <Button className='tficolorbg-button' type='submit' >Save</Button>

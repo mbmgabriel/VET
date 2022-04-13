@@ -16,7 +16,7 @@ const Field = (props) => {
           className='custom-input'
           size='lg'
           value={value.split(EQUATION_TAG)[1] || ""}
-          placeholder='Enter equation'
+          placeholder={placeholder}
           autoCommands="pi theta sqrt sum prod alpha beta gamma rho"
           autoOperatorNames="sin cos tan"
           onChange={(text) => onChange(`${EQUATION_TAG}${text}`)}
@@ -34,12 +34,10 @@ const Field = (props) => {
     default:
       return (
         <Form.Control
-          size='lg'
           value={value}
           type='text'
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          required
         />
       );
   }

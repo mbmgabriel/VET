@@ -259,7 +259,7 @@ export default function ClassSideNavigation({children}) {
         </ListGroup>
       </Col>
       }
-      <Col sm={showTab ? 9 : 11} className='scrollable vh-85 pb-5'>
+      <Col sm={showTab ? 9 : 11} className='scrollable vh-85 pb-5  pl-20'>
         {children}
       </Col> 
     </Row>
