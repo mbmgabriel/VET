@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Table, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import StudentPortfolio from './StudentPortfolio';
+import { UserContext } from '../../../../context/UserContext';
 
 function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, searchTerm}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
@@ -16,6 +17,8 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
   const [studentClasses, setStudentClasses] = useState()
   const [studentInformation, setStudentInformation] = useState([]);
   const [alphabetical, setAlphabetical] = useState(true);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
@@ -153,14 +156,14 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
                 </div>
               </td>
               <td className='class-waiting-icon'>
-                <div style={{marginRight:'35px'}}>
-              <OverlayTrigger
-                placement="bottom"
-                delay={{ show: 1, hide: 0 }}
-                overlay={renderTooltipDelete}>
-                <Button onClick={() => handleDeleteNotify(item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i></Button>
-              </OverlayTrigger>
-              </div>
+                <div style={{marginRight:'35px'}} className={user.isSchoolAdmin ? 'd-none' : ''}>
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipDelete}>
+                    <Button onClick={() => handleDeleteNotify(item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i></Button>
+                  </OverlayTrigger>
+                </div>
               </td> 
             </tr>)
             })}

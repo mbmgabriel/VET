@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Table, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams} from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import {UserContext } from '../../../../context/UserContext'
 
 
 function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, searchTerm}) {
@@ -12,6 +13,8 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
   const [itemId, setItemId] = useState('')
   const {id} = useParams();
   const [alphabetical, setAlphabetical] = useState(true);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
@@ -135,20 +138,20 @@ const handleClickIcon = () =>{
                 </div>
               </td>
               <td className='class-waiting-icon'>
-              <div style={{marginRight:'35px'}}> 
-              <OverlayTrigger
-                placement="bottom"
-                delay={{ show: 1, hide: 0 }}
-                overlay={renderTooltipAdd}>
-                  <Button onClick={(e) => addStudent(e, item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-user-plus"></i> </Button>
-               </OverlayTrigger>
-               <OverlayTrigger
-                placement="bottom"
-                delay={{ show: 1, hide: 0 }}
-                overlay={renderTooltipDelete}>
-                <Button onClick={() => handleDeleteNotify(item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i></Button>
-              </OverlayTrigger>
-              </div>
+                <div style={{marginRight:'35px'}} className={user.isSchollAdmin ? 'd-none' : ''}> 
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipAdd}>
+                      <Button onClick={(e) => addStudent(e, item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-user-plus"></i> </Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipDelete}>
+                    <Button onClick={() => handleDeleteNotify(item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i></Button>
+                  </OverlayTrigger>
+                  </div>
               </td>
             </tr>)
             })}

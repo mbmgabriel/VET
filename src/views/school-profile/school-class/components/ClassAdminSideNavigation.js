@@ -16,7 +16,7 @@ export default function ClassAdminSideNavigation({active}) {
       <Link to={`/school_classes/${id}/interactives`} className={`side-navigation-item ${active === "interactives" ? "active" : ""}`}>Class Interactives</Link>
       <Link to={`/school_classes/${id}/links`} className={`side-navigation-item ${active === "links" ? "active" : ""}`}>Links</Link>
       <Link to={`/school_classes/${id}/classList`} className={`side-navigation-item ${active === "list" ? "active" : ""}`}>Class List</Link>
-      <Link to={`/school_classes/${id}/files`} className={`side-navigation-item ${active === "files" ? "active" : ""}`}>Class files</Link>
+      <Link to={`/school_classes/${id}/files`} className={`side-navigation-item ${active === "files" ? "active" : ""}`}>Class Files</Link>
     </div>
   )
 }

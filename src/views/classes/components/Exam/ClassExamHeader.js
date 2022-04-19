@@ -45,7 +45,7 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
       <div className="row m-b-20">
         <div className="col-md-10 pages-header">
           <h1 className="exam-title">Exam </h1>
-          {user.isTeacher || user.isSchoolAdmin ? 
+          {user.isTeacher && 
             <>
               <Button
                 className="btn-create-exam"
@@ -60,8 +60,6 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
                 <i className="fa fa-plus"></i> Import Exam --
               </Button> */}
             </>
-            :
-            null
           }
         </div>
       </div>

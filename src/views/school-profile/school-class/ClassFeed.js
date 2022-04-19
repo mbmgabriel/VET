@@ -194,16 +194,21 @@ const getComment = (item, item1, item3) => {
                     <b>{feedItem?.updatedBy}</b> &nbsp; has Post an <div style={{color:'#EE9337'}} > &nbsp; <b>Announcement </b> </div>
                     </div>
                   
-                    {(user?.teacher === null)?(<></>):(<>
-                      <div className='inline-flex' style={{paddingTop:'20px', paddingTop:'6px', float:'right', }}>
-                          <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>            
-                            <Button onClick={() => openEditAnnouncementToggle(feedItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; Edit Post</Button>
-                            </div>
-                            <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
-                            <Button onClick={() => handleDeleteNotify(feedItem?.referenceId)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; Remove Post</Button>
-                          </div> 
-                        </div>
-                    </>)}
+                    {(user?.teacher || user.isSchoolAdmin)
+                      ?
+                      <>
+                        <div className='inline-flex' style={{paddingTop:'20px', paddingTop:'6px', float:'right', }}>
+                            <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>            
+                              <Button onClick={() => openEditAnnouncementToggle(feedItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; Edit Post</Button>
+                              </div>
+                              <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
+                              <Button onClick={() => handleDeleteNotify(feedItem?.referenceId)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; Remove Post</Button>
+                            </div> 
+                          </div>
+                      </>
+                      :
+                      null
+                    }
                     </Col>
                     </Row>
                     <hr />
@@ -275,32 +280,32 @@ const getComment = (item, item1, item3) => {
                         <i class="fas fa-file-alt" style={{color:'#EE9337', fontSize:'30px', paddingTop:'30px'}}></i>
                         
                       </Col>
-                      <Col sm={7} style={{fontSize:'20px', color:'#EE9337', paddingTop:'30px'}}>
+                      <Col sm={6} style={{fontSize:'20px', color:'#EE9337', paddingTop:'30px'}}>
                         <p>{feedItem.title}</p>
                         
                       </Col>
-                      <Col  sm={4} style={{fontSize:'20px', color:'#707070', textAlign:'right'}} >
+                      <Col  sm={5} style={{fontSize:'20px', color:'#707070', textAlign:'right'}} >
                       <div className='inline-flex'>
                         <div className='text-color-bcbcbc'>
-                          Start Date:&nbsp;
+                          <p>Start Date:&nbsp;{moment(feedItem?.startDate).format('ll')}&nbsp;/&nbsp;{feedItem?.startTime}</p>
                         </div>
-                      <div className='text-color-707070'>
-                      <p>{moment(feedItem?.startDate).format('ll')}&nbsp;</p> 
+                      {/* <div className='text-color-707070'>
+                        <p>{moment(feedItem?.startDate).format('ll')}&nbsp;</p> 
                       </div>
                         <div className='text-color-707070'>
                         / {feedItem?.startTime}
-                        </div>
+                        </div> */}
                       </div>
                       <div className='inline-flex'>
                         <div className='text-color-bcbcbc'>
-                          Start End:&nbsp;
+                          <p>&nbsp;End Date:{moment(feedItem?.endDate).format('ll')}&nbsp;/&nbsp;{feedItem?.endTime}</p>
                         </div>
-                      <div className='text-color-707070'>
+                      {/* <div className='text-color-707070'>
                       <p>{moment(feedItem?.endDate).format('ll')}&nbsp;</p> 
                       </div>
                         <div className='text-color-707070'>
                         /  {feedItem?.endTime}
-                        </div>
+                        </div> */}
                       </div>
                     </Col>
                     </Row>
