@@ -10,10 +10,11 @@ export default class GradeAPI extends Base {
     });
   };
 
-  getCourseFiles = async (id) => {
+  getCourseFiles = async (id, data) => {
     return this.sendRequest({
-      path: `/api/Course/${id}/files`,
-      method: 'GET'
+      path: `/api/Course/${id}/files/v3`,
+      method: 'POST',
+      data
     });
   };
 
@@ -25,10 +26,11 @@ export default class GradeAPI extends Base {
     });
   };
 
-  getClassFiles = async (id) => {
+  getClassFiles = async (id, data) => {
     return this.sendRequest({
-      path: `/api/Class/${id}/files`,
-      method: 'GET'
+      path: `/api/Class/${id}/files/v3`,
+      method: 'POST',
+      data
     });
   };
 
@@ -45,34 +47,51 @@ export default class GradeAPI extends Base {
       method: 'GET',
     });
   }
-  deleteClassFile = async(data) => {
+  deleteClassFile = async(id, data) => {
     return this.sendRequest({
-      path: `/api/Class/${data.classId}/files/${data.fileId}`,
-      method: 'DELETE'
-    });
-  };
-
-  deleteCourseFile = async(data) => {
-    return this.sendRequest({
-      path: `/api/Course/${data.courseId}/files/${data.fileId}`,
-      method: 'DELETE'
-    });
-  };
-
-  editClassFile = async(data) => {
-    return this.sendRequest({
-      path: `/api/class/${data.classId}/files/${data.fileId}`,
+      path: `/api/Class/${id}/files/v3/delete`,
       method: 'PUT',
-      data: data.fileData
+      data
     });
   };
 
-  editCourseFile = async(data) => {
+  deleteCourseFile = async(id, data) => {
     return this.sendRequest({
-      path: `/api/course/${data.courseId}/files/${data.fileId}`,
+      path: `/api/Course/${id}/files/v3/delete`,
       method: 'PUT',
-      data: data.fileData
+      data
+    });
+  };
+
+  editClassFile = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/files/v3/update`,
+      method: 'PUT',
+      data
+    });
+  };
+
+  editCourseFile = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/files/v3/update`,
+      method: 'PUT',
+      data
     });
   }
 
+  createCourseFolder = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Upload/course/${id}/file/folder`,
+      method: 'POST',
+      data
+    })
+  }
+
+  createCLassFolder = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Upload/class/${id}/file/folder`,
+      method: 'POST',
+      data
+    })
+  }
 }

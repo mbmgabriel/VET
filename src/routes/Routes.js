@@ -48,6 +48,19 @@ import ExamCreation from "../views/exam-creation/ExamCreation";
 import  Profile from "../views/profile/Profile";
 import Dashboard from "../views/dashboard/Dashboard";
 import SchoolProfile from "../views/school-profile/SchoolProfile";
+import SchoolCourses from "../views/school-courses/SchoolCourses";
+import SchoolDiscussion from "../views/school-courses/SchoolDiscussion";
+import SchoolExam from "../views/school-courses/SchoolExam";
+import SchoolAssignment from "../views/school-courses/SchoolAssignment";
+import SchoolTask from "../views/school-courses/SchoolTask";
+import SchoolInteractive from "../views/school-courses/SchoolInteractive";
+import SchoolFiles from "../views/school-courses/SchoolFiles";
+import SchoolTeacher from "../views/school-profile/SchoolTeachers";
+import StudentsList from "../views/school-profile/StudentsList";
+import SchoolAdminList from '../views/school-profile/SchoolAdmin';
+import FilesClass from '../views/files/ClassFiles';
+import FilesCourse from '../views/files/CourseFiles';
+
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -88,7 +101,6 @@ export default function Routes() {
             <PrivateRoute path='/classes/:id/files' exact component={ClassFiles} />
 
             <PrivateRoute path='/exam' exact component={Exam}/>
-            <PrivateRoute path='/files' exact component={Files}/>
             <PrivateRoute path='/reports' exact component={Reports}/>
             {/* <PrivateRoute path='/classlist' exact component={ClassList}/> */}
             <PrivateRoute path='/archive' exact component={ArchiveClass}/>
@@ -101,8 +113,21 @@ export default function Routes() {
             <PrivateRoute path='/profile/:id' exact component={Profile}/>
             <PrivateRoute path='/exam_creation/:id' exact component={ExamCreation}/>
             
+            <PrivateRoute path='/files' exact component={FilesClass}/>
+            <PrivateRoute path='/files/course' exact component={FilesCourse} />
+
             <PrivateRoute path='/dashboard' exact component={Dashboard}/>
             <PrivateRoute path='/school' exact component={SchoolProfile}/>
+            <PrivateRoute path='/school_courses/:id' exact component={SchoolCourses}/>
+            <PrivateRoute path='/school_courses/:id/discussion' exact component={SchoolDiscussion}/>
+            <PrivateRoute path='/school_courses/:id/exam' exact component={SchoolExam}/>
+            <PrivateRoute path='/school_courses/:id/assignment' exact component={SchoolAssignment}/>
+            <PrivateRoute path='/school_courses/:id/task' exact component={SchoolTask}/>
+            <PrivateRoute path='/school_courses/:id/interactive' exact component={SchoolInteractive}/>
+            <PrivateRoute path='/school_courses/:id/files' exact component={SchoolFiles}/>
+            <PrivateRoute path='/schoolTeacher' exact component={SchoolTeacher} />
+            <PrivateRoute path='/studentsList' exact component={StudentsList} />
+            <PrivateRoute path='/schoolAdmin' exact component={SchoolAdminList} />
 
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>

@@ -9,16 +9,18 @@ function FileHeader(props) {
   const [files, setFiles] = useState([]);
   const [doneUpload, setDoneUpload] = useState(false)
   const [uploadStarted, setUploadStarted] = useState(false)
+  const [showAddFolderModal, setShowAddFolderModal] = useState(false);
+  const [folderName, setFolderName] = useState('')
+  const [folderCreatedCourse, setFolderCreatedCourse] = useState(false); 
   const allUploaded = files.filter(itm => { //check if all items is already 100% uploaded
     return itm.progress != 100
   })
 
   const handlefilesUpload = (file) => {
-    console.log(file)
     if(file != ''){
       
       Object.values(file).map((itm, index) => {
-        console.log(itm, index)
+        // console.log(itm, index)
         let temp = []
         getBase64(itm).then(
           data => {
@@ -26,7 +28,8 @@ function FileHeader(props) {
               fileName: itm.name,
               base64String: data,
               size: itm.size,
-              progress: 0
+              progress: 0,
+              status: ''
             };
             files.push(toAdd)
             setFiles([...files]);
@@ -54,6 +57,7 @@ function FileHeader(props) {
           let tempData = {
             fileName: item.fileName,
             base64String: item.base64String,
+            subFolderLocation: props.subFolder
           },
           toSave = {
             data: tempData,
@@ -71,11 +75,17 @@ function FileHeader(props) {
             setDoneUpload(allUploaded.length == 0 ? true : false)
             setUploadStarted(allUploaded.length == 0 ? false : true)
           }else{
-            setShowUploadModal(false)
             setFiles([])
             setDoneUpload(false)
             setUploadStarted(false)
-            toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+            if(response.data?.errorMessage.includes('exist')){
+              files[index].progress = 100;
+              files[index].status = 'failed';
+              setFiles([...files])
+            }else{
+              setShowUploadModal(false)
+              toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+            }
           }
         }
       })
@@ -87,6 +97,7 @@ function FileHeader(props) {
           let tempData = {
             fileName: item.fileName,
             base64String: item.base64String,
+            subFolderLocation: props.subFolder
           },
           toSave = {
             data: tempData,
@@ -104,11 +115,18 @@ function FileHeader(props) {
             setDoneUpload(allUploaded.length == 0 ? true : false)
             setUploadStarted(allUploaded.length == 0 ? false : true)
           }else{
-            setShowUploadModal(false)
             setFiles([])
             setDoneUpload(false)
             setUploadStarted(false)
-            toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
+            if(response.data?.errorMessage.includes('exist')){
+              files[index].progress = 100;
+              files[index].status = 'failed';
+              setFiles([...files])
+            }else{
+              setShowUploadModal(false)
+              toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+            }
+            // toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
           }
         }
       })
@@ -132,35 +150,66 @@ function FileHeader(props) {
 
   const renderTooltipUploadFiles = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Upload Files
+      Create Folder
     </Tooltip>
   )
 
+  const handleSaveFolder = async() => {
+    if(props.type == 'Course'){
+      let data = {
+          "folderName": folderName,
+          "subFolderLocation": props.subFolder
+      }
+      let response = await new FilesAPI().createCourseFolder(props.id, data)
+      if(response.ok){
+        props.doneUpload()
+        setShowAddFolderModal(false)
+      }else{
+        setShowAddFolderModal(false)
+        toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+      }
+    }
+    if(props.type == 'Class'){
+      let data = {
+          "folderName": folderName,
+          "subFolderLocation": props.subFolder
+      }
+      let response = await new FilesAPI().createCLassFolder(props.id, data)
+      if(response.ok){
+        props.doneUpload()
+        setShowAddFolderModal(false)
+      }else{
+        setShowAddFolderModal(false)
+        toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
+      }
+    }
+  }
+
   return (
     <div>
-      <div className="row m-b-20">
-        <div className="col-md-10 pages-header file-content"><h1>Files
-        <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 1, hide: 0 }}
-                    overlay={renderTooltipUploadFiles}>
-          <i onClick={() => setShowUploadModal(true)} class="fas fa-folder-plus file-upload-content td-file-page cursor-pointer"></i>
+      <div style={{flexDirection: 'row', paddingLeft: 0}} className="pages-header file-content">
+        <div>
+          <p className='title-header'>{props.title}</p>
+        </div>
+        <div>
+          <OverlayTrigger
+            placement="right"
+            delay={{ show: 1, hide: 0 }}
+            overlay={renderTooltipUploadFiles}
+          >
+            <i style={{marginTop: 10}} className="fas fa-folder-plus file-upload-content font-size-35 cursor-pointer" onClick={() => setShowAddFolderModal(true)}/>
           </OverlayTrigger>
-          </h1>
-            {/* <h1 className="file-upload-content"><Button size="sm" variant="outline-warning"><i class="fas fa-folder file-upload-content "></i> New Folder</Button></h1> <h5 className="fileupload"> OR </h5> */}
-            {/* <h1 className="file-upload-content"><Button className="file-upload-content" size='sm' variant="outline-warning" onClick={() => setShowUploadModal(true)}> +Upload File</Button></h1> */}
-            <p><Button style={{paddingTop:'11px'}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> <i className="fa fa-plus"></i>  Upload Files  </Button></p>
+        </div>
+        <div>
+          <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowAddFolderModal(true)}> New Folder  </Button>
+        </div>
+        <div>
+          <h5 style={{paddingTop: 15}} className="fileupload"> OR </h5>
+        </div>
+        <div>
+          <p><Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button></p>
         </div>
       </div>
-      <div className="row m-b-20">
-				<div className="col-md-12">
-					<InputGroup size="lg">
-						<FormControl  aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search Files here" type="search"/>
-						<InputGroup.Text id="basic-addon2" className="search-button"><i className="fas fa-search fa-1x"></i></InputGroup.Text>
-					</InputGroup>
-				</div>
-			</div>
-
       <Modal size="lg" show={showUploadModal} onHide={() => setShowUploadModal(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
@@ -196,7 +245,8 @@ function FileHeader(props) {
               return(
                 <tr key={item.fileName}>
                   <td>{item.fileName}</td>
-                  <td><ProgressBar variant="warning" now={item.progress} /></td>
+                  {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="warning" now={item.progress} /></td>}
+                  {/* <td><ProgressBar variant="warning" now={item.progress} /></td> */}
                   <td>{item.size} KB <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                 </tr>
               );
@@ -204,6 +254,64 @@ function FileHeader(props) {
             </tbody>
           </Table>
           <Button size="lg" variant="outline-warning" disabled={allUploaded.length == 0 ? true : false} className={"file-library file-button-upload mx-3" } onClick={()=> handleUploadFile()}>{uploadStarted ? 'Uploading...' : 'Upload'}</Button>
+          <Button size="lg" variant="outline-warning" className={ doneUpload ? "file-library file-button-upload" : 'd-none'} onClick={()=> handleDoneUpload()}>Done</Button>
+        </Modal.Body>
+      </Modal>
+
+      <Modal size="lg" show={showAddFolderModal} onHide={() => setShowAddFolderModal(false)} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">
+            Create Folder
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputGroup size="lg">
+              <FormControl onChange={(e) => setFolderName(e.target.value)} className='mb-2' aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Enter folder name"/>
+            </InputGroup>
+          {folderCreatedCourse ?
+          <>
+            <Row style={{paddingTop:'25px', paddingBottom: '20px'}}>
+              <Col lg={3} className='mt-3'>
+                <Button size='lg' variant="outline-warning" className="file-library" onClick={() => { document.getElementById('inputFile').click() }}>
+                  <i className="fas fa-paperclip"></i>
+                  Choose Files
+                </Button>
+              </Col>
+                <Col lg={4} className='bg-gray d-flex justify-content-center br-5px'>
+                  <div className='row position-absolute d-flex p-2'>
+                    <p className='mb-0 text-center'>Drag files here</p>
+                    <i className='text-center fa fa-download font-size-30'/>
+                  </div>
+                  <input className='opacity-0 w-100 height-80px' id='inputFile' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
+                </Col>
+            </Row>
+            <Table responsive="sm">
+              <thead>
+                <tr>
+                  <th>File Name</th>
+                  <th>Progress</th>
+                  <th>Size</th>
+                </tr>
+              </thead>
+              <tbody>
+              {files?.map((item, index) => {
+                return(
+                  <tr key={item.fileName}>
+                    <td>{item.fileName}</td>
+                   {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="warning" now={item.progress} /></td>}
+                    <td>{item.size} KB <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
+                  </tr>
+                );
+              })
+            }
+            </tbody>
+          </Table>
+            </>
+            :
+            <></>
+          }
+          <Button size="lg" variant="outline-warning" className={ folderCreatedCourse ? 'd-none' : "file-library file-button-upload"} onClick={()=> handleSaveFolder()}>Save</Button>
+          {/* <Button size="lg" variant="outline-warning" disabled={allUploaded.length == 0 ? true : false} className={"file-library file-button-upload mx-3" } onClick={()=> handleUploadFile()}>{uploadStarted ? 'Uploading...' : 'Upload'}</Button> */}
           <Button size="lg" variant="outline-warning" className={ doneUpload ? "file-library file-button-upload" : 'd-none'} onClick={()=> handleDoneUpload()}>Done</Button>
         </Modal.Body>
       </Modal>

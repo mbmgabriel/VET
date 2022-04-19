@@ -185,6 +185,13 @@ export default function ExamCreation() {
     }
   
   }, [selectedPart]);
+
+  useEffect(() => {
+    if (user.isSchoolAdmin){
+      setEditable(false)
+    }
+  }, []);
+
   
 
   return (

@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Accordion, Button, Tooltip, OverlayTrigger } from "react-bootstrap";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { displayQuestionType } from "../../../utils/displayQuestionType";
+import { useContext } from "react";
 import Questions from "./questions/Questions";
+import { UserContext } from "../../../context/UserContext";
 
 export default function ExamParts({
   exam,
@@ -16,6 +18,8 @@ export default function ExamParts({
   
   const [selectedId, setSelectedId] = useState(null)
   const [showWarning, setShowWarning] = useState(false)
+  const userContext = useContext(UserContext);
+  const { user } = userContext.data;
 
   const arrageAlphabetical = (data) => {
     let temp = Object.values(data).sort(function(a, b){
@@ -71,35 +75,40 @@ export default function ExamParts({
                 <span>{`${part.questionDtos.length} Question(s)`}</span>
               </div>
             </div>
-          {editable && (
-            <div className='exam-actions' >
-              <OverlayTrigger
-                placement="right"
-                delay={{ show: 1500, hide: 0 }}
-                overlay={renderTooltipEdit}>
-              <a
-                href='#edit-part'
-                onClick={(e) => {
-                  setShowModal(true);
-                  setSelectedPart(part);
-                }}
-              >
-                <i class='fas fa-edit'></i>
-              </a>
-              </OverlayTrigger>
-              <OverlayTrigger
-                placement="right"
-                delay={{ show: 1500, hide: 0 }}
-                overlay={renderTooltipDelete}>
-              <a href='#delete-part' onClick={(e) => {
-                setShowWarning(true)
-                setSelectedId(part)
-              }}>
-                <i class='fas fa-trash-alt'></i>
-              </a>
-              </OverlayTrigger>
-            </div>
-          )}
+            {user?.isTeacher &&
+            <>  
+              {editable && (
+                <div className='exam-actions' >
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1500, hide: 0 }}
+                    overlay={renderTooltipEdit}>
+                  <a
+                    href='#edit-part'
+                    onClick={(e) => {
+                      setShowModal(true);
+                      setSelectedPart(part);
+                    }}
+                  >
+                    <i class='fas fa-edit'></i>
+                  </a>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1500, hide: 0 }}
+                    overlay={renderTooltipDelete}>
+                  <a href='#delete-part' onClick={(e) => {
+                    setShowWarning(true)
+                    setSelectedId(part)
+                  }}>
+                    <i class='fas fa-trash-alt'></i>
+                  </a>
+                  </OverlayTrigger>
+                </div>
+              )}
+            </>
+            }
+         
           </Accordion.Header>
           <Accordion.Body>
             <Questions

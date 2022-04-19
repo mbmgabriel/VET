@@ -20,6 +20,7 @@
     "react-froala-wysiwyg": "^4.0.9",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "react-table-v6": "^6.8.6",
     "react-toastify": "^8.1.0",
     "web-vitals": "^1.0.1"
   },

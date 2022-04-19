@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import "../../../../node_modules/@fortawesome/fontawesome-free/css/all.css"
 import { Link } from 'react-router-dom'
+import userEvent from "@testing-library/user-event";
+import { UserContext } from './../../../context/UserContext'
 
 export default function CoursesItem({subjectAreaName, filter, setFilter, course, setLoading, setOpenEditModal, setSelectedCourse}) {
-  
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
   const [openDropdown, setOpenDropdown] = useState(false)
   const [data, setData] = useState([])
   
@@ -45,33 +48,38 @@ export default function CoursesItem({subjectAreaName, filter, setFilter, course,
           ((item, index) => {  
         return(
           <Col md={3}>
-            <Link to={`coursecontent/${item.id}/learn`} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
+            <Link to={user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}`} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
+            
             <Card className="card-design b-0px">
               <Card.Header className="card-header-courses">
                 <Row style={{color:"white"}}>
-                    <Col md={12}>
-                      {/* <i className="fa fa-lock fa-2x"></i> */}
-                      {item.authorName !== "Techfactors Inc." &&
-                        <OverlayTrigger
-                        placement="right"
-                        delay={{ show: 10, hide: 25 }}
-                        overlay={renderTooltip}>
-                        <Dropdown className="float-right" isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
-                          <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
-                            <i className="fa fa-ellipsis-v fa-2x"></i>
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu>
-                          <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>
-                          Edit 
-                          </Dropdown.Item>
-                          <Dropdown.Item>
-                          Delete
-                          </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                        </OverlayTrigger>
+                    {user.isTeacher &&
+                        <>
+                          <Col md={12}>
+                              {/* <i className="fa fa-lock fa-2x"></i> */}
+                              {item.authorName !== "Techfactors Inc." &&
+                                <OverlayTrigger
+                                placement="right"
+                                delay={{ show: 10, hide: 25 }}
+                                overlay={renderTooltip}>
+                                <Dropdown className="float-right" isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
+                                  <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
+                                    <i className="fa fa-ellipsis-v fa-2x"></i>
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                  <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>
+                                  Edit 
+                                  </Dropdown.Item>
+                                  <Dropdown.Item>
+                                  Delete
+                                  </Dropdown.Item>
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                                </OverlayTrigger>
+                              }
+                            </Col>
+                        </>
                       }
-                    </Col>
                     <Col md={12} className="t-a-c m-t-20">
                       <i className="fa fa-book-open fa-7x"></i>
                     </Col>

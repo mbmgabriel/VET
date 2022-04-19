@@ -66,13 +66,13 @@ function FilesContent(props) {
 
   const handleDeleteClassFile = async() => {
     let data = {
-      classId: itemToDelete.classFiles?.classId,
-      fileId: itemToDelete.classFiles?.id
+      "fileName": itemToDelete.name,
+      "subFolderLocation":  props.subFolder,
     }
-    let response = await new FilesAPI().deleteClassFile(data)
+    let response = await new FilesAPI().deleteClassFile(props.id, data)
     if(response.ok){
       setDeleteNotify(false)
-      props.deleted()
+      props.deleted();
       toast.success("File deleted successfully");
     }else{
       setDeleteNotify(false)
@@ -82,13 +82,13 @@ function FilesContent(props) {
 
   const handleDeleteCourseFile = async() => {
     let data = {
-      courseId: itemToDelete.courseId,
-      fileId: itemToDelete.id
+      "fileName": itemToDelete.name,
+      "subFolderLocation": props.subFolder,
     }
-    let response = await new FilesAPI().deleteCourseFile(data)
+    let response = await new FilesAPI().deleteCourseFile(props.id, data)
     if(response.ok){
       setDeleteNotify(false)
-      props.deleted()
+      props.deleted();
       toast.success("File deleted successfully");
     }else{
       setDeleteNotify(false)
@@ -102,9 +102,8 @@ function FilesContent(props) {
   }
 
   const handleEdit = (item) => {
-    console.log(item);
-    let extName = item.fileName.split('.').pop(),
-    tempName = item.fileName.replace(`.${extName}`, '');
+    let extName = item.name.split('.').pop(),
+    tempName = item.name.replace(`.${extName}`, '');
     setExtFilename(`.${extName}`);
     showModal(true);
     setItemToEdit(item);
@@ -115,11 +114,11 @@ function FilesContent(props) {
     if(newFileName != ''){
       let tempFilename = newFileName.includes(extFilename) ? newFileName : newFileName+extFilename;
       let data = {
-        fileData: {...itemToEdit, fileName: tempFilename},
-        courseId: itemToEdit.courseId,
-        fileId: itemToEdit.id
+        "newFileName": tempFilename,
+        "oldFileName": itemToEdit.name,
+        "subFolderLocation": props.subFolder
       }
-      let response = await new FilesAPI().editCourseFile(data)
+      let response = await new FilesAPI().editCourseFile(props.id, data)
       if(response.ok){
         showModal(false)
         props.deleted(); //to refetch data
@@ -138,11 +137,15 @@ function FilesContent(props) {
     if(newFileName != ''){
       let tempFilename = newFileName.includes(extFilename) ? newFileName : newFileName+extFilename;
       let data = {
-        fileData: {...itemToEdit, fileName: tempFilename, classFiles: {...itemToEdit.classFiles, fileName: tempFilename}},
-        classId: itemToEdit.classFiles.classId,
-        fileId: itemToEdit.classFiles.id
+        "newFileName": tempFilename,
+        "oldFileName": itemToEdit.name,
+        "subFolderLocation": props.subFolder
+
+        // fileData: {...itemToEdit, fileName: tempFilename, classFiles: {...itemToEdit.classFiles, fileName: tempFilename}},
+        // classId: itemToEdit.classFiles.classId,
+        // fileId: itemToEdit.classFiles.id
       }
-      let response = await new FilesAPI().editClassFile(data)
+      let response = await new FilesAPI().editClassFile(props.id, data);
       if(response.ok){
         showModal(false)
         props.deleted(); //to refetch data
@@ -196,34 +199,35 @@ function FilesContent(props) {
       <thead>
         <tr>
           <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
-          <th >Date Modified</th>  {/* icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
+          {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
           <th >Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr colSpan={4} className={props.data.length == 0 ? 'text-center p-3' : 'd-none'}>
+        {/* <tr colSpan={3} className={props.data?.length == 0 ? 'text-center p-3' : 'd-none'}>
           <td colSpan={3}>
             No items to display
           </td>
-        </tr>
+        </tr> */}
         {
-          props.data?.map((item, index) => {
+          props.data?.filter(item =>
+              item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
             return(
-              <tr key={item.fileName+index}>
-                <td className='ellipsis w-25' style={{color:'#EE9337', fontSize:'20px'}}>{item.fileName}</td>
-                {
+              <tr key={index+item.name}>
+                <td className='ellipsis w-75 colored-class font-size-22'>{item.name}</td>
+                {/* {
                   props.type == 'Class' ? <td className='ellipsis w-50' style={{fontSize:'20px'}}>{item.classFiles ? moment(item.classFiles?.createdDate).format('LL') : moment(item.courseFiles?.createdDate).format('LL')}</td> 
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
-                }
+                } */}
                 <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
                       delay={{ show: 1, hide: 0 }}
-                      overlay={item.path_Base.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
+                      overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
                     >
-                      <a href={item.path_Base} download={true} target='_blank'>                     
-                        <i class={`${item.path_Base.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
+                      <a href={item.pathBase} download={true} target='_blank'>                     
+                        <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
                       </a> 
                     </OverlayTrigger>
                     <OverlayTrigger
@@ -237,13 +241,25 @@ function FilesContent(props) {
                     placement="right"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipDelete}>
-                    <a  >
-                    <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClick(item) }></i> </a>
+                    <a>
+                      <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClick(item) }></i>
+                    </a>
                   </OverlayTrigger>
                   </td>
               </tr>
             )
           })
+        }
+        {
+          props.folders?.filter(item =>
+            item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
+            return(
+              <tr key={index+item.name}>
+                <td colSpan={3} className='ellipsis w-25 colored-class' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
+              </tr>
+            )
+          })
+
         }
       </tbody>
       {handleEditFilenameModal()}
