@@ -85,7 +85,7 @@ function StudentInteractive({interactive, searchTerm}) {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classInteractiveAssignment?.endDate + ' ' + item?.classInteractiveAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b>&nbsp;</div>  
                     }
-                    <Col sm={7} className='due-date-discusstion' >
+                    <Col sm={6} className='due-date-discusstion' >
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
                             Start Date:&nbsp;
@@ -118,9 +118,7 @@ function StudentInteractive({interactive, searchTerm}) {
                         </div>
                       </Col>
                 </Row>
-                <div className='text-color-bcbcbc' >
-                   ___________________________________________________________________________________________________________________________________________________________________________________________________________
-                 </div>
+                <hr />
             </>
             ):(
             <>

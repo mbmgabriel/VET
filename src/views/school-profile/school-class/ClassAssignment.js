@@ -229,7 +229,7 @@ export default function SchoolAdminAssignment() {
               <Row style={{margin:'10px'}}>
                 <Col sm={8}>
                   <div className='title-exam'>
-                    {assigItem?.assignment?.assignmentName}
+                   {'assigItem?.assignment?.assignmentName'}
                   </div>
                 </Col>
                 <Col sm={9} className='instruction-exam' >
@@ -342,24 +342,7 @@ export default function SchoolAdminAssignment() {
                 }
                 {assigItem?.classAssignment?(
                   <Row>
-                    {
-                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
-                    }
-                    {
-                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b></div>
-                    }
-                    {
-                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
-                    }
-                    {
-                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
-                    } 
-                    <Col sm={7} className='due-date-discusstion' >
+                    <Col sm={6} className='due-date-discusstion' >
                     <div className='inline-flex'>
                       <div className='text-color-bcbcbc'>
                         Start Date:&nbsp;

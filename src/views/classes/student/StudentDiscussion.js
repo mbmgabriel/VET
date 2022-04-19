@@ -123,7 +123,7 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                   <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
                 }
-              <Col sm={7} className='due-date-discusstion' >
+              <Col sm={6} className='due-date-discusstion' >
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>
                       Start Date:&nbsp;
@@ -157,9 +157,7 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
                 </Col>
           </Row>
           <br />
-          <div className='text-color-bcbcbc' >
-              ___________________________________________________________________________________________________________________________________________________________________________________________________________
-          </div>
+          <hr />
             </>):(
             <>
             </>

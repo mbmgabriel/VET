@@ -96,7 +96,7 @@ export default function SchoolAdminFeed() {
                 </div>
                 <div className="row calendar-subtitle">
                   <div>
-                  <Form.Select onChange={onModuleChange} aria-label="Default select example">
+                  <Form.Select onChange={onModuleChange} aria-label="Default select example" className='font-13'>
                 <option value="">--SELECT UNIT HERE--</option>
                 {modules.map(item =>{
                     return (<option value={item?.id} > {item?.moduleName}</option>)
@@ -112,7 +112,7 @@ export default function SchoolAdminFeed() {
                 </Card.Title>
                 <Card.Text className='card-title' >
                 <ul style={{listStyle:'none', height: '50vh'}} className='scrollable pb-5'>
-                {Pages.map(item =>{
+                  {Pages.map(item =>{
                     return (
                       <>
                         <li><Button onClick={() => getContent(item?.id)} className='btn-create-discussion' variant="link" > {item?.pageName}  </Button></li>
@@ -127,8 +127,7 @@ export default function SchoolAdminFeed() {
           </Col>
         </Row>
       </div>
-          {/* <SchoolProfileContent /> */}
-        </Col>
+      </Col>
       </Row>
     </MainContainer>
   )
