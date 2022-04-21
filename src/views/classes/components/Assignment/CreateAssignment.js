@@ -72,7 +72,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
             <div className={showFiles ? 'mb-3' : 'd-none'}>
               <FileHeader type={'Class'}  title='Files' id={id} subFolder={''} doneUpload={()=> handleGetClassFiles()}/>
               {
-                displayFiles.map( (item,ind) => {
+                (displayFiles || []).map( (item,ind) => {
                   return(
                     item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
                     <img key={ind+item.filename} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
@@ -82,7 +82,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
                 })
               }
               {
-                displayFolder.map((itm) => {
+                (displayFolder || []).map((itm) => {
                   return(
                     <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
                   )
