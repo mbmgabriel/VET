@@ -140,7 +140,7 @@ function StudentTask({taskModule, searchTerm}) {
                         placement="right"
                         delay={{ show: 1, hide: 1 }}
                         overlay={renderTooltipAnswer}>
-                          <Button onClick={() => answerTaskToggle(item?.task?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-edit"></i></Button>
+                          {!user.isSchoolAdmin && <Button onClick={() => answerTaskToggle(item?.task?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-edit"></i></Button>}
                       </OverlayTrigger>
                       <OverlayTrigger
                         placement="right"
