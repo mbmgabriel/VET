@@ -156,7 +156,7 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
                 </div>
               </td>
               <td className='class-waiting-icon'>
-                <div style={{marginRight:'35px'}} className={user.isSchoolAdmin ? 'd-none' : ''}>
+                <div style={{marginRight:'35px'}}>
                   <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
