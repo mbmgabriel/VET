@@ -96,14 +96,14 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
           <div className={showFiles ? 'mb-3' : 'd-none'}>
             <FileHeader type='Class' id={classId}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
             {/* {
-              displayFiles.map( (item,ind) => {
+             (displayFiles || []).map( (item,ind) => {
                 return(
                   <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
                 )
               })
             } */}
              {
-                displayFiles?.map( (item,ind) => {
+               (displayFiles || []).map( (item,ind) => {
                   return(
                     item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
                     <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
@@ -113,7 +113,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
                 })
               }
               {
-                displayFolder?.map((itm) => {
+                (displayFolder || []).map((itm) => {
                   return(
                     <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
                   )
