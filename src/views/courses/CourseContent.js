@@ -106,8 +106,14 @@ export default function CourseContent({children}) {
     </Tooltip>
   )
 
+  const renderTooltipTeacherResources = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Teacher Resources
+    </Tooltip>
+  )
+
   return (
-    <MainContainer loading={loading} fluid activeHeader={'courses'} style='not-scrollable'>
+    <MainContainer loading={loading} fluid activeHeader={'courses'} style=''>
         <Col style={{height: 100}} />
         <Row>
           {showTab ? <Col className="row-course-bg course-widget-font" sm={3}>
@@ -131,14 +137,17 @@ export default function CourseContent({children}) {
               <Link className={currentLoc.includes('exam') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/exam`}>
                 Exam
               </Link>
+              <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
+                Task
+              </Link>
+              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                Teacher Resources
+              </Link>
               <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/discussion`}>
                 Discussion
               </Link>
               <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
                 Assignment
-              </Link>
-              <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
-                Task
               </Link>
               <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
                 Files
@@ -167,6 +176,22 @@ export default function CourseContent({children}) {
                   <i className="fas fa-file-alt" />
                 </OverlayTrigger>
               </Link>
+              <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 1, hide: 25 }}
+                  overlay={renderTooltipTask}>
+                  <i className="fas fa-edit" />
+                </OverlayTrigger>
+              </Link>
+              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 1, hide: 25 }}
+                  overlay={renderTooltipTeacherResources}>
+                  <i className="fas fa-link" />
+                </OverlayTrigger>
+              </Link>
               <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/discussion`}>
                 <OverlayTrigger
                   placement="right"
@@ -183,14 +208,7 @@ export default function CourseContent({children}) {
                   <i className="fas fa-sticky-note" />
                 </OverlayTrigger>
               </Link>
-              <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipTask}>
-                  <i className="fas fa-edit" />
-                </OverlayTrigger>
-              </Link>
+              
               <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
                 <OverlayTrigger
                   placement="right"

@@ -66,7 +66,7 @@ function ExamReport({filter, setfilter, classesModules, setClassesModules, selec
                     </div> */}
                   </Col>
                   <Col sm={9} className='instruction-exam' >
-                    <p>{item.test.testInstructions}</p>
+                    <p dangerouslySetInnerHTML={{__html:item.test.testInstructions }} />
                   </Col>
                   {/* <Col sm={3} className='icon-exam'>
                     <i class="fas fa-eye" style={{paddingRight:'10px'}} ></i>{' '}

@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
 import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './AssignmentFileHeader';
 import { useParams } from "react-router";
+
 export default function CreateTask({openCreateTaskModal, setCreateTaskModal, setTaskInfo}){
 
 	const [loading, setLoading] = useState(false)
@@ -39,7 +40,15 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
       getTaskInfo(sessionModule)
       notifySaveTask()
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     setLoading(false)
   }

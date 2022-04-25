@@ -66,11 +66,11 @@ export default function ExamParts({
           style={{ border: "1px solid #f1f1f1", padding: "8px 16px" }}
           eventKey={index}
           key={index}
-        >1
+        >
           <Accordion.Header>
             <div className='accordion-block-header'>
               <div className='header-content'>
-                <h3>{`${part.questionPart.instructions} `}</h3>
+                <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} />
                 <p>{displayQuestionType(part.questionPart.questionTypeId)}</p>
                 <span>{`${part.questionDtos.length} Question(s)`}</span>
               </div>

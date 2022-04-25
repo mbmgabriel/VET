@@ -2,10 +2,10 @@ import React, { useState, useContext } from 'react'
 import { Accordion, Row, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router'
-import ClassesAPI from '../../../../api/ClassesAPI'
+import CoursesAPI from '../../../../../api/CoursesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment';
-import { UserContext } from '../../../../context/UserContext'
+import { UserContext } from '../../../../../context/UserContext'
 
 
 function AccordionConference({conference, getConfe, setOpenEditModal, setEditLinks, searchTerm}) {
@@ -34,7 +34,7 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
   }
 
   const deleteConference = async(item) => {
-    let response = await new ClassesAPI().deleteLinks(id, item)
+    let response = await new CoursesAPI().deleteLinks(id, item)
     if(response.ok){
       setDeleteNotify(false)
       getConfe()
@@ -70,7 +70,7 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
           onCancel={cancelSweetAlert}
           focusCancelBtn
         >
-            You will not be able to recover this imaginary file!
+            You will not be able to recover this data!
           </SweetAlert>
         <Accordion.Item eventKey="0">
         <Accordion.Header>
@@ -109,7 +109,7 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipDelete}>
-                    <Button onClick={() => handleDeleteNotify(item?.classLink.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
+                    <Button onClick={() => handleDeleteNotify(item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
                   </OverlayTrigger>
                 </Col>
               </>
@@ -119,14 +119,12 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
               </Col>
                 <Col sm={3} style={{textAlign:'right'}} className='due-date-discusstion' >
                   <div className='inline-flex'>
-                    <div className='text-color-bcbcbc'>
                       {
                       item.classLink === null ?
                       <span>Post Date {moment(item?.createdDate).format('ll')}</span>
                       :
                       <span>Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
                       }
-                    </div>
                   </div>
                 </Col>
                 <div className='text-color-bcbcbc' >

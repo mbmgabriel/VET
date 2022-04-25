@@ -99,6 +99,11 @@ function CreateClassModal({modal, toggle,getClasses}) {
       return randomString
   }
 
+  const handleGetSelected = (data) => {
+    console.log(data)
+    let selected = course.find(e => e.courseName == data);
+    setGetCourseId(selected?.id.toString());
+  }
 
 	return (
     <div>
@@ -120,16 +125,23 @@ function CreateClassModal({modal, toggle,getClasses}) {
                   }
               </Form.Select>
             </Form.Group>
+
           	<Form.Group className="mb-4">
             	<Form.Label>Course</Form.Label>
-                <Form.Select onChange={(e) => setGetCourseId(e.target.value)}>
+                {/* <Form.Select onChange={(e) => setGetCourseId(e.target.value)}>
                   <option>-- Select Course Level Here --</option>
                   {course.map(item =>{
                       return(<option value={item.id}>{item.courseName}</option>)
                       })
                     }
-                </Form.Select>
-                
+                </Form.Select> */}
+                <Form.Control list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
+                <datalist id="courses" onChange={(e) => console.log(e, 'sample')}>
+                  {course.map(item =>{
+                      return <option value={item.courseName} />
+                      })
+                    }
+                </datalist>
             </Form.Group>
             <Form.Group className="mb-4">
             	<Form.Label>Academic Term</Form.Label>

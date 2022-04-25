@@ -21,10 +21,10 @@ export default function ExamItemContent({
         }
         className='exam-title'
       >
-        {exam.test.testName}
+       <span dangerouslySetInnerHTML={{__html:exam.test.testName }} /> 
       </Link>
       <p className='exam-course-name'>{exam.module?.moduleName}</p>
-      <p className='exam-instruction '>{exam.test.testInstructions}</p>
+      <p className='exam-instruction 'dangerouslySetInnerHTML={{__html:exam.test.testInstructions }} />
       {startDate && (
         <p className='exam-instruction m-0'>
           <span className='d-inline-block' style={{ width: 40 }}>

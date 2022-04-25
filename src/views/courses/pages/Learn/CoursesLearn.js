@@ -206,7 +206,7 @@ export default function CourseLearn() {
                         return(
                           <Row>
                             <Col className="lesson-header" md={9} onClick={(e) => getModuleContent(e, moduleid, li.id, li?.pageName)}>
-                              {li?.pageName}
+                             <p className="lessonName">{li?.pageName}</p>
                             </Col>
                             <Col className="align-right-content" md={3}>
                               <OverlayTrigger

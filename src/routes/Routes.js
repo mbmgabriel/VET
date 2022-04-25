@@ -19,6 +19,7 @@ import CoursesDiscussion from "../views/courses/pages/Discussion/CoursesDiscussi
 import CoursesAssignment from "../views/courses/pages/Assignment/CoursesAssignment";
 import CoursesTask from "../views/courses/pages/Task/CoursesTask";
 import CourseFiles from "../views/courses/pages/Files/CourseFiles";
+import CourseLinks from "../views/courses/pages/Links/CourseLinks";
 import CourseExamCreation from "../views/courses/pages/Exam/CourseExamCreation";
 
 import ClassExamCreation from '../views/classes/ClassExamCreation';
@@ -85,6 +86,7 @@ export default function Routes() {
             <PrivateRoute path='/courses/:id/assignment' exact component={CoursesAssignment}/>
             <PrivateRoute path='/courses/:id/task' exact component={CoursesTask}/>
             <PrivateRoute path='/courses/:id/files' exact component={CourseFiles}/>
+            <PrivateRoute path='/courses/:id/resources' exact component={CourseLinks}/>
 
             <PrivateRoute path='/classes' exact component={Classes}/>
             <PrivateRoute path='/classescontent/:id/feed' exact component={ClassFeed}/>

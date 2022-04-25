@@ -56,7 +56,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
   
         handleCloseModal(e)
       }else{
-        toast.error('Please check the Sequence Number!', {
+        toast.error(response.data.errorMessage, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

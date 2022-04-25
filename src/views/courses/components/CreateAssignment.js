@@ -50,7 +50,15 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
       getAssignmentInfo(sessionModule)
       notifySaveAssignment()
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     setLoading(false)
   }

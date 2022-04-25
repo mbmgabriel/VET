@@ -2,19 +2,17 @@ import React, { useState, useContext } from 'react'
 import { Accordion, Row, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router'
-import ClassesAPI from '../../../../api/ClassesAPI'
+import CoursesAPI from '../../../../../api/CoursesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment';
-import { UserContext } from '../../../../context/UserContext'
+import { UserContext } from '../../../../../context/UserContext'
 
-
-function AccordionConference({conference, getConfe, setOpenEditModal, setEditLinks, searchTerm}) {
+function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, searchTerm}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
-  const [deleteitemId, setDeleteItemId] = useState('')
+  const [itemId, setItemId] = useState('')
   const {id} = useParams();
   const userContext = useContext(UserContext)
   const {user} = userContext.data
-  const [confiId, setConfiId] = useState()
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
@@ -22,22 +20,23 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
 
   const handleDeleteNotify = (item) =>{
     setDeleteNotify(true)
-    setDeleteItemId(item)
+    setItemId(item)
   }
- 
 
-  const handleOpeEditModal = (e, confeItems) => {
+  const handleOpeEditModal = (e, item) => {
     e.preventDefault()
-    setEditLinks(confeItems)
+    setEditLinks(item)
+    console.log(item)
     setOpenEditModal(true)
     
   }
 
-  const deleteConference = async(item) => {
-    let response = await new ClassesAPI().deleteLinks(id, item)
+  const deleteVidoes = async(item) => {
+    let response = await new CoursesAPI().deleteLinks(id, item)
     if(response.ok){
+      // alert('Vidoe Deleted')
       setDeleteNotify(false)
-      getConfe()
+      getVideos()
     }else{
       alert("Something went wrong while fetching all Conference")
       
@@ -58,44 +57,45 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
 
   return (
     <div>
-      <Accordion>
-        <SweetAlert
+       <Accordion>
+       <SweetAlert
           warning
           showCancel
           show={deleteNotify}
           confirmBtnText="Yes, delete it!"
           confirmBtnBsStyle="danger"
           title="Are you sure?"
-          onConfirm={() => deleteConference(deleteitemId)}
+          onConfirm={() => deleteVidoes(itemId)}
           onCancel={cancelSweetAlert}
           focusCancelBtn
         >
-            You will not be able to recover this imaginary file!
-          </SweetAlert>
+            You will not be able to recover this data!
+        </SweetAlert>
         <Accordion.Item eventKey="0">
         <Accordion.Header>
           <div className='unit-exam' style={{fontSize:'25px'}}>
-            Conference 
+            Videos 
           </div>
         </Accordion.Header>
         <Accordion.Body>
-        {conference?.filter((item) => {
-          if(searchTerm == ''){
-            return item
-          }else if(item?.description.toLowerCase().includes(searchTerm.toLowerCase())){
-            return item
-          }
-        }).map(item => {
-          return ( 
+          {videos?.filter((item) => {
+            if(searchTerm == ''){
+              return item
+            } else if(item?.description.toLowerCase().includes(searchTerm.toLowerCase())){
+              return item
+            }
+          }).map(item =>{
+            return(
             <Row style={{margin:'10px'}}>
               <Col sm={9}>
                 <div className='title-exam'>
-                  {/* <Link style={{color:'#EE9337', textDecoration:'none'}} to={item?.url}>  {item?.description} </Link> */}
-                  <a target="_blank" style={{color:'#EE9337', textDecoration:'none'}}  href={item?.url}> {item?.description}</a>
+                  {/* <Link style={{color:'#EE9337', textDecoration:'none'}} to={item?.url}>{item?.description}</Link> */}
+                  <a target="_blank" style={{color:'#EE9337', textDecoration:'none'}} href={item?.url}>{item?.description}</a>
                 </div>
               </Col>
               {(user.teacher === null)?(
-              <></>
+              <>
+              </>
               ):(
               <>
                 <Col sm={3} className='icon-exam'>
@@ -103,29 +103,28 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipEdit}>
-                     <Button onClick={(e) => handleOpeEditModal(e, item)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-edit"></i></Button>
-                  </OverlayTrigger>
+                      <Button onClick={(e) => handleOpeEditModal(e, item)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-edit"></i></Button>
+                  </OverlayTrigger> 
                   <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipDelete}>
-                    <Button onClick={() => handleDeleteNotify(item?.classLink.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
+                      <Button onClick={() => handleDeleteNotify(item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
                   </OverlayTrigger>
                 </Col>
               </>
               )}
-
               <Col sm={9}>
               </Col>
                 <Col sm={3} style={{textAlign:'right'}} className='due-date-discusstion' >
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>
-                      {
+                    {
                       item.classLink === null ?
                       <span>Post Date {moment(item?.createdDate).format('ll')}</span>
                       :
                       <span>Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
-                      }
+                    }
                     </div>
                   </div>
                 </Col>
@@ -141,4 +140,4 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
   )
 }
 
-export default AccordionConference
+export default AccordionVideos

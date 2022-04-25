@@ -162,7 +162,7 @@ export default function CoursesExam() {
                               {ei?.testName}
                             </Link>
                             <div>
-                              {ei?.testInstructions}
+                             <p dangerouslySetInnerHTML={{__html:ei?.testInstructions }} />
                             </div>
                           </Col>
                           <Col className="align-right-content" md={3}>

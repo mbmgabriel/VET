@@ -166,7 +166,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 										<Form.Label for="status">
 												Status
 										</Form.Label>
-										<Form.Select size="lg" onChange={(e) => setLockStatus(e.target.value)}>
+										<Form.Select size="lg" onChange={(e) => setStatus(e.target.value)}>
 											<option value={true} selected={selectedCourse?.status === true}>
 												Active
 											</option>

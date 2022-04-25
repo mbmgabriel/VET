@@ -1,4 +1,12 @@
 
+* {
+
+  font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
+  
+  "Helvetica Neue", Arial, sans-serif;
+  
+  }
+
 span, input::placeholder {
   font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
     "Helvetica Neue", Arial, sans-serif !important;
@@ -873,6 +881,10 @@ border-top-right-radius: 0px !important;
   opacity: 1 !important;
   font-size: 24px;
   text-decoration: none !important;
+}
+
+.lessonName{
+  cursor: pointer;
 }
 
 .color-white {

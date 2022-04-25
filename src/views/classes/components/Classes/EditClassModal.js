@@ -95,6 +95,12 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
       setAcademicTermId(seletedClass?.academicTermId)
     }
   }, [seletedClass])
+
+  const handleGetSelected = (data) => {
+    console.log(data)
+    let selected = course.find(e => e.courseName == data);
+    setCourseId(selected?.id.toString());
+  }
   
   return (
 		<div>
@@ -118,13 +124,21 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
             </Form.Group>
             <Form.Group className="mb-4">
               <Form.Label>Course</Form.Label>
-              	<Form.Select onChange={(e) => setCourseId(e.target.value)} >
+              	{/* <Form.Select onChange={(e) => setCourseId(e.target.value)} >
                   <option value={seletedClass?.courseId}>{seletedClass?.courseName}</option>
                      {course.map(item =>{
                       return (<option value={item.id}>{item.courseName}</option>)
                       })
                     }
-                </Form.Select>
+                </Form.Select> */}
+
+              <Form.Control list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder={seletedClass?.courseName} name="course" id="courseInput2" />
+                <datalist id="courses" onChange={(e) => console.log(e, 'sample')}>
+                  {course.map(item =>{
+                      return <option value={item.courseName} />
+                      })
+                    }
+                </datalist>
             </Form.Group>
 
             <Form.Group className="mb-4">

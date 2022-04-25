@@ -119,7 +119,12 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
                 <Col sm={3} style={{textAlign:'right'}} className='due-date-discusstion' >
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>
-                      Post Date: {moment(item?.classLink?.createdDate).format('ll')}&nbsp;
+                      {
+                      item.classLink === null ?
+                      <span>Post Date {moment(item?.createdDate).format('ll')}</span>
+                      :
+                      <span>Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
+                      }
                     </div>
                   </div>
                 </Col>

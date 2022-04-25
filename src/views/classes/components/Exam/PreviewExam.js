@@ -24,7 +24,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
         {questionPartDto?.map(item1 => {
           return(<>
         
-          <Form.Label ><b>{item1?.questionPart?.instructions}</b></Form.Label>
+          <Form.Label ><b dangerouslySetInnerHTML={{__html:item1?.questionPart?.instructions }} /> </Form.Label>
       
          {(item1?.questionPart?.questionTypeId == 1)?(
          <>

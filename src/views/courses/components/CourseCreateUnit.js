@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Form } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal'
 import CoursesAPI from "../../../api/CoursesAPI";
+import { toast } from 'react-toastify';
 
 export default function CourseCreateUnit({moduleInfo, setModuleInfo, openCreateUnitModal, setOpenCreateUnitModal}){
 
@@ -47,7 +48,15 @@ export default function CourseCreateUnit({moduleInfo, setModuleInfo, openCreateU
 			handleCloseModal(e)
 			getCourseUnitInformation()
     }else{
-      alert(response.data.errorMessage)
+			toast.error(response.data.errorMessage, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				});
     }
     setLoading(false)
   }

@@ -32,7 +32,15 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
       notifyUpdateAssignment()
       getAssignmentInfo(sessionModule)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     setLoading(false)
   }

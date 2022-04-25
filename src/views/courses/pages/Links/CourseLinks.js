@@ -1,93 +1,96 @@
-import React, { useState, useEffect } from "react";
-import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion } from 'react-bootstrap';
-import CoursesAPI from "../../../../api/CoursesAPI";
-import CourseCreateUnit from "./../../components/CourseCreateUnit";
-import CreateTask from "./../../components/CreateTask";
-import EditTask from "./../../components/EditTask";
+import React, { useState, useEffect} from 'react'
+import CoursesAPI from '../../../../api/CoursesAPI'
+import { useParams } from 'react-router'
+import AccordionConference from './components/AccordionConference'
+import AccordionLinks from './components/AccordionLinks'
+import AccordionVideos from './components/AccordionVideos'
+import HeaderLinks from './components/HeaderLinks'
+import AccordionEdit from './components/AccordionEdit';
+import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
+import CourseContent from "../../CourseContent";
 
-export default function CourseLinks({moduleInfo, setModuleInfo}) {
+function ClassLinks() {
+  const [openEditModal, setOpenEditModal] = useState(false)
+  const [conference, setConference] = useState([])
+  const [videos, setVidoes] = useState([])
+  const [links, setLinks] = useState(null)
+  const [editLinks, setEditLinks] = useState('')
+  const {id} = useParams();
+  const [searchTerm, setSearchTerm] = useState('')
+  const [confeDescriptionItem, setConfeDescriptoinItem] = useState('')
+  const [confeUrlItem, setConfeUrlItem] = useState('')
+  const [itemId, setItemId] = useState()
+  const [showTask, setShowTask] = useState(false);
+  const [linkName, setLinkName] = useState('')
 
-  const [loading, setLoading] = useState(false)
 
-  const [openCreateVideoModal, setOpenCreateVideoModal] = useState(false)
-  const [openEditVideoModal, setOpenVideoModal] = useState(false)
-  const [openCreateConferenceModal, setOpenCreateConferenceModal] = useState(false)
-  const [openEditConferenceModal, setOpenEditConferenceModal] = useState(false)
-  const [openCreateLinkModal, setOpenCreateLinkModal] = useState(false)
-  const [openEditLinkModal, setOpenEditLinkModal] = useState(false)
-
-  const [videosInfo, setVideosInfo] = useState([])
-  const [conferenceInfo, setConferenceInfo] = useState([])
-  const [linksInfo, setLinksInfo] = useState([])
-
-  const courseid = sessionStorage.getItem('courseid')
-  const moduleid = sessionStorage.getItem('moduleid')
-
-  const handleOpenCreateVideoModal = () =>{
-    setOpenCreateVideoModal(!openCreateVideoModal)
+  const onSearch = (text) => {
+    setSearchTerm(text)
+  }
+  
+  const getConfe = async() => {
+    let typeId = '1'
+    let response = await new CoursesAPI().getLink(id, typeId)
+    if(response.ok){
+      setConference(response.data)
+    }else{
+      alert("Something went wrong while fetching all Conference")
+    }
   }
 
-  const getVideosInfo = async(e) => {
-    setLoading(true)
-    let response = await new CoursesAPI().getVideosLinks(courseid)
-    setLoading(false)
+  const clickedTab = () => {
+    setLinks('');
+    setShowTask(false)
+  }
+
+  useEffect(() => {
+    getConfe()
+  }, [])
+
+  const getVideos = async() => {
+    let typeId = '2'
+    let response = await new CoursesAPI().getLink(id, typeId)
     if(response.ok){
-      setVideosInfo(response.data)
-      console.log(response.data)
+      setVidoes(response.data)
     }else{
-      alert("Something went wrong while fetching all task")
+      alert("Something went wrong while fetching all Conference")
     }
   }
 
   useEffect(() => {
+    getVideos()
+  }, [])
+
+  const getLinks = async() => {
+    let typeId = '3'
+    let response = await new CoursesAPI().getLink(id, typeId)
+    if(response.ok){
+      console.log('haru' ,response.data)
+      setLinks(response.data)
+    }else{
+      alert("Something went wrong while fetching all Conference")
+    }
+  }
+
+  useEffect(() => {
+    getLinks()
   }, [])
 
   return (
-    <>
-      <span className="content-pane-title">
-        Links 
-      </span>
-      <div className="row m-b-20 m-t-30">
-        <div className="col-md-12">
-          <InputGroup size="lg">
-            <FormControl aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." type="search"/>
-            <InputGroup.Text id="basic-addon2" className="search-button"><i className="fas fa-search fa-1x"></i></InputGroup.Text>
-          </InputGroup>
-        </div>
+   <CourseContent>
+     <CourseBreadcrumbs title="Teacher Resources"/>
+      <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  />
+      <div style={{paddingBottom:'10px'}}>
+        <AccordionConference  searchTerm={searchTerm} getConfe={getConfe} conference={conference} setOpenEditModal={setOpenEditModal}  setEditLinks={setEditLinks} />
       </div>
-      <Accordion defaultActiveKey="1">
-        
-            <>
-            <Accordion.Item eventKey="1"> 
-              <Accordion.Header onClick={(e) => getVideosInfo(e)}>
-                <span className="unit-title">Videos <Button className="m-l-10" variant="outline-warning" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Videos</Button>
-                </span>
-              </Accordion.Header>
-              <Accordion.Body>
-                
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="2"> 
-              <Accordion.Header>
-                <span className="unit-title">Conferences <Button className="m-l-10" variant="outline-warning" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Conferences Links</Button>
-                </span>
-              </Accordion.Header>
-              <Accordion.Body>
-                
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="3"> 
-              <Accordion.Header>
-                <span className="unit-title">Links <Button className="m-l-10" variant="outline-warning" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Links</Button>
-                </span>
-              </Accordion.Header>
-              <Accordion.Body>
-                
-              </Accordion.Body>
-            </Accordion.Item>
-            </>
-         
-      </Accordion>
-    </> 
+      <div style={{paddingBottom:'10px'}}>
+        <AccordionVideos searchTerm={searchTerm} getVideos={getVideos} videos={videos} setOpenEditModal={setOpenEditModal}  setEditLinks={setEditLinks}   />
+      </div>
+      <div style={{paddingBottom:'10px'}}>
+        <AccordionLinks searchTerm={searchTerm} getLinks={getLinks} links={links} setOpenEditModal={setOpenEditModal}  setEditLinks={setEditLinks}  />
+      </div>
+      <AccordionEdit   getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  editLinks={editLinks} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} />
+    </CourseContent>
   )
 }
+export default ClassLinks

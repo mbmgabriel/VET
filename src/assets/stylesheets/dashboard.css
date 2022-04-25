@@ -417,3 +417,11 @@ code {
 .font-size-22{
   font-size: 22px !important;
 }
+
+input[id^="courseInput"]::-webkit-input-placeholder { 
+  color: var(--primary-color) !important;
+}
+
+input[id^="courseInput2"]::-webkit-input-placeholder { 
+  color: var(--primary-color) !important;
+}

@@ -196,13 +196,15 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       {examAnalysis.testPartAnswers?.map((item, index) => {
         return(
             <div>
-            <p className='font-exam-analysis-content-24-tfi'>{index + 1}. {item.testPart.instructions}</p>
+            <div className='inline-flex'>
+              <p className='font-exam-analysis-content-24-tfi' >{index + 1}.</p><p className='font-exam-analysis-content-24-tfi' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
+            </div>
               {item.questionDetails.map((qd, index) => {
                 return(
                 qd.answerDetails.map((ad, index) => {
                   return(
                     <>
-                      
+                    <br />
                       <span className='font-exam-analysis-content-24-tfi'>{index + 1}.  <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
                       <div>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Student Answer :</span><span className='font-exam-analysis-content-24'>
