@@ -126,9 +126,10 @@ export default function SchoolAdminAssignment() {
 
 
   const getAssignmentList = async (e, item) => {
+    e.preventDefault()
     let response = await new ClassesAPI().getAssignment(id, item)
       if(response.ok){
-        setAssignment(response.data)
+        setAssignment(response?.data)
         setModuleId(item)
     }else{
       alert("Something went wrong while fetching all Assignment")

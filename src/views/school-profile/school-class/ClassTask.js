@@ -113,9 +113,10 @@ export default function SchoolAdminTask() {
   }
 
   const getTaskModule = async(e, item) =>{
+    e.preventDefault()
     let response = await new ClassesAPI().getTaskModule(id, item)
     if(response.ok){
-      setTaskModule(response.data)
+      setTaskModule(response?.data)
       setModuleId(item)
     }else{
       alert("Something went wrong while Deleting Deleting a getTaskModule")

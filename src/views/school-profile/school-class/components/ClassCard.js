@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger, renderTooltip, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ClassesAPI from '../../../../api/ClassesAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { UserContext } from '../../../../context/UserContext';
 
 
 function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
@@ -10,6 +11,8 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
   const [openDropdown, setOpenDropdown] = useState(false)
   const [itemId, setItemId] = useState('')
   const [loading, setLoading] = useState(false)
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
 
   console.log('ClassCard:', item)
 
@@ -77,7 +80,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
               <Col sm={10}>
                {item.classCode}
               </Col>
-              <Col sm={2} style={{textAlign:'right'}}>
+              {!user.isSchoolAdmin && <Col sm={2} style={{textAlign:'right'}}>
               <OverlayTrigger
                 placement="right"
                 delay={{ show: 10, hide: 25 }}
@@ -96,7 +99,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                   </Dropdown.Menu>
                 </Dropdown>
                 </OverlayTrigger>
-              </Col>
+              </Col>}
               <Col sm={10}>
                 <b>{item.gradeName} -  {item.className} </b>
               </Col>
