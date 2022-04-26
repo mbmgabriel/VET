@@ -14,7 +14,7 @@ const toggle = () =>{
 	return (
 		<div>
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
-				<div className="col-md-10 pages-header"><p className='title-header' >Teacher Resources </p>
+				<div className="col-md-10 pages-header"><p className='title-header' >Links </p>
 			{(user?.teacher === null)?(
 			<></>
 			):(

@@ -122,11 +122,34 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
                   <Card.Header className="card-header-courses" style={{ backgroundImage: `url(${item.courseCover})` }}>
 
                 <Row style={{color:"white"}}>
-                    {user.isTeacher &&
+                    {user.isTeacher && 
                         <>
                           <Col md={12}>
                               {/* <i className="fa fa-lock fa-2x"></i> */}
-                              {item.authorName !== "Techfactors Inc." &&
+                              {item.authorName !== "Techfactors Inc." && 
+                                <OverlayTrigger
+                                placement="right"
+                                delay={{ show: 10, hide: 25 }}
+                                overlay={renderTooltip}>
+                                <Dropdown className="float-right" isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
+                                  <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
+                                    <i className="fa fa-ellipsis-v fa-2x"></i>
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                  <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>
+                                  Edit 
+                                  </Dropdown.Item>
+                                  <Dropdown.Item>
+                                  Delete
+                                  </Dropdown.Item>
+                                  <Dropdown.Item onClick={(e) => handleClickedUploadModal(e, item)}>
+                                  Upload Cover
+                                  </Dropdown.Item>
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                                </OverlayTrigger>
+                              }
+                              {item.authorName === "Techfactors Inc." && user.teacher.positionID === "7" &&
                                 <OverlayTrigger
                                 placement="right"
                                 delay={{ show: 10, hide: 25 }}

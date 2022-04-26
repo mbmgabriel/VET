@@ -152,6 +152,9 @@ export default function CourseContent({children}) {
               <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
                 Files
               </Link>
+              <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
+                Links
+              </Link>
             </ListGroup>
           </Col>
           :
@@ -215,6 +218,14 @@ export default function CourseContent({children}) {
                   delay={{ show: 1, hide: 25 }}
                   overlay={renderTooltipFiles}>
                   <i className="fas fa-folder-open" />
+                </OverlayTrigger>
+              </Link>
+              <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 1, hide: 25 }}
+                  overlay={renderTooltipLink}>
+                  <i className="fas fa-link" />
                 </OverlayTrigger>
               </Link>
             </ListGroup>
