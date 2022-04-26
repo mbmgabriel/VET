@@ -61,6 +61,8 @@ import StudentsList from "../views/school-profile/StudentsList";
 import SchoolAdminList from '../views/school-profile/SchoolAdmin';
 import FilesClass from '../views/files/ClassFiles';
 import FilesCourse from '../views/files/CourseFiles';
+import Grading from "../views/grading-template/Grading";
+import SchoolTerms from "../views/school-profile/SchoolTerms";
 
 
 export default function Routes() {
@@ -130,7 +132,8 @@ export default function Routes() {
             <PrivateRoute path='/schoolTeacher' exact component={SchoolTeacher} />
             <PrivateRoute path='/studentsList' exact component={StudentsList} />
             <PrivateRoute path='/schoolAdmin' exact component={SchoolAdminList} />
-
+            <PrivateRoute path='/terms' exact component={SchoolTerms} />
+            <PrivateRoute path='/admin/grading' exact component={Grading} />
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>
             <PublicRoute path='/404' exact component={PageNotFound}/>
