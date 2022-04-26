@@ -25,13 +25,20 @@ function FileHeader(props) {
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
       setCourseInfo(response.data)
+      let temp = response.data.isTechfactors
+      if(temp){
+       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+      }
+      console.log(response.data, 'heheheheheh')
     }else{
       alert("Something went wrong while fetching course information")
     }
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(props.type == 'Course'){
+      getCourseInformation();
+    }
   }, [])
 
 

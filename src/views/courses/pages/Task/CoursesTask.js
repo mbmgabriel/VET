@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import CoursesAPI from "../../../../api/CoursesAPI";
 import CourseCreateUnit from "./../../components/CourseCreateUnit";
@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CourseContent from "../../CourseContent";
 import {useParams} from 'react-router';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
+import { UserContext } from '../../../../context/UserContext';
 
 export default function CoursesTask() {
 
@@ -29,7 +30,8 @@ export default function CoursesTask() {
   const [showTask, setShowTask] = useState(false);
   const [taskName, setTaskName] = useState('')
   const [courseInfo, setCourseInfo] = useState("")
-
+  const userContext = useContext(UserContext);
+  const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
 
   const getCourseInformation = async() => {
@@ -174,7 +176,7 @@ export default function CoursesTask() {
             <Accordion.Item eventKey={item.id}> 
               <Accordion.Header onClick={(e) => {getTaskInfo(e, item.id)}}>
                 <span className="unit-title">{item.moduleName} 
-                {courseInfo?.isTechfactors? (<></>):(<>
+                {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
                   <Button className="btn-create-class" variant="link" onClick={handleOpenCreateTaskModal}><i className="fa fa-plus"></i> Add Task</Button>
                 </>)}
                 </span>
@@ -187,7 +189,7 @@ export default function CoursesTask() {
                     <Col className="lesson-header" md={9}>
                       <span onClick={(e) => {viewTas(ti)}}>{ti?.taskName}</span>
                     </Col>
-                    {courseInfo?.isTechfactors? (<></>):(<>
+                    {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
                       <Col className="align-right-content" md={3}>
                       <OverlayTrigger
                         placement="bottom"

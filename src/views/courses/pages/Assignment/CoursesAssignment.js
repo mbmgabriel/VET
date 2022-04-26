@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import CoursesAPI from "../../../../api/CoursesAPI";
 import CourseCreateUnit from "./../../components/CourseCreateUnit";
@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CourseContent from "../../CourseContent";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
+import { UserContext } from '../../../../context/UserContext';
 
 export default function CoursesAssignment() {
 
@@ -28,7 +29,8 @@ export default function CoursesAssignment() {
   const [showAssignment, setShowAssignment] = useState(false);
   const [assignmmentName, setAssignmentName] = useState('')
   const [courseInfo, setCourseInfo] = useState("")
-
+  const userContext = useContext(UserContext);
+  const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
 
@@ -192,7 +194,7 @@ export default function CoursesAssignment() {
                 <Accordion.Item eventKey={item.id}> 
                   <Accordion.Header onClick={(e) => getAssignmentInfo(e, item.id)}>
                     <span className="unit-title">{item.moduleName} 
-                    {courseInfo?.isTechfactors? (<></>):(<>
+                    { courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? <></>:(<>
                       <Button className="btn-create-class" variant="link" onClick={handleOpenCreateAssignmentModal}><i className="fa fa-plus"></i> Add Assignment</Button>
                     </>)}
                     </span>
@@ -205,7 +207,7 @@ export default function CoursesAssignment() {
                         <Col className="lesson-header" md={9} >
                           <span onClick={(e) => {viewAss(as)}}>{as?.assignmentName}</span>
                         </Col>
-                        {courseInfo?.isTechfactors? (<></>):(<>
+                        {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
                           <Col className="align-right-content" md={3}>
                           <OverlayTrigger
                             placement="bottom"

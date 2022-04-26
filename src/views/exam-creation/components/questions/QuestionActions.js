@@ -1,10 +1,12 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import CoursesAPI from "../../../../api/CoursesAPI";
+import { UserContext } from '../../../../context/UserContext';
 
 export default function QuestionActions({onEdit = () => alert("Ongoing development"), onDelete = () => alert("Ongoing development")}) {
   const [courseInfo, setCourseInfo] = useState("")
-
+  const userContext = useContext(UserContext);
+  const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
 
   const getCourseInformation = async() => {
@@ -34,7 +36,7 @@ export default function QuestionActions({onEdit = () => alert("Ongoing developme
   )
   return (
     <>
-    {courseInfo?.isTechfactors? (<></>):(<>
+    {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
       <div className='exam-actions '>
       <OverlayTrigger
         placement="right"
