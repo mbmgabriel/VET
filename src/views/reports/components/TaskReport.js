@@ -63,18 +63,18 @@ function TaskReport({filter, setFilter, classesModules, setClassesModules, selec
                     <div className='title-exam' onClick={(e) => getTaskReport(e, item.task.id, item.task.taskName)}>
                       {item.task.taskName}
                     </div>
-                    <div className='code-exam'>
+                    {/* <div className='code-exam'>
                       EQF1
-                    </div>
+                    </div> */}
                   </Col>
                   <Col sm={9} className='instruction-exam' >
                     {/* <p>{item.task.instructions}</p> */}
                     <div dangerouslySetInnerHTML={{ __html: item.task.instructions }} />
                   </Col>
                   <Col sm={3} className='icon-exam'>
-                    <i class="fas fa-eye" style={{paddingRight:'10px'}} ></i>{' '}
+                    {/* <i class="fas fa-eye" style={{paddingRight:'10px'}} ></i>{' '}
                     <i class="fas fa-edit"style={{paddingRight:'10px'}}></i>
-                    <i class="fas fa-trash-alt" style={{paddingRight:'10px'}}></i>
+                    <i class="fas fa-trash-alt" style={{paddingRight:'10px'}}></i> */}
                   </Col>
                   <hr></hr>
                 </Row>

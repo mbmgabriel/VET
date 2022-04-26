@@ -4,6 +4,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import CoursesAPI from '../../../../../api/CoursesAPI'
 import { Form, Button, } from 'react-bootstrap'
 import { useParams } from 'react-router'
+import { toast } from 'react-toastify';
 
 
 function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
@@ -31,7 +32,15 @@ function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
         getVideos()
         getLinks()
       }else{
-        alert(response.data.errorMessage);
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
    
       }
   }

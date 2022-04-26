@@ -20,6 +20,7 @@ import CoursesAssignment from "../views/courses/pages/Assignment/CoursesAssignme
 import CoursesTask from "../views/courses/pages/Task/CoursesTask";
 import CourseFiles from "../views/courses/pages/Files/CourseFiles";
 import CourseLinks from "../views/courses/pages/Links/CourseLinks";
+import CoursesVideos from "../views/courses/pages/Videos/CoursesVideo";
 import CoursesResources from "../views/courses/pages/Resources/CoursesResources";
 import CourseExamCreation from "../views/courses/pages/Exam/CourseExamCreation";
 
@@ -63,6 +64,7 @@ import StudentsList from "../views/school-profile/StudentsList";
 import SchoolAdminList from '../views/school-profile/SchoolAdmin';
 import FilesClass from '../views/files/ClassFiles';
 import FilesCourse from '../views/files/CourseFiles';
+import ClassVideos from "../views/classes/Videos/ClassVideo";
 
 
 
@@ -89,6 +91,7 @@ export default function Routes() {
             <PrivateRoute path='/courses/:id/assignment' exact component={CoursesAssignment}/>
             <PrivateRoute path='/courses/:id/task' exact component={CoursesTask}/>
             <PrivateRoute path='/courses/:id/files' exact component={CourseFiles}/>
+            <PrivateRoute path='/courses/:id/videos' exact component={CoursesVideos}/>
             <PrivateRoute path='/courses/:id/resources' exact component={CoursesResources}/>
             <PrivateRoute path='/courses/:id/links' exact component={CourseLinks}/>
 
@@ -105,6 +108,8 @@ export default function Routes() {
             <PrivateRoute path='/classes/:id/links' exact component={ClassLinks} />
             <PrivateRoute path='/classes/:id/classList' exact component={ClassList} />
             <PrivateRoute path='/classes/:id/files' exact component={ClassFiles} />
+            <PrivateRoute path='/classes/:id/videos' exact component={ClassVideos} />
+
             <PrivateRoute path='/classes/:id/resources' exact component={ClassResources}/>
 
             <PrivateRoute path='/exam' exact component={Exam}/>

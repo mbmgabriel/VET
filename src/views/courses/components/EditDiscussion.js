@@ -94,11 +94,10 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test name"
+                      placeholder="Edit Discussion Name"
                       onChange={(e) => setDiscussionName(e.target.value)}
                     />
 								</Form.Group>
-
 								<Form.Group className="m-b-20">
 										<Form.Label for="description">
 												Instructions
@@ -108,11 +107,10 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test instructions"
+                      placeholder="Edit Discussion Instructions"
                       onChange={(e) => setInstructions(e.target.value)}
                     />
 								</Form.Group>
-
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
 												Save

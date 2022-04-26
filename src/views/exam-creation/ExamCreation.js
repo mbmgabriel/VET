@@ -8,6 +8,7 @@ import { UserContext } from "../../context/UserContext";
 import AddPartModal from "./components/AddPartModal";
 import ExamCreationDetails from "./components/ExamCreationDetails";
 import { Container } from "react-bootstrap";
+import CoursesAPI from "../../api/CoursesAPI";
 
 export default function ExamCreation() {
   const [loading, setLoading] = useState(true);
@@ -22,6 +23,21 @@ export default function ExamCreation() {
   const [noAssigned, setNoAssigned] = useState(false)
   const [selectedPart, setSelectedPart] = useState(null);
   const [editable, setEditable] = useState(true)
+  const [courseInfos, setCourseInfos] = useState([])
+  const courseid = sessionStorage.getItem('courseid')
+  
+  const getCourseInformation = async () =>{
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    if(response.ok){
+      setCourseInfos(response.data.isTechfactors)
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
+
+  
 
   const getExamInformation = async () => {
     setLoading(true);
@@ -191,6 +207,12 @@ export default function ExamCreation() {
       setEditable(false)
     }
   }, []);
+
+  useEffect(() =>{
+    if(courseInfos === true){
+      setEditable(false)
+    }
+  }, [courseInfos])
 
   
 

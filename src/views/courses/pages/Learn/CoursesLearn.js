@@ -36,7 +36,7 @@ export default function CourseLearn() {
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
 
-  console.log('lessonInfo:', lessonInfo)
+  console.log('courseInfo:', courseInfo)
 
   const handleOpenCreateUnitModal = () =>{
     setOpenCreateUnitModal(!openCreateUnitModal)
@@ -172,7 +172,11 @@ export default function CourseLearn() {
         :
         <React.Fragment>
           <span className="content-pane-title">
-            Learn <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus"></i> Add Unit</Button>
+            Learn 
+              {courseInfo?.isTechfactors? (<></>):(<>
+                <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus"></i> Add Unit</Button>
+              </>)}
+             
             <CourseCreateUnit moduleInfo={moduleInfo} setModuleInfo={setModuleInfo} openCreateUnitModal={openCreateUnitModal} setOpenCreateUnitModal={setOpenCreateUnitModal}/>
           </span>
           <div className="row m-b-20 m-t-30">
@@ -196,7 +200,11 @@ export default function CourseLearn() {
               return(
                   <Accordion.Item eventKey={item.id}> 
                     <Accordion.Header onClick={(e) => {getCourseLessons(e, item.id, item.moduleName)}}>
-                      <span className="unit-title">{item.moduleName} <Button className="btn-create-class" variant="link"  onClick={handleOpenCreateLessonModal}><i className="fa fa-plus"></i> Add Lesson</Button>
+                      <span className="unit-title">{item.moduleName}
+                      {courseInfo?.isTechfactors? (<></>):(<>
+                        <Button className="btn-create-class" variant="link"  onClick={handleOpenCreateLessonModal}><i className="fa fa-plus"></i> Add Lesson</Button>
+                      </>)}
+                       
                       </span>
                     </Accordion.Header>
                     <Accordion.Body>                         
@@ -208,7 +216,8 @@ export default function CourseLearn() {
                             <Col className="lesson-header" md={9} onClick={(e) => getModuleContent(e, moduleid, li.id, li?.pageName)}>
                              <p className="lessonName">{li?.pageName}</p>
                             </Col>
-                            <Col className="align-right-content" md={3}>
+                            {courseInfo?.isTechfactors? (<></>):(<>
+                              <Col className="align-right-content" md={3}>
                               <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 1, hide: 0 }}
@@ -222,6 +231,7 @@ export default function CourseLearn() {
                                   <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => confirmSweetError(li.id)} ><i className="fa fa-trash"></i></Button>
                               </OverlayTrigger>
                             </Col>
+                            </>)}
                           </Row>
                         )
                       })}

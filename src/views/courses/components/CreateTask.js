@@ -147,7 +147,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter Task name"
+                      placeholder="Enter Task Name"
                       onChange={(e) => setTaskName(e.target.value)}
                     />
 								</Form.Group>
@@ -162,7 +162,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter Task instructions"
+                      placeholder="Enter Task Instructions"
                       onChange={(e) => setInstructions(e.target.value)}
                     />
 								</Form.Group>

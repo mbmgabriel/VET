@@ -84,7 +84,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                 overlay={renderTooltip}>
                 <Dropdown isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
                   <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
-                    <i className="fa fa-ellipsis-v fa-1x cursor-pointer"></i>
+                    <i className="fa fa-ellipsis-v fa-1x cursor-pointer-edit-class-card"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu >
                     <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>

@@ -27,8 +27,24 @@ export default function CoursesExam() {
   const [sweetError, setSweetError] = useState(false)
   const [filter, setFilter] = useState("")
   const [examName, setExamName] = useState('');
+  const [courseInfo, setCourseInfo] = useState("")
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+
+  const getCourseInformation = async() => {
+    setLoading(true)
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    setLoading(false)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
 
   const handleOpenCreateExamModal = () =>{
     setOpenCreateExamModal(!openCreateExamModal)
@@ -147,7 +163,10 @@ export default function CoursesExam() {
               return(
                 <Accordion.Item eventKey={item.id}> 
                   <Accordion.Header onClick={(e) => getExamInfo(e, item.id)}>
-                    <span className="unit-title">{item.moduleName} <Button className="btn-create-class" variant="link" onClick={handleOpenCreateExamModal}><i className="fa fa-plus"></i> Add Exam</Button>
+                    <span className="unit-title">{item.moduleName} 
+                    {courseInfo?.isTechfactors? (<></>):(<>
+                      <Button className="btn-create-class" variant="link" onClick={handleOpenCreateExamModal}><i className="fa fa-plus"></i> Add Exam</Button>
+                    </>)}
                     </span>
                   </Accordion.Header>
                   <Accordion.Body>
@@ -165,7 +184,8 @@ export default function CoursesExam() {
                              <p dangerouslySetInnerHTML={{__html:ei?.testInstructions }} />
                             </div>
                           </Col>
-                          <Col className="align-right-content" md={3}>
+                          {courseInfo?.isTechfactors? (<></>):(<>
+                            <Col className="align-right-content" md={3}>
                             <OverlayTrigger
                               placement="bottom"
                               delay={{ show: 1, hide: 25 }}
@@ -192,6 +212,7 @@ export default function CoursesExam() {
                               You will not be able to recover this imaginary file!
                             </SweetAlert>
                           </Col>
+                          </>)}
                           {examInfo.length == 0 && !loading && <div className="no-exams">No exam found...</div>}
                         </Row>
                         <hr></hr>

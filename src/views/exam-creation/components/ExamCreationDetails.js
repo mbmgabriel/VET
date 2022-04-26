@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useContext } from "react";
 import { Button } from "react-bootstrap";
+import CoursesAPI from "../../../api/CoursesAPI";
 import { UserContext } from "../../../context/UserContext";
 import getStartAndEndDateFromClassTest from "../../../utils/getStartAndEndDateFromClassTest";
 import ExamStatuses from "../../classes/components/Exam/ExamStatuses";
 import ExamParts from "./ExamParts";
+
 
 export default function ExamCreationDetails({
   exam,
@@ -20,6 +22,22 @@ export default function ExamCreationDetails({
   const userContext = useContext(UserContext);
   const { user } = userContext.data;
   const { startDate, endDate } = getStartAndEndDateFromClassTest(exam);
+  const courseid = sessionStorage.getItem('courseid')
+  const [courseInfos, setCourseInfos] = useState([])
+
+  console.log('courseidcourseidcourseid:', courseid)
+  console.log('courseInfoscourseInfoscourseInfos:', courseInfos)
+
+  const getCourseInformation = async () =>{
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    if(response.ok){
+      setCourseInfos(response.data)
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
 
   return exam != null ? (
     <div className='exam-information-container'>
@@ -51,7 +69,9 @@ export default function ExamCreationDetails({
       </div>
       <hr />
       <p className='secondary-title mt-4'>Exam Parts</p>
-      {editable && (
+      {courseInfos?.isTechfactors? (<>
+      </>):(<>
+        {editable && (
         <Button
           className='btn btn-primary my-4'
           variant='primary'
@@ -64,6 +84,8 @@ export default function ExamCreationDetails({
           Add Part
         </Button>
       )}
+      </>)}
+
       <ExamParts
         selectedPart={selectedPart}
         setSelectedPart={setSelectedPart}

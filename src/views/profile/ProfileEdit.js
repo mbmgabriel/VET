@@ -5,6 +5,7 @@ import moment from 'moment'
 import ProfileInfoAPI from '../../api/ProfileInfoAPI'
 import { useParams } from "react-router-dom"
 import SweetAlert from 'react-bootstrap-sweetalert'
+import { toast } from 'react-toastify';
 
 const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStudentInfo}) => {
   const [fname, setFname] = useState('')
@@ -18,11 +19,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
   const [errorMessag, setErrorMessag] = useState('')
   let studentNo = userInfo?.studentNo
   const { id } = useParams()
-  const [editNotufy, setEditNotify] = useState(false)
 
-  const closeNotify = () =>{
-    setEditNotify(false)
-  }
 
   const closeWarningModal = () =>{
     setWarningModal(!warningModal)
@@ -35,7 +32,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
       if(response.ok){
         getStudentInfo()
         openUserInfoToggle(e)
-        setEditNotify(true)
+        successUpdate()
       }else{
         closeWarningModal()
         setErrorMessag(response.data.errorMessag)
@@ -85,6 +82,18 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
     }
   }, [permanentAddress])
 
+  const successUpdate = () =>{
+    toast.success('Successfully updated your profile', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
 
   return (
     <div><Modal  size="lg" show={openUserInfoModal} onHide={openUserInfoToggle} aria-labelledby="example-modal-sizes-title-lg">
@@ -100,7 +109,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
           <Form.Group className="mb-4">
             <Form.Label>First Name</Form.Label>
-          <Form.Control required  defaultValue={userInfo?.fname} onChange={(e) => setFname(e.target.value)} />
+          <Form.Control placeholder='First Name' required  defaultValue={userInfo?.fname} onChange={(e) => setFname(e.target.value)} />
             </Form.Group>
           </div>
         </Col>
@@ -108,7 +117,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
           <Form.Group className="mb-4">
             <Form.Label>Last Name</Form.Label>
-          <Form.Control required defaultValue={userInfo?.lname} onChange={(e) => setLname(e.target.value)}/>
+          <Form.Control placeholder='Last Name' required defaultValue={userInfo?.lname} onChange={(e) => setLname(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -116,7 +125,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Student Number</Form.Label>
-          <Form.Control disabled defaultValue={userInfo?.studentNo}/>
+          <Form.Control placeholder='Student Number' disabled defaultValue={userInfo?.studentNo}/>
             </Form.Group>
           </div>
         </Col>
@@ -124,7 +133,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Contact Number</Form.Label>
-          <Form.Control required defaultValue={userInfo?.contactNo} onChange={(e) => setContactNo(e.target.value)}/>
+          <Form.Control placeholder='Contact Number' type='number' required defaultValue={userInfo?.contactNo} onChange={(e) => setContactNo(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -151,7 +160,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>E-mail Address</Form.Label>
-          <Form.Control required defaultValue={userInfo?.emailAdd} onChange={(e) => setemailAdd(e.target.value)}/>
+          <Form.Control placeholder='E-mail Address' required defaultValue={userInfo?.emailAdd} onChange={(e) => setemailAdd(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -159,7 +168,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Address</Form.Label>
-          <Form.Control required defaultValue={userInfo?.permanentAddress} onChange={(e) => setPermanentAddress(e.target.value)}/>
+          <Form.Control placeholder='Address' required defaultValue={userInfo?.permanentAddress} onChange={(e) => setPermanentAddress(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -170,12 +179,6 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
     </Form> 
     </Modal.Body>
   </Modal>
-  <SweetAlert 
-    success
-    show={editNotufy} 
-    title="Done!" 
-    onConfirm={closeNotify}>
-  </SweetAlert>
   <SweetAlert 
     warning
     show={warningModal} 

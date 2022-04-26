@@ -208,7 +208,7 @@ const getComment = (item, item1, item3) => {
                   <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
                  </div>
                  <div className='inline-flex' style={{paddingTop:'1px', fontSize:'18px', color: "#7D7D7D"}}>
-              <b>{feedItem?.updatedBy}</b> &nbsp; has Post an <div style={{color:'#EE9337'}} > &nbsp; <b>Announcement </b> </div>
+              <b>{feedItem?.updatedBy}</b> &nbsp; has Post an <div className='font-color' > &nbsp; <b>Announcement </b> </div>
               </div>
             
               {(user?.teacher === null)?(<></>):(<>
@@ -229,7 +229,7 @@ const getComment = (item, item1, item3) => {
                   <i class="fas fa-file-alt" style={{color:'#EE9337', fontSize:'30px',}}></i>
                 </Col>
                 <Col sm={11} style={{fontSize:'20px', color:'#707070'}}>
-                 <p>{feedItem.description}</p>
+                 <p className='font-color'>{feedItem.description}</p>
                 </Col>
               </Row>
               <Row>

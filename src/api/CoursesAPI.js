@@ -116,6 +116,14 @@ export default class CoursesAPI extends Base {
     });
   };
 
+  createVideo = async (courseid, moduleid, data) => {
+    return this.sendRequest({
+      path: `/api/Upload/course/${courseid}/video?moduleid=${moduleid}`,
+      method: 'POST',
+      data
+    });
+  };
+
 
   editExam = async (testid, data) => {
     return this.sendRequest({
@@ -136,6 +144,14 @@ export default class CoursesAPI extends Base {
   editDiscussion = async (discussionid, data) => {
     return this.sendRequest({
       path: `/api/Discussion/${discussionid}`,
+      method: 'PUT',
+      data
+    });
+  };
+
+  editVideo = async (courseid, videoid, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${courseid}/video/${videoid}`,
       method: 'PUT',
       data
     });
@@ -280,6 +296,20 @@ export default class CoursesAPI extends Base {
       path: `/api/Course/${id}/link/${linkId}`,
       method: 'PUT',
       data
+    })
+  }
+
+  getVideoInformation = async (courseid, moduleid) => {
+    return this.sendRequest({
+      path: `/api/Course/${courseid}/video?moduleid=${moduleid}`,
+      method: 'GET',
+    });
+  };
+
+  deleteVideo = async(id, videoid) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/video/${videoid}`,
+      method: 'DELETE'
     })
   }
 

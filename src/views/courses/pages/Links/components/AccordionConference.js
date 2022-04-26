@@ -6,6 +6,7 @@ import CoursesAPI from '../../../../../api/CoursesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment';
 import { UserContext } from '../../../../../context/UserContext'
+import { toast } from 'react-toastify';
 
 
 function AccordionConference({conference, getConfe, setOpenEditModal, setEditLinks, searchTerm}) {
@@ -39,7 +40,15 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
       setDeleteNotify(false)
       getConfe()
     }else{
-      alert("Something went wrong while fetching all Conference")
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
       
     }
   }
@@ -91,7 +100,7 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
               <Col sm={9}>
                 <div className='title-exam'>
                   {/* <Link style={{color:'#EE9337', textDecoration:'none'}} to={item?.url}>  {item?.description} </Link> */}
-                  <a target="_blank" style={{color:'#EE9337', textDecoration:'none'}}  href={item?.url}> {item?.description}</a>
+                  <a target="_blank" className='teacher-resources'  href={item?.url}> {item?.description}</a>
                 </div>
               </Col>
               {(user.teacher === null)?(

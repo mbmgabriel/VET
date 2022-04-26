@@ -26,7 +26,7 @@ export default function CourseContent({children}) {
       setModuleInfo(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all a")
+      alert("Something went wrong while fetching coursse unit")
     }
   }
 
@@ -36,7 +36,7 @@ export default function CourseContent({children}) {
     setLoading(false)
     if(response.ok){
       setCourseInfo(response.data)
-      console.log(response.data)
+      console.log(response.data, 'infoooooooooooooooooo')
     }else{
       alert("Something went wrong while fetching course information.")
     }
@@ -112,6 +112,12 @@ export default function CourseContent({children}) {
     </Tooltip>
   )
 
+  const renderTooltipVideos = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Videos Upload
+    </Tooltip>
+  )
+
   return (
     <MainContainer loading={loading} fluid activeHeader={'courses'} style=''>
         <Col style={{height: 100}} />
@@ -125,7 +131,7 @@ export default function CourseContent({children}) {
                 </Col>
                 <Col className="t-a-r" sm={3}>
                   <Col className="text-align-right">
-                    <i className="fas fa-chevron-left cursor-pointer" style={{color: '#EE9337'}} onClick={()=> handleClicked(false)}/>
+                    <i className="fas fa-chevron-left cursor-pointer"  onClick={()=> handleClicked(false)}/>
                   </Col>
                 </Col>
               </Row>
@@ -155,12 +161,18 @@ export default function CourseContent({children}) {
               <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
                 Links
               </Link>
+              {
+                courseInfo.isTechfactors && 
+                <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
+                  Videos Upload
+                </Link>
+              }
             </ListGroup>
           </Col>
           :
           <Col className="row-course-bg course-widget-font pt-2" sm={1}>
             <Col className="text-align-right mb-2">
-              <i className="fas fa-chevron-right" style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
+              <i className="fas fa-chevron-right cursor-pointer" onClick={()=> handleClicked(true)}/>
             </Col>
             <ListGroup>
               <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
@@ -228,6 +240,17 @@ export default function CourseContent({children}) {
                   <i className="fas fa-link" />
                 </OverlayTrigger>
               </Link>
+              {
+                courseInfo.isTechfactors && 
+                <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipVideos}>
+                    <i className="fas fa-video" />
+                  </OverlayTrigger>
+                </Link>
+              }
             </ListGroup>
           </Col>
           }

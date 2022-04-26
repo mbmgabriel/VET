@@ -2,69 +2,54 @@ import React, { useState, useEffect } from "react";
 import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import CoursesAPI from "../../../../api/CoursesAPI";
 import CourseCreateUnit from "./../../components/CourseCreateUnit";
-import CreateTask from "./../../components/CreateTask";
-import EditTask from "./../../components/EditTask";
+import CreateVideos from "./../../components/CreateVideo";
+import EditVideos from "./../../components/EditVideo";
 import SweetAlert from 'react-bootstrap-sweetalert';
-import ViewTask from "./ViewTask";
+import ViewVideo from "./ViewVideo";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CourseContent from "../../CourseContent";
 import {useParams} from 'react-router';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 
-export default function CoursesTask() {
+export default function CoursesVideos() {
 
   const [loading, setLoading] = useState(false)
 
-  const [openCreateTaskModal, setCreateTaskModal] = useState(false)
-  const [openEditTaskModal, setOpenEditTaskModal] = useState(false)
-  const [selectedTask, setSelectedTask] = useState(null)
-  const [taskInfo, setTaskInfo] = useState([])
+  const [openCreateVideoModal, setOpenCreateVideoModal] = useState(false)
+  const [openEditVideoModal, setOpenEditVideoModal] = useState(false)
+  const [selectedVideo, setSelectedVideo] = useState(null)
+  const [videosInfo, setVideoInfo] = useState([])
   const [sweetError, setSweetError] = useState(false)
-  const [taskId, setTaskId] = useState("")
+  const [videoId, setVideoId] = useState("")
   const [localModuleId, setLocalModuleId] = useState("")
   const [filter, setFilter] = useState("");
   const [moduleInfo, setModuleInfo] = useState([]);
   const {id} = useParams();
-  const [showTask, setShowTask] = useState(false);
-  const [taskName, setTaskName] = useState('')
-  const [courseInfo, setCourseInfo] = useState("")
+  const [showVideos, setShowVideos] = useState(false);
+  const [videoName, setVideoName] = useState('')
 
   const courseid = sessionStorage.getItem('courseid')
+  const moduleid = sessionStorage.getItem('moduleid')
 
-  const getCourseInformation = async() => {
-    setLoading(true)
-    let response = await new CoursesAPI().getCourseInformation(courseid)
-    setLoading(false)
-    if(response.ok){
-      setCourseInfo(response.data)
-    }else{
-      alert("Something went wrong while fetching course information")
-    }
+  const handleOpenCreateVideoModal = () =>{
+    setOpenCreateVideoModal(!openCreateVideoModal)
   }
 
-  useEffect(() => {
-    getCourseInformation();
-  }, [])
-
-  const handleOpenCreateTaskModal = () =>{
-    setCreateTaskModal(!openCreateTaskModal)
-  }
-
-  const handleOpenEditTaskModal = (e, item) =>{
+  const handleOpenEditVideoModal = (e, item) =>{
     e.preventDefault()
-    setSelectedTask(item)
-    setOpenEditTaskModal(!openEditTaskModal)
+    setSelectedVideo(item)
+    setOpenEditVideoModal(!openEditVideoModal)
   }
 
-  const getTaskInfo = async(e, data) => {
+  const getVideoInfo = async(e, data) => {
     setLoading(true)
     setLocalModuleId(data)
     sessionStorage.setItem("moduleid", data)
-    let response = await new CoursesAPI().getTaskInformation(data)
+    let response = await new CoursesAPI().getVideoInformation(courseid, moduleid)
     setLoading(false)
     if(response.ok){
-      setTaskInfo(response.data)
+      setVideoInfo(response.data)
     }else{
       alert("Something went wrong while fetching all task")
     }
@@ -87,19 +72,19 @@ export default function CoursesTask() {
   }
 
   const confirmSweetError = (id) => {
-    notifyDeleteTask()
-    deleteCourseTask(id)
+    deleteCourseVideo(id)
     setSweetError(false)
   } 
 
-  const deleteCourseTask = async(data) => {
+  const deleteCourseVideo = async(vidID) => {
     setLoading(true)
     const sessionModule = sessionStorage.getItem('moduleid')
-    let response = await new CoursesAPI().deleteTask(taskId)
+    let response = await new CoursesAPI().deleteVideo(id, videoId)
     setLoading(false)
     if(response.ok){
       // setLessonInfo(response.data)
-      getTaskInfo(null, localModuleId)
+      notifyDeleteVideo()
+      getVideoInfo(null, localModuleId)
     }else{
       alert(response.data.errorMessage)
     }
@@ -109,18 +94,18 @@ export default function CoursesTask() {
     setFilter(text)
   }
 
-  const viewTas = (data) => {
-    setTaskName(data.taskName);
-    setSelectedTask(data)
-    setShowTask(true)
+  const viewVideoState = (data) => {
+    setVideoName(data.title);
+    setSelectedVideo(data)
+    setShowVideos(true)
   }
 
   useEffect(() => {
     getCourseUnitInformation();
   }, [])
 
-  const notifyDeleteTask= () => 
-  toast.error('Task Deleted!', {
+  const notifyDeleteVideo= () => 
+  toast.error('Video Deleted!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -131,8 +116,8 @@ export default function CoursesTask() {
   });
 
   const clickedTab = () => {
-    setTaskName('');
-    setShowTask(false)
+    setVideoName('');
+    setShowVideos(false)
   }
 
   const renderTooltipEdit = (props) => (
@@ -149,60 +134,55 @@ export default function CoursesTask() {
 
   return (
     <CourseContent>
-      <CourseBreadcrumbs title={taskName} clicked={() => clickedTab()}/>
-     {showTask ?
-        <ViewTask selectedTask={selectedTask} showTask={showTask} setShowTask={setShowTask} />
+      <CourseBreadcrumbs title={videoName} clicked={() => clickedTab()}/>
+     {showVideos ?
+        <ViewVideo selectedVideo={selectedVideo} showVideos={showVideos} setShowVideos={setShowVideos} />
      :
       <>
       <span className="content-pane-title">
-        Task 
+        Video 
       </span>
       <div className="row m-b-20 m-t-30" onSearch={onSearch}>
         <div className="col-md-12">
           <InputGroup size="lg">
-            <FormControl aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search unit or task here" type="search" onChange={(e) => onSearch(e.target.value)}/>
+            <FormControl aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search unit or video here" type="search" onChange={(e) => onSearch(e.target.value)}/>
             <InputGroup.Text id="basic-addon2" className="search-button"><i className="fas fa-search fa-1x"></i></InputGroup.Text>
           </InputGroup>
         </div>
       </div>
-      <EditTask setTaskInfo={setTaskInfo} selectedTask={selectedTask} openEditTaskModal={openEditTaskModal} setOpenEditTaskModal={setOpenEditTaskModal}/>
-      <CreateTask setTaskInfo={setTaskInfo} openCreateTaskModal={openCreateTaskModal} setCreateTaskModal={setCreateTaskModal}/>
+      <EditVideos setVideoInfo={setVideoInfo} selectedVideo={selectedVideo} openEditVideoModal={openEditVideoModal} setOpenEditVideoModal={setOpenEditVideoModal}/>
+      <CreateVideos setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
       <Accordion defaultActiveKey="0">
         {moduleInfo.map((item, index) => {
           return(
             <>
             <Accordion.Item eventKey={item.id}> 
-              <Accordion.Header onClick={(e) => {getTaskInfo(e, item.id)}}>
-                <span className="unit-title">{item.moduleName} 
-                {courseInfo?.isTechfactors? (<></>):(<>
-                  <Button className="btn-create-class" variant="link" onClick={handleOpenCreateTaskModal}><i className="fa fa-plus"></i> Add Task</Button>
-                </>)}
+              <Accordion.Header onClick={(e) => {getVideoInfo(e, item.id)}}>
+                <span className="unit-title">{item.moduleName} <Button className="btn-create-class" variant="link" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Video</Button>
                 </span>
               </Accordion.Header>
               <Accordion.Body>
-                {taskInfo.filter(item => 
-                  item.taskName.toLowerCase().includes(filter.toLowerCase())
-                ).map((ti, index) => (
+                {videosInfo.filter(item => 
+                  item.title.toLowerCase().includes(filter.toLowerCase())
+                ).map((vi, index) => (
                   <Row style={{margin:'10px'}}>
                     <Col className="lesson-header" md={9}>
-                      <span onClick={(e) => {viewTas(ti)}}>{ti?.taskName}</span>
+                      <span onClick={(e) => {viewVideoState(vi)}}>{vi?.title}</span>
                     </Col>
-                    {courseInfo?.isTechfactors? (<></>):(<>
-                      <Col className="align-right-content" md={3}>
+                    <Col className="align-right-content" md={3}>
                       <OverlayTrigger
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}
                         overlay={renderTooltipEdit}>
-                        <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti)}><i className="fa fa-edit"></i></Button>
+                        <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditVideoModal(e, vi)}><i className="fa fa-edit"></i></Button>
                      </OverlayTrigger>
                      <OverlayTrigger
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}
                         overlay={renderTooltipDelete}>
-                      <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setTaskId(ti.id)}}></i></Button>
+                      <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setVideoId(vi.id)}}></i></Button>
                     </OverlayTrigger>
                     </Col>
-                    </>)}
                   </Row>
                 ))}
                     <SweetAlert
@@ -216,7 +196,7 @@ export default function CoursesTask() {
                       onCancel={cancelSweetError}
                       focusCancelBtn
                     >
-                      You will not be able to recover this Task!
+                      You will not be able to recover this Video!
                     </SweetAlert>
               </Accordion.Body>
             </Accordion.Item>

@@ -4,12 +4,12 @@ import CoursesAPI from "../../../api/CoursesAPI";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function EditAssignment({openEditAssignmentModal, setOpenEditAssignmentModal, selectedAssignment, setAssignmentInfo}){
+export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEditVideoModal, selectedVideo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
-	const [assignmentName, setAssignmentName] = useState('')
-	const [instructions, setInstructions] = useState('')
+	const [title, setTitle] = useState('')
+	const [sequenceNo, setSequenceNo] = useState('')
   
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
@@ -17,20 +17,20 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
 
 	const handleCloseModal = e => {
     e.preventDefault()
-    setOpenEditAssignmentModal(false)
+    setOpenEditVideoModal(false)
   }
 
-	const saveEditAssignment = async(e) => {
+	const saveEditVideo = async(e) => {
     e.preventDefault()
     setLoading(true)
-    let response = await new CoursesAPI().editAssignment(
-      selectedAssignment?.id,
-      {assignmentName, instructions}
+    let response = await new CoursesAPI().editVideo(
+      selectedVideo?.id,
+      {title, sequenceNo}
     )
     if(response.ok){
 			handleCloseModal(e)
-      notifyUpdateAssignment()
-      getAssignmentInfo(sessionModule)
+      notifyUpdateVideo()
+      getVideoInfo(null, sessionModule)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -45,27 +45,14 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
     setLoading(false)
   }
 
-  const getAssignmentInfo = async(e, data) => {
+  const getVideoInfo = async(e, data) => {
     setLoading(true)
-    let response = await new CoursesAPI().getAssignmentInformation(sessionModule)
+    let response = await new CoursesAPI().getVideoInformation(data)
     setLoading(false)
     if(response.ok){
-      setAssignmentInfo(response.data)
-      console.log(response.data)
+      setVideoInfo(response.data)
     }else{
-      alert("Something went wrong while fetching all assignment")
-    }
-  }
-
-  const getCourseUnitPages = async(e, data, data1) => {
-    setLoading(true)
-    let response = await new CoursesAPI().getCourseUnitPages(sessionCourse, sessionModule)
-    setLoading(false)
-    if(response.ok){
-      setModulePages(response.data)
-      console.log(response.data)
-    }else{
-      alert("Something went wrong while fetching all pages")
+      alert("Something went wrong while fetching all discussion")
     }
   }
 
@@ -73,14 +60,14 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
   }, [])
 
   useEffect(() => {
-    if(selectedAssignment !== null) {
-			setAssignmentName(selectedAssignment?.assignmentName)
-			setInstructions(selectedAssignment?.instructions)
+    if(selectedVideo !== null) {
+			setTitle(selectedVideo?.title)
+			setSequenceNo(selectedVideo?.sequenceNo)
 		}
-  }, [selectedAssignment])
+  }, [selectedVideo])
 
-  const notifyUpdateAssignment = () => 
-  toast.success('Assignment Updated!', {
+  const notifyUpdateVideo= () => 
+  toast.success('Video Updated!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -92,38 +79,40 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
 
 	return (
 		<div>
-			<Modal size="lg" className="modal-all" show={openEditAssignmentModal} onHide={()=> setOpenEditAssignmentModal(!openEditAssignmentModal)} >
+			<Modal size="lg" className="modal-all" show={openEditVideoModal} onHide={()=> setOpenEditVideoModal(!openEditVideoModal)} >
 				<Modal.Header className="modal-header" closeButton>
-				Edit Assignment
+				Edit Video Info
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
-						<Form onSubmit={saveEditAssignment}>
+						<Form onSubmit={saveEditVideo}>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
-												Assignment Name
+												Video Name
 										</Form.Label>
 										<Form.Control 
-                      defaultValue={selectedAssignment?.assignmentName}
+                      defaultValue={selectedVideo?.title}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Edit Assignment Name"
-                      onChange={(e) => setAssignmentName(e.target.value)}
+                      placeholder="Enter test name"
+                      onChange={(e) => setTitle(e.target.value)}
                     />
 								</Form.Group>
+
 								<Form.Group className="m-b-20">
 										<Form.Label for="description">
-												Instructions
+												Sequence No
 										</Form.Label>
 										<Form.Control 
-                      defaultValue={selectedAssignment?.instructions}
+                      defaultValue={selectedVideo?.sequenceNo}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Edit Assignment Instructions"
-                      onChange={(e) => setInstructions(e.target.value)}
+                      placeholder="Enter test instructions"
+                      onChange={(e) => setSequenceNo(e.target.value)}
                     />
 								</Form.Group>
+
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
 												Save

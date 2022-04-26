@@ -88,7 +88,7 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
 		<div>
 			<Modal size="lg" className="modal-all" show={openCreateDiscussionModal} onHide={()=> setOpenCreateDiscussionModal(!openCreateDiscussionModal)} >
 				<Modal.Header className="modal-header" closeButton>
-				Create discussion
+				Create Discussion
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveDiscussion}>
@@ -100,7 +100,7 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter discussion name"
+                      placeholder="Enter Discussion Name"
                       onChange={(e) => setDiscussionName(e.target.value)}
                     />
 								</Form.Group>
@@ -113,7 +113,7 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter discussion instructions"
+                      placeholder="Enter Discussion Instructions"
                       onChange={(e) => setInstructions(e.target.value)}
                     />
 								</Form.Group>

@@ -6,6 +6,7 @@ import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 
+
 function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, getVideos, getLinks}) {
   const [description, setEditDescription] = useState('')
   const [editNotufy, setEditNotify] = useState(false)
@@ -45,7 +46,15 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
         getVideos()
         getLinks()
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
 
     }
@@ -86,7 +95,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
             </Form.Group>
             <Form.Group className="mb-3">
             <Form.Label>Type</Form.Label>
-            <Form.Control value={editLinks?.classLink?.type}  type="text" disabled/>
+            <Form.Control value={editLinks?.type}  type="text" disabled/>
             </Form.Group>
             <Form.Group className='right-btn'>
               <Button className='tficolorbg-button' type='submit' >Save</Button>

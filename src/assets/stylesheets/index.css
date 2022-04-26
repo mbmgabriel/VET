@@ -144,6 +144,16 @@ background-color: var(--primary-color) !important;
 border:1px solid var(--primary-color) !important;
 }
 
+.btn-filter{
+  background-color: var(--primary-color) !important;
+  border:1px solid var(--primary-color) !important;
+  margin-top: 10px !important;
+}
+
+.btn-sidenav{
+  background-color: var(--primary-color) !important;;
+}
+
 /* .card-header {
 background-color:var(--primary-color) !important;
 height: 200px;
@@ -625,11 +635,30 @@ border-top-right-radius: 0px !important;
 }
 .cursor-pointer{
   cursor: pointer!important;
+  color: var(--primary-color) !important;
+}
+
+.cursor-pointer-edit-class-card{
+  cursor: pointer!important;
+}
+
+.teacher-resources{
+  color: var(--primary-color) !important;
+  text-decoration: none !important;
 }
 
 .icon-pd{
   text-align: right;
   padding-top: 26px;
+}
+
+.font-color{
+  color: var(--primary-color) !important;
+}
+
+.icon-color{
+  color: var(--primary-color) !important;
+  font-size: 20px !important;
 }
 
 .card-group-tfi {
@@ -1455,4 +1484,9 @@ option:not(:first-of-type) {
   color: var(--primary-color) !important;
   text-decoration: none !important;
 
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
