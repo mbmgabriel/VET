@@ -14,8 +14,6 @@ export default function ProfileDropdown({visible}) {
     window.location.href = "/login"
   }
 
- console.log('userID:', user)
-
   return (
     <div className={`profile-dropdown-container dropdown-menu shadow ${visible && 'show'}`}>
       <div className="user-header">

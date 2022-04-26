@@ -429,6 +429,7 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 .grading-field{
   display: flex;
   margin-bottom: 24px;
+  align-items: center;
 }
 
 .grading-field .grading-field-label, 
@@ -446,6 +447,7 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 }
 .grading-field .grading-field-value{
   background-color: #F9F9F9;
+  margin-right: 12px;
 }
 
 .grading-field .grading-field-value input{
