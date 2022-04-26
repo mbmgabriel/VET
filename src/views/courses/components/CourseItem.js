@@ -149,7 +149,7 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
                                 </Dropdown>
                                 </OverlayTrigger>
                               }
-                              {item.authorName === "Techfactors Inc." && user.teacher.positionID === "7" &&
+                              {item.authorName === "Techfactors Inc." && user.teacher.positionID === 7 &&
                                 <OverlayTrigger
                                 placement="right"
                                 delay={{ show: 10, hide: 25 }}

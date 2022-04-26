@@ -34,6 +34,7 @@ import ClassTask from '../views/classes/ClassTask'
 import ClassInteractive from '../views/classes/ClassInteractive'
 import ClassList from '../views/classes/ClassList'
 import ClassFiles from '../views/classes/ClassFiles'
+import ClassResources from '../views/classes/ClassResources';
 
 
 import ArchiveClass from "../views/classes/ArchiveClass"
@@ -62,6 +63,7 @@ import StudentsList from "../views/school-profile/StudentsList";
 import SchoolAdminList from '../views/school-profile/SchoolAdmin';
 import FilesClass from '../views/files/ClassFiles';
 import FilesCourse from '../views/files/CourseFiles';
+
 
 
 export default function Routes() {
@@ -103,6 +105,7 @@ export default function Routes() {
             <PrivateRoute path='/classes/:id/links' exact component={ClassLinks} />
             <PrivateRoute path='/classes/:id/classList' exact component={ClassList} />
             <PrivateRoute path='/classes/:id/files' exact component={ClassFiles} />
+            <PrivateRoute path='/classes/:id/resources' exact component={ClassResources}/>
 
             <PrivateRoute path='/exam' exact component={Exam}/>
             <PrivateRoute path='/reports' exact component={Reports}/>
