@@ -492,3 +492,47 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 .rt-td{
   padding: 12px 12px !important;
 }
+
+.grading-table{
+  width: 100%;
+}
+
+.grading-table th{
+  text-align: center;
+  background-color: #F9F9F9;
+  padding: 20px 0
+}
+
+.grading-table th p{
+  margin: 0 !important;
+  font-size: 16px;
+  color:rgba(0, 0, 0, 0.732)
+}
+
+.grading-table td.option-selection {
+  text-align: center;
+  vertical-align: top;
+}
+
+.grading-table td.option-selection select{
+  border: none;
+  text-align: center;
+}
+
+.option-selection-form-container{
+  height: 100px !important
+}
+
+.option-selection-computation{
+  vertical-align: top;
+  border: 2px solid rgb(188, 188, 188);
+  text-align: right;
+  padding: 12px
+}
+
+.option-selection-computation.student{
+  vertical-align: top;
+  border: 2px solid rgb(188, 188, 188);
+  text-align: left;
+  padding: 12px
+}

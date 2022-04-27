@@ -63,6 +63,10 @@ import FilesClass from '../views/files/ClassFiles';
 import FilesCourse from '../views/files/CourseFiles';
 import Grading from "../views/grading-template/Grading";
 import SchoolTerms from "../views/school-profile/SchoolTerms";
+import ClassGrading from "../views/classes/ClassGrading";
+import ClassGradingInformation from "../views/classes/ClassGradingInformation";
+import NewClassGrading from "../views/classes/NewClassGrading";
+import ClassGradingComputation from "../views/classes/ClassGradingComputation";
 
 
 export default function Routes() {
@@ -102,6 +106,10 @@ export default function Routes() {
             <PrivateRoute path='/classes/:id/interactives' exact component={ClassInteractive} />
             <PrivateRoute path='/classes/:id/links' exact component={ClassLinks} />
             <PrivateRoute path='/classes/:id/classList' exact component={ClassList} />
+            <PrivateRoute path='/classes/:id/class_grading' exact component={ClassGrading} />
+            <PrivateRoute path='/classes/:id/class_grading/:term_id' exact component={ClassGradingInformation} />
+            <PrivateRoute path='/classes/:id/class_grading/:term_id/computation' exact component={ClassGradingComputation} />
+            <PrivateRoute path='/classes/:id/class_grading/:term_id/new' exact component={NewClassGrading} />
             <PrivateRoute path='/classes/:id/files' exact component={ClassFiles} />
 
             <PrivateRoute path='/exam' exact component={Exam}/>
