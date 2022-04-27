@@ -183,7 +183,7 @@ export default function CoursesVideos() {
                     <Col className="lesson-header" md={9}>
                       <span onClick={(e) => {viewVideoState(vi)}}>{vi?.title}</span>
                     </Col>
-                    <Col className="align-right-content" md={3}>
+                    {courseInfo?.isTechfactors && user?.teacher.positionID == 7 && <Col className="align-right-content" md={3}>
                       <OverlayTrigger
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}
@@ -194,9 +194,9 @@ export default function CoursesVideos() {
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}
                         overlay={renderTooltipDelete}>
-                      <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setVideoId(vi.id)}}></i></Button>
-                    </OverlayTrigger>
-                    </Col>
+                        <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setVideoId(vi.id)}}></i></Button>
+                      </OverlayTrigger>
+                    </Col>}
                   </Row>
                 ))}
                     <SweetAlert

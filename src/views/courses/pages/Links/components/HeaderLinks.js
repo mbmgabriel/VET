@@ -1,16 +1,33 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 import CreateLinks from './CreateLinks';
 import { UserContext } from '../../../../../context/UserContext'
-
+import {useParams} from 'react-router';
+import CoursesAPI from '../../../../../api/CoursesAPI';
 function HeaderLinks({getConfe, getVideos, getLinks, onSearch}) {
 const [modal, setModal] = useState(false)
 const userContext = useContext(UserContext)
+const [courseInfo, setCourseInfo] = useState("");
 const {user} = userContext.data
+const {id} = useParams();
 
 const toggle = () =>{
     setModal(!modal)
   }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
+
+  const getCourseInformation = async() => {
+    let response = await new CoursesAPI().getCourseInformation(id)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
 	return (
 		<div>
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
@@ -19,7 +36,9 @@ const toggle = () =>{
 			<></>
 			):(
 			<>
-				<p className='title-header' >	<Button className='btn-create-link' variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Links  </Button></p>
+				<p className='title-header'>
+          {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? null : <Button className='btn-create-link' variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Links  </Button>}
+        </p>
 			</>
 			)}
 				</div>

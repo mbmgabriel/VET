@@ -1,8 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Button, Modal,Table, ProgressBar, Col, Row,  InputGroup, FormControl, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FilesAPI from '../../api/FilesApi';
+import CoursesAPI from '../../api/CoursesAPI'
+import { UserContext } from '../../context/UserContext'
+import { useParams } from "react-router";
 
 function FileHeader(props) {
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -11,10 +14,37 @@ function FileHeader(props) {
   const [uploadStarted, setUploadStarted] = useState(false)
   const [showAddFolderModal, setShowAddFolderModal] = useState(false);
   const [folderName, setFolderName] = useState('')
-  const [folderCreatedCourse, setFolderCreatedCourse] = useState(false); 
+  const [folderCreatedCourse, setFolderCreatedCourse] = useState(false);
+
+  const [courseInfo, setCourseInfo] = useState("");
+  const [displayButtons, setDisplayButtons] = useState(true);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const {id} = useParams()
+
   const allUploaded = files.filter(itm => { //check if all items is already 100% uploaded
     return itm.progress != 100
   })
+
+  useEffect(() => {
+    if(props.type == 'Course'){
+      getCourseInformation();
+    }
+  }, [])
+
+  const getCourseInformation = async() => {
+    let response = await new CoursesAPI().getCourseInformation(id)
+    if(response.ok){
+      setCourseInfo(response.data)
+      let temp = response.data.isTechfactors
+      if(temp){
+       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+      }
+      console.log(response.data, 'heheheheheh')
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
 
   const handlefilesUpload = (file) => {
     if(file != ''){
@@ -191,6 +221,7 @@ function FileHeader(props) {
         <div>
           <p className='title-header'>{props.title}</p>
         </div>
+        {displayButtons ? (<>
         <div>
           <OverlayTrigger
             placement="right"
@@ -200,7 +231,8 @@ function FileHeader(props) {
             <i style={{marginTop: 10}} className="fas fa-folder-plus file-upload-content font-size-35 cursor-pointer" onClick={() => setShowAddFolderModal(true)}/>
           </OverlayTrigger>
         </div>
-        <div>
+        
+          <div>
           <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowAddFolderModal(true)}> New Folder  </Button>
         </div>
         <div>
@@ -209,6 +241,9 @@ function FileHeader(props) {
         <div>
           <p><Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button></p>
         </div>
+        </>)
+        :
+        <></>}
       </div>
       <Modal size="lg" show={showUploadModal} onHide={() => setShowUploadModal(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header closeButton>
