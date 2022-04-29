@@ -622,4 +622,18 @@ creatTask = async (mId, cId,  data) => {
       method: 'GET',
     });
   };
+
+  getAccountInfo = async (id) => {
+    return this.sendRequest({
+      path: `/api/Account/${id}`,
+      method: 'GET',
+    });
+  };
+
+  getSchoolCode = async (id) => {
+    return this.sendRequest({
+      path: `/api/School/code`,
+      method: 'GET',
+    });
+  };
 }
