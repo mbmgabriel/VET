@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { toast } from "react-toastify";
+import CoursesAPI from "../../../../api/CoursesAPI";
 import ExamAPI from "../../../../api/ExamAPI";
 import ContentField from "../../../../components/content_field/ContentField";
 import ContentViewer from "../../../../components/content_field/ContentViewer";
@@ -70,6 +71,19 @@ export default function Essay({
   const [rate, setRate] = useState(1);
   const [selectedId, setSelectedId] = useState(null);
   const { id, examid } = useParams();
+  const courseid = sessionStorage.getItem('courseid')
+  const [courseInfos, setCourseInfos] = useState([])
+
+  const getCourseInformation = async () =>{
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    if(response.ok){
+      setCourseInfos(response.data)
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
 
   const submitQuestion = async (e) => {
     e.preventDefault();
@@ -157,7 +171,8 @@ export default function Essay({
           )}
         </div>
       ))}
-      {editable && (
+      {courseInfos?.isTechfactors? (<></>):(<>
+        {editable && (
         <Button
           className='tficolorbg-button m-r-5'
           type='submit'
@@ -168,9 +183,9 @@ export default function Essay({
           }}
         >
           Add question
-        </Button>
-          
+        </Button> 
       )}
+      </>)}
       <EssayForm
         showModal={showModal}
         setShowModal={setShowModal}

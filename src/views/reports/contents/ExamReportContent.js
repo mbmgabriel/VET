@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Badge, Table, Button} from 'react-bootstrap'
+import {Badge, Table, Button, Form} from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
 import ExamAnalysis from './ExamAnalysis'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { UserContext } from './../../../context/UserContext'
+import ExamAPI from '../../../api/ExamAPI';
 
 
 function ExamReportContent({ selectedClassId, testReport, setTestReport, showReportHeader, setShowReportHeader}) {
@@ -15,6 +15,8 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   const [loading, setLoading] = useState(false)
   const [sweetError, setSweetError] = useState(false)
   const [studentId, setStudentId] = useState(false)
+  const [examReport, setExamReport] = useState([])
+  const [isChecked, setIschecked] = useState(false)
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   let sessionClass = sessionStorage.getItem("classId")
@@ -22,7 +24,6 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
 
   const getExamAnalysis = async(e, studentid, classid, testid) => {
     console.log(selectedClassId)
-    
     sessionStorage.setItem('analysis','true')
     sessionStorage.setItem('studentid',studentid)
     sessionStorage.setItem('testid',testid)
@@ -51,18 +52,25 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     }
   }
 
-  const getTestReport = async(e, classid,testid) => {
+  const getTestReport = async(e, selectedClassId,testid) => {
     setLoading(true)
-    let sessionClass = sessionStorage.getItem("classId")
     // setViewTestReport(false)
-    let response = await new ClassesAPI().getTestReport(classid, testid)
+    let response = await new ClassesAPI().getTestReport(selectedClassId, testid)
     setLoading(false)
     if(response.ok){
       setTestReport(response.data)
+      setExamReport(response.data[0].studentTests)
+      console.log('asdasda:', response.data)
     }else{
       alert(response.data.errorMessage)
     }
   }
+
+  useEffect(() => {
+    if(selectedClassId != null){
+      getTestReport(null, sessionClass, sessionTestId)
+    }
+  }, [])
 
   const cancelSweetError = () => {
     setSweetError(false)
@@ -87,11 +95,68 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   useEffect(() => {
     setShowReportHeader(true)
   }, [])
+
+  console.log('testReport:' ,  testReport)
+
+  const updateExamAnalysisTrue = async ( startDate, startTime, endDate, endTime, timeLimit) => {
+    let showAnalysis = true
+    let response = await new ExamAPI().updateExamAnalysis(sessionClass, sessionTestId, {showAnalysis, startDate, startTime, endDate, endTime, timeLimit})
+      if(response?.ok){
+        alert('SSSSSSSSSSS')
+      }else{
+        getTestReport(null, sessionClass, sessionTestId)
+        
+      }
+  }
+
+  const updateExamAnalysisFalse = async ( startDate, startTime, endDate, endTime, timeLimit) => {
+    let showAnalysis = false
+    let response = await new ExamAPI().updateExamAnalysis(sessionClass, sessionTestId, {showAnalysis, startDate, startTime, endDate, endTime, timeLimit})
+      if(response?.ok){
+        alert('AAAAAAAAAAAAAAA')
+      }else{
+        getTestReport(null, sessionClass, sessionTestId)
+      }
+  }
+
+  const handleShowResult = (isChecked, startDate, startTime, endDate, endTime, timeLimit) => {
+    let isTrue = isChecked
+    if(isTrue === true){
+      updateExamAnalysisTrue(startDate, startTime, endDate, endTime, timeLimit)
+    }else{
+      updateExamAnalysisFalse(startDate, startTime, endDate, endTime, timeLimit)
+    }
+  }
+
+  const handleCheckBox = (e, startDate, startTime, endDate, endTime, timeLimit) =>{
+    handleShowResult(e.target.checked, startDate, startTime, endDate, endTime, timeLimit)
+  }
   
+  const showResultStudent = () => 
+  toast.success('Show Result for all Student!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+
+  const disableResultStudent = () => 
+  toast.info('Disable Result for all Student!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+
   if(showExamAnalysis === false){
   return(
     <>
-    <ToastContainer />
     {user.student === null ?
     <Table striped hover size="sm">
       <thead>
@@ -99,6 +164,23 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
           <th>Student Name</th>
           <th>Grade</th>
           <th>Actions</th>
+          <th style={{float:'left'}}>
+            {examReport[0] &&
+              examReport?.map(item => {
+                return(
+                  <Form>
+                  <Form.Check 
+                  type="switch"
+                  name={'showAnalysis'}
+                  label='Show Result'
+                  checked={item?.classTest?.showAnalysis}
+                  onChange={(e) => handleCheckBox(e, item?.classTest?.startDate, item?.classTest?.startTime, item?.classTest?.endDate, item?.classTest?.endTime, item?.classTest?.timeLimit)}
+                />
+                </Form>
+                )
+              })
+            }
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -110,7 +192,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
                   <td >
                     <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
                       <span onClick={(e) => getExamAnalysis(e, item.student.id, st.test.classId, st.test.id)} >
-                      { item.student.lname, item.student.fname} 
+                      { item.student.lname} { item.student.fname} 
                       </span> 
                   </td>
                   <td>{st.isSubmitted === false ? <Badge bg="warning">Not Submitted</Badge>: st.score}</td>
@@ -131,6 +213,9 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
                         >
                           Retake the exam?
                       </SweetAlert>
+                  </td>
+                  <td>
+
                   </td>
                 </tr>
               )

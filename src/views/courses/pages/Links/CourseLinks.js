@@ -9,7 +9,7 @@ import AccordionEdit from './components/AccordionEdit';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import CourseContent from "../../CourseContent";
 
-function ClassLinks() {
+function CourseLinks() {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [conference, setConference] = useState([])
   const [videos, setVidoes] = useState([])
@@ -78,7 +78,7 @@ function ClassLinks() {
 
   return (
    <CourseContent>
-     <CourseBreadcrumbs title="Teacher Resources"/>
+     <CourseBreadcrumbs title="Links"/>
       <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  />
       <div style={{paddingBottom:'10px'}}>
         <AccordionConference  searchTerm={searchTerm} getConfe={getConfe} conference={conference} setOpenEditModal={setOpenEditModal}  setEditLinks={setEditLinks} />
@@ -93,4 +93,4 @@ function ClassLinks() {
     </CourseContent>
   )
 }
-export default ClassLinks
+export default CourseLinks

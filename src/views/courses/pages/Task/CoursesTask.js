@@ -28,6 +28,24 @@ export default function CoursesTask() {
   const {id} = useParams();
   const [showTask, setShowTask] = useState(false);
   const [taskName, setTaskName] = useState('')
+  const [courseInfo, setCourseInfo] = useState("")
+
+  const courseid = sessionStorage.getItem('courseid')
+
+  const getCourseInformation = async() => {
+    setLoading(true)
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    setLoading(false)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
 
   const handleOpenCreateTaskModal = () =>{
     setCreateTaskModal(!openCreateTaskModal)
@@ -155,7 +173,10 @@ export default function CoursesTask() {
             <>
             <Accordion.Item eventKey={item.id}> 
               <Accordion.Header onClick={(e) => {getTaskInfo(e, item.id)}}>
-                <span className="unit-title">{item.moduleName} <Button className="btn-create-class" variant="link" onClick={handleOpenCreateTaskModal}><i className="fa fa-plus"></i> Add Task</Button>
+                <span className="unit-title">{item.moduleName} 
+                {courseInfo?.isTechfactors? (<></>):(<>
+                  <Button className="btn-create-class" variant="link" onClick={handleOpenCreateTaskModal}><i className="fa fa-plus"></i> Add Task</Button>
+                </>)}
                 </span>
               </Accordion.Header>
               <Accordion.Body>
@@ -166,7 +187,8 @@ export default function CoursesTask() {
                     <Col className="lesson-header" md={9}>
                       <span onClick={(e) => {viewTas(ti)}}>{ti?.taskName}</span>
                     </Col>
-                    <Col className="align-right-content" md={3}>
+                    {courseInfo?.isTechfactors? (<></>):(<>
+                      <Col className="align-right-content" md={3}>
                       <OverlayTrigger
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}
@@ -180,6 +202,7 @@ export default function CoursesTask() {
                       <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setTaskId(ti.id)}}></i></Button>
                     </OverlayTrigger>
                     </Col>
+                    </>)}
                   </Row>
                 ))}
                     <SweetAlert

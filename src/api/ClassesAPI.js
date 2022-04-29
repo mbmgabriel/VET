@@ -595,5 +595,31 @@ creatTask = async (mId, cId,  data) => {
     })
   }
 
+  getVideoInformation = async (id, moduleid) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/video?moduleid=${moduleid}`,
+      method: 'GET',
+    });
+  };
 
+  deleteVideo = async(id, videoid) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/video/${videoid}`,
+      method: 'DELETE'
+    })
+  }
+  
+  getExamReport = async (classId) => {
+    this.sendRequest({
+      path:`/api/Class/${classId}/test/report`,
+      method: 'GET'
+    })
+  }
+
+  getClassUnit = async (id) => {
+    return this.sendRequest({
+      path: `/api/Module/class/${id}/item/1`,
+      method: 'GET',
+    });
+  };
 }

@@ -152,7 +152,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter assignment name"
+                      placeholder="Enter Assignment Name"
                       onChange={(e) => setAssignmentName(e.target.value)}
                     />
 								</Form.Group>
@@ -165,7 +165,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter assignment instructions"
+                      placeholder="Enter Assignment Instructions"
                       onChange={(e) => setInstructions(e.target.value)}
                     />
 								</Form.Group>

@@ -94,7 +94,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
           <Form.Label className='d-flex'>{number}. <ContentViewer>{item2?.question?.testQuestion}</ContentViewer></Form.Label>
           </Form.Group>
           <Form.Group className="mb-20">
-            <Form.Control  as="textarea" rows={4} disabled style={{resize:'none'}} disabled />
+            <Form.Control  as="textarea" rows={4} disabled style={{resize:'none'}}  />
           </Form.Group>
           </>)
          })}</>):(<></>

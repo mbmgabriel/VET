@@ -218,4 +218,19 @@ export default class ExamAPI extends Base {
       method: 'GET',
     });
   
+  updateExamAnalysis = async (id, examId, data) => {
+    this.sendRequest({
+      path: `/api/Class/${id}/test/${examId}/assign`,
+      method: 'PUT',
+      data
+    })
+  }
+
+  getExamReport = async (classId) => {
+    this.sendRequest({
+      path:`/api/Class/${classId}/test/report`,
+      method: 'GET'
+    })
+  }
+  
 }

@@ -4,7 +4,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import moment from 'moment'
 import ProfileInfoAPI from '../../api/ProfileInfoAPI'
 import { useParams } from "react-router-dom";
-import SweetAlert from 'react-bootstrap-sweetalert'
+import { toast } from 'react-toastify';
 
 function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userInfo, getTeacherInfo}) {
   const [fname, setFname] = useState('')
@@ -16,11 +16,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
   const [emailAdd, setemailAdd] = useState('')
   let employeeNo = userInfo?.employeeNo
   const { id } = useParams()
-  const [editNotufy, setEditNotify] = useState(false)
-
-  const closeNotify = () =>{
-    setEditNotify(false)
-  }
+  
 
   const updateTeacherInfo = async(e) => {
     e.preventDefault()
@@ -28,7 +24,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
       if(response.ok){
         getTeacherInfo()
         openTeacherInfoToggle(e)
-        setEditNotify(true)
+        successUpdate()
       }else{
         alert(response.data.errorMessag)
       }
@@ -77,6 +73,18 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
     }
   }, [permanentAddress])
 
+  const successUpdate = () =>{
+    toast.success('Successfully updated your profile', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
 
   return (
     <div><Modal  size="lg" show={openTeacherInfoModal} onHide={openTeacherInfoToggle} aria-labelledby="example-modal-sizes-title-lg">
@@ -92,7 +100,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
           <Form.Group className="mb-4">
             <Form.Label>First Name</Form.Label>
-          <Form.Control required defaultValue={userInfo?.fname} onChange={(e) => setFname(e.target.value)} />
+          <Form.Control placeholder='First Name' required defaultValue={userInfo?.fname} onChange={(e) => setFname(e.target.value)} />
             </Form.Group>
           </div>
         </Col>
@@ -100,7 +108,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
           <Form.Group className="mb-4">
             <Form.Label>Last Name</Form.Label>
-          <Form.Control required defaultValue={userInfo?.lname} onChange={(e) => setLname(e.target.value)}/>
+          <Form.Control placeholder='Last Name' required defaultValue={userInfo?.lname} onChange={(e) => setLname(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -108,7 +116,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Employee Number</Form.Label>
-          <Form.Control required disabled defaultValue={userInfo?.employeeNo}/>
+          <Form.Control placeholder='Employee Number' required disabled defaultValue={userInfo?.employeeNo}/>
             </Form.Group>
           </div>
         </Col>
@@ -116,7 +124,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Contact Number</Form.Label>
-          <Form.Control required defaultValue={userInfo?.contactNo} onChange={(e) => setContactNo(e.target.value)}/>
+          <Form.Control placeholder='Contact Number' type='number' required defaultValue={userInfo?.contactNo} onChange={(e) => setContactNo(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -143,7 +151,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>E-mail Address</Form.Label>
-          <Form.Control required defaultValue={userInfo?.emailAdd} onChange={(e) => setemailAdd(e.target.value)}/>
+          <Form.Control placeholder='E-mail Address' required defaultValue={userInfo?.emailAdd} onChange={(e) => setemailAdd(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -151,7 +159,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Address</Form.Label>
-          <Form.Control required defaultValue={userInfo?.permanentAddress} onChange={(e) => setPermanentAddress(e.target.value)}/>
+          <Form.Control placeholder='Address' required defaultValue={userInfo?.permanentAddress} onChange={(e) => setPermanentAddress(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -162,12 +170,6 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
     </Form> 
     </Modal.Body>
   </Modal>
-  <SweetAlert 
-    success
-    show={editNotufy} 
-    title="Done!" 
-    onConfirm={closeNotify}>
-  </SweetAlert>
   
   </div>
   )

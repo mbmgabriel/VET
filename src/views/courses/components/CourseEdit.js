@@ -98,7 +98,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
   }, [selectedCourse])
 
 	const successSave = () => {
-		toast.success('Done Edit', {
+		toast.success('Course has been updated successfully', {
 			position: "top-right",
 			autoClose: 5000,
 			hideProgressBar: false,

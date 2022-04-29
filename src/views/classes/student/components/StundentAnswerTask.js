@@ -5,6 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import { UserContext } from '../../../../context/UserContext'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
   const {id} = useParams();
@@ -42,19 +43,24 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
   const handlefilesUpload = (file) => {
     if(file != ''){
       Object.values(file).map((itm, index) => {
-        console.log(itm, index)
-        getBase64(itm).then(
-          data => {
-            let toAdd = {
-              fileName: itm.name,
-              base64String: data,
-              size: itm.size,
-              progress: 0
-            };
-            files.push(toAdd)
-            setFiles([...files]);
-          }
-        );
+        let maxSize = 25000000;
+        if(itm.size <= maxSize){
+          console.log(itm, index)
+          getBase64(itm).then(
+            data => {
+              let toAdd = {
+                fileName: itm.name,
+                base64String: data,
+                size: itm.size,
+                progress: 0
+              };
+              files.push(toAdd)
+              setFiles([...files]);
+            }
+          );
+        }else{
+          toast.error('Please select a file below 25mb.');
+        }
       })
     }
   }
@@ -122,7 +128,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
                   <tr key={item.fileName}>
                     <td>{item.fileName}</td>
                     <td><ProgressBar variant="warning" now={uploadStatus()} /></td>
-                    <td>{item.size} KB <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
+                    <td>{item.size} B <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                   </tr>
                 );
               })}
