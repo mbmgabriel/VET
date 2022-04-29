@@ -1,3 +1,4 @@
+import { GradingTemplate } from './GradingTemplate';
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
@@ -103,24 +104,26 @@ export default function ClassGradingComputation() {
                       </th>
                     );
                   })}
-                <th>Total</th>
+                {/* <th>Total</th> */}
               </tr>
             </thead>
             <tbody>
-              {student.map((item, index) => {
+              {student.map((student, index) => {
+
                 return (
                   <tr>
-                    <td className="option-selection-computation student">{`${item.fname} ${item.lname}`}</td>
+                    <td className="option-selection-computation student">{`${student.fname} ${student.lname}`}</td>
                     {gradingTemplate &&
                       gradingTemplate.classGradeTypes.map((item, index) => (
                         <GradingActivityComputation
                           index={index}
                           key={index}
                           item={item}
+                          student={student}
                           setGradingTemplate={setGradingTemplate}
                         />
                       ))}
-                    <td className="option-selection-computation">100%</td>
+                    {/* <td className="option-selection-computation">100%</td> */}
                   </tr>
                 );
               })}

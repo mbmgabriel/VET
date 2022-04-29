@@ -47,7 +47,7 @@ export default class ClassTermAPI extends Base {
 
   getStudents = async (id) => {
     return this.sendRequest({
-      path: `/api/Class/${id}/student/status/false`,
+      path: `/api/Class/${id}/student/status/true`,
       method: 'GET'
     });
   }
