@@ -182,6 +182,9 @@ export default function ClassSideNavigation({children}) {
                <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
                 Class List
               </Link>
+               <Link className={currentLoc.includes('class_grading') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/class_grading`}>
+                Class Grading
+              </Link>
             </>
             }
         </ListGroup>
