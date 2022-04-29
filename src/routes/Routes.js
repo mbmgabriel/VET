@@ -64,6 +64,12 @@ import StudentsList from "../views/school-profile/StudentsList";
 import SchoolAdminList from '../views/school-profile/SchoolAdmin';
 import FilesClass from '../views/files/ClassFiles';
 import FilesCourse from '../views/files/CourseFiles';
+import Grading from "../views/grading-template/Grading";
+import SchoolTerms from "../views/school-profile/SchoolTerms";
+import ClassGrading from "../views/classes/ClassGrading";
+import ClassGradingInformation from "../views/classes/ClassGradingInformation";
+import NewClassGrading from "../views/classes/NewClassGrading";
+import ClassGradingComputation from "../views/classes/ClassGradingComputation";
 import ClassVideos from "../views/classes/Videos/ClassVideo";
 
 
@@ -107,6 +113,10 @@ export default function Routes() {
             <PrivateRoute path='/classes/:id/interactives' exact component={ClassInteractive} />
             <PrivateRoute path='/classes/:id/links' exact component={ClassLinks} />
             <PrivateRoute path='/classes/:id/classList' exact component={ClassList} />
+            <PrivateRoute path='/classes/:id/class_grading' exact component={ClassGrading} />
+            <PrivateRoute path='/classes/:id/class_grading/:term_id' exact component={ClassGradingInformation} />
+            <PrivateRoute path='/classes/:id/class_grading/:term_id/computation' exact component={ClassGradingComputation} />
+            <PrivateRoute path='/classes/:id/class_grading/:term_id/new' exact component={NewClassGrading} />
             <PrivateRoute path='/classes/:id/files' exact component={ClassFiles} />
             <PrivateRoute path='/classes/:id/videos' exact component={ClassVideos} />
 
@@ -140,7 +150,8 @@ export default function Routes() {
             <PrivateRoute path='/schoolTeacher' exact component={SchoolTeacher} />
             <PrivateRoute path='/studentsList' exact component={StudentsList} />
             <PrivateRoute path='/schoolAdmin' exact component={SchoolAdminList} />
-
+            <PrivateRoute path='/terms' exact component={SchoolTerms} />
+            <PrivateRoute path='/admin/grading' exact component={Grading} />
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>
             <PublicRoute path='/404' exact component={PageNotFound}/>
