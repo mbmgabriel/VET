@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import ExamAPI from "../../../../api/ExamAPI";
 import { UserContext } from "../../../../context/UserContext";
 
@@ -37,7 +37,7 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
       setShowModal(false)
       console.log("")
     }else{
-      alert("Something went wrong while creating exam")
+      toast.error("Please input all the required fields.")
     }
   }
   return (
