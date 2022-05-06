@@ -90,9 +90,9 @@ export default function ExamParts({
           <Accordion.Header>
             <div className='accordion-block-header'>
               <div className='header-content'>
-                <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} />
-                <p>{displayQuestionType(part.questionPart.questionTypeId)}</p>
-                <span>{`${part.questionDtos.length} Question(s)`}</span>
+                <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} title='' />
+                <p title=''>{displayQuestionType(part.questionPart.questionTypeId)}</p>
+                <span title=''>{`${part.questionDtos.length} Question(s)`}</span>
               </div>
             </div>
             {/* {courseInfo?.isTechfactors? (<></>):(<>
@@ -104,7 +104,7 @@ export default function ExamParts({
                 <div className='exam-actions' >
                   <OverlayTrigger
                     placement="right"
-                    delay={{ show: 1500, hide: 0 }}
+                    delay={{ show: 0, hide: 0 }}
                     overlay={renderTooltipEdit}>
                   <a
                     href='#edit-part'
@@ -113,18 +113,18 @@ export default function ExamParts({
                       setSelectedPart(part);
                     }}
                   >
-                    <i class='fas fa-edit'></i>
+                    <i class='fas fa-edit' title=""></i>
                   </a>
                   </OverlayTrigger>
                   <OverlayTrigger
                     placement="right"
-                    delay={{ show: 1500, hide: 0 }}
+                    delay={{ show: 0, hide: 0 }}
                     overlay={renderTooltipDelete}>
                   <a href='#delete-part' onClick={(e) => {
                     setShowWarning(true)
                     setSelectedId(part)
                   }}>
-                    <i class='fas fa-trash-alt'></i>
+                    <i class='fas fa-trash-alt' title=""></i>
                   </a>
                   </OverlayTrigger>
                 </div>
