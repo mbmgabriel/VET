@@ -69,7 +69,7 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
             <FormControl
               aria-label="Large"
               aria-describedby="inputGroup-sizing-sm"
-              placeholder="Search..."
+              placeholder="Search Exam Here"
               type="search"
               onChange={(e) => onSearch(e.target.value)}
             />
