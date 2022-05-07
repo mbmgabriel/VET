@@ -32,7 +32,7 @@ function ClassResources() {
     let data = {
       "subFolderLocation": name
     }
-    let response = await new FilesAPI().getTeacherResources(courseid, data)
+    let response = await new FilesAPI().getTeacherResources(id, data)
     // setLoading(false)
     if(response.ok){
       setFilesToDisplay(response.data.files);
