@@ -47,6 +47,18 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
     }
   } 
 
+  const success = () => {
+    toast.success('Task Save!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
   const saveTask = async (e) =>{
     e.preventDefault()
     if(instructions === '' || instructions === '{{type=equation}}' || moduleId === ''){
@@ -62,12 +74,12 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
     }else{
       let response = await new ClassesAPI().creatTask(moduleId, id, {task:{taskName, instructions,}, taskAssignment:{allowLate}} )
       if(response.ok){
-        setAddNotity(true)
         setModuleId("")
         setTaskName("")
         setInstructions("")
         getTaskModule(null, moduleId)
         toggle(e)
+        success()
       }else{
         // alert(response.data.errorMessage)
         toast.error(response.data.errorMessage, {
