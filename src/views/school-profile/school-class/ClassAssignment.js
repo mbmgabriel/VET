@@ -212,7 +212,7 @@ export default function SchoolAdminAssignment() {
               </div>
             </Accordion.Header>
             <Accordion.Body>
-              {(user?.teacher === null)?(
+              {(user?.isStudent === null)?(
               <>
                 <StudentAssignment searchTerm={searchTerm} assignment={assignment} />
               </>

@@ -195,7 +195,7 @@ export default function SchoolAdminTask() {
             <Accordion.Item eventKey={index} onClick={(e) => getTaskModule(e, item?.id)}>
             <Accordion.Header ><div style={{fontSize:'20px'}}>{item.moduleName}</div></Accordion.Header>
             <Accordion.Body>
-              {(user?.teacher === null)?(
+              {(user?.isStudent === null)?(
               <>
                 <StudentTask searchTerm={searchTerm} taskModule={taskModule} />
               </>):<>
