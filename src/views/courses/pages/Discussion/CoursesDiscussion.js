@@ -25,9 +25,25 @@ export default function CoursesDiscussion() {
   const [moduleInfo, setModuleInfo] = useState([])
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [clickedDiscussion, setClickedDiscussion] = useState('')
+  const [courseInfo, setCourseInfo] = useState("")
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+
+  const getCourseInformation = async() => {
+    setLoading(true)
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    setLoading(false)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
 
   const handleopenCreateDiscussionModal = () =>{
     setOpenCreateDiscussionModal(!openCreateDiscussionModal)
@@ -159,7 +175,10 @@ export default function CoursesDiscussion() {
                 <>
                 <Accordion.Item eventKey={item.id}> 
                   <Accordion.Header onClick={(e) => {getDiscussionInfo(e, item.id)}}>
-                    <span className="unit-title">{item.moduleName} <Button className="btn-create-class" variant="link" onClick={handleopenCreateDiscussionModal}><i className="fa fa-plus"></i> Add Discussion</Button>
+                    <span className="unit-title">{item.moduleName}
+                    {courseInfo?.isTechfactors? (<></>):(<>
+                      <Button className="btn-create-class" variant="link" onClick={handleopenCreateDiscussionModal}><i className="fa fa-plus"></i> Add Discussion</Button>
+                    </>)}
                     </span>
                   </Accordion.Header>
                   <Accordion.Body>
@@ -171,7 +190,8 @@ export default function CoursesDiscussion() {
                         <Col className="lesson-header" md={9}>
                         <span onClick={(e) => {viewDis(di)}}>{di?.discussion.discussionName}</span>
                         </Col>
-                        <Col className="align-right-content" md={3}>
+                        {courseInfo?.isTechfactors? (<></>):(<>
+                          <Col className="align-right-content" md={3}>
                         <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 1, hide: 25 }}
@@ -187,6 +207,7 @@ export default function CoursesDiscussion() {
                           {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditDiscussionModal(e, di)}><i className="fa fa-edit"></i></Button>
                           <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => {setSweetError(true); setDiscussionId(di.discussion.id)}}><i className="fa fa-trash"></i></Button> */}
                         </Col>
+                        </>)}
                       </Row>
                     ))}
                     <SweetAlert

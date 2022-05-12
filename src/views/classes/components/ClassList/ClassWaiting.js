@@ -134,7 +134,7 @@ const handleClickIcon = () =>{
               <td>
                 <div className='class-waiting-list' style={{fontSize:'24px', color:'#707070', marginLeft:'25px'}} >
                   <i class="fas fa-user-circle fas-1x" style={{color:'#EE9337',fontSize:'36px',}}></i>&nbsp;
-                    {item.fname} {item.lname}
+                 <span className='btn-student-portfolio' > {item.fname} {item.lname} </span>
                 </div>
               </td>
               <td className='class-waiting-icon'>

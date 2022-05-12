@@ -30,6 +30,8 @@ export default function FilesClass() {
   const [breadCrumbsItemClass, setBreadCrumbsItemClass] = useState([]);
   const [filter, setFilter] = useState("");
   const [classFilter, setClassFilter] = useState('');
+  const [classInfo, setClassInfo] = useState({});
+
   const subFolderDirectory = breadCrumbsItemClass.map(item => { return `/${item.value}`})
   subFolderDirectory.shift();
 

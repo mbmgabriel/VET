@@ -32,7 +32,15 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
       notifyUpdateDiscussion()
       getDiscussionInfo(null, sessionModule)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     setLoading(false)
   }
@@ -86,11 +94,10 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test name"
+                      placeholder="Edit Discussion Name"
                       onChange={(e) => setDiscussionName(e.target.value)}
                     />
 								</Form.Group>
-
 								<Form.Group className="m-b-20">
 										<Form.Label for="description">
 												Instructions
@@ -100,11 +107,10 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test instructions"
+                      placeholder="Edit Discussion Instructions"
                       onChange={(e) => setInstructions(e.target.value)}
                     />
 								</Form.Group>
-
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
 												Save

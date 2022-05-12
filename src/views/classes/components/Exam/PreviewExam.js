@@ -24,7 +24,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
         {questionPartDto?.map(item1 => {
           return(<>
         
-          <Form.Label ><b>{item1?.questionPart?.instructions}</b></Form.Label>
+          <Form.Label ><b dangerouslySetInnerHTML={{__html:item1?.questionPart?.instructions }} /> </Form.Label>
       
          {(item1?.questionPart?.questionTypeId == 1)?(
          <>
@@ -94,7 +94,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
           <Form.Label className='d-flex'>{number}. <ContentViewer>{item2?.question?.testQuestion}</ContentViewer></Form.Label>
           </Form.Group>
           <Form.Group className="mb-20">
-            <Form.Control  as="textarea" rows={4} disabled style={{resize:'none'}} disabled />
+            <Form.Control  as="textarea" rows={4} disabled style={{resize:'none'}}  />
           </Form.Group>
           </>)
          })}</>):(<></>

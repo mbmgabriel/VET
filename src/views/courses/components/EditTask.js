@@ -32,7 +32,15 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
       notifyUpdateTask()
       getTaskInfo(null, sessionModule)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     setLoading(false)
   }
@@ -99,11 +107,10 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test name"
+                      placeholder="Edit Task Name"
                       onChange={(e) => setTaskName(e.target.value)}
                     />
 								</Form.Group>
-
 								<Form.Group className="m-b-20">
 										<Form.Label for="description">
 												Instructions
@@ -113,11 +120,10 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test instructions"
+                      placeholder="Edit Task Instructions"
                       onChange={(e) => setInstructions(e.target.value)}
                     />
 								</Form.Group>
-
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
 												Save

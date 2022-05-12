@@ -33,7 +33,6 @@ export default function ClassSideNavigation({children}) {
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       setClassInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all courses")
     }
@@ -93,6 +92,18 @@ export default function ClassSideNavigation({children}) {
     </Tooltip>
   )
 
+  const renderTooltipVideos = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Videos Upload
+      </Tooltip>
+  )
+  
+  const renderTooltipTeacherResources = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Teacher Resources
+    </Tooltip>
+  )
+
   useEffect(() => {
     getClassInfo();
   }, [window.location.pathname])
@@ -108,7 +119,7 @@ export default function ClassSideNavigation({children}) {
   }
 
   return (
-    <MainContainer activeHeader={'classes'} loading={loading} fluid style='not-scrollable'>
+    <MainContainer activeHeader={'classes'} loading={loading} fluid style=''>
     <Col style={{height: 100}} />
     <Row>
       {showTab ? <Col className="row-course-bg course-widget-font" sm={3}>
@@ -138,14 +149,22 @@ export default function ClassSideNavigation({children}) {
         <Link className={currentLoc.includes('exam') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/exam`}>
           Exam
         </Link>
+        <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/task`}>
+          Task
+        </Link>
+        {user?.teacher !== null &&
+          <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/resources`}>
+            Teacher Resources
+          </Link>
+        }
+        <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
+          Links
+        </Link>
         <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/discussion`}>
           Discussion
         </Link>
         <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/assignment`}>
           Assignment
-        </Link>
-        <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/task`}>
-          Task
         </Link>
         <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
           Class Interactives
@@ -153,16 +172,25 @@ export default function ClassSideNavigation({children}) {
         <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
           Links
         </Link>
-          { 
-            (user?.role != 'Student') && 
+        {
+          classInfo?.classInformation?.course?.isTechfactors && 
+          <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/videos`}>
+            Videos Upload
+          </Link>
+        }
+        <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/files`}>
+          Class Files
+        </Link>
+            {
+            (user?.teacher != null) && 
             <>
-               <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
-                Class List
-              </Link>
-              <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/files`}>
-                Class Files
-              </Link>
-            </>
+              <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
+              Class List
+            </Link>
+              <Link className={currentLoc.includes('class_grading') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/class_grading`}>
+              Class Grading
+            </Link>
+          </>
           }
         </ListGroup>
       </Col>
@@ -228,6 +256,14 @@ export default function ClassSideNavigation({children}) {
             <i className='fas fa-chalkboard-teacher' />
           </OverlayTrigger>
         </Link>
+        <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 1, hide: 25 }}
+              overlay={renderTooltipTeacherResources}>
+              <i className="fas fa-link" />
+            </OverlayTrigger>
+          </Link>
         <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
           <OverlayTrigger
             placement="right"
@@ -236,7 +272,18 @@ export default function ClassSideNavigation({children}) {
             <i className='fa fa-link' />
           </OverlayTrigger>
         </Link>
-          {(user?.role != 'Student')
+        {
+          classInfo?.classInformation.course?.isTechfactors && 
+          <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 1, hide: 25 }}
+              overlay={renderTooltipVideos}>
+              <i className="fas fa-video" />
+            </OverlayTrigger>
+          </Link>
+        }
+          {(user?.teacher != null)
           &&
           <>
             <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>

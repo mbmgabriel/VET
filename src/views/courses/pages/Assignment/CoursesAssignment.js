@@ -27,9 +27,25 @@ export default function CoursesAssignment() {
   const [moduleInfo, setModuleInfo] = useState([])
   const [showAssignment, setShowAssignment] = useState(false);
   const [assignmmentName, setAssignmentName] = useState('')
+  const [courseInfo, setCourseInfo] = useState("")
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+
+  const getCourseInformation = async() => {
+    setLoading(true)
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    setLoading(false)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
 
   const handleOpenCreateUnitModal = () =>{
     setOpenCreateUnitModal(!openCreateUnitModal)
@@ -175,7 +191,10 @@ export default function CoursesAssignment() {
               <>
                 <Accordion.Item eventKey={item.id}> 
                   <Accordion.Header onClick={(e) => getAssignmentInfo(e, item.id)}>
-                    <span className="unit-title">{item.moduleName} <Button className="btn-create-class" variant="link" onClick={handleOpenCreateAssignmentModal}><i className="fa fa-plus"></i> Add Assignment</Button>
+                    <span className="unit-title">{item.moduleName} 
+                    {courseInfo?.isTechfactors? (<></>):(<>
+                      <Button className="btn-create-class" variant="link" onClick={handleOpenCreateAssignmentModal}><i className="fa fa-plus"></i> Add Assignment</Button>
+                    </>)}
                     </span>
                   </Accordion.Header>
                   <Accordion.Body>
@@ -186,7 +205,8 @@ export default function CoursesAssignment() {
                         <Col className="lesson-header" md={9} >
                           <span onClick={(e) => {viewAss(as)}}>{as?.assignmentName}</span>
                         </Col>
-                        <Col className="align-right-content" md={3}>
+                        {courseInfo?.isTechfactors? (<></>):(<>
+                          <Col className="align-right-content" md={3}>
                           <OverlayTrigger
                             placement="bottom"
                             delay={{ show: 1, hide: 25 }}
@@ -201,6 +221,7 @@ export default function CoursesAssignment() {
                           </OverlayTrigger>
                         </Col>
                         {assignmentInfo.length == 0 && !loading && <div className="no-exams">No assignment found...</div>}
+                        </>)}
                       </Row>
                     ))}
                     <SweetAlert

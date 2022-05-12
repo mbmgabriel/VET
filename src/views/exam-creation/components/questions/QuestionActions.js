@@ -1,7 +1,27 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import CoursesAPI from "../../../../api/CoursesAPI";
 
 export default function QuestionActions({onEdit = () => alert("Ongoing development"), onDelete = () => alert("Ongoing development")}) {
+  const [courseInfo, setCourseInfo] = useState("")
+
+  const courseid = sessionStorage.getItem('courseid')
+
+  const getCourseInformation = async() => {
+    // setLoading(true)
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    // setLoading(false)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
+
   const renderTooltipEdit = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Edit
@@ -13,7 +33,9 @@ export default function QuestionActions({onEdit = () => alert("Ongoing developme
     </Tooltip>
   )
   return (
-    <div className='exam-actions '>
+    <>
+    {courseInfo?.isTechfactors? (<></>):(<>
+      <div className='exam-actions '>
       <OverlayTrigger
         placement="right"
         delay={{ show: 1500, hide: 0 }}
@@ -31,5 +53,7 @@ export default function QuestionActions({onEdit = () => alert("Ongoing developme
         </a>
       </OverlayTrigger>
     </div>
+    </>)}
+    </>
   );
 }

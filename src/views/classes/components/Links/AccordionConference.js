@@ -6,6 +6,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment';
 import { UserContext } from '../../../../context/UserContext'
+import { toast } from 'react-toastify'
 
 
 function AccordionConference({conference, getConfe, setOpenEditModal, setEditLinks, searchTerm}) {
@@ -38,10 +39,23 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
     if(response.ok){
       setDeleteNotify(false)
       getConfe()
+      successDelete()
     }else{
       alert("Something went wrong while fetching all Conference")
       
     }
+  }
+
+  const successDelete = () => {
+    toast.success('Successfully deleted link!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   const renderTooltipEdit = (props) => (
@@ -70,7 +84,7 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
           onCancel={cancelSweetAlert}
           focusCancelBtn
         >
-            You will not be able to recover this imaginary file!
+            You will not be able to recover this Conference Link!
           </SweetAlert>
         <Accordion.Item eventKey="0">
         <Accordion.Header>
@@ -120,7 +134,12 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
                 <Col sm={6} style={{textAlign:'right'}} className='due-date-discusstion' >
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>
-                      Post Date: {moment(item?.classLink.createdDate).format('ll')}&nbsp; 
+                      {
+                      item.classLink === null ?
+                      <span>Post Date {moment(item?.createdDate).format('ll')}</span>
+                      :
+                      <span>Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
+                      }
                     </div>
                   </div>
                 </Col>

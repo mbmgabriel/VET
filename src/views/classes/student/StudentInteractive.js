@@ -3,11 +3,16 @@ import {Row, Col, Button, Tooltip, OverlayTrigger} from 'react-bootstrap'
 import moment from 'moment'
 import { UserContext } from '../../../context/UserContext'
 import {useParams} from 'react-router';
+import axios from 'axios';
+import ClassesAPI from '../../../api/ClassesAPI';
 
-function StudentInteractive({interactive, searchTerm}) {
+function StudentInteractive({interactive, searchTerm, classInfo}) {
   const dateCompareNow = moment().format("YYYY-MM-DD")
   const timeNow = moment().format('HH:mm');
   // const dateTimeNow = dateCompareNow + ' ' + '00:00:00';
+  const [accountInfo, setAccountInfo] = useState([])
+  const [schoolCode, setSchoolCode] = useState([])
+  const [resultToken, setResultToken] = useState([])
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const {id} = useParams();
@@ -23,6 +28,370 @@ function StudentInteractive({interactive, searchTerm}) {
       Play
     </Tooltip>
   )
+
+  const getAccountInfo = async() => {
+    // setLoading(true)
+    let response = await new ClassesAPI().getAccountInfo(user.userId)
+    if(response.ok){
+      setAccountInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching all courses")
+    }
+    // setLoading(false)
+  }
+  
+  const getSchoolCode = async() => {
+    // setLoading(true)
+    let response = await new ClassesAPI().getSchoolCode()
+    if(response.ok){
+      setSchoolCode(response.data)
+      console.log("Haru", response.data)
+    }else{
+      alert("Something went wrong while fetching all courses")
+    }
+    // setLoading(false)
+  }
+
+  const gParkStartGame = (tokenData1, path) => {
+
+    let studentid = user.userId;
+    let fname = user?.student?.fname;
+    let lname = user?.student?.lname;
+    let usernameS = accountInfo.username;
+    let passwordS = accountInfo.password
+
+
+    if(classInfo?.classInformation?.gradeLevelId === 1){
+        const updateClassData = {
+            reference_id: studentid,
+            school_code:schoolCode.id,
+            class_id: 417
+        };
+
+
+        axios.post('https://api.godspark.world/v1/student/update-class',updateClassData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+                'token': tokenData1,
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            window.open(path+'?e='+tokenData1);
+        },(error) => {
+        
+        })
+    }else if(classInfo?.classInformation?.gradeLevelId === 2){
+        const updateClassData = {
+            reference_id: studentid,
+            school_code:schoolCode.id,
+            class_id: 418
+        };
+
+
+        axios.post('https://api.godspark.world/v1/student/update-class',updateClassData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+                'token': tokenData1,
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            window.open(path+'?e='+tokenData1);
+        },(error) => {
+        
+        })
+    }else if(classInfo?.classInformation?.gradeLevelId === 3){
+        const updateClassData = {
+            reference_id: studentid,
+            school_code:schoolCode.id,
+            class_id: 419
+        };
+
+
+        axios.post('https://api.godspark.world/v1/student/update-class',updateClassData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+                'token': tokenData1,
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            window.open(path+'?e='+tokenData1);
+        },(error) => {
+        
+        })
+    }else if(classInfo?.classInformation?.gradeLevelId === 4){
+        const updateClassData = {
+            reference_id: studentid,
+            school_code:schoolCode.id,
+            class_id: 425
+        };
+
+
+        axios.post('https://api.godspark.world/v1/student/update-class',updateClassData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+                'token': tokenData1,
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            window.open(path+'?e='+tokenData1);
+        },(error) => {
+        
+        })
+    }else if(classInfo?.classInformation?.gradeLevelId === 5){
+        const updateClassData = {
+            reference_id: studentid,
+            school_code:schoolCode.id,
+            class_id: 426
+        };
+
+
+        axios.post('https://api.godspark.world/v1/student/update-class',updateClassData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+                'token': tokenData1,
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            window.open(path+'?e='+tokenData1);
+        },(error) => {
+        
+        })
+    }else if(classInfo?.classInformation?.gradeLevelId === 6){
+        const updateClassData = {
+            reference_id: studentid,
+            school_code:schoolCode.id,
+            class_id: 427
+        };
+
+
+        axios.post('https://api.godspark.world/v1/student/update-class',updateClassData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+                'token': tokenData1,
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            window.open(path+'?e='+tokenData1);
+        },(error) => {
+        
+        })
+    }
+  }
+
+
+  const goLinkGodsPark = (path) => {
+    gParkInitialize1(path);
+  }
+
+  const gpGenerateTokenGame = (path) => {
+
+    let studentid = user.userId;
+    let fname = user?.student?.fname;
+    let lname = user?.student?.lname;
+    let usernameS = accountInfo.username;
+    let passwordS = accountInfo.password;
+
+    const tokenData = {
+        reference_id:studentid,
+        school_code:schoolCode.id,
+    };
+    axios.post('https://api.godspark.world/v1/student/generate-token',tokenData,{
+        headers: {
+            'Content-Type':'application/json',
+            'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+        },
+        responseType: 'json'
+    })
+    //get data
+    .then(response => {
+    setResultToken(response.data.Token)
+    gParkStartGame(response.data.Token, path)
+    },(error) => {
+       
+    })
+  }
+
+  const gParkInitialize1 = (path) => {
+
+    // let studentid = parseInt(sessionStorage.getItem('studentid'));
+    
+    // let classid = sessionStorage.getItem('classid');
+    // let fname = sessionStorage.getItem('fname');
+    // let lname = sessionStorage.getItem('lname');
+    // let usernameS = accountData.username;
+    // let passwordS = accountData.password
+
+    let studentid = user.userId;
+    let fname = user?.student?.fname;
+    let lname = user?.student?.lname;
+    let usernameS = accountInfo.username;
+    let passwordS = accountInfo.password;
+
+    if(classInfo?.classInformation?.gradeLevelId === 1){
+        const registerData = {
+            class_id: 417,
+            reference_id: studentid,
+            school_code: schoolCode.id,
+            username: "student2233",
+            first_name: "A",
+            last_name: "Mike",
+            password: passwordS,
+        };
+        axios.post('https://api.godspark.world/v1/student/create',registerData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            gpGenerateTokenGame(path)
+        },(error) => {
+        
+        });
+    }else if(classInfo?.classInformation?.gradeLevelId === 2){
+        const registerData = {
+            class_id: 418,
+            reference_id: studentid,
+            school_code: schoolCode.id,
+            username: usernameS,
+            first_name: fname,
+            last_name: lname,
+            password: passwordS,
+        };
+        axios.post('https://api.godspark.world/v1/student/create',registerData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            gpGenerateTokenGame(path)
+        },(error) => {
+        
+        });
+    }else if(classInfo?.classInformation?.gradeLevelId === 3){
+        const registerData = {
+            class_id: 419,
+            reference_id: studentid,
+            school_code: schoolCode.id,
+            username: usernameS,
+            first_name: fname,
+            last_name: lname,
+            password: passwordS,
+        };
+        axios.post('https://api.godspark.world/v1/student/create',registerData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            gpGenerateTokenGame(path)
+        },(error) => {
+        
+        });
+    }else if(classInfo?.classInformation?.gradeLevelId === 4){
+        const registerData = {
+            class_id: 425,
+            reference_id: studentid,
+            school_code: schoolCode.id,
+            username: usernameS,
+            first_name: fname,
+            last_name: lname,
+            password: passwordS,
+        };
+        axios.post('https://api.godspark.world/v1/student/create',registerData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            gpGenerateTokenGame(path)
+        },(error) => {
+        
+        });
+    }else if(classInfo?.classInformation?.gradeLevelId === 5){
+        const registerData = {
+            class_id: 426,
+            reference_id: studentid,
+            school_code: schoolCode.id,
+            username: usernameS,
+            first_name: fname,
+            last_name: lname,
+            password: passwordS,
+        };
+        axios.post('https://api.godspark.world/v1/student/create',registerData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            gpGenerateTokenGame(path)
+        },(error) => {
+        
+        });
+    }else if(classInfo?.classInformation?.gradeLevelId === 6){
+        const registerData = {
+            class_id: 427,
+            reference_id: studentid,
+            school_code: schoolCode.id,
+            username: usernameS,
+            first_name: fname,
+            last_name: lname,
+            password: passwordS,
+        };
+        axios.post('https://api.godspark.world/v1/student/create',registerData,{
+            headers: {
+                'Content-Type':'application/json',
+                'X-Authorization': 'vap2ndiRKVQpvyU2ZjCapJrWCNwG1kumJHVabijLrh5B4pM4taTvIigZJYZ61WlJ',
+            },
+            responseType: 'json'
+        })
+        //get data
+        .then(response => {
+            gpGenerateTokenGame(path)
+        },(error) => {
+        
+        });
+    }
+
+}
+
+useEffect(() => {
+  // getClassInfo()
+  getAccountInfo()
+  getSchoolCode()
+}, [])
 
   return (
     <div>
@@ -51,6 +420,19 @@ function StudentInteractive({interactive, searchTerm}) {
                       delay={{ show: 10, hide: 25 }}
                       overlay={renderTooltipPlay}> 
                         <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id, dev)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>  
+                    
+                        {
+                          item.module.courseId === 50005 ?
+                          <button onClick={(e) => {
+                            goLinkGodsPark(item?.interactive?.path)
+                            }} className="btn btn-xs btn-green" >
+                                {item?.interactive?.interactiveName} Start
+                                {schoolCode.id}
+                          </button>
+                          :
+                          <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id, dev)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                        }
+                    
                     </OverlayTrigger>
                     </Col>
                     </>
@@ -64,7 +446,17 @@ function StudentInteractive({interactive, searchTerm}) {
                         placement="right"
                         delay={{ show: 10, hide: 25 }}
                         overlay={renderTooltipPlay}> 
+                          {
+                          item.module.courseId === 50005 ?
+                          <button onClick={(e) => {
+                            goLinkGodsPark(item?.interactive?.path)
+                            }} className="btn btn-xs btn-green" >
+                                {item?.interactive?.interactiveName} Start
+                                {schoolCode.id}
+                          </button>
+                          :
                           <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id, dev)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                        }
                       </OverlayTrigger>
                       </Col>
                     }

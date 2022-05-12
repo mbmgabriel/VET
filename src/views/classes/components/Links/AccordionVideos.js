@@ -6,6 +6,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment';
 import { UserContext } from '../../../../context/UserContext'
+import { toast } from 'react-toastify'
 
 function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, searchTerm}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
@@ -13,6 +14,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
   const {id} = useParams();
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
@@ -37,10 +39,23 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
       // alert('Vidoe Deleted')
       setDeleteNotify(false)
       getVideos()
+      successDelete()
     }else{
       alert("Something went wrong while fetching all Conference")
       
     }
+  }
+
+  const successDelete = () => {
+    toast.success('Successfully deleted video link!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   const renderTooltipEdit = (props) => (
@@ -69,7 +84,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
           onCancel={cancelSweetAlert}
           focusCancelBtn
         >
-            You will not be able to recover this imaginary file!
+            You will not be able to recover this Vidoe link!
         </SweetAlert>
         <Accordion.Item eventKey="0">
         <Accordion.Header>
@@ -119,7 +134,12 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
                 <Col sm={6} style={{textAlign:'right'}} className='due-date-discusstion' >
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>
-                    Post Date: {moment(item?.classLink.createdDate).format('ll')}&nbsp;
+                      {
+                      item.classLink === null ?
+                      <span>Post Date {moment(item?.createdDate).format('ll')}</span>
+                      :
+                      <span>Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
+                      }
                     </div>
                   </div>
                 </Col>

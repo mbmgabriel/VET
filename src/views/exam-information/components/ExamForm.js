@@ -23,11 +23,9 @@ export default function ExamForm({
           <Accordion.Item eventKey='0'>
             <Accordion.Header>
               <div>
-                <p className='primary-title' style={{ fontSize: 24 }}>
-                  {`${integerToRoman(index + 1)} ${
-                    part.questionPart.instructions
-                  }`}
-                </p>
+                <p className='primary-title' style={{ fontSize: 24 }}
+                  dangerouslySetInnerHTML={{__html:part.questionPart.instructions }}
+                />
                 <p
                   className='secondary-title'
                   style={{ fontSize: 16 }}

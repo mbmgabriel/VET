@@ -1,10 +1,12 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-bootstrap'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import FilesAPI from '../../api/FilesApi';
 import Modal from 'react-bootstrap/Modal'
 import { UserContext } from '../../context/UserContext';
+import moment from 'moment';
+import CoursesAPI from '../../api/CoursesAPI';
 
 function FilesContent(props) {
 
@@ -16,6 +18,24 @@ function FilesContent(props) {
   const [extFilename, setExtFilename] = useState('');
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  const [courseInfo, setCourseInfo] = useState("")
+
+  const courseid = sessionStorage.getItem('courseid')
+
+  const getCourseInformation = async() => {
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
+
+  console.log('courseInfo:', courseInfo)
 
   const  downloadImage = (url) => {
     fetch(url, {
@@ -202,7 +222,9 @@ function FilesContent(props) {
         <tr>
           <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
           {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
-          <th >Actions</th>
+          {courseInfo?.isTechfactors? (<></>):(<>
+            <th >Actions</th>
+          </>)}
         </tr>
       </thead>
       <tbody>
@@ -222,7 +244,8 @@ function FilesContent(props) {
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
                 } */}
-                <td style={{paddingRight:'15px'}}>
+                {courseInfo?.isTechfactors? (<></>):(<>
+                  <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
                       delay={{ show: 1, hide: 0 }}
@@ -248,6 +271,8 @@ function FilesContent(props) {
                     </a>
                   </OverlayTrigger>
                   </td>
+                
+                </>)}
               </tr>
             )
           })

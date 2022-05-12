@@ -9,9 +9,7 @@ import ExamTimer from "./ExamTimer";
 const ExamParts = ({ exam }) => {
   return exam.questionPartDto.map((part, index) => (
     <div className='exam-parts-container default-item-container' key={index}>
-      <p className='primary-title' style={{ fontSize: 24 }}>
-        {part.questionPart.instructions}
-      </p>
+      <p className='primary-title' style={{ fontSize: 24 }} dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} />
       <p
         className='secondary-title'
         style={{ fontSize: 16 }}

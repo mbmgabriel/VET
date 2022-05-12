@@ -10,6 +10,22 @@ export default class GradeAPI extends Base {
     });
   };
 
+  newTeacherResourceFile = async (data) => {
+    return this.sendRequest({
+      path: `/api/Upload/course/${data.id}/resource`,
+      method: 'POST',
+      data: data.data
+    });
+  };
+
+  getTeacherResources = async (id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/resource/v3`,
+      method: 'POST',
+      data
+    });
+  };
+
   getCourseFiles = async (id, data) => {
     return this.sendRequest({
       path: `/api/Course/${id}/files/v3`,
@@ -63,6 +79,14 @@ export default class GradeAPI extends Base {
     });
   };
 
+  deleteCourseTeacherResourceFile = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/resource/v3/delete`,
+      method: 'PUT',
+      data
+    });
+  };
+
   editClassFile = async(id, data) => {
     return this.sendRequest({
       path: `/api/Class/${id}/files/v3/update`,
@@ -79,6 +103,14 @@ export default class GradeAPI extends Base {
     });
   }
 
+  editTeacherResourceFile = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/resource/v3/update`,
+      method: 'PUT',
+      data
+    });
+  }
+
   createCourseFolder = async(id, data) => {
     return this.sendRequest({
       path: `/api/Upload/course/${id}/file/folder`,
@@ -90,6 +122,14 @@ export default class GradeAPI extends Base {
   createCLassFolder = async(id, data) => {
     return this.sendRequest({
       path: `/api/Upload/class/${id}/file/folder`,
+      method: 'POST',
+      data
+    })
+  }
+
+  createTeacherResourceFolder = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Upload/course/${id}/resource/folder`,
       method: 'POST',
       data
     })

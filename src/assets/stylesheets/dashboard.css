@@ -64,7 +64,7 @@ code {
 }
 
 .main-container .content .footer{
-  margin: 40px;
+  margin: 80px;
   text-align: right;
 }
 
@@ -420,4 +420,123 @@ code {
 
 .font-size-22{
   font-size: 22px !important;
+}
+
+input[id^="courseInput"]::-webkit-input-placeholder { 
+  color: var(--primary-color) !important;
+}
+
+input[id^="courseInput2"]::-webkit-input-placeholder { 
+  color: var(--primary-color) !important;
+}
+
+.grading-field{
+  display: flex;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.grading-field .grading-field-label, 
+.grading-field .grading-field-value, 
+.grading-field .grading-field-button{
+  flex: 1;
+  padding: 12px;
+  text-align: center;
+} 
+
+.grading-field .grading-field-label{
+  border: 1px solid var(--primary-color);
+  font-weight: bold;
+  color: var(--primary-color)
+}
+.grading-field .grading-field-value{
+  background-color: #F9F9F9;
+  margin-right: 12px;
+}
+
+.grading-field .grading-field-value input{
+  border: 1px solid #F9F9F9 !important;
+  text-align: center;
+  background-color: #f9f9f9;
+  width: 80px
+}
+
+.grading-field .grading-field-value input:focus{
+  outline: 1px #f9f9f9 !important;
+  border: 1px solid #f9f9f9 !important;
+}
+
+.grading-field .grading-field-label input{
+  border: 1px solid white !important;
+  text-align: center;
+  background-color: white;
+  font-weight: bold;
+  color: var(--primary-color);
+  width: 100%
+}
+
+.grading-field .grading-field-label input:focus{
+  outline: 1px white !important;
+  border: 1px solid white !important;
+}
+
+
+.grading-field .grading-field-button{
+  cursor: pointer;
+  border: 1px solid var(--primary-color);
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-color);
+}
+
+.rt-thead.-filters .rt-tr .rt-th:last-child input{
+  display: none
+}
+
+.rt-td{
+  padding: 12px 12px !important;
+}
+
+.grading-table{
+  width: 100%;
+}
+
+.grading-table th{
+  text-align: center;
+  background-color: #F9F9F9;
+  padding: 20px 0
+}
+
+.grading-table th p{
+  margin: 0 !important;
+  font-size: 16px;
+  color:rgba(0, 0, 0, 0.732)
+}
+
+.grading-table td.option-selection {
+  text-align: center;
+  vertical-align: top;
+}
+
+.grading-table td.option-selection select{
+  border: none;
+  text-align: center;
+}
+
+.option-selection-form-container{
+  height: 100px !important
+}
+
+.option-selection-computation{
+  vertical-align: top;
+  border: 2px solid rgb(188, 188, 188);
+  text-align: right;
+  padding: 12px
+}
+
+.option-selection-computation.student{
+  vertical-align: top;
+  border: 2px solid rgb(188, 188, 188);
+  text-align: left;
+  padding: 12px
 }

@@ -70,17 +70,17 @@ if(viewAssignmentReport === true){
                       <div className='title-exam' onClick={(e) => getAssignmentReport(e, item.assignment.id, item.assignment.assignmentName)}>
                         {item.assignment.assignmentName}
                       </div>
-                      <div className='code-exam'>
+                      {/* <div className='code-exam'>
                         EQF1
-                      </div>
+                      </div> */}
                     </Col>
                     <Col sm={9} className='instruction-exam' >
-                      <p>{item.instructions}</p>
+                      <div dangerouslySetInnerHTML={{ __html: item?.assignment?.instructions }} />
                     </Col>
                     <Col sm={3} className='icon-exam'>
-                      <i class="fas fa-eye" style={{paddingRight:'10px'}} ></i>{' '}
+                      {/* <i class="fas fa-eye" style={{paddingRight:'10px'}} ></i>{' '}
                       <i class="fas fa-edit"style={{paddingRight:'10px'}}></i>
-                      <i class="fas fa-trash-alt" style={{paddingRight:'10px'}}></i>
+                      <i class="fas fa-trash-alt" style={{paddingRight:'10px'}}></i> */}
                     </Col>
                     <hr></hr>
                   </Row>

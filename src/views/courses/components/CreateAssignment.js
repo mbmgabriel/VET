@@ -50,7 +50,15 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
       getAssignmentInfo(sessionModule)
       notifySaveAssignment()
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     setLoading(false)
   }
@@ -144,7 +152,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter assignment name"
+                      placeholder="Enter Assignment Name"
                       onChange={(e) => setAssignmentName(e.target.value)}
                     />
 								</Form.Group>
@@ -157,7 +165,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter assignment instructions"
+                      placeholder="Enter Assignment Instructions"
                       onChange={(e) => setInstructions(e.target.value)}
                     />
 								</Form.Group>

@@ -98,7 +98,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
   }, [selectedCourse])
 
 	const successSave = () => {
-		toast.success('Done Edit', {
+		toast.success('Course has been updated successfully', {
 			position: "top-right",
 			autoClose: 5000,
 			hideProgressBar: false,
@@ -166,7 +166,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 										<Form.Label for="status">
 												Status
 										</Form.Label>
-										<Form.Select size="lg" onChange={(e) => setLockStatus(e.target.value)}>
+										<Form.Select size="lg" onChange={(e) => setStatus(e.target.value)}>
 											<option value={true} selected={selectedCourse?.status === true}>
 												Active
 											</option>

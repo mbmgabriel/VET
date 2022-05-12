@@ -8,6 +8,7 @@ function ExamReport({filter, setfilter, classesModules, setClassesModules, selec
   const [testPerModule, setTestPerModule] = useState([])
   const [testReport, setTestReport] = useState([])
   const [loading, setLoading] = useState(false)
+  const [startDate, setStartDate] = useState()
 
   const getClassTestModules = async(e, moduleId) => {
     console.log(selectedClassId)
@@ -32,14 +33,15 @@ function ExamReport({filter, setfilter, classesModules, setClassesModules, selec
     let response = await new ClassesAPI().getTestReport(sessionClass, testid)
     setLoading(false)
     if(response.ok){
-      setTestReport(response.data)
+      setTestReport(response.data) 
+      // setStartDate(response.studentTests.classTest.startDate)
       console.log(response.data)
     }else{
       alert(response.data.errorMessage)
     }
   }
 
-  
+  console.log('testPerModule:' ,  testPerModule)
 
   if(viewTestReport === true){
   return (
@@ -66,7 +68,7 @@ function ExamReport({filter, setfilter, classesModules, setClassesModules, selec
                     </div> */}
                   </Col>
                   <Col sm={9} className='instruction-exam' >
-                    <p>{item.test.testInstructions}</p>
+                    <p dangerouslySetInnerHTML={{__html:item.test.testInstructions }} />
                   </Col>
                   {/* <Col sm={3} className='icon-exam'>
                     <i class="fas fa-eye" style={{paddingRight:'10px'}} ></i>{' '}
