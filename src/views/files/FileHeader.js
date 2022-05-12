@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-import userEvent from '@testing-library/user-event';
-=======
->>>>>>> master
 import React, {useState, useEffect, useContext} from 'react'
 import {Button, Modal,Table, ProgressBar, Col, Row,  InputGroup, FormControl, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FilesAPI from '../../api/FilesApi';
-<<<<<<< HEAD
 import { UserContext } from '../../context/UserContext';
-=======
 import CoursesAPI from '../../api/CoursesAPI'
-import { UserContext } from '../../context/UserContext'
->>>>>>> master
 
 function FileHeader(props) {
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -46,8 +38,6 @@ function FileHeader(props) {
   const allUploaded = files.filter(itm => { //check if all items is already 100% uploaded
     return itm.progress != 100
   })
-  const userContext = useContext(UserContext)
-  const {user} = userContext.data
 
   const handlefilesUpload = (file) => {
     if(file != ''){
