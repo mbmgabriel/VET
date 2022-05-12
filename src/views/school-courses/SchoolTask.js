@@ -34,7 +34,7 @@ function SchoolTask() {
   }, []);
 
   return (
-  <MainContainer title="Task" activeHeader={"task"} loading={loading}>
+  <MainContainer title="Task" activeHeader={"courses"} loading={loading}>
     <Row className="mt-4">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Task" />
