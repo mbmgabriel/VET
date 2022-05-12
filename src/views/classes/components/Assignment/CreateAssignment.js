@@ -61,7 +61,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   }
 
   const success = () => {
-    toast.success('Assignment Save!', {
+    toast.success('Successfully saved assignment!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -135,12 +135,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
               }
             </div>
             <div className='text-align-right'>
-            <OverlayTrigger
-                  placement="bottom"
-                  delay={{ show: 1, hide: 0 }}
-                  overlay={renderTooltipUpload}>
-                   <Button className='my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-            </OverlayTrigger>
+                   <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
             </div>
           <Form onSubmit={createAssignment} > 
             <Form.Group className="mb-3">
@@ -161,12 +156,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
                   <ContentField  value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
               </Form.Group>  
               <Form.Group className='right-btn'>
-              <OverlayTrigger
-                placement="bottom"
-                delay={{ show: 1, hide: 0 }}
-                overlay={renderTooltipSave}>
-                  <Button className='tficolorbg-button' type='submit' >Save</Button>
-                </OverlayTrigger>
+                  <Button className='tficolorbg-button' type='submit' >Save Assignment</Button>
               </Form.Group>
           </Form> 
         </Modal.Body>

@@ -46,9 +46,10 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
       alert("Something went wrong while fetching class files ;;.")
     }
   } 
+  
 
   const success = () => {
-    toast.success('Task Save!', {
+    toast.success('Successfully saved task!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -141,7 +142,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
                 })}
             </Form.Select>
             <div>
-              <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+              <Button className='float-right my-2 tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
             </div>
               </Form.Group>
               <Form.Group className="mb-4">
@@ -153,7 +154,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
                     <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
                   </Form.Group>
               <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Save Task</Button>
             </Form.Group>
         </Form> 
         </Modal.Body>

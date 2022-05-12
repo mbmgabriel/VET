@@ -25,8 +25,6 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
     setEditNotify(false)
   }
 
-  console.log('xmoduleId:', moduleId)
-
   const updateTask = async (e) =>{
     e.preventDefault()
     let id = assignmentId
@@ -96,7 +94,7 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
   )
 
   const success = () => {
-    toast.success('Assignment Save!', {
+    toast.success('Successfully updated assignment!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -137,12 +135,7 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
               }
             </div>
             <div className='text-align-right'>
-            <OverlayTrigger
-                  placement="bottom"
-                  delay={{ show: 1, hide: 0 }}
-                  overlay={renderTooltipUpload}>
-                   <Button className='my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-            </OverlayTrigger>
+                   <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
             </div>
           <Form onSubmit={updateTask} >  
             <Form.Group className="mb-3">
@@ -160,12 +153,7 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
                       <ContentField value={instructions} placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
                     </Form.Group>
                 <Form.Group className='right-btn'>
-                <OverlayTrigger
-                  placement="bottom"
-                  delay={{ show: 1, hide: 0 }}
-                  overlay={renderTooltipSave}>
-                    <Button className='tficolorbg-button' type='submit' >Save</Button>
-                </OverlayTrigger>
+                    <Button className='tficolorbg-button' type='submit' >Update Assignment</Button>
               </Form.Group>
           </Form> 
           </Modal.Body>
