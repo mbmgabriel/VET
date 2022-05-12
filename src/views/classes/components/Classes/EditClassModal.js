@@ -7,6 +7,7 @@ import ClassesAPI from '../../../../api/ClassesAPI';
 import AcademicTermAPI from '../../../../api/AcademicTermAPI';
 import { UserContext } from '../../../../context/UserContext'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClasses }) {
   const [addNotify, setAddNotity] = useState(false)
@@ -79,12 +80,34 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
       {classCode, className, courseId, gradeLevelId, academicTermId, teacherId }
     )
     if(response.ok){
-      setAddNotity(true)
+      // setAddNotity(true)
+      success()
       getClasses()
       handleCloseModal(e)
     }else{
-      alert(response.data.errorMessage)
+      // alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
+  }
+
+  const success = () => {
+    toast.success('Successfully updated class', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   useEffect(() => {
