@@ -105,6 +105,9 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
 			</Modal>
     )
   }
+  useEffect(() => {
+    localStorage.setItem('typeresource', 'course')
+  });
   
   return (
     <React.Fragment>

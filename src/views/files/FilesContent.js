@@ -16,7 +16,7 @@ function FilesContent(props) {
   const [newFileName, setNewFilename] = useState('');
   const [extFilename, setExtFilename] = useState('');
   const [courseInfo, setCourseInfo] = useState("")
-
+  
   const courseid = sessionStorage.getItem('courseid')
 
   const getCourseInformation = async() => {
@@ -29,7 +29,9 @@ function FilesContent(props) {
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(window.location.pathname.includes('course')){
+      getCourseInformation();
+    }
   }, [])
 
   console.log('courseInfo:', courseInfo)
