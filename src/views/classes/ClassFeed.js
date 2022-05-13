@@ -82,11 +82,24 @@ const getComment = (item, item1, item3) => {
     let response = await new ClassesAPI().deleteAnnouncement(item)
     if(response.ok){
       // alert('Deleted')
+      deleteToast()
       getFeedClass()
       setDeleteNotify(false)
     }else{
       alert(response.data.errorMessage)
     }
+  }
+
+  const deleteToast = () => {
+    toast.success('Announcement was successfully removed!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   const handleDeleteNotify = (item) =>{
