@@ -29,7 +29,9 @@ function FilesContent(props) {
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(courseid != null){
+      getCourseInformation();
+    }
   }, [])
 
   console.log('courseInfo:', courseInfo)

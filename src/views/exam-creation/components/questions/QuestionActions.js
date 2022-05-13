@@ -19,7 +19,9 @@ export default function QuestionActions({onEdit = () => alert("Ongoing developme
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(courseid != null){
+      getCourseInformation();
+    }
   }, [])
 
   const renderTooltipEdit = (props) => (

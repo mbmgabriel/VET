@@ -31,7 +31,9 @@ function FileHeader(props) {
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(courseid != null){
+      getCourseInformation();
+    }
   }, [])
 
 

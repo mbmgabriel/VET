@@ -44,7 +44,9 @@ export default function CoursesTask() {
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(courseid != null){
+      getCourseInformation();
+    }
   }, [])
 
   const handleOpenCreateTaskModal = () =>{
