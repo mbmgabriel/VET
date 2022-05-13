@@ -47,7 +47,8 @@ function ClassFeed() {
     let status = true
     let response = await new ClassesAPI().createAnnouncementClass(typeId, {announcement:{content, title, useraccountId, status}, referenceIds:referenceIds})
       if(response.ok){
-        setAddNotity(true)
+        // setAddNotity(true)
+        postToast()
         setContent('')
         getFeedClass()
       }else{
@@ -91,7 +92,19 @@ const getComment = (item, item1, item3) => {
   }
 
   const deleteToast = () => {
-    toast.success('Announcement was successfully removed!', {
+    toast.success('Successfully removed announcement!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+  
+  const postToast = () => {
+    toast.success('Successfully added announcement!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
