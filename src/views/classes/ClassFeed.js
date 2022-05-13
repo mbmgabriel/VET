@@ -135,18 +135,18 @@ const getComment = (item, item1, item3) => {
       <ClassBreadcrumbs title='' clicked={() => console.log('')}/>
     <div>
       <SweetAlert
-          warning
-          showCancel
-          show={deleteNotify}
-          confirmBtnText="Yes, delete it!"
-          confirmBtnBsStyle="danger"
-          title="Are you sure?"
-          onConfirm={() => deleteAnnouncement(itemId)}
-          onCancel={cancelSweetAlert}
-          focusCancelBtn
-            >
-              You will not be able to recover this imaginary file!
-        </SweetAlert>
+        warning
+        showCancel
+        show={deleteNotify}
+        confirmBtnText="Yes, delete it!"
+        confirmBtnBsStyle="danger"
+        title="Are you sure?"
+        onConfirm={() => deleteAnnouncement(itemId)}
+        onCancel={cancelSweetAlert}
+        focusCancelBtn
+          >
+            You will not be able to recover this imaginary file!
+      </SweetAlert>
         {(user?.teacher === null)?(
         <></>
         ):(
@@ -154,15 +154,15 @@ const getComment = (item, item1, item3) => {
           <Card className='calendar-card'>
             <Card.Body>
             <Form onSubmit={createAnnouncementClass}>
-            <InputGroup  size="lg">
-              <InputGroup.Text id="basic-addon2" className="feed-button"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
-                <FormControl onChange={(e) => setContent(e.target.value)} value={content} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type an Announcement for the class here" type="text"/> 
-            </InputGroup>
-            <div style={{textAlign:'right', paddingTop:'15px'}}>
-            <Button className='tficolorbg-button' type='submit' >POST</Button>
-            </div>
+              <InputGroup  size="lg">
+                <InputGroup.Text id="basic-addon2" className="feed-button"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
+                  <FormControl onChange={(e) => setContent(e.target.value)} value={content} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type an Announcement for the class here" type="text"/> 
+              </InputGroup>
+              <div style={{textAlign:'right', paddingTop:'15px'}}>
+              <Button className='tficolorbg-button' type='submit' >POST</Button>
+              </div>
             </Form>
-            </Card.Body>
+          </Card.Body>
         </Card>
         </>
         )}
@@ -215,8 +215,8 @@ const getComment = (item, item1, item3) => {
                 <Col md={3}>
                   {(user?.teacher === null)?(<></>):(<>
                     <div className='inline-flex' style={{paddingTop:'20px', paddingTop:'6px', float:'right', }}>
-                        <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>            
-                          <Button onClick={() => openEditAnnouncementToggle(feedItem)} className="m-r-5 color-white tficolorbg-button"  size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; </Button>
+                        <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>
+                          <Button onClick={() => openEditAnnouncementToggle(feedItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; </Button>
                           </div>
                           <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
                           <Button onClick={() => handleDeleteNotify(feedItem?.referenceId)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; </Button>
@@ -333,7 +333,7 @@ const getComment = (item, item1, item3) => {
                   <p>{moment(feedItem?.endDate).format('ll')}&nbsp;</p> 
                   </div>
                     <div className='text-color-707070'>
-                    /  {feedItem?.endTime}
+                    /  {(feedItem?.endTime)} 
                     </div>
                   </div>
                 </Col>
