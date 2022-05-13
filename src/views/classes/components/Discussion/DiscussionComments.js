@@ -6,6 +6,7 @@ import { useParams } from 'react-router'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { UserContext } from '../../../../context/UserContext'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function DiscussionComments({getDiscussionComments, getComments, discussionCommentToggle, discussionCommentModal, comments, discussionId, moduleId, getDiscussionUnit, startDate, startTime, endDate, endTime}) {
   const {id} = useParams()
@@ -38,11 +39,21 @@ function DiscussionComments({getDiscussionComments, getComments, discussionComme
     let userAccountId = user?.userId
     let response = await new ClassesAPI().submitComment(classId, item, {userAccountId, reply})
       if(response.ok){
-        setCommentAlert(true)
+        // setCommentAlert(true)
+        commendToast()
         setReply('')
         getDiscussionComments(null, item, startDate, startTime, endDate, endTime)
       }else{
-        alert('No good')
+        // alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
   }
 
@@ -50,11 +61,37 @@ function DiscussionComments({getDiscussionComments, getComments, discussionComme
     let classId = id
     let response = await new ClassesAPI().deleteComment(classId, discussionId, item)
       if(response.ok){
+        // alert('deleted')
+        deleteToast()
         setDeleteNotify(false)
         getDiscussionComments(null, discussionId, startDate, startTime, endDate, endTime)
       }else{
         alert(response.data.errorMessage)
       }
+  }
+
+  const deleteToast = () => {
+    toast.success('Successfully removed comment!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
+  const commendToast = () => {
+    toast.success('Successfully added comment!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   const renderTooltipDelete= (props) => (
