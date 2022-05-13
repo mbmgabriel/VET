@@ -197,8 +197,6 @@ export default function MultipleChoice({
     getCourseInformation();
   }, [])
 
-  console.log('qweasdqwe:', courseInfos)
-
   const submitQuestion = async (e) => {
     e.preventDefault();
     console.log({ selectedQuestion });
@@ -285,23 +283,23 @@ export default function MultipleChoice({
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>
-            <p className='primary-title'>
+            <p className='primary-title' title="">
               <ContentViewer>{question.question.testQuestion}</ContentViewer>
             </p>
-            <h5>Choices</h5>
+            <h5 title="">Choices</h5>
             <table>
               {question.choices.map((choice, index) => (
                 <tr key={index}>
-                  <td>
+                  <td title="">
                     <ContentViewer>{choice.testChoices}</ContentViewer>
                   </td>
                 </tr>
               ))}
             </table>
-            <h5 className='font-weight-bold mt-3'>
+            <h5 className='font-weight-bold mt-3' title="">
               Answer: <ContentViewer>{question.answer}</ContentViewer>
             </h5>
-            <p className=''>Point(s): {question.question.rate}</p>
+            <p title="" className=''>Point(s): {question.question.rate}</p>
           </div>
           {editable && (
             <QuestionActions
@@ -324,6 +322,7 @@ export default function MultipleChoice({
         <Button
           className='tficolorbg-button m-r-5'
           type='submit'
+          title=""
           onClick={() => {
             setSelectedQuestion(null);
             setQuestion("");
