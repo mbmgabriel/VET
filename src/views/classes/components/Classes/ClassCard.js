@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger, renderTooltip, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ClassesAPI from '../../../../api/ClassesAPI';
@@ -54,6 +54,10 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
       Edit
     </Tooltip>
   );
+
+  useEffect(() => {
+    localStorage.setItem('typeresource', 'class')
+  });
 
   return (
     <div>

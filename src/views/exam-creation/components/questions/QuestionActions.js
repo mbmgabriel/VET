@@ -40,18 +40,18 @@ export default function QuestionActions({onEdit = () => alert("Ongoing developme
       <div className='exam-actions '>
       <OverlayTrigger
         placement="right"
-        delay={{ show: 1500, hide: 0 }}
+        delay={{ show: 1, hide: 0 }}
         overlay={renderTooltipEdit}>
         <a href='#delete-part' onClick={onEdit}>
-          <i class='fas fa-edit'></i>
+          <i class='fas fa-edit' title=""></i>
         </a>
       </OverlayTrigger>
       <OverlayTrigger
         placement="right"
-        delay={{ show: 1500, hide: 0 }}
+        delay={{ show: 1, hide: 0 }}
         overlay={renderTooltipDelete}>
         <a href='#delete-part' onClick={onDelete}>
-          <i class='fas fa-trash-alt'></i>
+          <i class='fas fa-trash-alt' title=""></i>
         </a>
       </OverlayTrigger>
     </div>

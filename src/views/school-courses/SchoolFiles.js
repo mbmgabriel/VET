@@ -36,7 +36,7 @@ function SchoolFiles() {
   console.log('courseInfoscourseInfoscourseInfos:', courseInfos)
 
   return (
-  <MainContainer title="Files" activeHeader={"files"} loading={loading}>
+  <MainContainer title="Files" activeHeader={"courses"} loading={loading}>
     <Row className="mt-4">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Files" />

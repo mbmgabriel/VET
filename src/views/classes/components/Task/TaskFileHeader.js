@@ -144,7 +144,13 @@ function FileHeader(props) {
 
   const renderTooltipUploadFiles = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Create Folder
+      Upload files
+    </Tooltip>
+  )
+
+  const renderTooltipChooseFiles = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Choose files
     </Tooltip>
   )
 
@@ -201,7 +207,14 @@ function FileHeader(props) {
           <h5 style={{paddingTop: 15}} className="fileupload"> OR </h5>
         </div> */}
         <div>
-          <p><Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button></p>
+          <p>
+          <OverlayTrigger
+            placement="bottom"
+            delay={{ show: 1, hide: 0 }}
+            overlay={renderTooltipUploadFiles}>
+              <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button>
+            </OverlayTrigger>
+            </p>
         </div>
       </div>
       <Modal size="lg" show={showUploadModal} onHide={() => setShowUploadModal(false)} aria-labelledby="example-modal-sizes-title-lg">
@@ -213,10 +226,15 @@ function FileHeader(props) {
         <Modal.Body>
           <Row style={{paddingTop:'25px', paddingBottom: '20px'}}>
             <Col lg={3} className='mt-3'>
+            <OverlayTrigger
+            placement="bottom"
+            delay={{ show: 1, hide: 0 }}
+            overlay={renderTooltipChooseFiles}>
               <Button size='lg' variant="outline-warning" className="file-library" onClick={() => { document.getElementById('inputFile').click() }}>
                 <i className="fas fa-paperclip"></i>
                 Choose Files
               </Button>
+            </OverlayTrigger>
             </Col>
               <Col lg={4} className='bg-gray d-flex justify-content-center br-5px'>
                 <div className='row position-absolute d-flex p-2'>

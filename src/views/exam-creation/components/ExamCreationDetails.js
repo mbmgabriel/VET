@@ -76,6 +76,7 @@ export default function ExamCreationDetails({
           className='btn btn-primary my-4'
           variant='primary'
           size='lg'
+          title=""
           onClick={() => {
             setSelectedPart(null);
             setShowModal(true);

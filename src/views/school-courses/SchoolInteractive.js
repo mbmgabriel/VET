@@ -34,7 +34,7 @@ function SchoolInteractive() {
   }, []);
 
   return (
-  <MainContainer title="Interactive" activeHeader={"interactive"} loading={loading}>
+  <MainContainer title="Interactive" activeHeader={"courses"} loading={loading}>
     <Row className="mt-4">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Interactive" />

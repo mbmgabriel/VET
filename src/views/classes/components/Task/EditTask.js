@@ -5,10 +5,17 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import ContentField from '../../../../components/content_field/ContentField';
 import { toast } from 'react-toastify';
+import FileHeader from './TaskFileHeader';
+import FilesAPI from '../../../../api/FilesApi';
+import { useParams } from 'react-router'
 
 function EditTask({moduleName, setTaskName, taskName, setInstructions, instructions, taskId, modal, toggle, module, editTask, getTaskModule, moduleId, setModal}){
   const isShared = null
   const [editNotufy, setEditNotify] = useState(false)
+  const [showFiles, setShowFiles] = useState(false);
+  const [displayFolder, setDisplayFolder] = useState([]);
+  const [displayFiles, setDisplayFiles] = useState([]);
+  const {id} = useParams();
 
   const closeNotify = () =>{
     setEditNotify(false)
@@ -31,7 +38,8 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
       let response = await new ClassesAPI().updateTask(id, {taskName, instructions, isShared})
         if(response.ok){
           // alert('Task Updated')
-          setEditNotify(true)
+          // setEditNotify(true)
+          success()
           getTaskModule(null, moduleId)
           setModal(false)
         }else{
@@ -49,6 +57,33 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
     }
   }
 
+  const handleGetClassFiles = async() => {
+    // setLoading(true)
+    let data = {
+      "subFolderLocation": ''
+    }
+    let response = await new FilesAPI().getClassFiles(id, data)
+    // setLoading(false)
+    if(response.ok){
+      console.log(response, 'heeeeeeeere')
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
+    }else{
+      alert("Something went wrong while fetching class files.")
+    }
+  }
+
+  const success = () => {
+    toast.success('Successfully updated task!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
 
   return (
     <div>
@@ -59,7 +94,34 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form onSubmit={updateTask}>  
+        <Form onSubmit={updateTask}> 
+        <div className={showFiles ? 'mb-3' : 'd-none'}>
+            <FileHeader type='Class' id={id}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
+            {/* {
+             (displayFiles || []).map( (item,ind) => {
+                return(
+                  <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
+                )
+              })
+            } */}
+             {
+               (displayFiles || []).map( (item,ind) => {
+                  return(
+                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
+                    :
+                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
+                  )
+                })
+              }
+              {
+                (displayFolder || []).map((itm) => {
+                  return(
+                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
+                  )
+                })
+              }
+          </div> 
           <Form.Group className="mb-3">
           <Form.Label>Unit</Form.Label>
             <Form.Select disabled>
@@ -68,6 +130,9 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
                   return(<option value={moduleName}>{moduleName} {item.id}</option>)
                 })} 
             </Form.Select>
+            <div>
+              <Button className='float-right my-2 tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+            </div>
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Task Name</Form.Label>
@@ -78,7 +143,7 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
                   <ContentField value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
                   </Form.Group>
               <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Task</Button>
             </Form.Group>
         </Form> 
         </Modal.Body>
