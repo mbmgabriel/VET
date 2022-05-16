@@ -50,20 +50,20 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
       }
   }
 
-  useEffect(() => {
-    if(assignmentName !== '') {
-      setAssignmentName(editAssignment?.assignment?.assignmentName)
-      setInstructions(editAssignment?.assignment?.instructions)
-		}
-  }, [assignmentName])
+  // useEffect(() => {
+  //   if(assignmentName !== '') {
+  //     setAssignmentName(editAssignment?.assignment?.assignmentName)
+  //     setInstructions(editAssignment?.assignment?.instructions)
+	// 	}
+  // }, [assignmentName])
 
 
-  useEffect(() => {
-    if(instructions !== '') {
-      setAssignmentName(assignmentName)
-      setInstructions(instructions)
-		}
-  }, [assignmentName])
+  // useEffect(() => {
+  //   if(instructions !== '') {
+  //     setAssignmentName(assignmentName)
+  //     setInstructions(instructions)
+	// 	}
+  // }, [assignmentName])
 
   const handleGetClassFiles = async() => {
     // setLoading(true)
