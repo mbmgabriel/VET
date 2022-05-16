@@ -55,6 +55,11 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
     </Tooltip>
   );
 
+  const setCourseID = (cid) => 
+  {
+    localStorage.setItem("courseid", cid)
+  }
+
   useEffect(() => {
     localStorage.setItem('typeresource', 'class')
   });
@@ -75,7 +80,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
             You will not be able to recover this imaginary file!
       </SweetAlert>
       <Card className='class-card' >
-        <Link to={`/classescontent/${item.classId}/feed`}>
+        <Link to={`/classescontent/${item.classId}/feed`} onClick={() => setCourseID(item.courseId) }>
           <Card.Header className='class-header-card' >
             <Row>
               <Col sm={10}>
@@ -95,7 +100,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                       Edit 
                     </Dropdown.Item>
                     <Dropdown.Item onClick={(e) => handleDeleteNotify(e, item.classId)}>
-                      Delete
+                      Delete 
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

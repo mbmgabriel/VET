@@ -4,9 +4,7 @@ import FilesContent from '../../views/resources/FilesContent';
 import FileHeader from '../../views/resources/FileHeader'
 import FilesAPI from '../../api/FilesApi';
 import ClassSideNavigation from './components/ClassSideNavigation';
-// import CourseContent from "../../CourseContent";
 import {useParams} from 'react-router';
-// import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 
 function ClassResources() {
   const [filesToDisplay, setFilesToDisplay] = useState([]);
@@ -16,8 +14,8 @@ function ClassResources() {
   const [breadCrumbsItemCourse, setBreadCrumbsItemCourse] = useState([])
   const [filter, setFilter] = useState('');
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
-  let courseid = sessionStorage.getItem("courseid")
-
+  
+  
   useEffect(() => {
     handleGetTeacherResources('')
   }, [])
@@ -28,10 +26,12 @@ function ClassResources() {
 
   const handleGetTeacherResources = async(name) => {
     // setLoading(true)
+    let courseid = localStorage.getItem("courseid")
     setSelectedName(name);
     let data = {
       "subFolderLocation": name
     }
+    
     let response = await new FilesAPI().getTeacherResources(courseid, data)
     // setLoading(false)
     if(response.ok){
@@ -65,8 +65,6 @@ function ClassResources() {
   }
 
   return (
-    // <CourseContent>
-    //   <CourseBreadcrumbs title={''} clicked={() => console.log('')}/>
     <ClassSideNavigation>
       <div className="row m-b-20 file-content">
         <FileHeader type='Course'  title='Teacher Resources' id={id} subFolder={subFolderDirectory.join('')}  doneUpload={()=> handleRefetch()}/>
