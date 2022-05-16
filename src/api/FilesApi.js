@@ -71,6 +71,13 @@ export default class GradeAPI extends Base {
     });
   };
 
+  getFilesForCourse = async (id) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/files`,
+      method: 'GET'
+    })
+  }
+
   deleteCourseFile = async(id, data) => {
     return this.sendRequest({
       path: `/api/Course/${id}/files/v3/delete`,
@@ -135,3 +142,4 @@ export default class GradeAPI extends Base {
     })
   }
 }
+

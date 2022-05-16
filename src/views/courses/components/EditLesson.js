@@ -97,7 +97,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
     setLoading(false)
     if(response.ok){
       setModulePages(response.data)
-      console.log(response.data)
+      console.log(response.data, "=====================")
     }else{
       alert("Something went wrong while fetching all pages")
     }
@@ -109,19 +109,22 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
 			setSequenceNo(selectedLesson?.sequenceNo)
       setContent(selectedLesson?.content)
 		}
+    handleGetClassFiles()
   }, [selectedLesson])
 
   const handleGetClassFiles = async() => {
     // setLoading(true)
-    let response = await new FilesAPI().getClassFiles(sessionCourse)
+    let response = await new FilesAPI().getFilesForCourse(sessionCourse)
     // setLoading(false)
     if(response.ok){
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
+      setDisplayFiles(response.data)
+      console.log(response.data, "-----------------")
     }else{
       alert("Something went wrong while fetching class files ;;.")
     }
   } 
+
+  console.log('displayFiles', displayFiles)
 
 	return (
 		<div>
@@ -132,7 +135,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveEditLesson}>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
-            <FileHeader type='Class' id={sessionCourse}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
+            <FileHeader type='Course' id={sessionCourse}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
             {/* {
              (displayFiles || []).map( (item,ind) => {
                 return(
@@ -141,17 +144,17 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
               })
             } */}
              {
-               (displayFiles || []).map( (item,ind) => {
+               displayFiles?.map( (item,ind) => {
                   return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
+                    item.path_Base?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+                    <img key={ind+item.name} src={item.path_Base.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
                     :
                     <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
                   )
                 })
               }
               {
-                (displayFolder || []).map((itm) => {
+                displayFolder?.map((itm) => {
                   return(
                     <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
                   )
