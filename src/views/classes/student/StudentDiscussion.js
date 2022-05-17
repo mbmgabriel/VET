@@ -55,7 +55,7 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
       {(discussionModule?.filter((item) => {
         if(searchTerm == ''){
           return item
-        }else if(item?.discussion?.discussionName.toLowerCase().includes(searchTerm.toLowerCase())){
+        }else if(item?.discussion?.discussionName?.toLowerCase().includes(searchTerm.toLowerCase())){
           return item
         }
       }).map(item => {
