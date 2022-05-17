@@ -20,6 +20,7 @@ function FileHeader(props) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const courseid = sessionStorage.getItem('courseid')
+  
 
   const getCourseInformation = async() => {
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -31,7 +32,9 @@ function FileHeader(props) {
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(window.location.pathname.includes('course')){
+      getCourseInformation();
+    }
   }, [])
 
 
@@ -220,7 +223,9 @@ function FileHeader(props) {
         <div>
           <p className='title-header'>{props.title}</p>
         </div>
-        {!user.isSchoolAdmin && <>
+        {displayButtons ? 
+        (
+        <>
           <div>
             <OverlayTrigger
               placement="right"
@@ -239,8 +244,14 @@ function FileHeader(props) {
           <div>
             <p><Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button></p>
           </div>
-        </>}
+        </>
+        )
+        :
+        <>
+        </>
+        }
       </div>
+
       <Modal size="lg" show={showUploadModal} onHide={() => setShowUploadModal(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">

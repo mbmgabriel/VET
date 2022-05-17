@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import Modal from 'react-bootstrap/Modal'
-import { Form, Button, } from 'react-bootstrap'
+import { Form, Button,  Tooltip, OverlayTrigger} from 'react-bootstrap'
 import { useParams } from 'react-router'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import FilesAPI from '../../../../api/FilesApi';
 import FileHeader from '../Task/TaskFileHeader';
 import ContentField from '../../../../components/content_field/ContentField'
+import { toast } from 'react-toastify';
 
 function CreateAssignment({modal, toggle, module, getAssignmentList, question, setQuestion}) {
   const [moduleId, setModuleId] = useState('')
@@ -23,18 +24,52 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   }
   const createAssignment = async (e) =>{
     e.preventDefault()
-    let response = await new ClassesAPI().createAssignment(moduleId, id, {assignment:{assignmentName, instructions,}, classAssignment:{}} )
-    if(response.ok){
-      setModuleId('')
-      setAssignmentName('')
-      setInstructions('')
-      // alert('Save Assingment')
-      setAddNotity(true)
-      getAssignmentList(null, moduleId)
-      toggle(e)
+    if(moduleId == ''){
+      toast.error('Please input all the required fields.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }else{
-      alert(response.data.errorMessage)
+      let response = await new ClassesAPI().createAssignment(moduleId, id, {assignment:{assignmentName, instructions,}, classAssignment:{}} )
+      if(response.ok){
+        success()
+        setModuleId('')
+        setAssignmentName('')
+        setInstructions('')
+        // alert('Save Assingment')
+        // setAddNotity(true)
+        getAssignmentList(null, moduleId)
+        toggle(e)
+      }else{
+        // alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+      }
     }
+  }
+
+  const success = () => {
+    toast.success('Successfully saved assignment!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
 
@@ -42,7 +77,17 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
     handleGetClassFiles()
   }, [])
 
+  const renderTooltipSave = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Save
+    </Tooltip>
+  )
 
+  const renderTooltipUpload = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Upload
+    </Tooltip>
+  )
 
   const handleGetClassFiles = async() => {
     // setLoading(true)
@@ -90,7 +135,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
               }
             </div>
             <div className='text-align-right'>
-              <Button className='my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+                   <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
             </div>
           <Form onSubmit={createAssignment} > 
             <Form.Group className="mb-3">
@@ -108,10 +153,10 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label >Instruction</Form.Label>
-                  <ContentField  value={instructions} onChange={value => setInstructions(value)} />
+                  <ContentField  value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
               </Form.Group>  
               <Form.Group className='right-btn'>
-                <Button className='tficolorbg-button' type='submit' >Save</Button>
+                  <Button className='tficolorbg-button' type='submit' >Save Assignment</Button>
               </Form.Group>
           </Form> 
         </Modal.Body>

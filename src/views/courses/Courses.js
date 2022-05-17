@@ -171,11 +171,11 @@ export default function Courses() {
              <Button onClick={() => handleOnclick(stemItem)} className="m-r-5 color-white btn-filter" size="sm">SHS-STEM</Button>
              <Button onClick={() => handleOnclick(tleItem)} className="m-r-5 color-white btn-filter" size="sm">TLE</Button>
            </div>
-          <div className="row m-b-20 justify-content-center">
-            <CoursesItem getCourses={getCourses} subjectAreaName={subjectAreaName} filter={filter} setFilter={setFilter} course={course} setLoading={setLoading} setOpenEditModal={setOpenEditModal} setSelectedCourse={setSelectedCourse}/>
-            <CourseCreate  subjectAreaName={subjectAreaName} setSubjectAreaName={setSubjectAreaName} getCourses={getCourses} setCourse={setCourse} openModal={openModal} setOpenModal={setOpenModal} /> 
-            <CourseEdit getCourses={getCourses} handleOnclick={handleOnclick} setCourse={setCourse} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} selectedCourse={selectedCourse} /> 
-          </div>
+            <CardGroup className="justify-content-center">
+              <CoursesItem getCourses={getCourses} subjectAreaName={subjectAreaName} filter={filter} setFilter={setFilter} course={course} setLoading={setLoading} setOpenEditModal={setOpenEditModal} setSelectedCourse={setSelectedCourse}/>
+              <CourseCreate  subjectAreaName={subjectAreaName} setSubjectAreaName={setSubjectAreaName} getCourses={getCourses} setCourse={setCourse} openModal={openModal} setOpenModal={setOpenModal} /> 
+              <CourseEdit getCourses={getCourses} handleOnclick={handleOnclick} setCourse={setCourse} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} selectedCourse={selectedCourse} /> 
+            </CardGroup>
         </div>
       </div>
     </MainContainer>

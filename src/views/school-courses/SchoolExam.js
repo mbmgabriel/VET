@@ -35,7 +35,7 @@ function SchoolExam() {
   }, []);
 
   return (
-  <MainContainer title="Exam" activeHeader={"exam"} loading={loading}>
+  <MainContainer title="Exam" activeHeader={"courses"} loading={loading}>
     <Row className="mt-4">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Exam" />
