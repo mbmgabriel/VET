@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './AssignmentFileHeader';
 import { useParams } from "react-router";
+import ContentField from "../../../components/content_field/ContentField";
 
 export default function CreateTask({openCreateTaskModal, setCreateTaskModal, setTaskInfo}){
 
@@ -22,9 +23,10 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
   let sessionModule = sessionStorage.getItem('moduleid')
 
 
-	const handleCloseModal = e => {
-    e.preventDefault()
+	const handleCloseModal = () => {
     setCreateTaskModal(false)
+    setTaskName('')
+    setInstructions('')
   }
 
 	const saveTask = async(e) => {
@@ -36,7 +38,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
       {taskName, instructions, isShared:false}
     )
     if(response.ok){
-			handleCloseModal(e)
+			handleCloseModal()
       getTaskInfo(sessionModule)
       notifySaveTask()
     }else{
@@ -106,7 +108,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
   } 
 	return (
 		<div>
-			<Modal size="lg" className="modal-all" show={openCreateTaskModal} onHide={()=> setCreateTaskModal(!openCreateTaskModal)} >
+			<Modal size="lg" className="modal-all" show={openCreateTaskModal} onHide={()=> handleCloseModal()} >
 				<Modal.Header className="modal-header" closeButton>
 				Create Task
 				</Modal.Header>
@@ -158,13 +160,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
 										<Form.Label for="description">
 												Instructions
 										</Form.Label>
-										<Form.Control 
-                      className="custom-input" 
-                      size="lg" 
-                      type="text" 
-                      placeholder="Enter Task Instructions"
-                      onChange={(e) => setInstructions(e.target.value)}
-                    />
+                     <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
 								</Form.Group>
 
 								<span style={{float:"right"}}>

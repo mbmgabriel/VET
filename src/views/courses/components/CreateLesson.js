@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal'
 import CoursesAPI from "../../../api/CoursesAPI";
@@ -93,9 +93,14 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
     progress: undefined,
   });
 
+  useEffect(() => {
+    handleGetClassFiles()
+    // console.log(module, '-----------')
+  }, [])
+
   const handleGetClassFiles = async() => {
     // setLoading(true)
-    let response = await new FilesAPI().getClassFiles(sessionCourse)
+    let response = await new FilesAPI().getCourseFiles(sessionCourse)
     // setLoading(false)
     if(response.ok){
       setDisplayFiles(response.data.files)
@@ -114,7 +119,7 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveLesson}>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
-            <FileHeader type='Class' id={sessionCourse}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
+            <FileHeader type='Course' id={sessionCourse}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
             {/* {
              (displayFiles || []).map( (item,ind) => {
                 return(
@@ -123,7 +128,7 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
               })
             } */}
              {
-               (displayFiles || []).map( (item,ind) => {
+              (displayFiles || []).map((item,ind) => {
                   return(
                     item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
                     <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
@@ -185,7 +190,7 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
                 </div>
                 <Form.Group className="m-b-20">
                   <Form.Label >Content</Form.Label>
-                    <ContentField value={content}  placeholder='Enter instruction here'  onChange={value => setContent(value)} />
+                    <ContentField value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
                 </Form.Group>
                 {' '}
     

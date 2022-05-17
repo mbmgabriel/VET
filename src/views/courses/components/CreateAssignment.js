@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './AssignmentFileHeader';
 import { useParams } from 'react-router'
+import ContentField from "../../../components/content_field/ContentField";
 
 export default function CreateAssignment({openCreateAssignmentModal, setOpenCreateAssignmentModal, setAssignmentInfo}){
 
@@ -22,7 +23,8 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
   const [displayFolder, setDisplayFolder] = useState([])
 
 	const handleCloseModal = e => {
-    e.preventDefault()
+    setAssignmentName('')
+    setInstructions('')
     setOpenCreateAssignmentModal(false)
   }
 
@@ -108,7 +110,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
 
 	return (
 		<div>
-			<Modal size="lg" className="modal-all" show={openCreateAssignmentModal} onHide={()=> setOpenCreateAssignmentModal(!openCreateAssignmentModal)} >
+			<Modal size="lg" className="modal-all" show={openCreateAssignmentModal} onHide={()=> handleCloseModal()} >
 				<Modal.Header className="modal-header" closeButton>
 				Create Assignment
 				</Modal.Header>
@@ -140,9 +142,6 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                 })
               }
             </div>
-            <div className='text-align-right'>
-              <Button className='my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-            </div>
 						<Form onSubmit={saveAssignmennt}>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
@@ -156,20 +155,15 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       onChange={(e) => setAssignmentName(e.target.value)}
                     />
 								</Form.Group>
-
+                <div>
+                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+                </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="description">
 												Instructions
 										</Form.Label>
-										<Form.Control 
-                      className="custom-input" 
-                      size="lg" 
-                      type="text" 
-                      placeholder="Enter Assignment Instructions"
-                      onChange={(e) => setInstructions(e.target.value)}
-                    />
+                      <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
 								</Form.Group>
-
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
 												Save

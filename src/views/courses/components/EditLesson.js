@@ -81,7 +81,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
     setLoading(true)
     sessionStorage.setItem('moduleid', data)
     sessionStorage.setItem('modulename', modulename)
-    let response = await new CoursesAPI().getCourseUnitPages(sessionCourse, data)
+    let response = await new CoursesAPI().getCourseFiles(sessionCourse, data)
     setLoading(false)
     if(response.ok){
       setLessonInfo(response.data)
@@ -114,10 +114,10 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
 
   const handleGetClassFiles = async() => {
     // setLoading(true)
-    let response = await new FilesAPI().getFilesForCourse(sessionCourse)
+    let response = await new FilesAPI().getCourseFiles(sessionCourse)
     // setLoading(false)
     if(response.ok){
-      setDisplayFiles(response.data)
+      setDisplayFiles(response.data.files)
       console.log(response.data, "-----------------")
     }else{
       alert("Something went wrong while fetching class files ;;.")
@@ -144,17 +144,17 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
               })
             } */}
              {
-               displayFiles?.map( (item,ind) => {
+               (displayFiles || []).map( (item,ind) => {
                   return(
-                    item.path_Base?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.name} src={item.path_Base.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
+                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
                     :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
+                   <span></span> // <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
                   )
                 })
               }
               {
-                displayFolder?.map((itm) => {
+               (displayFiles || []).map((itm) => {
                   return(
                     <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
                   )
@@ -209,7 +209,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
                 </div>
                 <Form.Group className="m-b-20">
                   <Form.Label >Content</Form.Label>
-                    <ContentField value={content}  placeholder='Enter instruction here'  onChange={value => setContent(value)} />
+                    <ContentField value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
                 </Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
