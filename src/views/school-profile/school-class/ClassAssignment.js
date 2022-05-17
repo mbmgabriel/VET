@@ -256,13 +256,13 @@ export default function SchoolAdminAssignment() {
                         overlay={renderTooltipView}>
                         <Button onClick={() => viewAssignmentToggle(assigItem?.assignment, assigItem?.classAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                       </OverlayTrigger>
-                      <OverlayTrigger
+                      {/* <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 1, hide: 0 }}
                           overlay={renderTooltipEdit}>
                         <Button onClick={(e) => toggle(e, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, item?.moduleName, assigItem?.assignment?.id, assigItem?.module?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
-                      </OverlayTrigger>
-                    {assigItem?.classAssignment?(
+                      </OverlayTrigger> */}
+                    {/* {assigItem?.classAssignment?(
                       <OverlayTrigger
                         placement="bottom"
                         delay={{ show: 1, hide: 0 }}
@@ -282,7 +282,7 @@ export default function SchoolAdminAssignment() {
                       delay={{ show: 1, hide: 0 }}
                       overlay={renderTooltipDelete}>
                         <Button onClick={() => handleDeleteNotify(assigItem?.assignment?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
-                    </OverlayTrigger>
+                    </OverlayTrigger> */}
                   </Col>
                   </>
                 ):
@@ -322,12 +322,12 @@ export default function SchoolAdminAssignment() {
                       overlay={renderTooltipView}>
                       <Button onClick={() => viewAssignmentToggle(assigItem?.assignment, assigItem?.classAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                     </OverlayTrigger>
-                    <OverlayTrigger
+                    {/* <OverlayTrigger
                       placement="bottom"
                       delay={{ show: 1, hide: 0 }}
                       overlay={renderTooltipAsign}>  
                       <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                    </OverlayTrigger>
+                    </OverlayTrigger> */}
                     </Col>
                   </>
                   )
