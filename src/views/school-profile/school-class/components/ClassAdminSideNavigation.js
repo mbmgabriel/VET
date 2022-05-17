@@ -1,12 +1,28 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router';
+import DiscussionAPI from '../../../../api/DiscussionAPI';
 
 export default function ClassAdminSideNavigation({active}) {
+  const [courseInfos, setCourseInfos] = useState([])
   const {id} = useParams();
+
+  const getCourseInformation = async () =>{
+    let response = await new DiscussionAPI().getClassInfo(id)
+    if(response.ok){
+      setCourseInfos(response.data.classInformation)
+      console.log(response.data, '-----------')
+    }
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
 
   return (
     <div className="side-navigation">
+      {courseInfos.courseName}
+      <div className="course-subtitle">{courseInfos.teacherName}</div>
       <Link to={`/school_classes/${id}/feed`}className={`side-navigation-item ${active === "feed" ? "active" : ""}`}>Feed</Link>
       <Link to={`/school_classes/${id}/learn`} className={`side-navigation-item ${active === "learn" ? "active" : ""}`}>Learn</Link>
       <Link to={`/school_classes/${id}/exam`} className={`side-navigation-item ${active === "exam" ? "active" : ""}`}>Exam</Link>
