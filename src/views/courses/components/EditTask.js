@@ -86,7 +86,7 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
   }, [selectedTask])
 
   const notifyUpdateTask = () => 
-  toast.success('Task Updated!', {
+  toast.success('Successfully updated task!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,

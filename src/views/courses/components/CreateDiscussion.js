@@ -78,7 +78,7 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
   }
 
   const notifySaveDiscussion = () => 
-  toast.success('Discussion Saved!', {
+  toast.success('Successfully saved discussion!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,

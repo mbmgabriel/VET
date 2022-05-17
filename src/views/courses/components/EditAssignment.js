@@ -85,7 +85,7 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
   }, [selectedAssignment])
 
   const notifyUpdateAssignment = () => 
-  toast.success('Assignment Updated!', {
+  toast.success('Successfully updated assignment!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,

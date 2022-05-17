@@ -80,7 +80,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
   }
 
   const notifySaveTask = () => 
-  toast.success('Task Saved!', {
+  toast.success('Successfully saved task!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,

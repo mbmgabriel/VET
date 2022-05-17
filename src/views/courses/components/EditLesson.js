@@ -47,7 +47,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
         {pageName, sequenceNo, content}
       )
       if(response.ok){
-        toast.success('Lesson Save!', {
+        toast.success('Successfully updated lesson!', {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

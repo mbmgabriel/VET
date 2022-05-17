@@ -73,7 +73,7 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
   }, [selectedDiscussion])
 
   const notifyUpdateDiscussion= () => 
-  toast.success('Discussion Updated!', {
+  toast.success('Successfully updated discussion!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,

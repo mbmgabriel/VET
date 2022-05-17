@@ -83,7 +83,7 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
   }
 
   const notifySaveLesson = () => 
-  toast.success('Lesson Saved!', {
+  toast.success('Successfully saved lesson!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,

@@ -78,7 +78,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
   }
 
   const notifySaveAssignment = () => 
-  toast.success('Assignment Saved!', {
+  toast.success('Successfully saved assignment!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
