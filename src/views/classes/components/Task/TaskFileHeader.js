@@ -140,7 +140,20 @@ function FileHeader(props) {
     setDoneUpload(false)
     setUploadStarted(false)
     setUploadStarted(false)
+    doneToast()
   }
+
+
+  const doneToast = () => 
+  toast.success('Successfully uploaded file!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
 
   const renderTooltipUploadFiles = (props) => (
     <Tooltip id="button-tooltip" {...props}>

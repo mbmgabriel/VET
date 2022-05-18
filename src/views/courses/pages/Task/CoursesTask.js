@@ -28,6 +28,7 @@ export default function CoursesTask() {
   const {id} = useParams();
   const [showTask, setShowTask] = useState(false);
   const [taskName, setTaskName] = useState('')
+  const [instructions, setInstructions] = useState('')
   const [courseInfo, setCourseInfo] = useState("")
 
   const courseid = sessionStorage.getItem('courseid')
@@ -53,9 +54,11 @@ export default function CoursesTask() {
     setCreateTaskModal(!openCreateTaskModal)
   }
 
-  const handleOpenEditTaskModal = (e, item) =>{
+  const handleOpenEditTaskModal = (e, taskName, instructions, taskId) =>{
     e.preventDefault()
-    setSelectedTask(item)
+    setTaskName(taskName)
+    setInstructions(instructions)
+    setTaskId(taskId)
     setOpenEditTaskModal(!openEditTaskModal)
   }
 
@@ -167,7 +170,13 @@ export default function CoursesTask() {
           </InputGroup>
         </div>
       </div>
-      <EditTask setTaskInfo={setTaskInfo} selectedTask={selectedTask} openEditTaskModal={openEditTaskModal} setOpenEditTaskModal={setOpenEditTaskModal}/>
+      <EditTask
+      taskName={taskName}
+      instructions={instructions}
+      taskId={taskId}
+      setInstructions={setInstructions} 
+      setTaskName={setTaskName}
+      setTaskInfo={setTaskInfo} selectedTask={selectedTask} openEditTaskModal={openEditTaskModal} setOpenEditTaskModal={setOpenEditTaskModal}/>
       <CreateTask setTaskInfo={setTaskInfo} openCreateTaskModal={openCreateTaskModal} setCreateTaskModal={setCreateTaskModal}/>
       <Accordion defaultActiveKey="0">
         {moduleInfo.map((item, index) => {
@@ -195,7 +204,7 @@ export default function CoursesTask() {
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}
                         overlay={renderTooltipEdit}>
-                        <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti)}><i className="fa fa-edit"></i></Button>
+                        <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti?.taskName, ti?.instructions, ti?.id)}><i className="fa fa-edit"></i></Button>
                      </OverlayTrigger>
                      <OverlayTrigger
                         placement="bottom"
