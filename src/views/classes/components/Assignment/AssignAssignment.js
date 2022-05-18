@@ -4,6 +4,7 @@ import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function AssignAssignment({ moduleId, getAssignmentList, assginModal, assignAssignmentToggle, assignmentId }) {
   console.log('assingmentId:', assignmentId)
@@ -22,7 +23,7 @@ function AssignAssignment({ moduleId, getAssignmentList, assginModal, assignAssi
     e.preventDefault()
     let response = await new ClassesAPI().assignAssignment(id, assignmentId, {startDate, startTime, endDate, endTime})
       if(response.ok){
-        setAssignNotify(true)
+        success()
         setStartDate('')
         setStartTime('')
         setEndDate('')
@@ -30,8 +31,28 @@ function AssignAssignment({ moduleId, getAssignmentList, assginModal, assignAssi
         assignAssignmentToggle(false)
         getAssignmentList(null, moduleId)
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
+  }
+
+  const success = () => {
+    toast.success('Successfully assign assignment', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   return (

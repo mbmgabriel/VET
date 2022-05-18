@@ -5,6 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
+import { toast } from 'react-toastify';
 
 function EditAssignedAssignment({moduleId, getAssignmentList, editAssignedAssignmentToggle, editAssignedAssignmentModal, editAssignAssignmentItem }) {
   console.log('this is edit assignAssignment:', editAssignAssignmentItem)
@@ -26,11 +27,19 @@ const updateAssignAssignment = async (e) => {
     if(response.ok){
       // alert("updated")
       editAssignedAssignmentToggle(e)
-      setEditNotify(true)
+      success()
       getAssignmentList(null, moduleId)
 
     }else{
-      alert("Something went wrong while Updating Assign Assignment")
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
 }
 
@@ -42,6 +51,18 @@ useEffect(() => {
     setEndTime(editAssignAssignmentItem?.classAssignment?.endTime)
   }
 }, [editAssignAssignmentItem])
+
+const success = () => {
+  toast.success('Successfully reassign assignment', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    });
+}
 
   return (
     <div>
