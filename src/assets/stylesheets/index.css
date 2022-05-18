@@ -1496,6 +1496,24 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.dash-side-panel {
+  background-color: white;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  padding:15px;
+  margin-bottom: 10px;
+}
+
+.dash-classtitle{
+  /* color:var(--primary-color); */
+  font-size: 14px;
+}
+
+.dash-classtitle:hover{
+  color: #5B84C4;
+  cursor: pointer;
+}
+
 .dash-title{
   color:#EE9337;
   font-size: 18px !important;
