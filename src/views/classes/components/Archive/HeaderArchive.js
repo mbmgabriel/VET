@@ -93,7 +93,7 @@ return (
                     placement="right"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipRestore}>
-                    <i className="fa fa-ellipsis-v fa-1x cursor-pointer"></i>
+                    <i className="fa fa-ellipsis-v fa-1x cursor-pointer-edit-class-card"></i>
                   </OverlayTrigger>
                   </Dropdown.Toggle>
                   <Dropdown.Menu >
