@@ -44,7 +44,7 @@ function AssignAssignment({ moduleId, getAssignmentList, assginModal, assignAssi
   }
 
   const success = () => {
-    toast.success('Successfully assign assignment', {
+    toast.success('Successfully assigned assignment', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,

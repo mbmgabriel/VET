@@ -53,7 +53,7 @@ useEffect(() => {
 }, [editAssignAssignmentItem])
 
 const success = () => {
-  toast.success('Successfully reassign assignment', {
+  toast.success('Successfully reassigned assignment', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
