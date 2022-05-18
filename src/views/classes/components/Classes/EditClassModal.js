@@ -194,7 +194,7 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
                   <Form.Control defaultValue={seletedClass?.classCode}  type="text" placeholder='Enter class Code here' disabled/>
             	</Form.Group>
             <Form.Group className='right-btn'> 
-            	<Button className='tficolorbg-button' type='submit'>Save</Button>
+            	<Button className='tficolorbg-button' type='submit'>Update Class</Button>
             </Form.Group>
          </Form>
 				</Modal.Body>
