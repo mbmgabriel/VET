@@ -7,6 +7,7 @@ import ClassesAPI from '../../../../api/ClassesAPI';
 import { UserContext } from '../../../../context/UserContext'
 import AcademicTermAPI from '../../../../api/AcademicTermAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function CreateClassModal({modal, toggle,getClasses}) {
   const [addNotify, setAddNotity] = useState(false)
@@ -29,6 +30,18 @@ function CreateClassModal({modal, toggle,getClasses}) {
     e.preventDefault()
     setGetCode(createRandomCode(4))
     
+  }
+
+  const success = () => {
+    toast.success('Successfully updated class', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   console.log(classCode)
@@ -79,13 +92,21 @@ function CreateClassModal({modal, toggle,getClasses}) {
       {classCode, gradeLevelId, className, courseId, teacherId, academicTermId}
     )
     if(response.ok){
-      setAddNotity(true)
+      success()
       toggle(e)
       getClasses()
       setGetCode('')
 
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   }
 
