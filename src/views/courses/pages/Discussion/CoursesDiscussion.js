@@ -42,7 +42,9 @@ export default function CoursesDiscussion() {
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(courseid != null){
+      getCourseInformation();
+    }
   }, [])
 
   const handleopenCreateDiscussionModal = () =>{
