@@ -26,6 +26,8 @@ export default function CoursesDiscussion() {
   const [showDiscussion, setShowDiscussion] = useState(false);
   const [clickedDiscussion, setClickedDiscussion] = useState('')
   const [courseInfo, setCourseInfo] = useState("")
+  const [discussionName, setDiscussionName] = useState('')
+  const [instructions, setInstructions] = useState('')
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
@@ -49,9 +51,11 @@ export default function CoursesDiscussion() {
     setOpenCreateDiscussionModal(!openCreateDiscussionModal)
   }
 
-  const handleOpenEditDiscussionModal = (e, item) =>{
+  const handleOpenEditDiscussionModal = (e, discussionName, instructions, discussionId) =>{
     e.preventDefault()
-    setSelectedDiscussion(item)
+    setDiscussionName(discussionName)
+    setInstructions(instructions)
+    setDiscussionId(discussionId)
     setOpenEditDiscussionModal(!openEditDiscussionModal)
   }
 
@@ -168,7 +172,13 @@ export default function CoursesDiscussion() {
             </div>
           </div>
           <CreateDiscussion setDiscussionInfo={setDiscussionInfo} openCreateDiscussionModal={openCreateDiscussionModal} setOpenCreateDiscussionModal={setOpenCreateDiscussionModal}/>
-          <EditDiscussion setDiscussionInfo={setDiscussionInfo} selectedDiscussion={selectedDiscussion} openEditDiscussionModal={openEditDiscussionModal} setOpenEditDiscussionModal={setOpenEditDiscussionModal}/>
+          <EditDiscussion
+          discussionName={discussionName}
+          instructions={instructions}
+          discussionId={discussionId}
+          setDiscussionName={setDiscussionName}
+          setInstructions={setInstructions}
+          setDiscussionInfo={setDiscussionInfo} selectedDiscussion={selectedDiscussion} openEditDiscussionModal={openEditDiscussionModal} setOpenEditDiscussionModal={setOpenEditDiscussionModal}/>
           <Accordion defaultActiveKey="0">
             {moduleInfo.map((item, index) => {
               return(
@@ -196,7 +206,7 @@ export default function CoursesDiscussion() {
                           placement="bottom"
                           delay={{ show: 1, hide: 25 }}
                           overlay={renderTooltipEdit}>
-                              <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditDiscussionModal(e, di)}><i className="fa fa-edit"></i></Button>
+                              <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditDiscussionModal(e, di?.discussion?.discussionName, di?.discussion?.instructions, di?.discussion?.id)}><i className="fa fa-edit"></i></Button>
                         </OverlayTrigger>
                         <OverlayTrigger
                           placement="bottom"

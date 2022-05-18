@@ -7,12 +7,12 @@ import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
 
-export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selectedTask, setTaskInfo}){
+export default function EditTask({setTaskName,setInstructions, taskId, instructions, taskName, openEditTaskModal, setOpenEditTaskModal, selectedTask, setTaskInfo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
-	const [taskName, setTaskName] = useState('')
-	const [instructions, setInstructions] = useState('')
+	// const [taskName, setTaskName] = useState('')
+	// const [instructions, setInstructions] = useState('')
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -30,7 +30,7 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
     e.preventDefault()
     setLoading(true)
     let response = await new CoursesAPI().editTask(
-      selectedTask?.id,
+      taskId,
       {taskName, instructions}
     )
     if(response.ok){
@@ -78,12 +78,12 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
 	useEffect(() => {
   }, [])
 
-  useEffect(() => {
-    if(selectedTask !== null) {
-			setTaskName(selectedTask?.taskName)
-			setInstructions(selectedTask?.instructions)
-		}
-  }, [selectedTask])
+  // useEffect(() => {
+  //   if(selectedTask !== null) {
+	// 		setTaskName(selectedTask?.taskName)
+	// 		setInstructions(selectedTask?.instructions)
+	// 	}
+  // }, [selectedTask])
 
   const notifyUpdateTask = () => 
   toast.success('Successfully updated task!', {
@@ -99,6 +99,8 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
   useEffect(() => {
     handleGetCourseFiles()
   }, [])
+
+  console.log('selectedTask:', selectedTask)
 
   const handleGetCourseFiles = async() => {
     // setLoading(true)
@@ -153,7 +155,7 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
 												Task Name
 										</Form.Label>
 										<Form.Control 
-                      defaultValue={selectedTask?.taskName}
+                      defaultValue={taskName}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
@@ -172,7 +174,7 @@ export default function EditTask({openEditTaskModal, setOpenEditTaskModal, selec
 								</Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Update Task
 										</Button>
 								</span>
 						</Form>

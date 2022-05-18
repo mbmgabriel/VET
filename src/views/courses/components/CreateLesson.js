@@ -23,9 +23,6 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
 
 
 	const handleCloseModal = e => {
-    setContent('')
-    setSequenceNo(null)
-    setPageName('')
     setCreateLessonModal(false)
   }
 
@@ -196,7 +193,7 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
     
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Save Lesson
 										</Button>
 								</span>
 						</Form>

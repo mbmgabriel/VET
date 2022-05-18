@@ -165,7 +165,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
 
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Save Task
 										</Button>
 								</span>
 						</Form>

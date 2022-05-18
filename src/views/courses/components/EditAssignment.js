@@ -7,12 +7,10 @@ import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "./AssignmentFileHeader";
 import FilesAPI from '../../../api/FilesApi'
 
-export default function EditAssignment({openEditAssignmentModal, setOpenEditAssignmentModal, selectedAssignment, setAssignmentInfo}){
+export default function EditAssignment({setInstructions, setAssignmentName, assignmentId, instructions, assignmentName, openEditAssignmentModal, setOpenEditAssignmentModal, selectedAssignment, setAssignmentInfo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
-	const [assignmentName, setAssignmentName] = useState('')
-	const [instructions, setInstructions] = useState('')
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -29,7 +27,7 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
     e.preventDefault()
     setLoading(true)
     let response = await new CoursesAPI().editAssignment(
-      selectedAssignment?.id,
+      assignmentId,
       {assignmentName, instructions}
     )
     if(response.ok){
@@ -77,12 +75,14 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
 	useEffect(() => {
   }, [])
 
-  useEffect(() => {
-    if(selectedAssignment !== null) {
-			setAssignmentName(selectedAssignment?.assignmentName)
-			setInstructions(selectedAssignment?.instructions)
-		}
-  }, [selectedAssignment])
+  // useEffect(() => {
+  //   if(selectedAssignment !== null) {
+	// 		setAssignmentName(selectedAssignment?.assignmentName)
+	// 		setInstructions(selectedAssignment?.instructions)
+	// 	}
+  // }, [selectedAssignment])
+
+  console.log('selectedAssignment:', selectedAssignment)
 
   const notifyUpdateAssignment = () => 
   toast.success('Successfully updated assignment!', {
@@ -152,7 +152,7 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
 												Assignment Name
 										</Form.Label>
 										<Form.Control 
-                      defaultValue={selectedAssignment?.assignmentName}
+                      defaultValue={assignmentName}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
@@ -171,7 +171,7 @@ export default function EditAssignment({openEditAssignmentModal, setOpenEditAssi
 								</Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Update Assignment
 										</Button>
 								</span>
 						</Form>

@@ -8,13 +8,10 @@ import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
 
-export default function EditLesson({openEditLessonModal, setOpenEditLessonModal, selectedLesson, setLessonInfo}){
+export default function EditLesson({lessonId, setSequenceNo, setPageName, setContent, content, pageName, sequenceNo, openEditLessonModal, setOpenEditLessonModal, selectedLesson, setLessonInfo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
-	const [pageName, setPageName] = useState('')
-	const [sequenceNo, setSequenceNo] = useState('')
-	const [content, setContent] = useState('')
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -22,15 +19,13 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
-
-	const handleCloseModal = e => {
-    e.preventDefault()
+  const handleCloseModal = () => {
     setOpenEditLessonModal(false)
   }
 
 	const saveEditLesson = async(e, id ) => {
     e.preventDefault()
-    if(pageName === '' || content === '' || sequenceNo === ''){
+    if(pageName === '' || content === '{{type=equation}}' || sequenceNo === null){
       toast.error('Please fill out all fields!', {
         position: "top-right",
         autoClose: 5000,
@@ -43,7 +38,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
     }else{
       setLoading(true)
       let response = await new CoursesAPI().editLesson(
-        selectedLesson?.id,
+        lessonId,
         {pageName, sequenceNo, content}
       )
       if(response.ok){
@@ -60,7 +55,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
         console.log(getCourseUnitPages())
       getCourseLessons(sessionCourse, sessionModule)
   
-        handleCloseModal(e)
+      setOpenEditLessonModal(false)
       }else{
         toast.error(response.data.errorMessage, {
           position: "top-right",
@@ -81,7 +76,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
     setLoading(true)
     sessionStorage.setItem('moduleid', data)
     sessionStorage.setItem('modulename', modulename)
-    let response = await new CoursesAPI().getCourseFiles(sessionCourse, data)
+    let response = await new CoursesAPI().getCourseUnitPages(sessionCourse, data)
     setLoading(false)
     if(response.ok){
       setLessonInfo(response.data)
@@ -103,14 +98,16 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
     }
   }
 
-	useEffect(() => {
-    if(selectedLesson !== null) {
-			setPageName(selectedLesson?.pageName)
-			setSequenceNo(selectedLesson?.sequenceNo)
-      setContent(selectedLesson?.content)
-		}
-    handleGetClassFiles()
-  }, [selectedLesson])
+	// useEffect(() => {
+  //   if(selectedLesson != null) {
+	// 		setPageName(selectedLesson?.pageName)
+	// 		setSequenceNo(selectedLesson?.sequenceNo)
+  //     setContent(selectedLesson?.content)
+  //     alert('test')
+	// 	}
+  //   handleGetClassFiles()
+  // }, [selectedLesson])
+
 
   const handleGetClassFiles = async() => {
     // setLoading(true)
@@ -128,7 +125,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
 
 	return (
 		<div>
-			<Modal size="xl" className="modal-all" show={openEditLessonModal} onHide={()=> setOpenEditLessonModal(!openEditLessonModal)} >
+			<Modal size="xl" className="modal-all" show={openEditLessonModal} onHide={()=> handleCloseModal()} >
 				<Modal.Header className="modal-header" closeButton>
 				Edit Lesson / Page
 				</Modal.Header>
@@ -154,7 +151,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
                 })
               }
               {
-               (displayFiles || []).map((itm) => {
+               (displayFolder || []).map((itm) => {
                   return(
                     <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
                   )
@@ -163,10 +160,10 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
           </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
-												Page Name 1
+												Page Name 
 										</Form.Label>
 										<Form.Control 
-											defaultValue={selectedLesson?.pageName}
+											defaultValue={pageName}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
@@ -180,7 +177,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
 												Sequence Number
 										</Form.Label>
 										<Form.Control 
-                      defaultValue={selectedLesson?.sequenceNo}
+                      defaultValue={sequenceNo}
                       className="custom-input" 
                       size="lg" 
                       type="number" 
@@ -213,7 +210,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
                 </Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Update Lesson
 										</Button>
 								</span>
 						</Form>

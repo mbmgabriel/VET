@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CourseContent from "../../CourseContent";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
+import { set } from "react-hook-form";
 
 export default function CoursesAssignment() {
 
@@ -27,6 +28,7 @@ export default function CoursesAssignment() {
   const [moduleInfo, setModuleInfo] = useState([])
   const [showAssignment, setShowAssignment] = useState(false);
   const [assignmmentName, setAssignmentName] = useState('')
+  const [instructions, setInstructions] = useState('')
   const [courseInfo, setCourseInfo] = useState("")
 
   const courseid = sessionStorage.getItem('courseid')
@@ -55,9 +57,11 @@ export default function CoursesAssignment() {
     setOpenCreateAssignmentModal(!openCreateAssignmentModal)
   }
 
-  const handleOpenEditAssignmentModal = (e, item) =>{
+  const handleOpenEditAssignmentModal = (e, assignmentName, instructions, assignmentId) =>{
     e.preventDefault()
-    setSelectedAssignment(item)
+    setAssignmentName(assignmentName)
+    setInstructions(instructions)
+    setAssignmentId(assignmentId)
     setOpenEditAssignmentModal(!openEditAssignmentModal)
   }
 
@@ -184,7 +188,13 @@ export default function CoursesAssignment() {
           </div>
         </div>
         <CreateAssignment openCreateAssignmentModal={openCreateAssignmentModal} setOpenCreateAssignmentModal={setOpenCreateAssignmentModal} setAssignmentInfo={setAssignmentInfo}/>
-        <EditAssignment setAssignmentInfo={setAssignmentInfo} selectedAssignment={selectedAssignment} openEditAssignmentModal={openEditAssignmentModal} setOpenEditAssignmentModal={setOpenEditAssignmentModal}/>
+        <EditAssignment 
+        assignmentName={assignmmentName}
+        instructions={instructions}
+        assignmentId={assignmentId}
+        setAssignmentName={setAssignmentName}
+        setInstructions={setInstructions}
+        setAssignmentInfo={setAssignmentInfo} selectedAssignment={selectedAssignment} openEditAssignmentModal={openEditAssignmentModal} setOpenEditAssignmentModal={setOpenEditAssignmentModal}/>
         <Accordion defaultActiveKey="0">
           {moduleInfo.map((item, index) => {
             return(
@@ -211,7 +221,7 @@ export default function CoursesAssignment() {
                             placement="bottom"
                             delay={{ show: 1, hide: 25 }}
                             overlay={renderTooltipEdit}>
-                              <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as)}><i className="fa fa-edit"></i></Button>
+                              <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id)}><i className="fa fa-edit"></i></Button>
                           </OverlayTrigger>
                           <OverlayTrigger
                             placement="bottom"

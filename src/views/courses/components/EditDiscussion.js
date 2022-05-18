@@ -7,12 +7,10 @@ import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
 
-export default function EditDiscussion({setDiscussionInfo, openEditDiscussionModal, setOpenEditDiscussionModal, selectedDiscussion}){
+export default function EditDiscussion({setInstructions, setDiscussionName, discussionId, instructions, discussionName, setDiscussionInfo, openEditDiscussionModal, setOpenEditDiscussionModal, selectedDiscussion}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
-	const [discussionName, setDiscussionName] = useState('')
-	const [instructions, setInstructions] = useState('')
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -30,7 +28,7 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
     e.preventDefault()
     setLoading(true)
     let response = await new CoursesAPI().editDiscussion(
-      selectedDiscussion?.discussion.id,
+      discussionId,
       {discussionName, instructions}
     )
     if(response.ok){
@@ -65,12 +63,12 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
 	useEffect(() => {
   }, [])
 
-  useEffect(() => {
-    if(selectedDiscussion !== null) {
-			setDiscussionName(selectedDiscussion?.discussion.discussionName)
-			setInstructions(selectedDiscussion?.discussion.instructions)
-		}
-  }, [selectedDiscussion])
+  // useEffect(() => {
+  //   if(selectedDiscussion !== null) {
+	// 		setDiscussionName(selectedDiscussion?.discussion.discussionName)
+	// 		setInstructions(selectedDiscussion?.discussion.instructions)
+	// 	}
+  // }, [selectedDiscussion])
 
   const notifyUpdateDiscussion= () => 
   toast.success('Successfully updated discussion!', {
@@ -99,6 +97,8 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
       alert("Something went wrong while fetching class files.")
     }
   } 
+
+  console.log('selectedDiscussion:', selectedDiscussion)
 
 	return (
 		<div>
@@ -140,7 +140,7 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
 												Discussion Name
 										</Form.Label>
 										<Form.Control 
-                      defaultValue={selectedDiscussion?.discussion.discussionName}
+                      defaultValue={discussionName}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
@@ -159,7 +159,7 @@ export default function EditDiscussion({setDiscussionInfo, openEditDiscussionMod
 								</Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Update Discussion
 										</Button>
 								</span>
 						</Form>

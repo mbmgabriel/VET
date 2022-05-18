@@ -166,7 +166,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
 								</Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Save Assignment
 										</Button>
 								</span>
 						</Form>

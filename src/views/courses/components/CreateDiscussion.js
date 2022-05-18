@@ -164,7 +164,7 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
 
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Save Discussion
 										</Button>
 								</span>
 						</Form>
