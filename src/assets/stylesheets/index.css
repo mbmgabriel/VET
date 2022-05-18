@@ -1495,3 +1495,24 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.dash-title{
+  color:#EE9337;
+  font-size: 18px !important;
+}
+
+.dash-title-header{
+  color:#707070;
+  font-size: 30px
+  ;
+}
+
+.dash-content {
+  color:#707070;
+  font-size: 16px;
+}
+
+.dash-date{
+  color:#707070;
+  font-size: 13px;
+}

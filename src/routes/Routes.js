@@ -71,6 +71,7 @@ import ClassGradingInformation from "../views/classes/ClassGradingInformation";
 import NewClassGrading from "../views/classes/NewClassGrading";
 import ClassGradingComputation from "../views/classes/ClassGradingComputation";
 import ClassVideos from "../views/classes/Videos/ClassVideo";
+import TeacherDashboard from "../views/dashboardfront/TeacherDashboard"
 
 
 
@@ -137,7 +138,7 @@ export default function Routes() {
             
             <PrivateRoute path='/files' exact component={FilesClass}/>
             <PrivateRoute path='/files/course' exact component={FilesCourse} />
-
+            <PrivateRoute path='/teacherdashboard' exact component={TeacherDashboard}/>
             <PrivateRoute path='/dashboard' exact component={Dashboard}/>
             <PrivateRoute path='/school' exact component={SchoolProfile}/>
             <PrivateRoute path='/school_courses/:id' exact component={SchoolCourses}/>
