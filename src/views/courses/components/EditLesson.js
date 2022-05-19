@@ -4,27 +4,28 @@ import Modal from 'react-bootstrap/Modal'
 import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { toast } from 'react-toastify';
+import ContentField from "../../../components/content_field/ContentField";
+import FileHeader from "../../classes/components/Task/TaskFileHeader";
+import FilesAPI from '../../../api/FilesApi'
 
-export default function EditLesson({openEditLessonModal, setOpenEditLessonModal, selectedLesson, setLessonInfo}){
+export default function EditLesson({lessonId, setSequenceNo, setPageName, setContent, content, pageName, sequenceNo, openEditLessonModal, setOpenEditLessonModal, selectedLesson, setLessonInfo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
-	const [pageName, setPageName] = useState('')
-	const [sequenceNo, setSequenceNo] = useState('')
-	const [content, setContent] = useState('')
+  const [displayFiles, setDisplayFiles] = useState([]);
+  const [showFiles, setShowFiles] = useState(false);
+  const [displayFolder, setDisplayFolder] = useState([]);
   
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
-
-	const handleCloseModal = e => {
-    e.preventDefault()
+  const handleCloseModal = () => {
     setOpenEditLessonModal(false)
   }
 
 	const saveEditLesson = async(e, id ) => {
     e.preventDefault()
-    if(pageName === '' || content === '' || sequenceNo === ''){
+    if(pageName === '' || content === '{{type=equation}}' || sequenceNo === null){
       toast.error('Please fill out all fields!', {
         position: "top-right",
         autoClose: 5000,
@@ -37,11 +38,11 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
     }else{
       setLoading(true)
       let response = await new CoursesAPI().editLesson(
-        selectedLesson?.id,
+        lessonId,
         {pageName, sequenceNo, content}
       )
       if(response.ok){
-        toast.success('Lesson Save!', {
+        toast.success('Successfully updated lesson!', {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -54,7 +55,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
         console.log(getCourseUnitPages())
       getCourseLessons(sessionCourse, sessionModule)
   
-        handleCloseModal(e)
+      setOpenEditLessonModal(false)
       }else{
         toast.error(response.data.errorMessage, {
           position: "top-right",
@@ -91,34 +92,78 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
     setLoading(false)
     if(response.ok){
       setModulePages(response.data)
-      console.log(response.data)
+      console.log(response.data, "=====================")
     }else{
       alert("Something went wrong while fetching all pages")
     }
   }
 
-	useEffect(() => {
-    if(selectedLesson !== null) {
-			setPageName(selectedLesson?.pageName)
-			setSequenceNo(selectedLesson?.sequenceNo)
-      setContent(selectedLesson?.content)
-		}
-  }, [selectedLesson])
+	// useEffect(() => {
+  //   if(selectedLesson != null) {
+	// 		setPageName(selectedLesson?.pageName)
+	// 		setSequenceNo(selectedLesson?.sequenceNo)
+  //     setContent(selectedLesson?.content)
+  //     alert('test')
+	// 	}
+  //   handleGetClassFiles()
+  // }, [selectedLesson])
+
+
+  const handleGetClassFiles = async() => {
+    // setLoading(true)
+    let response = await new FilesAPI().getCourseFiles(sessionCourse)
+    // setLoading(false)
+    if(response.ok){
+      setDisplayFiles(response.data.files)
+      console.log(response.data, "-----------------")
+    }else{
+      alert("Something went wrong while fetching class files ;;.")
+    }
+  } 
+
+  console.log('displayFiles', displayFiles)
 
 	return (
 		<div>
-			<Modal size="xl" className="modal-all" show={openEditLessonModal} onHide={()=> setOpenEditLessonModal(!openEditLessonModal)} >
+			<Modal size="xl" className="modal-all" show={openEditLessonModal} onHide={()=> handleCloseModal()} >
 				<Modal.Header className="modal-header" closeButton>
 				Edit Lesson / Page
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveEditLesson}>
+            <div className={showFiles ? 'mb-3' : 'd-none'}>
+            <FileHeader type='Course' id={sessionCourse}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
+            {/* {
+             (displayFiles || []).map( (item,ind) => {
+                return(
+                  <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
+                )
+              })
+            } */}
+             {
+               (displayFiles || []).map( (item,ind) => {
+                  return(
+                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
+                    :
+                   <span></span> // <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
+                  )
+                })
+              }
+              {
+               (displayFolder || []).map((itm) => {
+                  return(
+                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
+                  )
+                })
+              }
+          </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
-												Page Name 1
+												Page Name 
 										</Form.Label>
 										<Form.Control 
-											defaultValue={selectedLesson?.pageName}
+											defaultValue={pageName}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
@@ -132,7 +177,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
 												Sequence Number
 										</Form.Label>
 										<Form.Control 
-                      defaultValue={selectedLesson?.sequenceNo}
+                      defaultValue={sequenceNo}
                       className="custom-input" 
                       size="lg" 
                       type="number" 
@@ -141,7 +186,7 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
                     />
 								</Form.Group>
 
-                <Form.Group className="m-b-20">
+                {/* <Form.Group className="m-b-20">
                   <Form.Label for="description">
                       Content
                   </Form.Label>
@@ -155,11 +200,17 @@ export default function EditLesson({openEditLessonModal, setOpenEditLessonModal,
                     rows={5}
                     onChange={(e) => setContent(e.target.value)}
                   />
+                </Form.Group> */}
+                <div>
+                  <Button className='float-right my-2 tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+                </div>
+                <Form.Group className="m-b-20">
+                  <Form.Label >Content</Form.Label>
+                    <ContentField value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
                 </Form.Group>
-						
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Update Lesson
 										</Button>
 								</span>
 						</Form>

@@ -7,4 +7,5 @@ export default class GradeAPI extends Base {
       method: 'GET'
     });
   };
+
 }

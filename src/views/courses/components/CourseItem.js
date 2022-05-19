@@ -105,6 +105,9 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
 			</Modal>
     )
   }
+  useEffect(() => {
+    localStorage.setItem('typeresource', 'course')
+  });
   
   return (
     <React.Fragment>
@@ -114,13 +117,10 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
         return(
           <>
           {item?.status?(<>
-            <Col md={3}>
             <Link to={user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}`} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
-            <Card className="card-design b-0px">
-
+            <Card className="card-design b-0px m-r-10">
               {/* <Card.Header className="card-header-courses" style={{backgroundImage: `url(${"https://cdn.tekteachlms.com/tficontent/_cover/Basic_calculus.jpg"})`}}> */}
                   <Card.Header className="card-header-courses" style={{ backgroundImage: `url(${item.courseCover})` }}>
-
                 <Row style={{color:"white"}}>
                     {user.isTeacher && 
                         <>
@@ -200,7 +200,6 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
                 </Card.Body>
             </Card>
             </Link>
-          </Col>
           </>):(<></>)}
 
           </>

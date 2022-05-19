@@ -46,7 +46,9 @@ export default function CoursesExam() {
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(courseid != null){
+      getCourseInformation();
+    }
   }, [])
 
   const handleOpenCreateExamModal = () =>{

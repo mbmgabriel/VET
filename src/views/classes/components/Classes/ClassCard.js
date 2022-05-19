@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger, renderTooltip, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ClassesAPI from '../../../../api/ClassesAPI';
@@ -55,6 +55,15 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
     </Tooltip>
   );
 
+  const setCourseID = (cid) => 
+  {
+    localStorage.setItem("courseid", cid)
+  }
+
+  useEffect(() => {
+    localStorage.setItem('typeresource', 'class')
+  });
+
   return (
     <div>
         <SweetAlert
@@ -71,7 +80,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
             You will not be able to recover this imaginary file!
       </SweetAlert>
       <Card className='class-card' >
-        <Link to={`/classescontent/${item.classId}/feed`}>
+        <Link to={`/classescontent/${item.classId}/feed`} onClick={() => setCourseID(item.courseId) }>
           <Card.Header className='class-header-card' >
             <Row>
               <Col sm={10}>
@@ -84,14 +93,14 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                 overlay={renderTooltip}>
                 <Dropdown isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
                   <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
-                    <i className="fa fa-ellipsis-v fa-1x cursor-pointer"></i>
+                    <i className="fa fa-ellipsis-v fa-1x cursor-pointer-edit-class-card"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu >
                     <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>
                       Edit 
                     </Dropdown.Item>
                     <Dropdown.Item onClick={(e) => handleDeleteNotify(e, item.classId)}>
-                      Delete
+                      Delete 
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

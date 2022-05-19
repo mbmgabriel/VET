@@ -52,21 +52,22 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     }
   }
 
-  const getTestReport = async(e, classid,testid) => {
+  const getTestReport = async(e, selectedClassId,testid) => {
     setLoading(true)
     // setViewTestReport(false)
-    let response = await new ClassesAPI().getTestReport(classid, testid)
+    let response = await new ClassesAPI().getTestReport(selectedClassId, testid)
     setLoading(false)
     if(response.ok){
       setTestReport(response.data)
       setExamReport(response.data[0].studentTests)
+      console.log('asdasda:', response.data)
     }else{
       alert(response.data.errorMessage)
     }
   }
 
   useEffect(() => {
-    if(sessionClass != null && sessionTestId != null){
+    if(selectedClassId != null){
       getTestReport(null, sessionClass, sessionTestId)
     }
   }, [])
@@ -164,7 +165,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
           <th>Grade</th>
           <th>Actions</th>
           <th style={{float:'left'}}>
-            {examReport !== null &&
+            {examReport[0] &&
               examReport?.map(item => {
                 return(
                   <Form>

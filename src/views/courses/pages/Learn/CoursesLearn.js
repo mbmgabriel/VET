@@ -35,6 +35,10 @@ export default function CourseLearn() {
   const [clickedModule, setClickedModule] = useState('');
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
+  const [content, setContent] = useState('')
+  const [pageName, setPageName] = useState('')
+  const [sequenceNo, setSequenceNo] = useState(null)
+  const [lessonId, setLessonId] = useState('')
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
@@ -49,10 +53,12 @@ export default function CourseLearn() {
     setCreateLessonModal(!openCreateLessonModal)
   }
 
-  const handleOpenEditLessonModal = (e, item) =>{
+  const handleOpenEditLessonModal = (e, content, pageName, sequenceNo, lessonId) =>{
     e.preventDefault()
-    setSelectedLesson(item)
-    console.log(item)
+    setContent(content)
+    setPageName(pageName)
+    setSequenceNo(sequenceNo)
+    setLessonId(lessonId)
     setOpenEditLessonModal(!openEditLessonModal)
   }
 
@@ -190,7 +196,15 @@ export default function CourseLearn() {
               </InputGroup>
             </div>
           </div>
-          <EditLesson selectedLesson={selectedLesson} setLessonInfo={setLessonInfo} openEditLessonModal={openEditLessonModal} setOpenEditLessonModal={setOpenEditLessonModal}/>
+          <EditLesson 
+          sequenceNo={sequenceNo} 
+          pageName={pageName} 
+          content={content} 
+          lessonId={lessonId}
+          setContent={setContent}
+          setPageName={setPageName}
+          setSequenceNo={setSequenceNo}
+          setSelectedLesson={setSelectedLesson} selectedLesson={selectedLesson} setLessonInfo={setLessonInfo} openEditLessonModal={openEditLessonModal} setOpenEditLessonModal={setOpenEditLessonModal}/>
           <CreateLesson 
             openCreateLessonModal={openCreateLessonModal} 
             setCreateLessonModal={setCreateLessonModal} 
@@ -225,7 +239,7 @@ export default function CourseLearn() {
                                 placement="bottom"
                                 delay={{ show: 1, hide: 0 }}
                                 overlay={renderTooltipEdit}>
-                                  <Button key={li.id} className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditLessonModal(e, li)}><i className="fa fa-edit"></i></Button>
+                                  <Button key={li.id} className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditLessonModal(e, li?.content, li?.pageName, li?.sequenceNo, li?.id )}><i className="fa fa-edit"></i></Button>
                               </OverlayTrigger>
                               <OverlayTrigger
                                 placement="bottom"

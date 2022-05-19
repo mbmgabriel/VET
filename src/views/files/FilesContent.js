@@ -37,7 +37,7 @@ function FilesContent(props) {
   }
 
   useEffect(() => {
-    if(props.type == 'Course'){
+    if(window.location.pathname.includes('course')){
       getCourseInformation();
     }
   }, [])
