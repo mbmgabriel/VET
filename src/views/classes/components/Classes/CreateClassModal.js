@@ -192,7 +192,7 @@ function CreateClassModal({modal, toggle,getClasses}) {
                 <Form.Control value={classCode} onChange={(e) => setGetCode(e.target.value) } type="text" placeholder='Enter class Code here'/>
             </Form.Group>
             <Form.Group className='right-btn'>
-							<Button className='tficolorbg-button' type='submit'>Create Class</Button>
+							<Button className='tficolorbg-button' type='submit'>Save Class</Button>
             </Form.Group>
           </Form>  
         </Modal.Body>
