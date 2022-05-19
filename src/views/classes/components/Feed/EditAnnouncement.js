@@ -1,4 +1,4 @@
-import React, { useState }from 'react'
+import React, { useEffect, useState }from 'react'
 import { Modal, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
@@ -51,6 +51,12 @@ function EditAnnouncement({getFeedClass, editAnnouncementItem, editAnnouncementM
       });
   }
 
+  useEffect(() => {
+    if(editAnnouncementItem !== null) {
+      setContent(editAnnouncementItem?.description)
+		}
+  }, [editAnnouncementItem])
+
   return (
     <div>
       <Modal  size="lg" show={editAnnouncementModal} onHide={openEditAnnouncementToggle} aria-labelledby="example-modal-sizes-title-lg">
@@ -65,7 +71,7 @@ function EditAnnouncement({getFeedClass, editAnnouncementItem, editAnnouncementM
       <Form onSubmit={updateAnnouncement}>
       <InputGroup  size="lg">
         <InputGroup.Text id="basic-addon2" className="feed-button"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
-          <FormControl onChange={(e) => setContent(e.target.value)} defaultValue={editAnnouncementItem?.description} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type Announcement for the class here" type="text"/> 
+          <FormControl onChange={(e) => setContent(e.target.value)} value={editAnnouncementItem?.description} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type Announcement for the class here" type="text"/> 
       </InputGroup>
       <div style={{textAlign:'right', paddingTop:'15px'}}>
       <Button className='tficolorbg-button' type='submit' >Update Announcement</Button>
