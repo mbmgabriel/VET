@@ -2,6 +2,7 @@ import React, { useState }from 'react'
 import { Modal, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function EditAnnouncement({getFeedClass, editAnnouncementItem, editAnnouncementModal, openEditAnnouncementToggle}) {
   console.log('this is announcement:', editAnnouncementItem)
@@ -21,13 +22,33 @@ function EditAnnouncement({getFeedClass, editAnnouncementItem, editAnnouncementM
     let useraccountId = 0
     let response = await new ClassesAPI().updateAnnouncement(announcementId, {id, title, content, useraccountId, status})
       if(response.ok){
-        setEditNotity(true)
+        success()
         openEditAnnouncementToggle()
         getFeedClass()
         setContent('')
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
+  }
+
+  const success = () => {
+    toast.success('Successfully updated announcement!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   return (
