@@ -19,7 +19,7 @@ function FileHeader(props) {
   const [displayButtons, setDisplayButtons] = useState(true);
   const userContext = useContext(UserContext)
   const {user} = userContext.data
-  const {id} = useParams()
+  const {id, path} = useParams()
 
   const [folderCreatedCourse, setFolderCreatedCourse] = useState(false); 
   const typeresource = localStorage.getItem('typeresource')
@@ -39,9 +39,10 @@ function FileHeader(props) {
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
       if(temp){
-       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+        let temp = window.location.pathname.includes('resources')
+       setDisplayButtons(user?.teacher.positionID == 7 && temp ? true : false)
       }
-      console.log(response.data, 'heheheheheh')
+      console.log(response.data, 'heheheheheh -------')
     }else{
       alert("Something went wrong while fetching course information")
     }
@@ -227,24 +228,26 @@ function FileHeader(props) {
             ""
           :
         <>
-          <div>
-            <OverlayTrigger
-              placement="right"
-              delay={{ show: 1, hide: 0 }}
-              overlay={renderTooltipUploadFiles}
-            >
-              <i style={{marginTop: 10}} className="fas fa-folder-plus file-upload-content font-size-35 cursor-pointer" onClick={() => setShowAddFolderModal(true)}/>
-            </OverlayTrigger>
-          </div>
-          <div>
-            <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowAddFolderModal(true)}> New Folder  </Button>
-          </div>
-          <div>
-            <h5 style={{paddingTop: 15}} className="fileupload"> OR </h5>
-          </div>
-          <div>
-            <p><Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button></p>
-          </div>
+          {displayButtons && <>
+            <div>
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 1, hide: 0 }}
+                overlay={renderTooltipUploadFiles}
+              >
+                <i style={{marginTop: 10}} className="fas fa-folder-plus file-upload-content font-size-35 cursor-pointer" onClick={() => setShowAddFolderModal(true)}/>
+              </OverlayTrigger>
+            </div>
+            <div>
+              <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowAddFolderModal(true)}> New Folder  </Button>
+            </div>
+            <div>
+              <h5 style={{paddingTop: 15}} className="fileupload"> OR </h5>
+            </div>
+            <div>
+              <p><Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button></p>
+            </div>
+            </>}
           </>
         }
       </div>
