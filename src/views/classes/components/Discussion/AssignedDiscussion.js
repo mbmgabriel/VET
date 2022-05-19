@@ -4,6 +4,7 @@ import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function AssignedDiscussion({assignToggle, assignModal, discussionId, moduleId, getDiscussionUnit}) {
   console.log('discussionId:', discussionId)
@@ -23,7 +24,7 @@ function AssignedDiscussion({assignToggle, assignModal, discussionId, moduleId, 
     let response = await new ClassesAPI().assignDiscussion(id, discussionId, {startDate, startTime, endDate, endTime})
       if(response.ok){
         // alert('Discussion Assigned')
-        setAssignNotify(true)
+        success()
         setStartDate('')
         setStartTime('')
         setEndDate('')
@@ -31,8 +32,28 @@ function AssignedDiscussion({assignToggle, assignModal, discussionId, moduleId, 
         assignToggle(e)
         getDiscussionUnit(null, moduleId)
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          })
       }
+  }
+
+  const success = () => {
+    toast.success('Successfully assigned discussion!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
   
   return (
@@ -62,7 +83,7 @@ function AssignedDiscussion({assignToggle, assignModal, discussionId, moduleId, 
               <Form.Control type="time" onChange={(e) => setEndTime(e.target.value)} />
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Save Discussion</Button>
             </Form.Group>
           </Form> 
         </Modal.Body>
