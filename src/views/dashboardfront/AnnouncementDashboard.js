@@ -8,6 +8,7 @@ import { UserContext } from '../../context/UserContext'
 import CoursesAPI from '../../api/CoursesAPI'
 import AnnouncementAPI from '../../api/AnnouncementAPI'
 import Moment from 'moment'
+import CreateAnnouncement from './components/CreateAnnouncementModal'
 
 export default function AnnouncementDashboard() {
 
@@ -52,6 +53,7 @@ export default function AnnouncementDashboard() {
         </Col> 
 				<Col sm={1}> 
 					<Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className='fa fa-plus'></i></Button>
+          <CreateAnnouncement openCreateAnnouncementModal={openCreateAnnouncementModal} setOpenCreateAnnouncementModal={setOpenCreateAnnouncementModal}/>
         </Col> 
       </Row>
       {announcement.length?

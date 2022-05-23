@@ -4,7 +4,6 @@ import MainContainer from '../../components/layouts/MainContainer'
 import SummaryDashboard from '../dashboardfront/SummaryDashboard'
 import TeacherDashboardSidePanel from '../dashboardfront/TeacherDashboardSidePanel'
 import AnnouncementDashboard from './AnnouncementDashboard'
-import CalendarDashboard from './CalendarDashboard'
 
 export default function TeacherDashboard() {
   return (
@@ -20,9 +19,6 @@ export default function TeacherDashboard() {
           </Col>
           <Col sm={6}>
             <AnnouncementDashboard />
-          </Col>
-          <Col sm={3}>
-            <CalendarDashboard />
           </Col>
         </Row>
     </MainContainer>

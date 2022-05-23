@@ -7,6 +7,7 @@ import SchoolAPI from '../../api/SchoolAPI'
 import { UserContext } from '../../context/UserContext'
 import ClassesAPI from '../../api/ClassesAPI'
 import CoursesAPI from '../../api/CoursesAPI'
+import CalendarDashboard from './CalendarDashboard'
 
 export default function SummaryDashboard() {
 
@@ -15,7 +16,6 @@ export default function SummaryDashboard() {
   const [classes, setClasses] = useState([])
   const [courses, setCourses] = useState([])
   const {user} = userContext.data
-  let studentId = user?.student?.id
 
 	const getClasses = async() => {
     setLoading(true)
@@ -78,13 +78,16 @@ export default function SummaryDashboard() {
 				</div>
 				<h2 className='color-black analytics-value h2 text-align-right'>{classesCount}</h2>
 			</div>
-      <div className="dashboard-content-item rounded shadow bg-white" >
+      {/* <div className="dashboard-content-item rounded shadow bg-white" >
 				<div className='analytics-label' style={{color:"#EE9337"}}>
 					<div className='analytics-icon'><i className="fas fa-user "></i></div>
 					<h5 className="color-black my-0 ml-5">Profile</h5>
 				</div>
 				<h2 className='color-black analytics-value h2 text-align-right'></h2>
-			</div>
+			</div> */}
+      <Col sm={3}>
+        <CalendarDashboard />
+      </Col>
 		</div>
     </React.Fragment>
   )
