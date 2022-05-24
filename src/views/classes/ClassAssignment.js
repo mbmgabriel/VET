@@ -357,32 +357,32 @@ function ClassAssignment() {
                 } 
                 <Col sm={7} className='due-date-discusstion' >
                 <div className='inline-flex'>
-                  <div className='text-color-bcbcbc'>
+                  <div className='text-color-bcbcbc font-16'>
                     Start Date:&nbsp;
                   </div>
-                <div className='text-color-707070'>
+                <div className='text-color-707070 font-16'>
                   {moment(assigItem?.classAssignment.startDate).format('LL')}&nbsp;
                 </div>
-                  <div className='text-color-bcbcbc'>
+                  <div className='text-color-bcbcbc font-16'>
                     Start Time:&nbsp;
                   </div>
-                  <div className='text-color-707070'>
+                  <div className='text-color-707070 font-16'>
                     {assigItem?.classAssignment?.startTime}
                   </div>
                 </div>
               </Col>
               <Col className='posted-date-discusstion'>
                 <div className='inline-flex'>
-                  <div className='text-color-bcbcbc'>
+                  <div className='text-color-bcbcbc font-16'>
                     End Date:&nbsp;
                   </div>
-                  <div className='text-color-707070'>
+                  <div className='text-color-707070 font-16'>
                     {moment(assigItem?.classAssignment.endDate).format('LL')}&nbsp;
                   </div>
-                  <div className='text-color-bcbcbc'>
+                  <div className='text-color-bcbcbc font-16'>
                     End Time:&nbsp;
                   </div>
-                  <div className='text-color-707070'>
+                  <div className='text-color-707070 font-16'>
                     {assigItem?.classAssignment?.endTime}
                   </div>
                 </div>

@@ -21,7 +21,7 @@ export default function ClassAdminSideNavigation({active}) {
 
   return (
     <div className="side-navigation">
-      {courseInfos.courseName}
+      {courseInfos.className}
       <div className="course-subtitle">{courseInfos.teacherName}</div>
       <Link to={`/school_classes/${id}/feed`}className={`side-navigation-item ${active === "feed" ? "active" : ""}`}>Feed</Link>
       <Link to={`/school_classes/${id}/learn`} className={`side-navigation-item ${active === "learn" ? "active" : ""}`}>Learn</Link>

@@ -297,32 +297,32 @@ export default function SchoolAdminTask() {
                       }
                       <Col sm={7} className='due-date-discusstion' >
                         <div className='inline-flex'>
-                          <div className='text-color-bcbcbc'>
+                          <div className='text-color-bcbcbc font-16'>
                             Start Date:&nbsp;
                           </div>
-                          <div className='text-color-707070'>
+                          <div className='text-color-707070 font-16'>
                            {moment(moduleitem?.taskAssignment?.startDate).format('LL')}&nbsp;
                           </div>
-                          <div className='text-color-bcbcbc'>
+                          <div className='text-color-bcbcbc font-16'>
                             Start Time:&nbsp;
                           </div>
-                          <div className='text-color-707070'>
+                          <div className='text-color-707070 font-16'>
                             {moduleitem?.taskAssignment?.startTime}
                           </div>
                       </div>
                       </Col>
                       <Col className='posted-date-discusstion'>
                         <div className='inline-flex'>
-                          <div className='text-color-bcbcbc'>
+                          <div className='text-color-bcbcbc font-16'>
                             End Date:&nbsp;
                           </div>
-                          <div className='text-color-707070'>
+                          <div className='text-color-707070 font-16'>
                             {moment(moduleitem?.taskAssignment?.endDate).format('LL')}&nbsp;
                           </div>
-                          <div className='text-color-bcbcbc'>
+                          <div className='text-color-bcbcbc font-16'>
                             End Time:&nbsp;
                           </div>
-                          <div className='text-color-707070'>
+                          <div className='text-color-707070 font-16'>
                             {moduleitem?.taskAssignment?.endTime}
                           </div>
                         </div>

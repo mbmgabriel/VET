@@ -230,7 +230,7 @@ export default function SchoolAdminAssignment() {
               <Row style={{margin:'10px'}}>
                 <Col sm={8}>
                   <div className='title-exam'>
-                   {'assigItem?.assignment?.assignmentName'}
+                   {assigItem?.assignment?.assignmentName}
                   </div>
                 </Col>
                 <Col sm={9} className='instruction-exam' >
@@ -289,10 +289,10 @@ export default function SchoolAdminAssignment() {
                 <>
                 {assigItem.assignment.classId?(
                   <>
-                  <Col sm={3} className='icon-exam'>
-                    {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
-                    <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i>0</Button>
-                  </Col>
+                    <Col sm={3} className='icon-exam'>
+                      {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
+                      <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i>0</Button>
+                    </Col>
                   </>
                 ):
                   <>
@@ -305,12 +305,12 @@ export default function SchoolAdminAssignment() {
                     overlay={renderTooltipView}>
                     <Button onClick={() => viewAssignmentToggle(assigItem?.assignment, assigItem?.classAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                   </OverlayTrigger>
-                  <OverlayTrigger
+                  {/* <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipReasign}> 
                     <Button onClick={(e) => editAssignedAssignmentToggle(e, assigItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
-                  </OverlayTrigger>
+                  </OverlayTrigger> */}
                   </Col>
                   </>
                   ):(
@@ -343,34 +343,51 @@ export default function SchoolAdminAssignment() {
                 }
                 {assigItem?.classAssignment?(
                   <Row>
+                    {
+                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
+                    }
+                    {
+                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b></div>
+                    }
+                    {
+                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                    }
+                    {
+                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                      moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                    } 
                     <Col sm={6} className='due-date-discusstion' >
                     <div className='inline-flex'>
-                      <div className='text-color-bcbcbc'>
+                      <div className='text-color-bcbcbc font-16'>
                         Start Date:&nbsp;
                       </div>
-                    <div className='text-color-707070'>
+                    <div className='text-color-707070 font-16'>
                       {moment(assigItem?.classAssignment.startDate).format('LL')}&nbsp;
                     </div>
-                      <div className='text-color-bcbcbc'>
+                      <div className='text-color-bcbcbc font-16'>
                         Start Time:&nbsp;
                       </div>
-                      <div className='text-color-707070'>
+                      <div className='text-color-707070 font-16'>
                         {assigItem?.classAssignment?.startTime}
                       </div>
                     </div>
                   </Col>
                   <Col className='posted-date-discusstion'>
                     <div className='inline-flex'>
-                      <div className='text-color-bcbcbc'>
+                      <div className='text-color-bcbcbc font-16'>
                         End Date:&nbsp;
                       </div>
-                      <div className='text-color-707070'>
+                      <div className='text-color-707070 font-16'>
                         {moment(assigItem?.classAssignment.endDate).format('LL')}&nbsp;
                       </div>
-                      <div className='text-color-bcbcbc'>
+                      <div className='text-color-bcbcbc font-16'>
                         End Time:&nbsp;
                       </div>
-                      <div className='text-color-707070'>
+                      <div className='text-color-707070 font-16'>
                         {assigItem?.classAssignment?.endTime}
                       </div>
                     </div>
