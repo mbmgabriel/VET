@@ -5,6 +5,7 @@ import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import StudentPortfolio from './StudentPortfolio';
 import { UserContext } from '../../../../context/UserContext';
+import { toast } from 'react-toastify';
 
 function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, searchTerm}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
@@ -44,7 +45,7 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
       if(response.ok){
         setStudentInformation(response.data)
       }else{
-        alert('Something went wrong while fetching all Activeties')
+        toast.error('Something went wrong while fetching all Activeties')
       }
   }
 
@@ -60,8 +61,9 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
       setDeleteNotify(false)
       getStudentEnrolled()
       getStudentWaiting()
+      toast.success('Successfully removed student.')
     }else{
-      alert("Something went wrong while fetching all Add Student")
+      toast.error("Something went wrong while fetching all Add Student")
     }
   }
 

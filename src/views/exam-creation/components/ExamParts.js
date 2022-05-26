@@ -38,7 +38,9 @@ export default function ExamParts({
   }
 
   useEffect(() => {
-    getCourseInformation();
+    if(window.location.pathname.includes('course')){
+      getCourseInformation();
+    }
   }, [])
 
   const arrageAlphabetical = (data) => {

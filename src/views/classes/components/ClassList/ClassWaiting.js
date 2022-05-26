@@ -53,8 +53,9 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
       setDeleteNotify(false)
       getStudentEnrolled()
       getStudentWaiting()
+      toast.success('Successfully removed student.')
     }else{
-      alert("Something went wrong while fetching Remove Student from Pending List")
+      toast.error("Something went wrong while fetching Remove Student from Pending List")
     }
   }
 

@@ -246,12 +246,6 @@ export default function SchoolAdminTask() {
                           overlay={renderTooltipView}>
                             <Button onClick={() => viewTaskTaggle(moduleitem?.task, moduleitem?.taskAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                         </OverlayTrigger> 
-                        <OverlayTrigger
-                          placement="bottom"
-                          delay={{ show: 1, hide: 0 }}
-                          overlay={renderTooltipReasign}>
-                            <Button onClick={(e) => editAssignTaskToggle(e,moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
-                        </OverlayTrigger> 
                       </Col>
                       </>
                       ):
@@ -264,12 +258,6 @@ export default function SchoolAdminTask() {
                           overlay={renderTooltipView}>
                           <Button onClick={() => viewTaskTaggle(moduleitem?.task, moduleitem?.taskAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                         </OverlayTrigger> 
-                        <OverlayTrigger
-                          placement="bottom"
-                          delay={{ show: 1, hide: 0 }}
-                          overlay={renderTooltipAsign}>
-                          <Button onClick={(e) => assignTaskToggle(e, moduleitem?.task.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                        </OverlayTrigger>
                       </Col>
                       </>
                       }
