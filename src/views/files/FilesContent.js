@@ -57,6 +57,7 @@ function FilesContent(props) {
     let response = await new FilesAPI().updateFolderName(props.id, props.type, data)
     if(response.ok){
       props.deleted();
+      toast.success('Successfully renamed folder.')
     }else{
       toast.error("Something went wrong while updating folder name.")
     }
@@ -69,10 +70,11 @@ function FilesContent(props) {
     let response = await new FilesAPI().deleteFolder(props.id, props.type, data)
     if(response.ok){
       props.deleted();
-      setDeleteFolderNotify(false);
+      toast.success('Successfully deleted folder.')
     }else{
-      toast.error("Something went wrong while deleting folder.")
+      toast.error(response.data?.errorMessage)
     }
+    setDeleteFolderNotify(false);
   }
 
   const  downloadImage = (url) => {
