@@ -47,7 +47,8 @@ function ClassFeed() {
     let status = true
     let response = await new ClassesAPI().createAnnouncementClass(typeId, {announcement:{content, title, useraccountId, status}, referenceIds:referenceIds})
       if(response.ok){
-        setAddNotity(true)
+        // setAddNotity(true)
+        postToast()
         setContent('')
         getFeedClass()
       }else{
@@ -82,11 +83,36 @@ const getComment = (item, item1, item3) => {
     let response = await new ClassesAPI().deleteAnnouncement(item)
     if(response.ok){
       // alert('Deleted')
+      deleteToast()
       getFeedClass()
       setDeleteNotify(false)
     }else{
       alert(response.data.errorMessage)
     }
+  }
+
+  const deleteToast = () => {
+    toast.success('Successfully removed announcement!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+  
+  const postToast = () => {
+    toast.success('Successfully added announcement!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   const handleDeleteNotify = (item) =>{

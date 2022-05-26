@@ -38,7 +38,7 @@ export default function ExamParts({
   }
 
   useEffect(() => {
-    if(window.location.pathname.includes('course')){
+    if(courseid != null){
       getCourseInformation();
     }
   }, [])
