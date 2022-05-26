@@ -196,6 +196,7 @@ function FileHeader(props) {
       if(response.ok){
         props.doneUpload()
         setShowAddFolderModal(false)
+        toast.success('Successfully created folder.')
       }else{
         setShowAddFolderModal(false)
         toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
