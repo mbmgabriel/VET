@@ -536,3 +536,7 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
   text-align: left;
   padding: 12px
 }
+
+.calendar-view{
+  height: 900px;
+}
