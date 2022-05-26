@@ -197,11 +197,7 @@ export default function SchoolAdminDiscussion() {
             <Accordion.Item eventKey={index} onClick={(e) => getDiscussionUnit(e, item?.id)}>
             <Accordion.Header><div style={{fontSize:'20px'}}>{item.moduleName}</div></Accordion.Header>
             <Accordion.Body>
-              {(user?.teacher === null)?(
-              <>
-                <StudentDiscussion searchTerm={searchTerm} moduleId={moduleId} getDiscussionUnit={getDiscussionUnit} discussionModule={discussionModule} />
-              </>
-              ):(
+              
               <>
               {discussionModule?.filter((moduleitem) => {
                 if(searchTerm == ''){
@@ -227,9 +223,8 @@ export default function SchoolAdminDiscussion() {
                         </div>
                       </div>
                     </Col>
-                    {moduleitem.discussion?.classId?(
+                    {/* {moduleitem.discussion?.classId?(
                     <Col sm={3} className='icon-exam'>
-                        {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
                         <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 1, hide: 1 }}
@@ -267,7 +262,6 @@ export default function SchoolAdminDiscussion() {
                       {moduleitem.discussionAssignment?.startDate?(
                       <>
                       <Col sm={3} className='icon-exam' >
-                        {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
                         <div style={{marginRight:'5px'}}>
                         <OverlayTrigger
                           placement="bottom"
@@ -281,7 +275,6 @@ export default function SchoolAdminDiscussion() {
                       ):
                       <>
                       <Col sm={3} className='icon-exam'>
-                        {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
                         <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 1, hide: 0 }}
@@ -292,7 +285,7 @@ export default function SchoolAdminDiscussion() {
                       </>
                       }
                       </>
-                    }
+                    } */}
                     {moduleitem.discussionAssignment?.startDate?(
                   <div>
                     {
@@ -333,32 +326,32 @@ export default function SchoolAdminDiscussion() {
                   <Row>
                   <Col sm={7} className='due-date-discusstion' >
                      <div className='inline-flex'>
-                       <div className='text-color-bcbcbc'>
+                       <div className='text-color-bcbcbc font-16'>
                          Start Date:&nbsp;
                        </div>
-                       <div className='text-color-707070'>
+                       <div className='text-color-707070 font-16'>
                          {moment(moduleitem?.discussionAssignment?.startDate).format('LL')}&nbsp;
                        </div>
-                       <div className='text-color-bcbcbc'>
+                       <div className='text-color-bcbcbc font-16'>
                          Start Time:&nbsp;
                        </div>
-                       <div className='text-color-707070'>
+                       <div className='text-color-707070 font-16'>
                          {moduleitem?.discussionAssignment?.startTime}
                        </div>
                      </div>
                    </Col>
                    <Col className='posted-date-discusstion'>
                      <div className='inline-flex'>
-                       <div className='text-color-bcbcbc'>
+                       <div className='text-color-bcbcbc font-16'>
                          End Date:&nbsp;
                        </div>
-                       <div className='text-color-707070'>
+                       <div className='text-color-707070 font-16'>
                        {moment(moduleitem?.discussionAssignment?.endDate).format('LL')}&nbsp;
                        </div>
-                       <div className='text-color-bcbcbc'>
+                       <div className='text-color-bcbcbc font-16'>
                          End Time:&nbsp;
                        </div>
-                       <div className='text-color-707070'>
+                       <div className='text-color-707070 font-16'>
                          {moduleitem?.discussionAssignment?.endTime}
                          
                        </div>
@@ -377,7 +370,6 @@ export default function SchoolAdminDiscussion() {
               </Row>
                  )})}
               </>
-              )}
               </Accordion.Body>
               </Accordion.Item>
             )

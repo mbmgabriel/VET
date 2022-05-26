@@ -156,7 +156,6 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
                   </div>
                 </Col>
           </Row>
-          <br />
           <hr />
             </>):(
             <>

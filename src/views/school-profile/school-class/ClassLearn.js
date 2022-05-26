@@ -106,22 +106,22 @@ export default function SchoolAdminFeed() {
                 </div>
               </Card.Header>
               <div >
-              <Card.Body >
-                <Card.Title tag="h5" className='card-title'>
-                  UNIT
-                </Card.Title>
-                <Card.Text className='card-title' >
-                <ul style={{listStyle:'none', height: '50vh'}} className='scrollable pb-5'>
-                  {Pages.map(item =>{
-                    return (
-                      <>
-                        <li><Button onClick={() => getContent(item?.id)} className='btn-create-discussion' variant="link" > {item?.pageName}  </Button></li>
-                      </>
-                    )
-                  })}
-                  </ul>
-                </Card.Text>
-              </Card.Body>
+                <Card.Body >
+                  <Card.Title tag="h5" className='card-title'>
+                    UNIT
+                  </Card.Title>
+                  <Card.Text className='card-title' >
+                  <ul style={{listStyle:'none', height: '50vh'}} className='scrollable pb-5'>
+                    {Pages.map(item =>{
+                      return (
+                        <>
+                          <li><p onClick={() => getContent(item?.id)} className='btn-create-discussion' variant="link" > {item?.pageName}  </p></li>
+                        </>
+                      )
+                    })}
+                    </ul>
+                  </Card.Text>
+                </Card.Body>
               </div>
             </Card>
           </Col>

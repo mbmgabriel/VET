@@ -4,6 +4,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams} from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import {UserContext } from '../../../../context/UserContext'
+import { toast } from 'react-toastify';
 
 
 function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, searchTerm}) {
@@ -36,11 +37,12 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
     let response = await new ClassesAPI().acceptStudent(id, isAccepted, [studentId]) 
     if(response.ok){
       // alert('Add Student')
-      setAddNotify(true)
+      // setAddNotify(true)
+      toast.success('Successfully added student.')
       getStudentEnrolled()
       getStudentWaiting()
     }else{
-      alert("Something went wrong while fetching all Add Student")
+      toast.error("Something went wrong while fetching all Add Student")
     }
   }
 
@@ -157,12 +159,12 @@ const handleClickIcon = () =>{
             })}
         </tbody>
       </Table>
-        <SweetAlert 
+        {/* <SweetAlert 
           success
           show={addNotify} 
           title="Done!" 
           onConfirm={closeAddNotify}>
-        </SweetAlert>
+        </SweetAlert> */}
         <SweetAlert
           warning
           showCancel
