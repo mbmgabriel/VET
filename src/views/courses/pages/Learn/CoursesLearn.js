@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import CoursesAPI from "../../../../api/CoursesAPI";
 import CourseCreateUnit from "./../../components/CourseCreateUnit";
@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import CourseContent from "../../CourseContent";
 import 'react-toastify/dist/ReactToastify.css';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
+import { UserContext } from '../../../../context/UserContext';
 
 import { useParams } from "react-router";
 
@@ -32,6 +33,8 @@ export default function CourseLearn() {
   const [moduleInfo, setModuleInfo] = useState([]);
   const [itemId, setItemId] = useState('')
   const [clickedModule, setClickedModule] = useState('');
+  const userContext = useContext(UserContext);
+  const {user} = userContext.data;
   const [content, setContent] = useState('')
   const [pageName, setPageName] = useState('')
   const [sequenceNo, setSequenceNo] = useState(null)
@@ -179,7 +182,7 @@ export default function CourseLearn() {
         <React.Fragment>
           <span className="content-pane-title">
             Learn 
-              {courseInfo?.isTechfactors? (<></>):(<>
+              {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
                 <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus"></i> Add Unit</Button>
               </>)}
              
@@ -215,7 +218,7 @@ export default function CourseLearn() {
                   <Accordion.Item eventKey={item.id}> 
                     <Accordion.Header onClick={(e) => {getCourseLessons(e, item.id, item.moduleName)}}>
                       <span className="unit-title">{item.moduleName}
-                      {courseInfo?.isTechfactors? (<></>):(<>
+                      {courseInfo?.isTechfactors && user?.teacher.positionID != 7? (<></>):(<>
                         <Button className="btn-create-class" variant="link"  onClick={handleOpenCreateLessonModal}><i className="fa fa-plus"></i> Add Lesson</Button>
                       </>)}
                        
@@ -230,7 +233,7 @@ export default function CourseLearn() {
                             <Col className="lesson-header" md={9} onClick={(e) => getModuleContent(e, moduleid, li.id, li?.pageName)}>
                              <p className="lessonName">{li?.pageName}</p>
                             </Col>
-                            {courseInfo?.isTechfactors? (<></>):(<>
+                            {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
                               <Col className="align-right-content" md={3}>
                               <OverlayTrigger
                                 placement="bottom"

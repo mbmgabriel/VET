@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Accordion, Row, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router'
@@ -14,6 +14,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
   const {id} = useParams();
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  const [courseInfo, setCourseInfo] = useState("");
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
@@ -30,6 +31,19 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
     console.log(item)
     setOpenEditModal(true)
     
+  }
+
+  useEffect(() => {
+    getCourseInformation();
+  }, [])
+
+  const getCourseInformation = async() => {
+    let response = await new CoursesAPI().getCourseInformation(id)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
   }
 
   const deleteVidoes = async(item) => {
@@ -106,6 +120,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
               </>
               ):(
               <>
+               {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? null :
                 <Col sm={3} className='icon-exam'>
                   <OverlayTrigger
                     placement="bottom"
@@ -119,7 +134,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
                     overlay={renderTooltipDelete}>
                       <Button onClick={() => handleDeleteNotify(item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
                   </OverlayTrigger>
-                </Col>
+                </Col>}
               </>
               )}
               <Col sm={9}>
