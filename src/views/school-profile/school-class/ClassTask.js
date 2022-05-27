@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react'
 import {Row, Col, Accordion, Button, Tooltip, OverlayTrigger} from 'react-bootstrap'
-import ClassesAPI from '../../api/ClassesAPI'
-import DiscussionAPI from '../../api/DiscussionAPI';
-import HeaderTask from './components/Task/HeaderTask'
+import ClassesAPI from '../../../api/ClassesAPI'
+import DiscussionAPI from '../../../api/DiscussionAPI';
+import HeaderTask from '../../classes/components/Task/HeaderTask'
 import { useParams } from 'react-router'
-import EditTask from './components/Task/EditTask'
+import EditTask from '../../classes/components/Task/EditTask'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
-import AssignTask from './components/Task/AssignTask'
-import EditAssignTask from './components/Task/EditAssignTask'
-import StundentAnswerTask from './student/components/StundentAnswerTask'
-import StudentSubmittedTask from './student/components/StudentSubmittedTask'
-import StudentTask from './student/StudentTask'
-import { UserContext } from '../../context/UserContext'
-import ViewTask from './components/Task/ViewTask'
-import ClassBreadcrumbs from './components/ClassBreedCrumbs';
-import ClassSideNavigation from './components/ClassSideNavigation';
-import ContentViewer from '../../components/content_field/ContentViewer'
+import MainContainer from '../../../components/layouts/MainContainer'
+import ClassAdminSideNavigation from './components/ClassAdminSideNavigation'
+import AssignTask from '../../classes/components/Task/AssignTask'
+import EditAssignTask from '../../classes/components/Task/EditAssignTask'
+import StudentTask from '../../classes/student/StudentTask'
+import { UserContext } from '../../../context/UserContext'
+import ViewTask from '../../classes/components/Task/ViewTask'
+import ContentViewer from '../../../components/content_field/ContentViewer'
 
-function ClassTask() {
+export default function SchoolAdminTask() {
   const [modal, setModal] = useState(false)
   const [moduleId, setModuleId] = useState(null)
   const [module, setModule] = useState([])
@@ -46,7 +44,7 @@ function ClassTask() {
   const [instructions, setInstructions] = useState('')
   const [taskId, setTaskId] = useState('')
   const [moduleName, setModuleName] = useState('')
-
+  const [loading, setLoading] = useState(false)
   const onSearch = (text) => {
     setSearchTerm(text)
   }
@@ -56,7 +54,7 @@ function ClassTask() {
     }, [])
 
   const getClassInfo = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       console.log({response})
@@ -66,7 +64,7 @@ function ClassTask() {
     }else{
       alert("Something went wrong while fetching all courses")
     }
-    // setLoading(false)
+    setLoading(false)
   }
   
   const viewTaskTaggle = (item, item1,) => {
@@ -115,9 +113,10 @@ function ClassTask() {
   }
 
   const getTaskModule = async(e, item) =>{
+    e.preventDefault()
     let response = await new ClassesAPI().getTaskModule(id, item)
     if(response.ok){
-      setTaskModule(response.data)
+      setTaskModule(response?.data)
       setModuleId(item)
     }else{
       alert("Something went wrong while Deleting Deleting a getTaskModule")
@@ -169,12 +168,14 @@ function ClassTask() {
     </Tooltip>
   )
 
-  console.log('setTaskModulesetTaskModule:', taskModule)
-
   return (
-    <ClassSideNavigation>
-      <ClassBreadcrumbs title='' clicked={()=> console.log('')} />
-      <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} />
+    <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      <Row className="mt-4">
+        <Col sm={3}>
+          <ClassAdminSideNavigation active="task"/>
+        </Col>
+        <Col sm={9} className='scrollable vh-85'>
+        <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} />
         <Accordion>
           <SweetAlert
             warning
@@ -194,9 +195,9 @@ function ClassTask() {
             <Accordion.Item eventKey={index} onClick={(e) => getTaskModule(e, item?.id)}>
             <Accordion.Header ><div style={{fontSize:'20px'}}>{item.moduleName}</div></Accordion.Header>
             <Accordion.Body>
-              {(user?.teacher === null)?(
+              {(user?.isStudent === null)?(
               <>
-                <StudentTask searchTerm={searchTerm} taskModule={taskModule} />
+                {/* <StudentTask searchTerm={searchTerm} taskModule={taskModule} /> */}
               </>):<>
               {taskModule?.filter((moduleitem) => {
                 if(searchTerm == ''){
@@ -231,37 +232,6 @@ function ClassTask() {
                             overlay={renderTooltipView}>
                           <Button onClick={() => viewTaskTaggle(moduleitem?.task, moduleitem?.taskAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                         </OverlayTrigger>
-                        <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipEdit}>
-                          <Button onClick={(e) => toggle(e, moduleitem?.task?.taskName,  moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.module?.moduleName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
-                        </OverlayTrigger>
-                        {moduleitem?.taskAssignment?(
-                          <>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipReasign}>
-                              <Button onClick={(e) => editAssignTaskToggle(e,moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
-                            </OverlayTrigger>
-                          </>
-                        ):
-                          <>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipAsign}>
-                            <Button onClick={(e) => assignTaskToggle(e, moduleitem.task.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                          </OverlayTrigger>
-                          </>
-                        }
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipDelete}>
-                              <Button onClick={() => handleDeleteNotify(moduleitem?.task?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
-                          </OverlayTrigger> 
                       </Col>
                       ):
                  
@@ -276,12 +246,6 @@ function ClassTask() {
                           overlay={renderTooltipView}>
                             <Button onClick={() => viewTaskTaggle(moduleitem?.task, moduleitem?.taskAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                         </OverlayTrigger> 
-                        <OverlayTrigger
-                          placement="bottom"
-                          delay={{ show: 1, hide: 0 }}
-                          overlay={renderTooltipReasign}>
-                            <Button onClick={(e) => editAssignTaskToggle(e,moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
-                        </OverlayTrigger> 
                       </Col>
                       </>
                       ):
@@ -294,12 +258,6 @@ function ClassTask() {
                           overlay={renderTooltipView}>
                           <Button onClick={() => viewTaskTaggle(moduleitem?.task, moduleitem?.taskAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                         </OverlayTrigger> 
-                        <OverlayTrigger
-                          placement="bottom"
-                          delay={{ show: 1, hide: 0 }}
-                          overlay={renderTooltipAsign}>
-                          <Button onClick={(e) => assignTaskToggle(e, moduleitem?.task.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                        </OverlayTrigger>
                       </Col>
                       </>
                       }
@@ -383,7 +341,8 @@ function ClassTask() {
           <EditTask moduleName={moduleName} taskId={taskId} setTaskId={setTaskId} instructions={instructions} setInstructions={setInstructions} taskName={taskName} setTaskName={setTaskName} setModal={setModal} moduleId={moduleId} editTask={editTask} toggle={toggle} modal={modal} module={module} getTaskModule={getTaskModule} />
           <AssignTask moduleId={moduleId} getTaskModule={getTaskModule} assingTaskId={assingTaskId} assignTaskModal={assignTaskModal} assignTaskToggle={assignTaskToggle} />
           <EditAssignTask getTaskModule={getTaskModule} editAssignTaskItem={editAssignTaskItem} editAssignTaskToggle={editAssignTaskToggle} editAssignTaskModal={editAssignTaskModal} />
-      </ClassSideNavigation>
-    )
-  }
-export default ClassTask
+        </Col>
+      </Row>
+    </MainContainer>
+  )
+}

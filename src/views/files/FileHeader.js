@@ -3,8 +3,8 @@ import {Button, Modal,Table, ProgressBar, Col, Row,  InputGroup, FormControl, To
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FilesAPI from '../../api/FilesApi';
+import { UserContext } from '../../context/UserContext';
 import CoursesAPI from '../../api/CoursesAPI'
-import { UserContext } from '../../context/UserContext'
 
 function FileHeader(props) {
   const [showUploadModal, setShowUploadModal] = useState(false);

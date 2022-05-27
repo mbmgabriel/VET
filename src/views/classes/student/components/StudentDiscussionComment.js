@@ -131,12 +131,12 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
             moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(endDate + ' ' + endTime, 'YYYY-MM-DD HH:mm')) &&
             <>
               <br />
-              <Form>
+              {!user.isSchoolAdmin &&  <Form>
                 <InputGroup size="sm">
                   <FormControl onChange={(e) => setReply(e.target.value)} value={reply} aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Reply" />
                   <InputGroup.Text onClick={(e) => submitComment(e, discussionId)} id="basic-addon2" className="comment-btn"><i className="fas fa-paper-plane"></i></InputGroup.Text>
                 </InputGroup><br />
-              </Form>
+              </Form>}
             </>
           }
         </Modal.Body>

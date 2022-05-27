@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-bootstrap'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import FilesAPI from '../../api/FilesApi';
 import Modal from 'react-bootstrap/Modal'
+import { UserContext } from '../../context/UserContext';
 import moment from 'moment';
 import CoursesAPI from '../../api/CoursesAPI';
 
@@ -15,6 +16,8 @@ function FilesContent(props) {
   const [itemToEdit, setItemToEdit] = useState({});
   const [newFileName, setNewFilename] = useState('');
   const [extFilename, setExtFilename] = useState('');
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
   const [courseInfo, setCourseInfo] = useState("")
   
   const courseid = sessionStorage.getItem('courseid')
@@ -259,14 +262,14 @@ function FilesContent(props) {
                       delay={{ show: 1, hide: 0 }}
                       overlay={renderTooltipEdit}
                     >
-                      <i class="fas fas fa-edit td-file-page" onClick={() => handleEdit(item) } />
+                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fas fa-edit td-file-page"} onClick={() => handleEdit(item) } />
                     </OverlayTrigger>
                   <OverlayTrigger
                     placement="right"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipDelete}>
                     <a>
-                      <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClick(item) }></i>
+                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fa-trash-alt td-file-page"} onClick={() => handleOnClick(item) }></i>
                     </a>
                   </OverlayTrigger>
                   </td>

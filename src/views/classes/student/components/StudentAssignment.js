@@ -138,7 +138,7 @@ function StudentAssignment({assignment, searchTerm}) {
                         placement="right"
                         delay={{ show: 1, hide: 1 }}
                         overlay={renderTooltipAnswer}>
-                          <Button onClick={() => answerAnswerToggle(item?.assignment?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-edit"></i></Button>
+                          {!user.isSchoolAdmin && <Button onClick={() => answerAnswerToggle(item?.assignment?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-edit"></i></Button>}
                       </OverlayTrigger>
                       <OverlayTrigger
                         placement="right"
@@ -151,7 +151,7 @@ function StudentAssignment({assignment, searchTerm}) {
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classAssignment?.endDate + ' ' + item?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                         <Col sm={3} className='icon-exam'>
-                        <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Not Submitted</Button>
+                        {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Not Submitted</Button>}
                         <OverlayTrigger
                           placement="right"
                           delay={{ show: 1, hide: 1 }}
@@ -190,7 +190,7 @@ function StudentAssignment({assignment, searchTerm}) {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.classAssignment?.startDate + ' ' + item?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
                     }
-                    <Col sm={7} className='due-date-discusstion' >
+                    <Col sm={6} className='due-date-discusstion' >
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
                             Start Date:&nbsp;
@@ -204,8 +204,8 @@ function StudentAssignment({assignment, searchTerm}) {
                           <div className='text-color-707070'>
                             {item?.classAssignment?.startTime}
                           </div>
-                      </div>
-                      </Col>
+                        </div>
+                    </Col>
                       <Col className='posted-date-discusstion'>
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
@@ -223,9 +223,7 @@ function StudentAssignment({assignment, searchTerm}) {
                         </div>
                       </Col>
                 </Row>
-                <div className='text-color-bcbcbc' >
-                   ___________________________________________________________________________________________________________________________________________________________________________________________________________
-                 </div>
+               <hr />
               </>
               ):
               <>
