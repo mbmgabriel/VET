@@ -7,6 +7,7 @@ import ClassesAPI from '../../../../api/ClassesAPI';
 import { UserContext } from '../../../../context/UserContext'
 import AcademicTermAPI from '../../../../api/AcademicTermAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function CreateClassModal({modal, toggle,getClasses}) {
   const [addNotify, setAddNotity] = useState(false)
@@ -29,6 +30,18 @@ function CreateClassModal({modal, toggle,getClasses}) {
     e.preventDefault()
     setGetCode(createRandomCode(4))
     
+  }
+
+  const success = () => {
+    toast.success('Successfully updated class', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   console.log(classCode)
@@ -79,13 +92,21 @@ function CreateClassModal({modal, toggle,getClasses}) {
       {classCode, gradeLevelId, className, courseId, teacherId, academicTermId}
     )
     if(response.ok){
-      setAddNotity(true)
+      success()
       toggle(e)
       getClasses()
       setGetCode('')
 
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   }
 
@@ -171,7 +192,7 @@ function CreateClassModal({modal, toggle,getClasses}) {
                 <Form.Control value={classCode} onChange={(e) => setGetCode(e.target.value) } type="text" placeholder='Enter class Code here'/>
             </Form.Group>
             <Form.Group className='right-btn'>
-							<Button className='tficolorbg-button' type='submit'>Save</Button>
+							<Button className='tficolorbg-button' type='submit'>Save Class</Button>
             </Form.Group>
           </Form>  
         </Modal.Body>
