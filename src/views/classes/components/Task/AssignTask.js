@@ -4,6 +4,7 @@ import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function AssignTask({moduleId, getTaskModule, assignTaskModal, assignTaskToggle, assingTaskId}) {
   const [startDate, setStartDate] = useState('')
@@ -21,14 +22,36 @@ function AssignTask({moduleId, getTaskModule, assignTaskModal, assignTaskToggle,
     e.preventDefault()
     let response = await new ClassesAPI().assignTask(id, assingTaskId, {startDate, startTime, endDate,endTime })
       if(response.ok){
-        setAssignNotify(true)
+        success()
         setStartDate('')
         setStartTime('')
         setEndDate('')
         setEndTime('')
         assignTaskToggle(e)
         getTaskModule(null, moduleId)
+      }else{
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
+  }
+
+  const success = () => {
+    toast.success('Successfully assigned task!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   return (
@@ -58,7 +81,7 @@ function AssignTask({moduleId, getTaskModule, assignTaskModal, assignTaskToggle,
               <Form.Control type="time" onChange={(e) => setEndTime(e.target.value)} />
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Save Task</Button>
             </Form.Group>
           </Form> 
         </Modal.Body>
