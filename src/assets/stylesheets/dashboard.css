@@ -386,6 +386,10 @@ code {
   font-size: 16px !important;
 }
 
+.font-13{
+  font-size: 13px !important;
+}
+
 .font-size-35{
   font-size: 35px !important;
 }
@@ -535,4 +539,8 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
   border: 2px solid rgb(188, 188, 188);
   text-align: left;
   padding: 12px
+}
+
+.calendar-view{
+  height: 900px;
 }

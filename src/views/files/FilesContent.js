@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-bootstrap'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import FilesAPI from '../../api/FilesApi';
 import Modal from 'react-bootstrap/Modal'
+import { UserContext } from '../../context/UserContext';
 import moment from 'moment';
 import CoursesAPI from '../../api/CoursesAPI';
 
@@ -21,6 +22,9 @@ function FilesContent(props) {
   const [folderToDelete, setToFolderDelete] = useState('')
   const [deleteFolderNotify, setDeleteFolderNotify] = useState(false)
   const [editFolderModal, setEditFolderModal] = useState(false);
+  const [displayButtons, setDisplayButtons] = useState(true);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data;
 
   const courseid = sessionStorage.getItem('courseid')
 
@@ -28,6 +32,10 @@ function FilesContent(props) {
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
       setCourseInfo(response.data)
+      let temp = response.data.isTechfactors
+      if(temp){
+       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+      }
     }else{
       alert("Something went wrong while fetching course information")
     }
@@ -291,9 +299,12 @@ function FilesContent(props) {
         <tr>
           <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
           {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
-          {courseInfo?.isTechfactors? (<></>):(<>
+          {displayButtons ? <>
             <th >Actions</th>
-          </>)}
+          </>
+          :
+          null
+          }
         </tr>
       </thead>
       <tbody>
@@ -313,7 +324,7 @@ function FilesContent(props) {
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
                 } */}
-                {courseInfo?.isTechfactors? (<></>):(<>
+                {displayButtons ? <>
                   <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
@@ -329,19 +340,22 @@ function FilesContent(props) {
                       delay={{ show: 1, hide: 0 }}
                       overlay={renderTooltipEdit}
                     >
-                      <i class="fas fas fa-edit td-file-page" onClick={() => handleEdit(item) } />
+                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fas fa-edit td-file-page"} onClick={() => handleEdit(item) } />
                     </OverlayTrigger>
                   <OverlayTrigger
                     placement="right"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipDelete}>
                     <a>
-                      <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClick(item) }></i>
+                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fa-trash-alt td-file-page"} onClick={() => handleOnClick(item) }></i>
                     </a>
                   </OverlayTrigger>
                   </td>
                 
-                </>)}
+                </>
+                :
+                null
+                }
               </tr>
             )
           })

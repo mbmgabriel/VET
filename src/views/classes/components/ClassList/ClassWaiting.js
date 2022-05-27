@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Table, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams} from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import {UserContext } from '../../../../context/UserContext'
+import { toast } from 'react-toastify';
 
 
 function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, searchTerm}) {
@@ -12,6 +14,8 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
   const [itemId, setItemId] = useState('')
   const {id} = useParams();
   const [alphabetical, setAlphabetical] = useState(true);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
@@ -33,11 +37,12 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
     let response = await new ClassesAPI().acceptStudent(id, isAccepted, [studentId]) 
     if(response.ok){
       // alert('Add Student')
-      setAddNotify(true)
+      // setAddNotify(true)
+      toast.success('Successfully added student.')
       getStudentEnrolled()
       getStudentWaiting()
     }else{
-      alert("Something went wrong while fetching all Add Student")
+      toast.error("Something went wrong while fetching all Add Student")
     }
   }
 
@@ -48,8 +53,9 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
       setDeleteNotify(false)
       getStudentEnrolled()
       getStudentWaiting()
+      toast.success('Successfully removed student.')
     }else{
-      alert("Something went wrong while fetching Remove Student from Pending List")
+      toast.error("Something went wrong while fetching Remove Student from Pending List")
     }
   }
 
@@ -135,31 +141,31 @@ const handleClickIcon = () =>{
                 </div>
               </td>
               <td className='class-waiting-icon'>
-              <div style={{marginRight:'35px'}}> 
-              <OverlayTrigger
-                placement="bottom"
-                delay={{ show: 1, hide: 0 }}
-                overlay={renderTooltipAdd}>
-                  <Button onClick={(e) => addStudent(e, item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-user-plus"></i> </Button>
-               </OverlayTrigger>
-               <OverlayTrigger
-                placement="bottom"
-                delay={{ show: 1, hide: 0 }}
-                overlay={renderTooltipDelete}>
-                <Button onClick={() => handleDeleteNotify(item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i></Button>
-              </OverlayTrigger>
-              </div>
+                <div style={{marginRight:'35px'}} className={user.isSchollAdmin ? 'd-none' : ''}> 
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipAdd}>
+                      <Button onClick={(e) => addStudent(e, item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-user-plus"></i> </Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipDelete}>
+                    <Button onClick={() => handleDeleteNotify(item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i></Button>
+                  </OverlayTrigger>
+                  </div>
               </td>
             </tr>)
             })}
         </tbody>
       </Table>
-        <SweetAlert 
+        {/* <SweetAlert 
           success
           show={addNotify} 
           title="Done!" 
           onConfirm={closeAddNotify}>
-        </SweetAlert>
+        </SweetAlert> */}
         <SweetAlert
           warning
           showCancel

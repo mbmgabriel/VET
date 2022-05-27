@@ -39,6 +39,8 @@ export default function ClassSideNavigation({children}) {
     setLoading(false)
   }
 
+  console.log(user?.role, user?.role != 'Student', 's-----')
+
   const renderTooltipFeed = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Feed
@@ -167,26 +169,29 @@ export default function ClassSideNavigation({children}) {
         <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
           Class Interactives
         </Link>
+        <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
+          Links
+        </Link>
         {
           classInfo?.classInformation?.course?.isTechfactors && 
           <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/videos`}>
             Videos Upload
           </Link>
         }
-              <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/files`}>
-                Class Files
-              </Link>
-             {
-             (user?.teacher != null) && 
-              <>
-               <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
-                Class List
-              </Link>
-               <Link className={currentLoc.includes('class_grading') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/class_grading`}>
-                Class Grading
-              </Link>
-            </>
-            }
+        <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/files`}>
+          Class Files
+        </Link>
+            {
+            (user?.teacher != null) && 
+            <>
+              <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
+              Class List
+            </Link>
+              <Link className={currentLoc.includes('class_grading') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/class_grading`}>
+              Class Grading
+            </Link>
+          </>
+          }
         </ListGroup>
       </Col>
       :

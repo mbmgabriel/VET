@@ -52,6 +52,19 @@ import ExamCreation from "../views/exam-creation/ExamCreation";
 import  Profile from "../views/profile/Profile";
 import Dashboard from "../views/dashboard/Dashboard";
 import SchoolProfile from "../views/school-profile/SchoolProfile";
+import SchoolAdminClasses from '../views/school-profile/SchoolAdminClasses';
+
+import AdminClassFeed from '../views/school-profile/school-class/ClassFeed';
+import AdminClassLearn from '../views/school-profile/school-class/ClassLearn';
+import AdminClassExam from '../views/school-profile/school-class/ClassExam';
+import AdminClassDiscussion from '../views/school-profile/school-class/ClassDiscussion';
+import AdminClassAssignment from '../views/school-profile/school-class/ClassAssignment';
+import AdminClassTask from '../views/school-profile/school-class/ClassTask';
+import AdminClassInteractives from '../views/school-profile/school-class/ClassInteractives';
+import AdminClassLinks from '../views/school-profile/school-class/ClassLinks';
+import AdminClassList from '../views/school-profile/school-class/ClassList';
+import AdminClassFiles from '../views/school-profile/school-class/ClassFiles';
+import AdminClassExamCreation from '../views/school-profile/school-class/AdminClassExamCreation';
 import SchoolCourses from "../views/school-courses/SchoolCourses";
 import SchoolDiscussion from "../views/school-courses/SchoolDiscussion";
 import SchoolExam from "../views/school-courses/SchoolExam";
@@ -71,6 +84,8 @@ import ClassGradingInformation from "../views/classes/ClassGradingInformation";
 import NewClassGrading from "../views/classes/NewClassGrading";
 import ClassGradingComputation from "../views/classes/ClassGradingComputation";
 import ClassVideos from "../views/classes/Videos/ClassVideo";
+import Scratch from "../views/scratch/Scratch";
+import CalendarPage from "../views/calendar/CalendarPage";
 
 
 
@@ -150,8 +165,24 @@ export default function Routes() {
             <PrivateRoute path='/schoolTeacher' exact component={SchoolTeacher} />
             <PrivateRoute path='/studentsList' exact component={StudentsList} />
             <PrivateRoute path='/schoolAdmin' exact component={SchoolAdminList} />
+
+            <PrivateRoute path='/schoolAdminClasses' exact component={SchoolAdminClasses} />
+            <PrivateRoute path='/school_classes/:id/feed' exact component={AdminClassFeed}/>
+            <PrivateRoute path='/school_classes/:id/exam/:examid' exact component={AdminClassExamCreation}/>
+            <PrivateRoute path='/school_classes/:id/learn' exact component={AdminClassLearn} />
+            <PrivateRoute path='/school_classes/:id/exam' exact component={AdminClassExam} />
+            <PrivateRoute path='/school_classes/:id/discussion' exact component={AdminClassDiscussion} />
+            <PrivateRoute path='/school_classes/:id/assignment' exact component={AdminClassAssignment} />
+            <PrivateRoute path='/school_classes/:id/task' exact component={AdminClassTask} />
+            <PrivateRoute path='/school_classes/:id/interactives' exact component={AdminClassInteractives} />
+            <PrivateRoute path='/school_classes/:id/links' exact component={AdminClassLinks} />
+            <PrivateRoute path='/school_classes/:id/classList' exact component={AdminClassList} />
+            <PrivateRoute path='/school_classes/:id/files' exact component={AdminClassFiles} />
+
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
+            <PublicRoute path='/calendar' exact component={CalendarPage}/>
+            <PublicRoute path='/scratch' exact component={Scratch}/>
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>
             <PublicRoute path='/404' exact component={PageNotFound}/>

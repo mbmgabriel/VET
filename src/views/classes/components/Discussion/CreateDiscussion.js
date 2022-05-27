@@ -42,7 +42,7 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
     let response = await new ClassesAPI().createDiscussionModule(moduleId, id, {discussion:{discussionName, instructions,}, discussionAssignment:{allowLate}} )
     if(response.ok){
       // alert('Save Discussion')
-      setAddNotity(true)
+      success()
       setDiscussionName('')
       setInstructions('')
       setModuleId('')
@@ -59,6 +59,18 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
         progress: undefined,
       });
     }
+  }
+
+  const success = () => {
+    toast.success('Successfully created discussion!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
 
 	return (
