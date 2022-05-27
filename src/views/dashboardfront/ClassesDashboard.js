@@ -7,7 +7,7 @@ import SchoolAPI from '../../api/SchoolAPI'
 import { UserContext } from '../../context/UserContext'
 import ClassesAPI from '../../api/ClassesAPI'
 
-export default function ClassesDashboard() {
+export default function ClassesDashboard({studentClasses}) {
 
   const userContext = useContext(UserContext)
   const [loading, setLoading] = useState(false)
@@ -39,24 +39,46 @@ export default function ClassesDashboard() {
     <React.Fragment>
     <div className='dash-side-panel'>
       <Row>
-        <Col sm={11}> 
+        <Col sm={9}> 
           <div className='dash-title-header'>My Classes</div>
         </Col> 
-        <Col sm={1}> 
-          <div><i className="fa fa-ellipsis-h"></i></div>
+        <Col sm={3}> 
+        <div className='dash-view-all'><Link to={`/classes`}>View all</Link></div>
+          {/* <div><i className="fa fa-ellipsis-h"></i></div>  */}
         </Col> 
       </Row>
-      {classes.length?
-        classes.map(item => {
-          return(
-            <React.Fragment>
-              <Link className='dash-content' to={`/classescontent/${item.classId}/feed`}>{item?.className}</Link>
-              <br></br>
-            </React.Fragment>
-          )
-        })
-        :
-        <span>No Classes Found</span>
+      {user?.isTeacher &&
+      <>
+        {classes.length?
+          classes.slice(0, 8).map(item => {
+            return(
+              <React.Fragment>
+                <div className='dash-content' >
+                  <Link to={`/classescontent/${item.classId}/feed`}>{item?.className}</Link>
+                </div>
+              </React.Fragment>
+            )
+          })
+          :
+          <span>No Classes Found</span>
+        }
+      </>
+      }
+      {user?.student &&
+      <>
+        {studentClasses.length? 
+          studentClasses.slice(0, 8).map(item => {
+            return(
+              <>
+              <div className='dash-content' >
+                <Link to={`/classescontent/${item.classId}/feed`}>{item?.className}</Link>
+              </div>
+              </>
+            )
+          }):
+          <span>No Classes Found</span>
+      }
+      </>
       }
     </div>
     </React.Fragment>

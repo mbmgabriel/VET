@@ -6,61 +6,24 @@ import { UserContext } from './../../../context/UserContext'
 import { toast } from 'react-toastify';
 import AnnouncementAPI from '../../../api/AnnouncementAPI';
 
-export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnnouncementModal, openCreateAnnouncementModal}){
+export default function EditAnnouncement({getMyAnnouncement, title, setTitle, content, setContent, announcementId, openEditAnnoncementModal, setOpenEditAnnouncementModal}){
 
-	const [loading, setLoading] = useState(false)
-	const [type, setType] = useState('')
-	const [title, setTitle] = useState('')
-	const [content, setContent] = useState('')
-	const userContext = useContext(UserContext)
-  const {user} = userContext.data
-
-	const handleCloseModal = e => {
+  const editAnnouncement = async(e) => {
     e.preventDefault()
-    setOpenCreateAnnouncementModal(false)
+    let response = await new AnnouncementAPI().updateAnnouncement(announcementId, {title, content})
+      if(response.ok){
+        successEdit()
+        setTitle('')
+        setContent('')
+        getMyAnnouncement()
+        setOpenEditAnnouncementModal(false)
+      }else{
+        alert(response.data.errorMessage)
+      }
   }
 
-
-	const saveAnnouncement = async(e) => {
-    e.preventDefault()
-		if(title === ''){
-			toast.error('Please insert all the required fields', {
-				position: "top-right",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				});
-		}else{
-			setLoading(true)
-			let typeId = 3
-			// let isTechFactors = user.role !== "Teacher" && true
-			let response = await new AnnouncementAPI().createAnnouncementForClasses(typeId, 
-				{title, content}
-			)
-			if(response.ok){
-			successSave()
-			handleCloseModal(e)
-			getMyAnnouncement()
-			}else{
-				toast.error(response.data.errorMessage, {
-					position: "top-right",
-					autoClose: 5000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					});
-			}
-			setLoading(false)
-		}
-  }
-
-	const successSave = () => {
-		toast.success('Successfully created course', {
+  const successEdit = () => {
+		toast.success('Successfully updated annoncement', {
 			position: "top-right",
 			autoClose: 5000,
 			hideProgressBar: false,
@@ -73,12 +36,12 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 
 	return (
 		<div>
-			<Modal size="lg" className="modal-all" show={openCreateAnnouncementModal} onHide={()=> setOpenCreateAnnouncementModal(!setOpenCreateAnnouncementModal)} >
+			<Modal size="lg" className="modal-all" show={openEditAnnoncementModal} onHide={()=> setOpenEditAnnouncementModal(!setOpenEditAnnouncementModal)} >
 				<Modal.Header className="modal-header" closeButton>
-				Create an Announcement 
+				Edit an Announcement 
 				</Modal.Header>
 					<Modal.Body className="modal-label b-0px">
-						<Form onSubmit={saveAnnouncement}>
+						<Form onSubmit={editAnnouncement}>
 						{/* <Form.Group className="m-b-20">
 							<Form.Label for="subjectArea">
 									Type
@@ -108,6 +71,7 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 										Title
 								</Form.Label>
 								<Form.Control 
+                  defaultValue={title}
 									className="custom-input" 
 									size="lg" 
 									type="text" 
@@ -123,6 +87,7 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 								</Form.Label>
 								<Form.Control 
 									className="custom-input" 
+                  defaultValue={content}
 									size="lg" 
 									type="text" 
 									as="textarea"
@@ -132,10 +97,9 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 								/>
 						</Form.Group>
 						{' '}
-
 						<span style={{float:"right"}}>
 							<Button className="tficolorbg-button" type="submit">
-									Save
+                Update Announcement
 							</Button>
 						</span>
 					</Form>

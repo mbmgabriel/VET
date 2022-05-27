@@ -1423,12 +1423,13 @@ hr{
 }
 
 .analytics-label{
-  color: white;
+  color: var(--primary-color) !important;
   display: flex;
   align-items: center;
 }
 
 .analytics-label .analytics-icon{
+  color:  var(--primary-color) !important;
   margin-right: 12px;
   font-size: 24px;
 }
@@ -1515,22 +1516,113 @@ input::-webkit-inner-spin-button {
 }
 
 .dash-title{
-  color:#EE9337;
+  color: var(--primary-color) !important;
   font-size: 18px !important;
 }
 
 .dash-title-header{
   color:#707070;
-  font-size: 30px
-  ;
+  font-size: 26px;
+  
+}
+
+.dash-view-all{
+  color: var(--primary-color) !important;
+  font-size: 16px;
+  padding: auto;
+}
+
+.dash-view-all a{
+  color: var(--primary-color) !important;
+  text-decoration: none !important;
 }
 
 .dash-content {
-  color:#707070;
   font-size: 16px;
+  padding-top: 5px;
+}
+
+.dash-content a{
+  color:#707070 !important;
+  text-decoration: none !important;
+  
+}
+
+.dash-content :hover{
+  color: var(--primary-color) !important
+}
+
+.dash-read-more{
+  font-size: 13px;
+}
+
+.dash-read-more a{
+  color:#707070 !important;
+  text-decoration: none !important;
+}
+
+.dash-read-more :hover{
+  color: var(--primary-color) !important
 }
 
 .dash-date{
   color:#707070;
   font-size: 13px;
+}
+
+.dash-view-title{
+  color: var(--primary-color) !important;
+  font-size: 26px;
+}
+
+.dash-view-date{
+  font-size: 14px;
+  float: left;
+}
+
+.paginationBtns{
+  width: 80%;
+  height: 40%;
+  list-style: none !important;
+  display: flex;
+  justify-content: center;
+}
+
+.paginationBtns a{
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+  border: 1px solid var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  cursor: pointer;
+}
+
+.paginationBtns a:hover{
+  color: #E5E5E5 !important;
+  background-color: var(--primary-color) !important;
+}
+
+.paginationAcitve a{
+  color: #E5E5E5 !important;
+  background-color: var(--primary-color) !important;
+}
+
+.dash-link-btn{
+  color: #707070 !important;
+  font-size: 16px!important;
+  text-decoration: none!important;
+  outline: var(--primary-color) !important;
+  
+}
+
+.dash-link-btn a:hover{
+  color: #f1f1f1 !important;
+  background-color: var(--primary-color) !important;
+  outline: none !important;
+}
+
+.dash-link-btn a:active{
+  color: #f1f1f1 !important;
+  background-color: var(--primary-color) !important;
+  outline: none !important;
 }

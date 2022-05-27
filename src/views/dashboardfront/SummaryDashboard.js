@@ -58,7 +58,7 @@ export default function SummaryDashboard() {
     <React.Fragment>
     <div className='dashboard-content mb-5 mt-3'>
 			<div className="dashboard-content-item rounded shadow bg-white" >
-				<div className='analytics-label' style={{color:"#EE9337"}}>
+				<div className='analytics-label'>
 					<div className='analytics-icon'><i className="fas fa-user-graduate "></i></div>
 					<h5 className="color-black my-0 ml-5">Students</h5>
 				</div>

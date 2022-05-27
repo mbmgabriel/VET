@@ -17,6 +17,7 @@ export default function TeacherDashboardSidePanel() {
   const [loading, setLoading] = useState(false)
   const [classes, setClasses] = useState([])
   const [courses, setCourses] = useState([])
+  const [studentClasses, setStudentClasses] = useState([])
   const {user} = userContext.data
   let studentId = user?.student?.id
 
@@ -54,10 +55,50 @@ export default function TeacherDashboardSidePanel() {
    
   }, [])
 
+  const getClassesStudent = async() => {
+    setLoading(true)
+    let response = await new ClassesAPI().getClassesStudent(studentId)
+    setLoading(false)
+    if(response.ok){
+      setStudentClasses(response.data)
+    }else{
+      alert("Something went wrong while fetching all getClassesStudent")
+    }
+  }
+
+  useEffect(() => {
+    if(user?.teacher === null)
+      return(
+        getClassesStudent()
+      )
+   
+  }, [])
+
+
+  const classesCount = studentClasses.length
+
   return (
     <React.Fragment>
-      <CoursesDashboard />
-      <ClassesDashboard />
+      {user?.isStudent && 
+        <>
+        <div className='dashboard-content mb-2'>
+          <div className="dashboard-content-item rounded  bg-white" >
+            <div className='analytics-label' style={{color:"#EE9337"}}>
+              <div className='analytics-icon'><i className="fas fa-project-diagram "></i></div>
+              <h5 className="color-black my-0 ml-5">Classes</h5>
+            </div>
+              <h2 className='color-black analytics-value h2 text-align-right'>{classesCount}</h2>
+          </div>
+          </div>
+        </>
+      }
+      <ClassesDashboard studentClasses={studentClasses}  />
+      {user?.isTeacher && 
+        <>
+           <CoursesDashboard />
+        </>
+      }
+     
     </React.Fragment>
   )
 }

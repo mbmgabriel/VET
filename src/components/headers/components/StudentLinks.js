@@ -9,6 +9,7 @@ export default function StudentLinks({activeHeader}) {
   if(user.isStudent){
     return (
       <div className="header-links">
+        <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
         <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
       </div>
     )

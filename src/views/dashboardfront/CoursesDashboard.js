@@ -39,18 +39,22 @@ export default function CoursesDashboard() {
     <React.Fragment>
     <div className='dash-side-panel'>
       <Row>
-        <Col sm={11}> 
+        <Col sm={9}> 
           <div className='dash-title-header'>My courses</div>
         </Col> 
-        <Col sm={1}> 
-          <div><i className="fa fa-ellipsis-h"></i></div>
+        <Col sm={3}> 
+        <div className='dash-view-all'><Link to={`/courses`}>View all</Link></div>
+          {/* <div><i className="fa fa-ellipsis-h"></i></div> */}
         </Col> 
       </Row>
       {courses?.courses?.length?
-        courses.courses.map(item => {
+        courses.courses.slice(0,8).map(item => {
           return(
             <React.Fragment>
-              <span className='dash-content'>{item?.courseName}</span><br></br>
+              {/* <span className='dash-content'>{item?.courseName}</span><br></br> */}
+              <div className='dash-content' >
+              <Link to={`coursecontent/${item.id}/learn`}>{item?.courseName}</Link>
+              </div>
             </React.Fragment>
           )
         })
