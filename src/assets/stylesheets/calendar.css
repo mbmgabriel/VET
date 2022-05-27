@@ -1,0 +1,63 @@
+
+.rbc-month-view{
+  border: none !important
+}
+
+.rbc-day-bg{
+  border: 1px solid #E9E9E9 !important;
+}
+
+.rbc-date-cell{
+  padding: 10px
+}
+
+.rbc-button-link{
+  color: #707070
+}
+
+.rbc-month-row{
+  border: none !important;
+}
+
+.rbc-month-header .rbc-header{
+  border: none;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.rbc-header span{
+  color: #707070 !important;
+  font-size: 20px;
+  font-weight: normal;
+  
+}
+
+.rbc-event.rbc-selected, .rbc-day-slot .rbc-selected.rbc-background-event,
+.rbc-event.rbc-selected, .rbc-day-slot .rbc-selected.rbc-background-event,
+.rbc-event, .rbc-day-slot .rbc-background-event{
+
+  background-color: var(--primary-color) !important;
+}
+
+.rbc-time-view .rbc-row{
+  min-height: 31px;
+}
+
+.rbc-btn-group button{
+  background-color: white;
+  border: none !important;
+  border-radius: 12px !important;
+  font-size: 16px;
+  color: #BCBCBC
+}
+
+.rbc-btn-group button.rbc-active, .rbc-btn-group button:hover, .rbc-btn-group button:focus{
+  background-color: var(--primary-color) !important;
+  color: white !important
+}
+
+.rbc-toolbar .rbc-toolbar-label{
+  color: var(--primary-color) !important;
+  font-size: 24px;
+  font-weight: bold;
+}

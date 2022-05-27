@@ -84,6 +84,8 @@ import ClassGradingInformation from "../views/classes/ClassGradingInformation";
 import NewClassGrading from "../views/classes/NewClassGrading";
 import ClassGradingComputation from "../views/classes/ClassGradingComputation";
 import ClassVideos from "../views/classes/Videos/ClassVideo";
+import Scratch from "../views/scratch/Scratch";
+import CalendarPage from "../views/calendar/CalendarPage";
 
 
 
@@ -179,6 +181,8 @@ export default function Routes() {
 
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
+            <PublicRoute path='/calendar' exact component={CalendarPage}/>
+            <PublicRoute path='/scratch' exact component={Scratch}/>
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>
             <PublicRoute path='/404' exact component={PageNotFound}/>
