@@ -18,12 +18,20 @@ export default function EditAnnouncement({getMyAnnouncement, title, setTitle, co
         getMyAnnouncement()
         setOpenEditAnnouncementModal(false)
       }else{
-        alert(response.data.errorMessage)
+				toast.error(response.data.errorMessage, {
+					position: "top-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					});
       }
   }
 
   const successEdit = () => {
-		toast.success('Successfully updated annoncement', {
+		toast.success('Successfully updated announcement', {
 			position: "top-right",
 			autoClose: 5000,
 			hideProgressBar: false,

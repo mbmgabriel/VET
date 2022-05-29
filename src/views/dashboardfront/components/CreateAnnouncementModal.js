@@ -44,6 +44,8 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 			successSave()
 			handleCloseModal(e)
 			getMyAnnouncement()
+			setTitle('')
+			setContent('')
 			}else{
 				toast.error(response.data.errorMessage, {
 					position: "top-right",
@@ -60,7 +62,7 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
   }
 
 	const successSave = () => {
-		toast.success('Successfully created course', {
+		toast.success('Successfully created announcement', {
 			position: "top-right",
 			autoClose: 5000,
 			hideProgressBar: false,
@@ -135,7 +137,7 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 
 						<span style={{float:"right"}}>
 							<Button className="tficolorbg-button" type="submit">
-									Save
+									Save Announcement
 							</Button>
 						</span>
 					</Form>

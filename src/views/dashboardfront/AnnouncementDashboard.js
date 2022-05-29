@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button, InputGroup, FormControl } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import SchoolAPI from '../../api/SchoolAPI'
 import { UserContext } from '../../context/UserContext'
@@ -37,6 +37,7 @@ export default function AnnouncementDashboard() {
   const pagesVisited = pageNumber * announcementPage;
   const {user} = userContext.data
   let studentId = user?.student?.id
+  const [searchTerm, setSearchTerm] = useState('')
 
   const openTeacherAnnouncement = () => {
     setViewPage(1)
@@ -48,6 +49,10 @@ export default function AnnouncementDashboard() {
 
   const openAllAnnouncement = () => {
     setViewPage(0)
+  }
+
+  const onSearch = (text) => {
+    setSearchTerm(text)
   }
 
   const displayAnnouncement = announcement.slice(pagesVisited, pagesVisited + announcementPage).map((item) => {
@@ -92,8 +97,9 @@ export default function AnnouncementDashboard() {
     let response = await new AnnouncementAPI().getMyAnnouncement()
     setLoading(false)
     if(response.ok){
-      let sortedCars1 = response.data.sort((a, b) => new Date(a.createdDate) - new Date(b.createdDate));
-      setMyAnnouncement(sortedCars1)
+      const sortedActivities = response.data.sort((a, b) => b.id - a.id)
+      console.log('sortedActivities:', sortedActivities)
+      setMyAnnouncement(sortedActivities)
     }else{
       alert("Something went wrong while fetching all getcourses")
     }
@@ -178,6 +184,13 @@ export default function AnnouncementDashboard() {
         </>} 
           <CreateAnnouncement getMyAnnouncement={getMyAnnouncement} openCreateAnnouncementModal={openCreateAnnouncementModal} setOpenCreateAnnouncementModal={setOpenCreateAnnouncementModal}/>
         </Col> 
+        <div className="col-md-12">
+					<InputGroup size="lg">
+						<FormControl onChange={(e) => onSearch(e.target.value)} aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search announcement here" type="search"/>
+					<InputGroup.Text id="basic-addon2" className="search-button"><i className="fas fa-search fa-1x"></i></InputGroup.Text>
+					</InputGroup>
+          <br />
+				</div>
       </Row>
       {user?.isTeacher && <>
           {announcement.length?
@@ -189,7 +202,7 @@ export default function AnnouncementDashboard() {
           }
           {myAnnouncement.length?
             viewPage === 1? (<>
-              <TeacherAnnouncement deleteAnnouncement={deleteAnnouncement} handleEditModal={handleEditModal} myAnnouncement={myAnnouncement} handleViewAnnoncement={handleViewAnnoncement} /> 
+              <TeacherAnnouncement searchTerm={searchTerm} deleteAnnouncement={deleteAnnouncement} handleEditModal={handleEditModal} myAnnouncement={myAnnouncement} handleViewAnnoncement={handleViewAnnoncement} /> 
             </>):(<></>) 
              
             :

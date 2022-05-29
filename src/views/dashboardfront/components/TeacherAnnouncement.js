@@ -4,10 +4,11 @@ import Moment from 'moment'
 import { Link } from 'react-router-dom'
 import {Button, } from 'react-bootstrap'
 
-function TeacherAnnouncement({handleEditModal, deleteAnnouncement, myAnnouncement, handleViewAnnoncement}) {
+function TeacherAnnouncement({searchTerm, handleEditModal, deleteAnnouncement, myAnnouncement, handleViewAnnoncement}) {
   const [pageNumber, setPagesNumber] = useState(0)
   const announcementPage = 5;
   const pagesVisited = pageNumber * announcementPage;
+
 
   const displayAnnouncement = myAnnouncement.slice(pagesVisited, pagesVisited + announcementPage).map((item) => {
     return(
@@ -38,6 +39,13 @@ function TeacherAnnouncement({handleEditModal, deleteAnnouncement, myAnnouncemen
 
   return (
     <>
+      {/* {displayAnnouncement.filter((item) => {
+        if(searchTerm != ''){
+          return item
+        }else if(item?.title.toLowerCase().includes(searchTerm.toLowerCase())){
+          return item
+        }
+      })} */}
       {displayAnnouncement}
       <br />
             <ReactPaginate 

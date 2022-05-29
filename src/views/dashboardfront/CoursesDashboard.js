@@ -40,7 +40,7 @@ export default function CoursesDashboard() {
     <div className='dash-side-panel'>
       <Row>
         <Col sm={9}> 
-          <div className='dash-title-header'>My courses</div>
+          <div className='dash-title-header'>My Courses</div>
         </Col> 
         <Col sm={3}> 
         <div className='dash-view-all'><Link to={`/courses`}>View all</Link></div>
