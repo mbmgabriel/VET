@@ -30,6 +30,7 @@ function ExamReport({filter, setfilter, classesModules, setClassesModules, selec
     let sessionClass = sessionStorage.getItem("classId")
     setViewTestReport(false)
     console.log(viewTestReport)
+    console.log('123')
     let response = await new ClassesAPI().getTestReport(sessionClass, testid)
     setLoading(false)
     if(response.ok){

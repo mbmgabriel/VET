@@ -3,24 +3,42 @@ import { Link } from "react-router-dom";
 import ClassesAPI from "../../../../api/ClassesAPI";
 import Status from "../../../../components/utilities/Status";
 import ShowResultExam from "./ShowResultExam";
+import { useParams } from 'react-router'
 
 export default function ExamStatuses({ user, exam, startDate, endDate, noAssigned }) {
   const[examAnalysis, setExamAnalysis] = useState([])
+  const [viewAnalysis, setViewAnalysis] = useState(false)
+  const { id } = useParams()
 
-  const openModalShowResutl = (classId, testId) => {
-    getExamAnalysis(classId, testId)
+  const openModalShowResutl = (testId) => {
+    getExamAnalysis(testId)
+    setViewAnalysis(true)
   }
-  const getExamAnalysis = async (classId, testId) =>{
+  // const getExamAnalysis = async (classId, testId) =>{
+  //   let studentId = user?.student?.id
+  //   let response = await new ClassesAPI().getExamAnalysis(studentId, classId, testId)
+  //     if(response.ok){
+  //       setExamAnalysis(response.data.testPartAnswers)
+  //     }else{
+  //       alert(response.data.errorMessage)
+  //     }
+  // }
+
+  const getExamAnalysis = async(testid) => {
+    // console.log(selectedClassId)
+    sessionStorage.setItem('analysis','true')
+    let classId = id
     let studentId = user?.student?.id
-    let response = await new ClassesAPI().getExamAnalysis(studentId, classId, testId)
-      if(response.ok){
-        setExamAnalysis(response.data.testPartAnswers)
-      }else{
-        alert(response.data.errorMessage)
-      }
+    // sessionStorage.setItem('testid',testid)
+    let response = await new ClassesAPI().getExamAnalysis(studentId, classId, testid)
+    if(response.ok){
+      setExamAnalysis(response.data)
+      console.log(response.data)
+      
+    }else{
+      alert(response.data.errorMessage)
+    }
   }
-
-  console.log('examAnalysis:', examAnalysis)
 
   return (
     <div className='exam-status'>
@@ -36,11 +54,11 @@ export default function ExamStatuses({ user, exam, startDate, endDate, noAssigne
       {user.isStudent && (
         <>
           <Status>{exam?.isLoggedUserDone ? "Completed" : "Not Completed"}</Status>
-          <Status>{exam?.classTest?.showAnalysis ? <div  onClick={() => openModalShowResutl(exam?.classTest?.classId, exam?.test?.id)}> Show Result </div> : ''}</Status>
+          <Status>{exam?.classTest?.showAnalysis ? <div  onClick={() => openModalShowResutl(exam?.test?.id)}> Show Result </div> :  'Disable Show Result'}</Status>
         </> 
       )}
       {user.isTeacher && exam?.test?.classId && exam?.test?.isShared && <Status>Shared</Status>}
-      <ShowResultExam examAnalysis={examAnalysis} />
+      <ShowResultExam setViewAnalysis={setViewAnalysis} viewAnalysis={viewAnalysis} examAnalysis={examAnalysis} />
     </div>
   );
 }

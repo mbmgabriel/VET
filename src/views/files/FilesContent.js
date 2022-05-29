@@ -7,7 +7,6 @@ import Modal from 'react-bootstrap/Modal'
 import { UserContext } from '../../context/UserContext';
 import moment from 'moment';
 import CoursesAPI from '../../api/CoursesAPI';
-import { UserContext } from '../../context/UserContext'
 
 function FilesContent(props) {
 
@@ -21,8 +20,6 @@ function FilesContent(props) {
   const {user} = userContext.data
   const [courseInfo, setCourseInfo] = useState("")
   const [displayButtons, setDisplayButtons] = useState(true);
-  const userContext = useContext(UserContext)
-  const {user} = userContext.data;
 
   const courseid = sessionStorage.getItem('courseid')
 

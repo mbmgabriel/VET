@@ -67,7 +67,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   }
 
   useEffect(() => {
-    if(selectedClassId != null){
+    if(sessionTestId != null){
       getTestReport(null, sessionClass, sessionTestId)
     }
   }, [])
@@ -96,7 +96,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     setShowReportHeader(true)
   }, [])
 
-  console.log('testReport:' ,  testReport)
+  console.log('examReport:' ,  examReport)
 
   const updateExamAnalysisTrue = async ( startDate, startTime, endDate, endTime, timeLimit) => {
     let showAnalysis = true
@@ -128,8 +128,9 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     }
   }
 
-  const handleCheckBox = (e, startDate, startTime, endDate, endTime, timeLimit) =>{
+  const handleCheckBox = (e, startDate, startTime, endDate, endTime, timeLimit, checked) =>{
     handleShowResult(e.target.checked, startDate, startTime, endDate, endTime, timeLimit)
+    console.log('checked:', checked)
   }
   
   const showResultStudent = () => 
@@ -168,13 +169,13 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
             {examReport[0] &&
               examReport?.map(item => {
                 return(
-                  <Form>
+                <Form>
                   <Form.Check 
                   type="switch"
                   name={'showAnalysis'}
                   label='Show Result'
                   checked={item?.classTest?.showAnalysis}
-                  onChange={(e) => handleCheckBox(e, item?.classTest?.startDate, item?.classTest?.startTime, item?.classTest?.endDate, item?.classTest?.endTime, item?.classTest?.timeLimit)}
+                  onChange={(e) => handleCheckBox(e, item?.classTest?.startDate, item?.classTest?.startTime, item?.classTest?.endDate, item?.classTest?.endTime, item?.classTest?.timeLimit, item?.classTest?.showAnalysis)}
                 />
                 </Form>
                 )
@@ -192,7 +193,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
                   <td >
                     <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
                       <span onClick={(e) => getExamAnalysis(e, item.student.id, st.test.classId, st.test.id)} >
-                      { item.student.lname} { item.student.fname} 
+                      { item.student.lname} { item.student.fname}
                       </span> 
                   </td>
                   <td>{st.isSubmitted === false ? <Badge bg="warning">Not Submitted</Badge>: st.score}</td>
