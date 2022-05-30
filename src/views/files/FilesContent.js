@@ -80,7 +80,7 @@ function FilesContent(props) {
 
   const renderTooltipEdit = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Edit
+      Edit 
     </Tooltip>
   )
   
