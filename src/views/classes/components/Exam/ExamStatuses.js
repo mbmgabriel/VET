@@ -6,14 +6,6 @@ import ShowResultExam from "./ShowResultExam";
 import { useParams } from 'react-router'
 
 export default function ExamStatuses({ user, exam, startDate, endDate, noAssigned }) {
-  const[examAnalysis, setExamAnalysis] = useState([])
-  const [viewAnalysis, setViewAnalysis] = useState(false)
-  const { id } = useParams()
-
-  const openModalShowResutl = (testId) => {
-    getExamAnalysis(testId)
-    setViewAnalysis(true)
-  }
   // const getExamAnalysis = async (classId, testId) =>{
   //   let studentId = user?.student?.id
   //   let response = await new ClassesAPI().getExamAnalysis(studentId, classId, testId)
@@ -23,22 +15,6 @@ export default function ExamStatuses({ user, exam, startDate, endDate, noAssigne
   //       alert(response.data.errorMessage)
   //     }
   // }
-
-  const getExamAnalysis = async(testid) => {
-    // console.log(selectedClassId)
-    sessionStorage.setItem('analysis','true')
-    let classId = id
-    let studentId = user?.student?.id
-    // sessionStorage.setItem('testid',testid)
-    let response = await new ClassesAPI().getExamAnalysis(studentId, classId, testid)
-    if(response.ok){
-      setExamAnalysis(response.data)
-      console.log(response.data)
-      
-    }else{
-      alert(response.data.errorMessage)
-    }
-  }
 
   return (
     <div className='exam-status'>
@@ -54,11 +30,10 @@ export default function ExamStatuses({ user, exam, startDate, endDate, noAssigne
       {user.isStudent && (
         <>
           <Status>{exam?.isLoggedUserDone ? "Completed" : "Not Completed"}</Status>
-          <Status>{exam?.classTest?.showAnalysis ? <div  onClick={() => openModalShowResutl(exam?.test?.id)}> Show Result </div> :  'Disable Show Result'}</Status>
+          
         </> 
       )}
       {user.isTeacher && exam?.test?.classId && exam?.test?.isShared && <Status>Shared</Status>}
-      <ShowResultExam setViewAnalysis={setViewAnalysis} viewAnalysis={viewAnalysis} examAnalysis={examAnalysis} />
     </div>
   );
 }

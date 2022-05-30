@@ -6,6 +6,8 @@ import ContentViewer from '../../../../components/content_field/ContentViewer';
 
 function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
 
+  console.log('examAnalysis:', examAnalysis)
+
   return (
     <>
     <Modal  size="lg" show={viewAnalysis} onHide={() => setViewAnalysis(false)} aria-labelledby="example-modal-sizes-title-lg">
@@ -48,6 +50,8 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
                         <span className='font-exam-analysis-content-24'><ContentViewer>{ad.studentAnswer}</ContentViewer>
                         </span>
                           {ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
+                          {ad.isConsider == true && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
+                          {console.log('Consider:', ad.isConsider)}
                       </div>
                       <br />
                       <div className='inline-flex' >

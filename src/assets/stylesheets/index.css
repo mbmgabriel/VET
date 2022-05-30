@@ -590,6 +590,27 @@ border-top-right-radius: 0px !important;
   color: white !important;
 }
 
+.btn-showResult{
+  border: '1px';
+  border-color: 'var(--primary-color)';
+  outline: none !important;
+  padding: 3px 5px !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  color: var(--primary-color) !important;
+  font-style: 'normal normal normal 20px/27px Segoe UI' !important;
+}
+
+.btn-showResult:hover{
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.btn-showResult:active{
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
 .btn-archive{
   border: '0px'!important;;
   /* border-left: none !important; */
