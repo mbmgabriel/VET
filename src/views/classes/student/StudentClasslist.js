@@ -1,13 +1,17 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Card, Dropdown, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../../../context/UserContext'
 
 
 function StudentClasslist({item}) {
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+
   return (
     <div>
          <Card className='class-card' >
-        <Link to={`/classescontent/${item.classId}/feed`}>
+        <Link to={true ? `/classes/${item.classId}/learn` : `/classescontent/${item.classId}/feed`}>
           <Card.Header className='class-header-card' >
             <Row>
               <Col sm={10}>
