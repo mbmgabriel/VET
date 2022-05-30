@@ -46,7 +46,7 @@ function TeacherAnnouncement({searchTerm, handleEditModal, deleteAnnouncement, m
           return item
         }
       })} */}
-      {displayAnnouncement}
+      {displayAnnouncement}{<><p>asd</p></>}
       <br />
             <ReactPaginate 
               previousLabel={'Previous'}
