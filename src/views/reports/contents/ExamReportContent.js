@@ -17,13 +17,25 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   const [studentId, setStudentId] = useState(false)
   const [examReport, setExamReport] = useState([])
   const [isChecked, setIschecked] = useState(false)
+  const [frequencyItem, setFrequencyItem] = useState([])
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   let sessionClass = sessionStorage.getItem("classId")
   let sessionTestId = sessionStorage.getItem("testid")
 
+  const getFrequencyReport = async () => {
+    console.log('sessionClass:', sessionClass)
+    console.log('sessionTestId', sessionTestId)
+    let response = await new ExamAPI().getFrequencyReport(sessionClass, sessionTestId)
+    console.log('response:', response)
+      if(response.ok){ 
+        setFrequencyItem(response.data)
+      }else{
+        alert(response.data.errorMessage)
+      }
+  }
+
   const getExamAnalysis = async(e, studentid, classid, testid) => {
-    console.log(selectedClassId)
     sessionStorage.setItem('analysis','true')
     sessionStorage.setItem('studentid',studentid)
     sessionStorage.setItem('testid',testid)
@@ -31,7 +43,6 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
     if(response.ok){
       setExamAnalysis(response.data)
-      console.log(response.data)
       
     }else{
       alert("Something went wrong while fetching all courses")
@@ -60,7 +71,6 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     if(response.ok){
       setTestReport(response.data)
       setExamReport(response.data[0].studentTests)
-      console.log('asdasda:', response.data)
     }else{
       alert(response.data.errorMessage)
     }
@@ -96,7 +106,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     setShowReportHeader(true)
   }, [])
 
-  console.log('examReport:' ,  examReport)
+
 
   const updateExamAnalysisTrue = async ( startDate, startTime, endDate, endTime, timeLimit) => {
     let showAnalysis = true
@@ -130,7 +140,6 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
 
   const handleCheckBox = (e, startDate, startTime, endDate, endTime, timeLimit, checked) =>{
     handleShowResult(e.target.checked, startDate, startTime, endDate, endTime, timeLimit)
-    console.log('checked:', checked)
   }
   
   const showResultStudent = () => 
@@ -163,51 +172,43 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
       <Row>
         <Col sm={4}>
         <Card>
-  <Card.Body>
-    <Card.Title><div className='header-analysis-card'><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div></Card.Title>
-    <Card.Text>
-      <p><b>0</b></p>
-      <hr></hr>
-      <p><b>0.1%</b></p>
-    </Card.Text>
-   
-  </Card.Body>
-</Card>    
+          <Card.Body>
+            <Card.Title><div className='header-analysis-card'><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div></Card.Title>
+            <Card.Text>
+              <hr></hr>
+              <p><b>0</b></p>
+            </Card.Text> 
+          </Card.Body>
+        </Card>    
         </Col>
         <Col sm={4}>
         <Card>
-  <Card.Body>
-    <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div></Card.Title>
-    <Card.Text>
-      <div>
-    <p><b>0</b></p>
-      <hr></hr>
-      <p><b>0.1%</b></p>
-      </div>
-    </Card.Text>
-    
-  </Card.Body>
-</Card>
-        
+          <Card.Body>
+            <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div></Card.Title>
+            <Card.Text>
+              <div>
+              <hr></hr>
+              <p><b>0</b></p>
+              </div>
+            </Card.Text>
+          </Card.Body>
+        </Card>
         </Col>
         <Col sm={4}>
         <Card>
-  <Card.Body>
-    <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div></Card.Title>
-    <Card.Text>
-    <p><b>0</b></p>
-      <hr></hr>
-      <p><b>0.1%</b></p>
-    </Card.Text>
-    
-  </Card.Body>
-</Card>
-        
+          <Card.Body>
+            <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div></Card.Title>
+            <Card.Text>
+              <hr></hr>
+              <p><b>0</b></p>
+            </Card.Text>
+          </Card.Body>
+        </Card>
         </Col>
       </Row>
       <div style={{display:'flex', paddingRight:'20px'}}>
       <div style={{paddingTop:'5px' , paddingRight:'5px'}}>
-          <Button style={{float:'right', marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> item Analysis </b></Button>
+          <Button  onClick={() => getFrequencyReport()} style={{float:'right', marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> item Analysis </b></Button>
         </div>
       <div style={{float:'right', paddingTop:'25px'}}>
           {examReport[0] &&
@@ -232,6 +233,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         <tr>
           <th>Student Name</th>
           <th>Grade</th>
+          <th>status</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -240,15 +242,22 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
           return (
             item.studentTests.map(st =>{
               return (
+                
                 <tr>
                   <td >
                     <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
                       <span onClick={(e) => getExamAnalysis(e, item.student.id, st.test.classId, st.test.id)} >
                       { item.student.lname} { item.student.fname}
+                      {st.isSubmitted == true }
                       </span> 
                   </td>
-                  <td>{st.isSubmitted === false ? <Badge bg="warning">Not Submitted</Badge>: st.score}</td>
+                  <td>{st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>: <>{st.score}/{st.rawScore}</>}</td>
                   {/* <td>{st.score}</td> */}
+                  <td>
+                    {st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>:<>{st.rawScore/2 <= st.score && <><Badge bg="success">PASSE</Badge></>}
+                    {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }</>}
+                  
+                  </td>
                   <td>
                     {/* <Button variant="outline-warning" size="sm" onClick={(e) => retakeExam(e, st.test.classId, st.test.id, item.student.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button> */}
                     <Button style={{color:"white"}} variant="warning" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>

@@ -232,5 +232,12 @@ export default class ExamAPI extends Base {
       method: 'GET'
     })
   }
+
+  getFrequencyReport = async (classId, testId) => {
+    this.sendRequest({
+      path: `/api/Class/${classId}/test/${testId}/report/frequency`,
+      method: 'GET'
+    })
+  }
   
 }

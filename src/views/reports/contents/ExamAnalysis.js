@@ -39,18 +39,14 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     setSelectedTestId(testid)
     setSelectedAnswerId(answerid)
     setSelectedQuestionId(questionid)
-    console.log(answerid)
 }
 
   const getExamAnalysis = async(e, studentid, classid, testid) => {
     e.preventDefault()
-    console.log(selectedClassId)
     setShowExamAnalysis(true)
-    console.log(showExamAnalysis)
     let response = await new ClassesAPI().getExamAnalysis(studentid, classid, testid)
     if(response.ok){
       setExamAnalysis(response.data)
-      console.log(response.data)
       
     }else{
       alert("Something went wrong while fetching all courses")
@@ -65,7 +61,6 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       studentid, classid, testid, answerid, {isConsider}
     )
     if(response.ok){
-      console.log(response.data)
     }else{
       alert(response.data.errorMessage)
     }
@@ -127,7 +122,6 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
   const handleInputChange = (e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
     setConsiderAnswer(true)
-    console.log(studentid)
     isChecked(e, e.target.checked, questionid, answerid, studentid, testid, rate);
   }
 
