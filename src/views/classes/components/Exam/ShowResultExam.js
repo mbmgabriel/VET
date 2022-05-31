@@ -44,7 +44,7 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
                   return(
                     <>
                     <br />
-                      <span className='font-exam-analysis-content-24-tfi' >{index + 1}.  <span className='font-question-analysis' style={{color:'#707070'}}><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
+                      <span className='font-exam-analysis-content-24-tfi' >{index + 1}.)  <span className='font-question-analysis' style={{color:'#707070'}}><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
                       <div className='inline-flex'>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Student Answer :</span>
                         <span className='font-exam-analysis-content-24'><ContentViewer>{ad.studentAnswer}</ContentViewer>

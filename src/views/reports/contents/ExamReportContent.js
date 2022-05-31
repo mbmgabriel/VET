@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { UserContext } from './../../../context/UserContext'
 import ExamAPI from '../../../api/ExamAPI';
+import FrequencyError from './FrequencyError';
 
 
 function ExamReportContent({ selectedClassId, testReport, setTestReport, showReportHeader, setShowReportHeader}) {
@@ -18,22 +19,11 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   const [examReport, setExamReport] = useState([])
   const [isChecked, setIschecked] = useState(false)
   const [frequencyItem, setFrequencyItem] = useState([])
+  const [frequencyModal, setFrequencyModal] = useState(false)
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   let sessionClass = sessionStorage.getItem("classId")
   let sessionTestId = sessionStorage.getItem("testid")
-
-  const getFrequencyReport = async () => {
-    console.log('sessionClass:', sessionClass)
-    console.log('sessionTestId', sessionTestId)
-    let response = await new ExamAPI().getFrequencyReport(sessionClass, sessionTestId)
-    console.log('response:', response)
-      if(response.ok){ 
-        setFrequencyItem(response.data)
-      }else{
-        alert(response.data.errorMessage)
-      }
-  }
 
   const getExamAnalysis = async(e, studentid, classid, testid) => {
     sessionStorage.setItem('analysis','true')
@@ -43,11 +33,26 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
     if(response.ok){
       setExamAnalysis(response.data)
-      
     }else{
       alert("Something went wrong while fetching all courses")
     }
   }
+
+  const getFrequencyReport = async () =>{
+    let response = await new ClassesAPI().getFrequencyReport(sessionClass, sessionTestId)
+    if(response.ok){
+      setFrequencyItem(response.data)
+    }else{
+      alert(response.data.errorMessage)
+    }
+  }
+
+  const handleFrequencyModal = () => {
+    setFrequencyModal(true)
+    getFrequencyReport()
+  }
+
+  console.log('frequencyItem:', frequencyItem)
 
   const retakeExam = async(classid, testid, studentid) => {
     let isConsider = true
@@ -205,10 +210,10 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
           </Card.Body>
         </Card>
         </Col>
-      </Row>
+      </Row> 
       <div style={{display:'flex', paddingRight:'20px'}}>
       <div style={{paddingTop:'5px' , paddingRight:'5px'}}>
-          <Button  onClick={() => getFrequencyReport()} style={{float:'right', marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> item Analysis </b></Button>
+          <Button onClick={() => handleFrequencyModal()}  style={{float:'right', marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> Frequency of error </b></Button>
         </div>
       <div style={{float:'right', paddingTop:'25px'}}>
           {examReport[0] &&
@@ -218,7 +223,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
                 <Form.Check 
                 type="switch"
                 name={'showAnalysis'}
-                label='Show Result'
+                label='Show result'
                 checked={item?.classTest?.showAnalysis}
                 onChange={(e) => handleCheckBox(e, item?.classTest?.startDate, item?.classTest?.startTime, item?.classTest?.endDate, item?.classTest?.endTime, item?.classTest?.timeLimit, item?.classTest?.showAnalysis)}
               />
@@ -241,8 +246,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         {testReport.map(item =>{
           return (
             item.studentTests.map(st =>{
-              return (
-                
+              return (  
                 <tr>
                   <td >
                     <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
@@ -260,7 +264,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
                   </td>
                   <td>
                     {/* <Button variant="outline-warning" size="sm" onClick={(e) => retakeExam(e, st.test.classId, st.test.id, item.student.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button> */}
-                    <Button style={{color:"white"}} variant="warning" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
+                    <Button className='retake-btn' size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo" style={{paddingRight:'10px'}} ></i>Retake</Button>
                     <SweetAlert
                           warning
                           showCancel
@@ -290,10 +294,13 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     :
     <div onClick={(e) => getExamAnalysis(e, user.student.id, sessionClass, sessionTestId)}>{user.student.lname}</div>
     }
+    <FrequencyError frequencyItem={frequencyItem} setFrequencyModal={setFrequencyModal} frequencyModal={frequencyModal} />
     </>
   )}else{
     return(
-    <ExamAnalysis showReportHeader={showReportHeader} setShowReportHeader={setShowReportHeader} examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} testReport={testReport}/>
+      <>
+        <ExamAnalysis showReportHeader={showReportHeader} setShowReportHeader={setShowReportHeader} examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} testReport={testReport}/>
+      </>
     )
   }
 }
