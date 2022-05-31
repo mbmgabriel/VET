@@ -93,7 +93,7 @@ function ClassList() {
     if(response.ok){
       setLoading(false);
       getStudentEnrolled();
-      toast.success("Class list was successfully uploaded.")
+      toast.success("Successfully uploaded the class list.")
     }else{
       setLoading(false);
       alert("Something went wrong while uploading class list")
