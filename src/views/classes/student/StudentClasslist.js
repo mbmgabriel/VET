@@ -7,11 +7,12 @@ import { UserContext } from '../../../context/UserContext'
 function StudentClasslist({item}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  const subsType = localStorage.getItem('subsType');
 
   return (
     <div>
          <Card className='class-card' >
-        <Link to={true ? `/classes/${item.classId}/learn` : `/classescontent/${item.classId}/feed`}>
+        <Link to={subsType == 'LMS' ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` }>
           <Card.Header className='class-header-card' >
             <Row>
               <Col sm={10}>

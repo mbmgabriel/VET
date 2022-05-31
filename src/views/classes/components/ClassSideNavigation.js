@@ -27,7 +27,7 @@ export default function ClassSideNavigation({children}) {
   const [collapseSide, setCollapseSide] = useState(localStorage.getItem('collaps') == 'false' ? false : true);
   const [loading, setLoading] = useState(false);
   const [showTab, setShowTab] = useState(true)
-  
+  const subsType = localStorage.getItem('subsType');
   const getClassInfo = async() => {
     setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
@@ -139,7 +139,7 @@ export default function ClassSideNavigation({children}) {
               </Col>
             </Row>
           </ListGroup.Item>
-        {false ? 
+        {subsType == 'LMS' ? 
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               Feed
@@ -158,6 +158,9 @@ export default function ClassSideNavigation({children}) {
                 Teacher Resources
               </Link>
             }
+            <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
+              Links
+            </Link>
             <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/discussion`}>
               Discussion
             </Link>
@@ -166,9 +169,6 @@ export default function ClassSideNavigation({children}) {
             </Link>
             <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
               Class Interactives
-            </Link>
-            <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
-              Links
             </Link>
             {
               classInfo?.classInformation?.course?.isTechfactors && 
@@ -197,14 +197,14 @@ export default function ClassSideNavigation({children}) {
               Learn
             </Link>
           </ListGroup>
-          }
+        }
       </Col>
       :
       <Col className='row-course-bg course-widget-font' sm={1}>
         <Col className="text-align-right mb-2">
           <i className="fas fa-chevron-right" style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
         </Col>
-        {false ? 
+        {subsType == 'LMS' ? 
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               <OverlayTrigger
