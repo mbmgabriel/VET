@@ -141,5 +141,22 @@ export default class GradeAPI extends Base {
       data
     })
   }
+
+  updateFolderName = async (id, type, data) => {
+    return this.sendRequest({
+      path: `/api/${type}/${id}/folder/v3/update`,
+      method: 'PUT',
+      data
+    })
+  }
+
+  deleteFolder = async(id, type, data) => {
+    return this.sendRequest({
+      path: `/api/${type}/${id}/folder/v3/delete`,
+      method: 'PUT',
+      data
+    })
+  }
+
 }
 
