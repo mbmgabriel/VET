@@ -111,7 +111,7 @@ function ClassLearn() {
                 {Pages.map(item =>{
                     return (
                       <>
-                        <li><Button onClick={() => getContent(item?.id)} className='btn-create-discussion' variant="link" > {item?.pageName}  </Button></li>
+                        <li><p onClick={() => getContent(item?.id)} className='btn-create-discussion' variant="link" > {item?.pageName}  </p></li>
                       </>
                     )
                   })}
