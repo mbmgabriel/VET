@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Badge, Table, Button, Form} from 'react-bootstrap'
+import {Badge, Table, Button, Form, Card, Row, Col} from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
 import ExamAnalysis from './ExamAnalysis'
 import { toast } from 'react-toastify';
@@ -159,29 +159,80 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   return(
     <>
     {user.student === null ?
+      <>
+      <Row>
+        <Col sm={4}>
+        <Card>
+  <Card.Body>
+    <Card.Title><div className='header-analysis-card'><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div></Card.Title>
+    <Card.Text>
+      <p><b>0</b></p>
+      <hr></hr>
+      <p><b>0.1%</b></p>
+    </Card.Text>
+   
+  </Card.Body>
+</Card>    
+        </Col>
+        <Col sm={4}>
+        <Card>
+  <Card.Body>
+    <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div></Card.Title>
+    <Card.Text>
+      <div>
+    <p><b>0</b></p>
+      <hr></hr>
+      <p><b>0.1%</b></p>
+      </div>
+    </Card.Text>
+    
+  </Card.Body>
+</Card>
+        
+        </Col>
+        <Col sm={4}>
+        <Card>
+  <Card.Body>
+    <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div></Card.Title>
+    <Card.Text>
+    <p><b>0</b></p>
+      <hr></hr>
+      <p><b>0.1%</b></p>
+    </Card.Text>
+    
+  </Card.Body>
+</Card>
+        
+        </Col>
+      </Row>
+      <div style={{display:'flex', paddingRight:'20px'}}>
+      <div style={{paddingTop:'5px' , paddingRight:'5px'}}>
+          <Button style={{float:'right', marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> item Analysis </b></Button>
+        </div>
+      <div style={{float:'right', paddingTop:'25px'}}>
+          {examReport[0] &&
+            examReport?.map(item => {
+              return(
+              <Form>
+                <Form.Check 
+                type="switch"
+                name={'showAnalysis'}
+                label='Show Result'
+                checked={item?.classTest?.showAnalysis}
+                onChange={(e) => handleCheckBox(e, item?.classTest?.startDate, item?.classTest?.startTime, item?.classTest?.endDate, item?.classTest?.endTime, item?.classTest?.timeLimit, item?.classTest?.showAnalysis)}
+              />
+              </Form>
+              )
+            })
+          }
+        </div>
+        </div>
     <Table striped hover size="sm">
       <thead>
         <tr>
           <th>Student Name</th>
           <th>Grade</th>
           <th>Actions</th>
-          <th style={{float:'left'}}>
-            {examReport[0] &&
-              examReport?.map(item => {
-                return(
-                <Form>
-                  <Form.Check 
-                  type="switch"
-                  name={'showAnalysis'}
-                  label='Show Result'
-                  checked={item?.classTest?.showAnalysis}
-                  onChange={(e) => handleCheckBox(e, item?.classTest?.startDate, item?.classTest?.startTime, item?.classTest?.endDate, item?.classTest?.endTime, item?.classTest?.timeLimit, item?.classTest?.showAnalysis)}
-                />
-                </Form>
-                )
-              })
-            }
-          </th>
         </tr>
       </thead>
       <tbody>
@@ -226,6 +277,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         }
       </tbody>
     </Table>
+    </>
     :
     <div onClick={(e) => getExamAnalysis(e, user.student.id, sessionClass, sessionTestId)}>{user.student.lname}</div>
     }

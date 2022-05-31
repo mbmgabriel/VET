@@ -184,7 +184,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
         <span className='font-exam-analysis-header'>{examAnalysis.student?.lname},  {examAnalysis.student?.fname}</span>
       </Col>
       <Col md={6}>
-        <span className='font-exam-analysis-header float-right'>{examAnalysis.score} / {examAnalysis.rawScore}</span>
+        <span className='font-exam-analysis-header float-right'>{examAnalysis.score} / {examAnalysis.assignedRawScore}</span>
       </Col>
       <Col md={6}>
         <p className='font-exam-analysis-content-24-tfi'>{testname} </p>
@@ -206,17 +206,20 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                     <>
                     <br />
                       <span className='font-exam-analysis-content-24-tfi'>{index + 1}.  <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
-                      <div>
+                      <div style={{display:'inline-flex'}}>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Student Answer :</span><span className='font-exam-analysis-content-24'>
                           <ContentViewer>{ad.studentAnswer}</ContentViewer>
                         </span>
                           {ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
                       </div>
-                      <div>
+                      <div >
+                        <div style={{display:'inline-flex'}}>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Correct Answer :</span>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad.assignedAnswer}</ContentViewer></span>
+                        </div>
                         {ad.studentAnswer?.toLowerCase() !== ad.assignedAnswer.toLowerCase() &&
                         <Form>
+                          <div style={{display:'inline-flex'}}>
                           <Form.Group className="m-b-20">
                             <Form.Check
                             label="Consider"
@@ -226,7 +229,10 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                             onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
                             /> 
                           </Form.Group>
+                          <span>{ad.isConsider == true &&  <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
+                          <span>{ad.isConsider == false &&  <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
                           {' '}
+                          </div>
                         </Form>
                         }
                       </div>

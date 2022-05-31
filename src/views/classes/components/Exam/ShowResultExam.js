@@ -13,7 +13,7 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
     <Modal  size="lg" show={viewAnalysis} onHide={() => setViewAnalysis(false)} aria-labelledby="example-modal-sizes-title-lg">
     <Modal.Header className='class-modal-header' closeButton>
       <Modal.Title id="example-modal-sizes-title-lg" >
-        Exam Analysis     
+        Exam Analysis <i class='fa fa-times-circle'></i>
       </Modal.Title>
     </Modal.Header>
     <Modal.Body>
@@ -51,7 +51,8 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
                         </span>
                           {ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
                           {ad.isConsider == true && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
-                          {console.log('Consider:', ad.isConsider)}
+                          {ad.studentAnswer?.toLowerCase() != ad.assignedAnswer.toLowerCase() && ad.isConsider == false && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}  
+                          
                       </div>
                       <br />
                       <div className='inline-flex' >

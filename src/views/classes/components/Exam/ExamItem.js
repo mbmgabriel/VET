@@ -97,9 +97,12 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
         You will not be able to recover this exam!
       </SweetAlert>
       <div className='exam-content'>
-      {exam?.classTest?.showAnalysis && (<>
-          <Button style={{float:'right', marginTop:'15px'}} className='btn-showResult' onClick={() => openModalShowResutl(exam?.test?.id)} size='sm' variant="outline-warning"><b>Show Result</b></Button>
-        </>)}
+        {user?.isStudent &&
+          exam?.classTest?.showAnalysis && (<>
+            <Button style={{float:'right', marginTop:'15px'}} className='btn-showResult' onClick={() => openModalShowResutl(exam?.test?.id)} size='sm' variant="outline-warning"><b>Show Result</b></Button>
+          </>)
+        }
+
         <ExamItemContent
           id={id}
           exam={exam}
