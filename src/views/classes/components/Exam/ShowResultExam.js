@@ -13,7 +13,7 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
     <Modal  size="lg" show={viewAnalysis} onHide={() => setViewAnalysis(false)} aria-labelledby="example-modal-sizes-title-lg">
     <Modal.Header className='class-modal-header' closeButton>
       <Modal.Title id="example-modal-sizes-title-lg" >
-        Exam Analysis <i class='fa fa-times-circle'></i>
+        Exam Analysis
       </Modal.Title>
     </Modal.Header>
     <Modal.Body>
@@ -36,7 +36,7 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
         return(
             <div>
             <div className='inline-flex'>
-              <p className='font-exam-analysis-content-24-tfi' >{index + 1}.</p><p className='font-exam-analysis-content-24-tfi' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
+              <p className='font-exam-analysis-content-24-tfi' >{index + 1}.&nbsp;</p><p className='font-exam-analysis-content-24-tfi' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
             </div>
               {item.questionDetails.map((qd, index) => {
                 return(
@@ -44,7 +44,7 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
                   return(
                     <>
                     <br />
-                      <span className='font-exam-analysis-content-24-tfi' >{index + 1}.)  <span className='font-question-analysis' style={{color:'#707070'}}><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
+                      <span className='font-exam-analysis-content-24-tfi' >{index + 1}.&nbsp;  <span className='font-question-analysis' style={{color:'#707070'}}><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
                       <div className='inline-flex'>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Student Answer :</span>
                         <span className='font-exam-analysis-content-24'><ContentViewer>{ad.studentAnswer}</ContentViewer>
