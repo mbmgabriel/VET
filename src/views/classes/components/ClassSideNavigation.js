@@ -169,9 +169,6 @@ export default function ClassSideNavigation({children}) {
         <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
           Class Interactives
         </Link>
-        <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
-          Links
-        </Link>
         {
           classInfo?.classInformation?.course?.isTechfactors && 
           <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/videos`}>
