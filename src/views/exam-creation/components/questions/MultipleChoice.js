@@ -75,6 +75,11 @@ const MultipleChoiceForm = ({
     }
   } 
 
+  useEffect(() => {
+    handleGetCourseFiles()
+    
+  }, [])
+
   return (
     <Modal
       size='lg'
@@ -294,7 +299,7 @@ export default function MultipleChoice({
         await new ExamAPI().editMultipleChoiceAnswer(choice.id, choice);
       }
       setShowModal(false);
-      toast.success("Question updated successfully");
+      toast.success("Successfully updated question");
       getExamInformation();
       setRate(1);
       setQuestion("");
@@ -316,7 +321,7 @@ export default function MultipleChoice({
     );
     if (response.ok) {
       setShowModal(false);
-      toast.success("Question added successfully");
+      toast.success("Successfully added question");
       getExamInformation();
       setRate(1);
       setQuestion("");
@@ -388,7 +393,7 @@ export default function MultipleChoice({
             setEditQuestion('1')
           }}
         >
-          Add question 1
+          Add question
         </Button>
       )}
       </>)}

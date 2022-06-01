@@ -41,6 +41,11 @@ const IdentificationForm = ({
     }
   }
 
+  useEffect(() => {
+    handleGetCourseFiles()
+    
+  }, [])
+
   return (
     <Modal
       size='lg'
@@ -115,7 +120,7 @@ const IdentificationForm = ({
           </Form.Group>
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>
-              {editQuestion ? <>Add Question</> : <>Update Question</>}
+              {editQuestion ? <>Save Question</> : <>Update Question</>}
             </Button>
           </span>
         </Form>
@@ -199,7 +204,7 @@ export default function Identification({
       );
       if (response.ok) {
         setShowModal(false);
-        toast.success("Question updated successfully");
+        toast.success("Successfully updated question");
         getExamInformation();
         setRate(1);
         setQuestion("");
@@ -228,7 +233,7 @@ export default function Identification({
     );
     if (response.ok) {
       setShowModal(false);
-      toast.success("Question added successfully");
+      toast.success("Successfully added question");
       getExamInformation();
       setRate(1);
       setQuestion("");
@@ -247,11 +252,11 @@ export default function Identification({
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>
-            <p className='primary-title'>
+            <p className='primary-title' title="">
               <ContentViewer>{question.question.testQuestion}</ContentViewer>
             </p>
-            <p className=''>Answer: {question.answer}</p>
-            <p className=''>Point(s): {question.question.rate}</p>
+            <p className='' title="">Answer: {question.answer}</p>
+            <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
 
           {editable && (
@@ -272,6 +277,7 @@ export default function Identification({
       {courseInfos?.isTechfactors? (<></>):(<>
         {editable && (
         <Button
+          title=""
           className='tficolorbg-button m-r-5'
           type='submit'
           onClick={() => {
