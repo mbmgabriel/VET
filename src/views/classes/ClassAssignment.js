@@ -207,7 +207,7 @@ function ClassAssignment() {
           </div>
         </Accordion.Header>
         <Accordion.Body>
-          {(user?.isStudent === null)?(
+          {(user?.isStudent)?(
           <>
             <StudentAssignment searchTerm={searchTerm} assignment={assignment} />
           </>
