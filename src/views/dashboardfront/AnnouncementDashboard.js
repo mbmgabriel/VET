@@ -33,23 +33,23 @@ export default function AnnouncementDashboard() {
   const [viewDate, setViewDate] = useState()
   const [pageNumber, setPagesNumber] = useState(0)
   const [viewPage, setViewPage] = useState(2)
-  const announcementPage = 5;
+  const announcementPage = 10;
   const pagesVisited = pageNumber * announcementPage;
   const {user} = userContext.data
   let studentId = user?.student?.id
   const [searchTerm, setSearchTerm] = useState('')
 
-  const openTeacherAnnouncement = () => {
-    setViewPage(1)
-  }
+  // const openTeacherAnnouncement = () => {
+  //   setViewPage(1)
+  // }
 
-  const openAdminAnnoncement = () => {
-    setViewPage(2)
-  }
+  // const openAdminAnnoncement = () => {
+  //   setViewPage(2)
+  // }
 
-  const openAllAnnouncement = () => {
-    setViewPage(0)
-  }
+  // const openAllAnnouncement = () => {
+  //   setViewPage(0)
+  // }
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -92,19 +92,19 @@ export default function AnnouncementDashboard() {
     setLoading(false)
   }
 
-  const getMyAnnouncement = async() => {
-    setLoading(true)
-    let response = await new AnnouncementAPI().getMyAnnouncement()
-    setLoading(false)
-    if(response.ok){
-      const sortedActivities = response.data.sort((a, b) => b.id - a.id)
-      console.log('sortedActivities:', sortedActivities)
-      setMyAnnouncement(sortedActivities)
-    }else{
-      alert("Something went wrong while fetching all getcourses")
-    }
-    setLoading(false)
-  }
+  // const getMyAnnouncement = async() => {
+  //   setLoading(true)
+  //   let response = await new AnnouncementAPI().getMyAnnouncement()
+  //   setLoading(false)
+  //   if(response.ok){
+  //     const sortedActivities = response.data.sort((a, b) => b.id - a.id)
+  //     console.log('sortedActivities:', sortedActivities)
+  //     setMyAnnouncement(sortedActivities)
+  //   }else{
+  //     alert("Something went wrong while fetching all getcourses")
+  //   }
+  //   setLoading(false)
+  // }
 
 	const handleOpenModal = e => {
 		e.preventDefault()
@@ -114,8 +114,8 @@ export default function AnnouncementDashboard() {
   useEffect(() => {
     if(user?.student === null)
       return(
-        getAllAnnouncement(),
-        getMyAnnouncement()
+        getAllAnnouncement()
+        // getMyAnnouncement()
       )
   }, [])
 
@@ -132,7 +132,7 @@ export default function AnnouncementDashboard() {
     let response = await new AnnouncementAPI().deleteAnnouncement(id)
     if(response.ok){
       successDeleted()
-      getMyAnnouncement()
+      // getMyAnnouncement()
     }else{
       alert(response.data?.errorMessage)
     }
@@ -172,17 +172,18 @@ export default function AnnouncementDashboard() {
           <span  ><Link to={'#'} > Teacher </Link></span> */}
           {user?.isTeacher && <>
             {/* <Button onClick={() => openAllAnnouncement()}  className='dash-link-btn' size='sm' variant="outline-warning"><b>All</b></Button> */}
-            <Button onClick={() => openAdminAnnoncement()} className='dash-link-btn'  size='sm' variant="outline-warning"><b>Admin </b></Button>
-            <Button onClick={() => openTeacherAnnouncement()} className='dash-link-btn'  size='sm' variant="outline-warning"><b>Teacher</b></Button>
+            {/* <Button onClick={() => openAdminAnnoncement()} className='dash-link-btn'  size='sm' variant="outline-warning"><b>Admin </b></Button> */}
+            {/* <span className='dash-link-btn'><b>Admin </b></span> */}
+            {/* <Button onClick={() => openTeacherAnnouncement()} className='dash-link-btn'  size='sm' variant="outline-warning"><b>Teacher</b></Button> */}
           </>}
           </div>
           <br />
         </Col> 
 				<Col sm={1}>
           {user?.isTeacher && <>
-          <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className='fa fa-plus'></i></Button>
+          {/* <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className='fa fa-plus'></i></Button> */}
         </>} 
-          <CreateAnnouncement getMyAnnouncement={getMyAnnouncement} openCreateAnnouncementModal={openCreateAnnouncementModal} setOpenCreateAnnouncementModal={setOpenCreateAnnouncementModal}/>
+          {/* <CreateAnnouncement getMyAnnouncement={getMyAnnouncement} openCreateAnnouncementModal={openCreateAnnouncementModal} setOpenCreateAnnouncementModal={setOpenCreateAnnouncementModal}/> */}
         </Col> 
         <div className="col-md-12">
 					<InputGroup size="lg">
@@ -195,19 +196,19 @@ export default function AnnouncementDashboard() {
       {user?.isTeacher && <>
           {announcement.length?
             viewPage === 2?(<>
-            <AdminAnnouncement handleViewAnnoncement={handleViewAnnoncement} announcement={announcement} />
+            <AdminAnnouncement searchTerm={searchTerm}  handleViewAnnoncement={handleViewAnnoncement} announcement={announcement} />
             </>):(<></>)
             :
-            <span>No Announcement from school admin</span>
+            <span>No Announcement</span>
           }
-          {myAnnouncement.length?
+          {/* {myAnnouncement.length?
             viewPage === 1? (<>
               <TeacherAnnouncement searchTerm={searchTerm} deleteAnnouncement={deleteAnnouncement} handleEditModal={handleEditModal} myAnnouncement={myAnnouncement} handleViewAnnoncement={handleViewAnnoncement} /> 
             </>):(<></>) 
              
             :
             <span>No Announcement Created</span>
-         }
+         } */}
          {/* {viewPage === 0? (<>
           <AllAnouncement /> 
          </>):(<></>)} */}
@@ -232,11 +233,11 @@ export default function AnnouncementDashboard() {
             />
           </>
             :
-            <span>No Announcement from Teacher </span>
+            <span>No Announcement </span>
           }
       </>}
     </div>
-    <EditAnnouncement getMyAnnouncement={getMyAnnouncement} announcementId={announcementId} setContent={setContent} content={content} setTitle={setTitle} title={title} openEditAnnoncementModal={openEditAnnoncementModal} setOpenEditAnnouncementModal={setOpenEditAnnouncementModal}/>
+    {/* <EditAnnouncement getMyAnnouncement={getMyAnnouncement} announcementId={announcementId} setContent={setContent} content={content} setTitle={setTitle} title={title} openEditAnnoncementModal={openEditAnnoncementModal} setOpenEditAnnouncementModal={setOpenEditAnnouncementModal}/> */}
     <ViewAnnoncement viewDate={viewDate} viewTitle={viewTitle} viewContent={viewContent} ViewAnnoncementModal={ViewAnnoncementModal}  setViewAnnouncementModal={setViewAnnouncementModal}/>
     </React.Fragment>
   )
