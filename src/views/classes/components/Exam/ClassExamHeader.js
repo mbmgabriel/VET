@@ -125,7 +125,7 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
 
             <span style={{ float: "right" }}>
               <Button className="tficolorbg-button" type="submit">
-                Save
+                Save Exam
               </Button>
             </span>
           </Form>
