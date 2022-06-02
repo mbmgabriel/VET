@@ -44,6 +44,8 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
               </Form.Group>
             </>)
           })}
+            Correct Answer: {item2?.answer}
+            <hr />
           </>)
          })}</>):(<></>
          )}
@@ -62,6 +64,8 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
               </Form.Group>
             </>)
           })}
+             Correct Answer: {item2?.answer}
+            <hr />
           </>)
          })}</>):(<></>
          )}
@@ -81,6 +85,8 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
               </Form.Group>
             </>)
           })}
+              Correct Answer: {item2?.answer}
+            <hr />
           </>)
          })}</>):(<></>
          )}
@@ -94,7 +100,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
           <Form.Label className='d-flex'>{number}. <ContentViewer>{item2?.question?.testQuestion}</ContentViewer></Form.Label>
           </Form.Group>
           <Form.Group className="mb-20">
-            <Form.Control  as="textarea" rows={4} disabled style={{resize:'none'}}  />
+            <Form.Control  as="textarea" rows={4} disabled style={{resize:'none'}}  />1
           </Form.Group>
           </>)
          })}</>):(<></>
@@ -115,6 +121,8 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
               </Form.Group>
             </>)
           })}
+              Correct Answer: {item2?.answer}
+            <hr />
           </>)
          })}</>):(<></>
          )}
