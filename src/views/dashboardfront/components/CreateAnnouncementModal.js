@@ -96,7 +96,7 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 									All student
 								</option>
 								<option value={0}> 
-									All student and teacher
+									All
 								</option>
 							</Form.Select>
 						</Form.Group>

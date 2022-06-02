@@ -165,7 +165,6 @@ export default function AnnouncementDashboard() {
       <Row>
         <Col sm={11}> 
           <div className='dash-title-header'>Announcements</div>
-          <br />
           <div className='dash-link-btn'>
           {/* <span  ><Link to={'#'} >All </Link></span>
           <span ><Link to={'#'}> Admin </Link></span>
@@ -214,11 +213,28 @@ export default function AnnouncementDashboard() {
          </>):(<></>)} */}
 
       </>}
-
       {user?.isStudent && <>
         {announcement.length?
           <>
-            {displayAnnouncement}
+              {announcement.slice(pagesVisited, pagesVisited + announcementPage).filter((item) => {
+                  if(searchTerm == ''){
+                    return item
+                  }else if(item?.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())){
+                    return item
+                  }
+                }).map((item) => {
+                  return(
+                      <>
+                        <span className='dash-title'>{item?.title}</span><br></br>
+                        <span className='dash-date'><small>{item?.announcedBy} . {Moment(item?.createdDate).format('LL')}</small></span><br></br>
+                        <span className='dash-content'>{item?.content.substring(0, 70)}</span>
+                        <span className='dash-read-more' ><Link to={'#'} onClick={(e) => handleViewAnnoncement(item?.title, item?.content,item?.createdDate)}> ...Read more </Link></span>
+                        <br></br>
+                        <hr></hr>
+                      </>
+                  )
+                })
+              }
             <br />
             <ReactPaginate 
               previousLabel={'Previous'}

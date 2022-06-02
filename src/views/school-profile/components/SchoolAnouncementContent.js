@@ -152,7 +152,6 @@ function SchoolAnouncementContent() {
            <Row>
         <Col sm={11}> 
           <div className='dash-title-header'>Announcements</div>
-          <br />
           <div className='dash-link-btn'>
           {/* <span  ><Link to={'#'} >All </Link></span>
           <span ><Link to={'#'}> Admin </Link></span>
@@ -189,12 +188,23 @@ function SchoolAnouncementContent() {
         }).map((item) => {
           return(
               <>
-                <span className='dash-title'>{item?.title}</span><br></br>
-                <span className='dash-date'><small>{item?.announcedBy} . {Moment(item?.createdDate).format('LL')}</small></span><br></br>
-                <span className='dash-content'>{item?.content}</span>
-                <span className='dash-read-more' ><Link to={'#'} onClick={(e) => handleViewAnnoncement(item?.title, item?.content,item?.createdDate)}> ...Read more </Link></span>
-                <br></br>
-                <hr></hr>
+        <>
+          <span className='dash-title'>{item?.title}</span>
+          <div className='inline-flex' style={{paddingTop:'20px', paddingTop:'6px', float:'right', }}>
+            <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>
+                <Button onClick={() => handleEditModal(item?.title, item?.content, item?.id)}   className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; </Button>
+            </div>
+            <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
+              <Button onClick={() => handleDeleteNotify(item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; </Button>
+            </div> 
+          </div>
+          <br></br>
+          <span className='dash-date'><small>{item?.announcedBy} . {Moment(item?.createdDate).format('LL')}</small></span><br></br>
+          <span className='dash-content'>{item?.content.substring(0, 70)}</span>
+          <span className='dash-read-more' ><Link to={'#'} onClick={(e) => handleViewAnnoncement(item?.title, item?.content,item?.createdDate)}> ...Read more </Link></span>
+          <br></br>
+          <hr></hr>
+        </>
               </>
           )
         })
