@@ -261,7 +261,7 @@ function FilesContent(props) {
             <InputGroup.Text>{extFilename}</InputGroup.Text>
           </InputGroup>
           <Form.Group className='right-btn'>
-            <Button className='tficolorbg-button' onClick={()=> handleSaveNewFilename()} >Save</Button>
+            <Button className='tficolorbg-button' onClick={()=> handleSaveNewFilename()} >Update Filename</Button>
           </Form.Group>
         </Form> 
         </Modal.Body>
