@@ -32,9 +32,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
             let number = index + 1
           return(<>
           <Form.Group className='m-b-15'>
-            <Form.Label className='d-flex'>{number}. 
-             <ContentViewer> {item2?.question?.testQuestion}</ContentViewer>
-            </Form.Label>
+            <Form.Label className='d-flex'>{number}.<ContentViewer>{item2?.question?.testQuestion}</ContentViewer></Form.Label>
           </Form.Group>
           {item2.choices?.map(item3 => {
             return(<>
@@ -121,7 +119,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
               </Form.Group>
             </>)
           })}
-              Correct Answer: {item2?.answer}
+              Correct Answer:{item2?.answer}
             <hr />
           </>)
          })}</>):(<></>
