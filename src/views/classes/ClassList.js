@@ -138,7 +138,7 @@ function ClassList() {
       <ClassBreadcrumbs title='' clicked={() => console.log('')}/>
     <Row style={{paddingTop:'15px'}}>
       <Col className='title-header' >
-      <p>Class List </p> 
+      <p>Class List</p> 
       </Col>
       <Col style={{textAlign:'right'}}>
         <Button className='btn-Enrolled' onClick={handleOpenClassEnrolled} size='lg' variant="outline-warning"><b>Enrolled</b></Button>
