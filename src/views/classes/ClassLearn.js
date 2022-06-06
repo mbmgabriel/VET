@@ -104,7 +104,7 @@ function ClassLearn() {
               <div >
               <Card.Body >
                 <Card.Title tag="h5" className='card-title'>
-                  UNIT
+                  Pages
                 </Card.Title>
                 <Card.Text className='card-title' >
                 <ul style={{listStyle:'none', height: '50vh'}} className='scrollable pb-5'>
