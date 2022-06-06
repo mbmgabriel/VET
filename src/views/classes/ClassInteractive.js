@@ -32,13 +32,13 @@ function ClassInteractive() {
   const [accountInfo, setAccountInfo] = useState('')
   const [schoolCode, setSchoolCode] = useState('')
   const [resultToken, setResultToken] = useState('')
-
+  const subsType = localStorage.getItem('subsType');
   const onSearch = (item) => {
     setSearchTerm(item)
   }
-
   
-
+  
+  
   const getClassInfo = async() => {
     // setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
@@ -51,53 +51,53 @@ function ClassInteractive() {
     }
     // setLoading(false)
   }
-
-const getAccountInfo = async() => {
-  // setLoading(true)
-  let response = await new ClassesAPI().getAccountInfo(user.userId)
-  if(response.ok){
-    setAccountInfo(response.data)
-  }else{
-    alert("Something went wrong while fetching all courses")
+  
+  const getAccountInfo = async() => {
+    // setLoading(true)
+    let response = await new ClassesAPI().getAccountInfo(user.userId)
+    if(response.ok){
+      setAccountInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching all courses")
+    }
+    // setLoading(false)
   }
-  // setLoading(false)
-}
-
-const getSchoolCode = async() => {
-  // setLoading(true)
-  let response = await new ClassesAPI().getSchoolCode()
-  if(response.ok){
-    setSchoolCode(response.data)
-    console.log("Haru", response.data)
-  }else{
-    alert("Something went wrong while fetching all courses")
+  
+  const getSchoolCode = async() => {
+    // setLoading(true)
+    let response = await new ClassesAPI().getSchoolCode()
+    if(response.ok){
+      setSchoolCode(response.data)
+      console.log("Haru", response.data)
+    }else{
+      alert("Something went wrong while fetching all courses")
+    }
+    // setLoading(false)
   }
-  // setLoading(false)
-}
-
+  
   const editAssignIteractiveToggle = (e, item) => {
     setEditAssignInteractiveItem(item)
     setEditAssignInteractiveModal(!editAssignInteractiveModal)
   }
-
+  
   const assignInteractiveToggle = (e, item) => {
     setInteractiveId(item)
     setAssignInteractiveModal(!assignInteractiveModal)
   }
-
+  
   const getModule = async(courseID) => {
     let response = await new ClassesAPI().getModule(courseID);
     if(response.ok){
-        setModule(response.data)
+      setModule(response.data)
     }else{
       alert('error')
     }
   }
-
+  
   console.log('interactive:', interactive)
-
-
-
+  
+  
+  
   const getIndteractive = async (e, item) =>{
     let response = await new ClassesAPI().getInteractive(id, item)
     if(response.ok){
@@ -107,13 +107,16 @@ const getSchoolCode = async() => {
       alert('Error')
     }
   }
-
+  
   useEffect(() => {
     if(moduleId !== null){
       return(
         getIndteractive()
-      )
-    } 
+        )
+      } 
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   useEffect(() => {

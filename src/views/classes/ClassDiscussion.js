@@ -43,6 +43,7 @@ function ClassDiscussion() {
   const [getComments, setGetComments] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [classInfo, setClassInfo] = useState({});
+  const subsType = localStorage.getItem('subsType');
 
   const getClassInfo = async() => {
     // setLoading(true)
@@ -61,6 +62,9 @@ function ClassDiscussion() {
 
   useEffect(() => {
     getClassInfo()
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
   
   const onSearch = (text) => {

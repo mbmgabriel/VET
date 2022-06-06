@@ -6,6 +6,7 @@ import { Link} from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from "react-router";
 import { UserContext } from '../../context/UserContext';
+import { toast } from "react-toastify";
 
 export default function CourseContent({children}) {
   const [loading, setLoading] = useState(false)
@@ -17,6 +18,7 @@ export default function CourseContent({children}) {
   const [moduleInfo, setModuleInfo] = useState({})
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  const subsType = localStorage.getItem('subsType');
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
@@ -26,7 +28,7 @@ export default function CourseContent({children}) {
       setModuleInfo(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching coursse unit")
+      toast.error("Something went wrong while fetching coursse unit")
     }
   }
 
@@ -38,7 +40,7 @@ export default function CourseContent({children}) {
       setCourseInfo(response.data)
       console.log(response.data, 'infoooooooooooooooooo')
     }else{
-      alert("Something went wrong while fetching course information.")
+      toast.error("Something went wrong while fetching course information.")
     }
   }
 
@@ -136,122 +138,143 @@ export default function CourseContent({children}) {
                 </Col>
               </Row>
             </ListGroup.Item> 
-            <ListGroup>
-              <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
-                Learn
-              </Link>
-              <Link className={currentLoc.includes('exam') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/exam`}>
-                Exam
-              </Link>
-              <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
-                Task
-              </Link>
-              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
-                Teacher Resources
-              </Link>
-              <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/discussion`}>
-                Discussion
-              </Link>
-              <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
-                Assignment
-              </Link>
-              <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
-                Files
-              </Link>
-              <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
-                Links
-              </Link>
-              {
-                courseInfo.isTechfactors && 
-                <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
-                  Videos Upload
+            {subsType == 'LMS' ? 
+              <ListGroup>
+                <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
+                  Learn
                 </Link>
-              }
-            </ListGroup>
+                <Link className={currentLoc.includes('exam') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/exam`}>
+                  Exam
+                </Link>
+                <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
+                  Task
+                </Link>
+                <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                  Teacher Resources
+                </Link>
+                <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/discussion`}>
+                  Discussion
+                </Link>
+                <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
+                  Assignment
+                </Link>
+                <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
+                  Files
+                </Link>
+                <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
+                  Links
+                </Link>
+                {
+                  courseInfo.isTechfactors && 
+                  <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
+                    Videos Upload
+                  </Link>
+                }
+              </ListGroup>
+              :
+              <ListGroup>
+                <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
+                  Learn
+                </Link>
+              </ListGroup>
+            }
           </Col>
           :
           <Col className="row-course-bg course-widget-font pt-2" sm={1}>
             <Col className="text-align-right mb-2">
               <i className="fas fa-chevron-right cursor-pointer" onClick={()=> handleClicked(true)}/>
             </Col>
-            <ListGroup>
-              <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipLearn}>
-                  <i className="fas fa-book" />
-                </OverlayTrigger>
-              </Link>
-              <Link className={currentLoc.includes('exam') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/exam`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipExam}>
-                  <i className="fas fa-file-alt" />
-                </OverlayTrigger>
-              </Link>
-              <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipTask}>
-                  <i className="fas fa-edit" />
-                </OverlayTrigger>
-              </Link>
-              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipTeacherResources}>
-                  <i className="fas fa-link" />
-                </OverlayTrigger>
-              </Link>
-              <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/discussion`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipDiscussion}>
-                  <i className="fas fa-comment-alt" />
-                </OverlayTrigger>
-              </Link>
-              <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipAssignment}>
-                  <i className="fas fa-sticky-note" />
-                </OverlayTrigger>
-              </Link>
-              
-              <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipFiles}>
-                  <i className="fas fa-folder-open" />
-                </OverlayTrigger>
-              </Link>
-              <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipLink}>
-                  <i className="fas fa-link" />
-                </OverlayTrigger>
-              </Link>
-              {
-                courseInfo.isTechfactors && 
-                <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
+            {subsType == 'LMS' ? 
+              <ListGroup>
+                <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   <OverlayTrigger
                     placement="right"
                     delay={{ show: 1, hide: 25 }}
-                    overlay={renderTooltipVideos}>
-                    <i className="fas fa-video" />
+                    overlay={renderTooltipLearn}>
+                    <i className="fas fa-book" />
                   </OverlayTrigger>
                 </Link>
-              }
-            </ListGroup>
+                <Link className={currentLoc.includes('exam') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/exam`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipExam}>
+                    <i className="fas fa-file-alt" />
+                  </OverlayTrigger>
+                </Link>
+                <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipTask}>
+                    <i className="fas fa-edit" />
+                  </OverlayTrigger>
+                </Link>
+                <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipTeacherResources}>
+                    <i className="fas fa-link" />
+                  </OverlayTrigger>
+                </Link>
+                <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/discussion`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipDiscussion}>
+                    <i className="fas fa-comment-alt" />
+                  </OverlayTrigger>
+                </Link>
+                <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipAssignment}>
+                    <i className="fas fa-sticky-note" />
+                  </OverlayTrigger>
+                </Link>
+                
+                <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipFiles}>
+                    <i className="fas fa-folder-open" />
+                  </OverlayTrigger>
+                </Link>
+                <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipLink}>
+                    <i className="fas fa-link" />
+                  </OverlayTrigger>
+                </Link>
+                {
+                  courseInfo.isTechfactors && 
+                  <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 1, hide: 25 }}
+                      overlay={renderTooltipVideos}>
+                      <i className="fas fa-video" />
+                    </OverlayTrigger>
+                  </Link>
+                }
+              </ListGroup>
+              :
+              <ListGroup>
+                <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipLearn}>
+                    <i className="fas fa-book" />
+                  </OverlayTrigger>
+                </Link>
+              </ListGroup>
+            }
           </Col>
           }
           <Col sm={ showTab ? 9 : 11} className='scrollable vh-85 pb-5 pl-20'>

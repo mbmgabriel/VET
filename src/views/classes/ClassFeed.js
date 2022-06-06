@@ -31,6 +31,7 @@ function ClassFeed() {
   const [commentName, setCommentName] = useState([])
   const [commentInfo, setCommentInfo] = useState([])
   const [classInfo, setClassInfo] = useState(null)
+  const subsType = localStorage.getItem('subsType');
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -104,6 +105,9 @@ const getComment = (item, item1, item3) => {
   }
   useEffect(() => {
     getFeedClass();
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const deleteAnnouncement = async (item) => {

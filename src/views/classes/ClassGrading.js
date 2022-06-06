@@ -15,9 +15,13 @@ function ClassGrading() {
 
   const [loading, setLoading] = useState(true);
   const [terms, setTerms] = useState([]);
-
+  const subsType = localStorage.getItem('subsType');
+  
   useEffect(() => {
     handleGetAllTerms();
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, []);
 
   const handleGetAllTerms = async () => {

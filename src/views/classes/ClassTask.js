@@ -46,13 +46,16 @@ function ClassTask() {
   const [instructions, setInstructions] = useState('')
   const [taskId, setTaskId] = useState('')
   const [moduleName, setModuleName] = useState('')
-
+  const subsType = localStorage.getItem('subsType');
   const onSearch = (text) => {
     setSearchTerm(text)
   }
   
     useEffect(() => {
       getClassInfo()
+      if(subsType != 'LMS'){
+        window.location.href = "/classes"
+      }
     }, [])
 
   const getClassInfo = async() => {

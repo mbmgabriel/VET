@@ -35,6 +35,7 @@ export default function CoursesAssignment() {
   const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+  const subsType = localStorage.getItem('subsType');
 
   const getCourseInformation = async() => {
     setLoading(true)
@@ -49,6 +50,9 @@ export default function CoursesAssignment() {
 
   useEffect(() => {
     getCourseInformation();
+    if(subsType != 'LMS'){
+      window.location.href = "/courses"
+    }
   }, [])
 
   const handleOpenCreateUnitModal = () =>{

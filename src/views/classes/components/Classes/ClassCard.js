@@ -10,6 +10,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
   const [openDropdown, setOpenDropdown] = useState(false)
   const [itemId, setItemId] = useState('')
   const [loading, setLoading] = useState(false)
+  const subsType = localStorage.getItem('subsType');
 
   console.log('ClassCard:', item)
 
@@ -80,7 +81,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
             You will not be able to recover this imaginary file!
       </SweetAlert>
       <Card className='class-card' >
-        <Link to={`/classescontent/${item.classId}/feed`} onClick={() => setCourseID(item.courseId) }>
+        <Link to={ subsType == "LMS" ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` } onClick={() => setCourseID(item.courseId) }>
           <Card.Header className='class-header-card' >
             <Row>
               <Col sm={10}>
