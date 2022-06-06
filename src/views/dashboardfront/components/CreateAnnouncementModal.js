@@ -9,7 +9,7 @@ import AnnouncementAPI from '../../../api/AnnouncementAPI';
 export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnnouncementModal, openCreateAnnouncementModal}){
 
 	const [loading, setLoading] = useState(false)
-	const [type, setType] = useState('')
+	const [typeId, setTypeId] = useState('')
 	const [title, setTitle] = useState('')
 	const [content, setContent] = useState('')
 	const userContext = useContext(UserContext)
@@ -35,7 +35,7 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 				});
 		}else{
 			setLoading(true)
-			let typeId = 3
+			
 			// let isTechFactors = user.role !== "Teacher" && true
 			let response = await new AnnouncementAPI().createAnnouncementForClasses(typeId, 
 				{title, content}
@@ -81,28 +81,25 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 				</Modal.Header>
 					<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveAnnouncement}>
-						{/* <Form.Group className="m-b-20">
+						<Form.Group className="m-b-20">
 							<Form.Label for="subjectArea">
 									Type
 							</Form.Label>
-							<Form.Select size="lg" onChange={(e) => setType(e.target.value)}>
+							<Form.Select size="lg" onChange={(e) => setTypeId(e.target.value)}>
 								<option>
 									Select type...
 								</option>
-								<option value={0}>
-									Admin 
-								</option>
-								<option value={1}> 
-									Teacher
+								<option value={1}>
+									All teacher
 								</option>
 								<option value={2}> 
-									Student
+									All student
 								</option>
-								<option value={3}> 
-									Class
+								<option value={0}> 
+									All
 								</option>
 							</Form.Select>
-						</Form.Group> */}
+						</Form.Group>
 						{' '}
 								
 						<Form.Group className="m-b-20">

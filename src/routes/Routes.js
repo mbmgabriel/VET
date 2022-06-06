@@ -87,6 +87,8 @@ import ClassVideos from "../views/classes/Videos/ClassVideo";
 import TeacherDashboard from "../views/dashboardfront/TeacherDashboard"
 import Scratch from "../views/scratch/Scratch";
 import CalendarPage from "../views/calendar/CalendarPage";
+import SchoolAnouncementContent from "../views/school-profile/components/SchoolAnouncementContent";
+import SchoolAnnouncement from "../views/school-profile/SchoolAnnouncement";
 
 
 
@@ -155,6 +157,7 @@ export default function Routes() {
             <PrivateRoute path='/files/course' exact component={FilesCourse} />
             <PrivateRoute path='/teacherdashboard' exact component={TeacherDashboard}/>
             <PrivateRoute path='/dashboard' exact component={Dashboard}/>
+            <PrivateRoute path='/schoolannouncement' exact component={SchoolAnnouncement}/>
             <PrivateRoute path='/school' exact component={SchoolProfile}/>
             <PrivateRoute path='/school_courses/:id' exact component={SchoolCourses}/>
             <PrivateRoute path='/school_courses/:id/discussion' exact component={SchoolDiscussion}/>

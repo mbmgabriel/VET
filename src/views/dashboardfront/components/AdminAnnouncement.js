@@ -3,9 +3,9 @@ import ReactPaginate from 'react-paginate'
 import Moment from 'moment'
 import { Link } from 'react-router-dom'
 
-function AdminAnnouncement({handleViewAnnoncement, announcement}) {
+function AdminAnnouncement({handleViewAnnoncement, announcement, searchTerm}) {
   const [pageNumber, setPagesNumber] = useState(0)
-  const announcementPage = 5;
+  const announcementPage = 10;
   const pagesVisited = pageNumber * announcementPage;
 
   const displayAnnouncement = announcement.slice(pagesVisited, pagesVisited + announcementPage).map((item) => {
@@ -30,8 +30,25 @@ function AdminAnnouncement({handleViewAnnoncement, announcement}) {
   console.log('displayAnnouncement:', announcement)
   return (
    <>
-    {displayAnnouncement}
-    <br />
+      {announcement.slice(pagesVisited, pagesVisited + announcementPage).filter((item) => {
+          if(searchTerm == ''){
+            return item
+          }else if(item?.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())){
+            return item
+          }
+        }).map((item) => {
+          return(
+              <>
+                <span className='dash-title'>{item?.title}</span><br></br>
+                <span className='dash-date'><small>{item?.announcedBy} . {Moment(item?.createdDate).format('LL')}</small></span><br></br>
+                <span className='dash-content'>{item?.content.substring(0, 70)}</span>
+                <span className='dash-read-more' ><Link to={'#'} onClick={(e) => handleViewAnnoncement(item?.title, item?.content,item?.createdDate)}> ...Read more </Link></span>
+                <br></br>
+                <hr></hr>
+              </>
+          )
+        })
+        }
             <ReactPaginate 
               previousLabel={'Previous'}
               nextLabel={'Next'}
