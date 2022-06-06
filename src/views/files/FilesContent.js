@@ -16,13 +16,14 @@ function FilesContent(props) {
   const [itemToEdit, setItemToEdit] = useState({});
   const [newFileName, setNewFilename] = useState('');
   const [extFilename, setExtFilename] = useState('');
-  const [courseInfo, setCourseInfo] = useState("");
+  const [courseInfo, setCourseInfo] = useState("")
   const [currentFolderName, setCurrentFolderName] = useState('');
   const [newFolderName, setNewFolderName] = useState('');
   const [folderToDelete, setToFolderDelete] = useState('')
   const [deleteFolderNotify, setDeleteFolderNotify] = useState(false)
   const [editFolderModal, setEditFolderModal] = useState(false);
   const [displayButtons, setDisplayButtons] = useState(true);
+
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
 

@@ -22,6 +22,7 @@ export const ClassExam = () => {
   const [showExam, setShowExam] = useState(false)
   const [examName, setExamName] = useState('');
   const { user } = data;
+  const subsType = localStorage.getItem('subsType');
 
   const fetchExams = async () => {
     setLoading(true);
@@ -60,6 +61,9 @@ export const ClassExam = () => {
 
   useEffect(() => {
     getModuleClass()
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
 

@@ -47,6 +47,7 @@ function ClassAssignment() {
   const [instructions, setInstructions] = useState('')
   const [unit, setUnit] = useState('')
   const [xmoduleId, setXModuleId] = useState(null)
+  const subsType = localStorage.getItem('subsType');
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -54,6 +55,9 @@ function ClassAssignment() {
 
   useEffect(() => {
     getClassInfo(); 
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const getClassInfo = async() => {

@@ -34,6 +34,7 @@ export default function CoursesTask() {
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
+  const subsType = localStorage.getItem('subsType');
 
   const getCourseInformation = async() => {
     setLoading(true)
@@ -49,6 +50,9 @@ export default function CoursesTask() {
   useEffect(() => {
     if(courseid != null){
       getCourseInformation();
+    }
+    if(subsType != 'LMS'){
+      window.location.href = "/courses"
     }
   }, [])
 

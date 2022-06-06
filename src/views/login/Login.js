@@ -25,6 +25,7 @@ export default function Login() {
     )
     if(response.ok){
       await window.localStorage.setItem('token', response.data.token)
+      await window.localStorage.setItem('subsType', response.data.subscriptionType)
       await refreshUser()
     }else{
       alert(response.data.errorMessage)
