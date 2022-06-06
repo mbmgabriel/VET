@@ -142,7 +142,7 @@ export default function ExamCreation() {
     }
     let response = await new ExamAPI().editPart(selectedPart.questionPart.id, data)
     if(response.ok){
-      toast.success("Successfullt Updated Part")
+      toast.success("Successfully Updated Part")
       setShowModal(false)
       getExamInformation()
       setTypeId('1')
@@ -161,7 +161,7 @@ export default function ExamCreation() {
     }
     let response = await new ExamAPI().addPart(examid, typeId, data)
     if(response.ok){
-      toast.success("Successfullt Added Part")
+      toast.success("Successfully Added Part")
       setShowModal(false);
       getExamInformation();
       setInstructions('')
