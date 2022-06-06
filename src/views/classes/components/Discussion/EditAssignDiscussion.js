@@ -5,6 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
+import { toast } from 'react-toastify';
 
 function EditAssignDiscussion({editAssignToggle, editAssignModal, editAssignDiscussionItem, getDiscussionUnit}) {
   const [startDate, setStartDate] = useState('')
@@ -23,13 +24,33 @@ function EditAssignDiscussion({editAssignToggle, editAssignModal, editAssignDisc
     let dId = editAssignDiscussionItem?.discussion?.id
     let response = await new ClassesAPI().updateAssignDiscusion(id, dId, {startDate, startTime, endDate, endTime})
       if(response.ok){
-        setEditNotify(true)
+        success()
         getDiscussionUnit(null, editAssignDiscussionItem?.module?.id)
         editAssignToggle(e)
 
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
+  }
+
+  const success = () => {
+    toast.success('Successfully reassigned discussion!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
 
   useEffect(() => {
@@ -68,7 +89,7 @@ function EditAssignDiscussion({editAssignToggle, editAssignModal, editAssignDisc
               <Form.Control type="time" onChange={(e) => setEndTime(e.target.value)} defaultValue={editAssignDiscussionItem?.discussionAssignment?.endTime} />
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Discussion</Button>
             </Form.Group>
           </Form> 
         </Modal.Body>

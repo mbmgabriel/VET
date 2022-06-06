@@ -5,6 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
+import { toast } from 'react-toastify';
 
 function EditAssignTask({editAssignTaskItem, editAssignTaskToggle, editAssignTaskModal, getTaskModule}) {
   console.log('editAssignTaskItem:', editAssignTaskItem)
@@ -26,10 +27,18 @@ function EditAssignTask({editAssignTaskItem, editAssignTaskToggle, editAssignTas
     let response = await new ClassesAPI().updateAssignTask(id, taskId, {startDate, startTime, endDate, endTime})
       if(response.ok){
         getTaskModule(null, moduleId)
-        setEditNotify(true)
+        success()
         editAssignTaskToggle(e)
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
   }
 
@@ -41,6 +50,19 @@ function EditAssignTask({editAssignTaskItem, editAssignTaskToggle, editAssignTas
       setEndTime(editAssignTaskItem?.taskAssignment?.endTime)
 		}
   }, [editAssignTaskItem])
+
+  
+  const success = () => {
+    toast.success('Successfully updated task!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
 
   return (
 <div>
@@ -69,7 +91,7 @@ function EditAssignTask({editAssignTaskItem, editAssignTaskToggle, editAssignTas
               <Form.Control type="time" onChange={(e) => setEndTime(e.target.value)} defaultValue={editAssignTaskItem?.taskAssignment?.endTime} />
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Task</Button>
             </Form.Group>
           </Form> 
         </Modal.Body>

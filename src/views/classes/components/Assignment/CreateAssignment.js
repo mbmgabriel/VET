@@ -97,7 +97,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
     let response = await new FilesAPI().getClassFiles(id, data)
     // setLoading(false)
     if(response.ok){
-      console.log(response, 'heeeeeeeere')
+      console.log(response, 'heeeeeeeere----------------')
       setDisplayFiles(response.data.files)
       setDisplayFolder(response.data.folders)
     }else{

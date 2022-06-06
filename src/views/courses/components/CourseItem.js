@@ -139,9 +139,9 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
                                   <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>
                                   Edit 
                                   </Dropdown.Item>
-                                  <Dropdown.Item>
+                                  {/* <Dropdown.Item>
                                   Delete
-                                  </Dropdown.Item>
+                                  </Dropdown.Item> */}
                                   <Dropdown.Item onClick={(e) => handleClickedUploadModal(e, item)}>
                                   Upload Cover
                                   </Dropdown.Item>

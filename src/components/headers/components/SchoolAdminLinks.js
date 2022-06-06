@@ -13,7 +13,7 @@ export default function SchoolAdminLinks({activeHeader}) {
         <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
         <Link className={activeHeader === "grading" && 'active'} to="/admin/grading">Grading</Link>
         <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
-        <Link className={activeHeader === "classes" && 'active'} to="#">Classes</Link>
+        <Link className={activeHeader === "classes" && 'active'} to="/schoolAdminClasses">Classes</Link>
       </div>
     )
   }

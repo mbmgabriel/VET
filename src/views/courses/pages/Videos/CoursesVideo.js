@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import CoursesAPI from "../../../../api/CoursesAPI";
 import CourseCreateUnit from "./../../components/CourseCreateUnit";
@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CourseContent from "../../CourseContent";
 import {useParams} from 'react-router';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
+import { UserContext } from '../../../../context/UserContext';
 
 export default function CoursesVideos() {
 
@@ -28,9 +29,11 @@ export default function CoursesVideos() {
   const {id} = useParams();
   const [showVideos, setShowVideos] = useState(false);
   const [videoName, setVideoName] = useState('')
-
+  const userContext = useContext(UserContext);
+  const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+  const [courseInfo, setCourseInfo] = useState("");
 
   const handleOpenCreateVideoModal = () =>{
     setOpenCreateVideoModal(!openCreateVideoModal)
@@ -100,8 +103,18 @@ export default function CoursesVideos() {
     setShowVideos(true)
   }
 
+  const getCourseInformation = async() => {
+    let response = await new CoursesAPI().getCourseInformation(id)
+    if(response.ok){
+      setCourseInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
   useEffect(() => {
     getCourseUnitInformation();
+    getCourseInformation();
   }, [])
 
   const notifyDeleteVideo= () => 
@@ -158,7 +171,8 @@ export default function CoursesVideos() {
             <>
             <Accordion.Item eventKey={item.id}> 
               <Accordion.Header onClick={(e) => {getVideoInfo(e, item.id)}}>
-                <span className="unit-title">{item.moduleName} <Button className="btn-create-class" variant="link" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Video</Button>
+                <span className="unit-title">{item.moduleName} 
+                {courseInfo?.isTechfactors && user?.teacher.positionID == 7 && <Button className="btn-create-class" variant="link" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Video</Button>}
                 </span>
               </Accordion.Header>
               <Accordion.Body>
@@ -169,7 +183,7 @@ export default function CoursesVideos() {
                     <Col className="lesson-header" md={9}>
                       <span onClick={(e) => {viewVideoState(vi)}}>{vi?.title}</span>
                     </Col>
-                    <Col className="align-right-content" md={3}>
+                    {courseInfo?.isTechfactors && user?.teacher.positionID == 7 && <Col className="align-right-content" md={3}>
                       <OverlayTrigger
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}
@@ -180,9 +194,9 @@ export default function CoursesVideos() {
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}
                         overlay={renderTooltipDelete}>
-                      <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setVideoId(vi.id)}}></i></Button>
-                    </OverlayTrigger>
-                    </Col>
+                        <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setVideoId(vi.id)}}></i></Button>
+                      </OverlayTrigger>
+                    </Col>}
                   </Row>
                 ))}
                     <SweetAlert

@@ -7,6 +7,8 @@ import ExamAPI from "../../../../api/ExamAPI";
 import ContentField from "../../../../components/content_field/ContentField";
 import ContentViewer from "../../../../components/content_field/ContentViewer";
 import QuestionActions from "./QuestionActions";
+import FilesAPI from '../../../../api/FilesApi'
+import FileHeader from "../../../courses/components/AssignmentFileHeader";
 
 const EssayForm = ({
   showModal,
@@ -16,7 +18,32 @@ const EssayForm = ({
   setQuestion,
   rate,
   setRate,
+  editQuestion
 }) => {
+
+  const [displayFiles, setDisplayFiles] = useState([]);
+  const [showFiles, setShowFiles] = useState(false);
+  const [displayFolder, setDisplayFolder] = useState([]);
+  const courseid = sessionStorage.getItem('courseid')
+
+  const handleGetCourseFiles = async() => {
+    // setLoading(true)
+    let response = await new FilesAPI().getCourseFiles(courseid)
+    // setLoading(false)
+    if(response.ok){
+      console.log(response, '-----------------------')
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
+    }else{
+      alert("Something went wrong while fetching class files.")
+    }
+  }
+
+  useEffect(() => {
+    handleGetCourseFiles()
+    
+  }, [])
+
   return (
     <Modal
       size='lg'
@@ -25,10 +52,40 @@ const EssayForm = ({
       onHide={() => setShowModal(false)}
     >
       <Modal.Header className='modal-header' closeButton>
-        Question Form
+        {editQuestion ? <>Question Form</> : <>Edit Question Form</>}
       </Modal.Header>
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
+        <div className={showFiles ? 'mb-3' : 'd-none'}>
+          <FileHeader type='Course' id={courseid}  subFolder={''} doneUpload={()=> handleGetCourseFiles()} />
+          {/* {
+            (displayFiles || []).map( (item,ind) => {
+              return(
+                <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
+              )
+            })
+          } */}
+          {
+          (displayFiles || []).map( (item,ind) => {
+            return(
+              item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+              <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
+              :
+              <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
+            )
+          })
+          }
+          {
+            (displayFolder || []).map((itm) => {
+              return(
+                <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
+              )
+            })
+          }
+        </div>
+        <div>
+          <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+        </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>
             <ContentField value={question} placeholder="Enter test question" onChange={value => setQuestion(value)} />
@@ -49,7 +106,7 @@ const EssayForm = ({
 
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>
-              Save
+              {editQuestion ? <>Save Question</> : <>Update Question</>}
             </Button>
           </span>
         </Form>
@@ -73,6 +130,7 @@ export default function Essay({
   const { id, examid } = useParams();
   const courseid = sessionStorage.getItem('courseid')
   const [courseInfos, setCourseInfos] = useState([])
+  const [editQuestion, setEditQuestion] = useState('')
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -116,7 +174,7 @@ export default function Essay({
     let response = await new ExamAPI().editEssay(questionId, data);
     if (response.ok) {
       setShowModal(false);
-      toast.success("Question updated successfully");
+      toast.success("Successfully updated question");
       getExamInformation();
       setRate(1);
       setQuestion("");
@@ -134,7 +192,7 @@ export default function Essay({
     let response = await new ExamAPI().addEssay(examid, part.questionPart.id, data);
     if (response.ok) {
       setShowModal(false);
-      toast.success("Question added successfully");
+      toast.success("Successfully added question");
       getExamInformation();
       setRate(1);
       setQuestion("");
@@ -153,10 +211,10 @@ export default function Essay({
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>
-            <p className='primary-title'>
+            <p className='primary-title' title="">
               <ContentViewer>{question.question.testQuestion}</ContentViewer>
             </p>
-            <p className=''>Point(s): {question.question.rate}</p>
+            <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
           {editable && (
             <QuestionActions
@@ -166,6 +224,7 @@ export default function Essay({
                 setQuestion(question.question.testQuestion);
                 setRate(question.question.rate);
                 setShowModal(true);
+                setEditQuestion('')
               }}
             />
           )}
@@ -174,12 +233,14 @@ export default function Essay({
       {courseInfos?.isTechfactors? (<></>):(<>
         {editable && (
         <Button
+          title=""
           className='tficolorbg-button m-r-5'
           type='submit'
           onClick={() => {
             setQuestion("");
             setRate("");
             setShowModal(true);
+            setEditQuestion('1')
           }}
         >
           Add question
@@ -194,6 +255,7 @@ export default function Essay({
         rate={rate}
         setRate={setRate}
         onSubmit={submitQuestion}
+        editQuestion={editQuestion}
       />
     </div>
   );

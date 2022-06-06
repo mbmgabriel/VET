@@ -129,9 +129,9 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
                 </Col>
               </>
               )}
-              <Col sm={9}>
+              <Col sm={6}>
               </Col>
-                <Col sm={3} style={{textAlign:'right'}} className='due-date-discusstion' >
+                <Col sm={6} style={{textAlign:'right'}} className='due-date-discusstion' >
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>
                       {

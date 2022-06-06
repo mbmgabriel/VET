@@ -66,7 +66,7 @@ export default function ExamParts({
   )
 
   return (
-    <Accordion  defaultActiveKey='0' className='exam-part-creation'>
+    <Accordion title=""  defaultActiveKey='0' className='exam-part-creation'>
       <SweetAlert
         warning
         showCancel
@@ -89,7 +89,7 @@ export default function ExamParts({
           eventKey={index}
           key={index}
         >
-          <Accordion.Header>
+          <Accordion.Header title="">
             <div className='accordion-block-header'>
               <div className='header-content'>
                 <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} title='' />

@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-bootstrap'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import FilesAPI from '../../api/FilesApi';
 import Modal from 'react-bootstrap/Modal'
+import { UserContext } from '../../context/UserContext';
 import moment from 'moment';
 import CoursesAPI from '../../api/CoursesAPI';
 
@@ -15,14 +16,26 @@ function FilesContent(props) {
   const [itemToEdit, setItemToEdit] = useState({});
   const [newFileName, setNewFilename] = useState('');
   const [extFilename, setExtFilename] = useState('');
-  const [courseInfo, setCourseInfo] = useState("")
-  
+  const [courseInfo, setCourseInfo] = useState("");
+  const [currentFolderName, setCurrentFolderName] = useState('');
+  const [newFolderName, setNewFolderName] = useState('');
+  const [folderToDelete, setToFolderDelete] = useState('')
+  const [deleteFolderNotify, setDeleteFolderNotify] = useState(false)
+  const [editFolderModal, setEditFolderModal] = useState(false);
+  const [displayButtons, setDisplayButtons] = useState(true);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data;
+
   const courseid = sessionStorage.getItem('courseid')
 
   const getCourseInformation = async() => {
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
       setCourseInfo(response.data)
+      let temp = response.data.isTechfactors
+      if(temp){
+       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+      }
     }else{
       alert("Something went wrong while fetching course information")
     }
@@ -35,6 +48,42 @@ function FilesContent(props) {
   }, [])
 
   console.log('courseInfo:', courseInfo)
+
+  const handleClickFolder = (data) => {
+    setCurrentFolderName(data.name);
+    setNewFolderName(data.name)
+    setEditFolderModal(true);
+  }
+
+  const saveNewFolderName = async() => {
+    setEditFolderModal(false);
+    let data = {
+      "folderName": currentFolderName,
+      "newFolderName": newFolderName,
+      "subFolderLocation": `${props.subFolder}`
+    }
+    let response = await new FilesAPI().updateFolderName(props.id, props.type, data)
+    if(response.ok){
+      props.deleted();
+      toast.success('Successfully renamed folder.')
+    }else{
+      toast.error("Something went wrong while updating folder name.")
+    }
+  }
+
+  const deleteFolder = async() => {
+    let data = {
+      "subFolderLocation": `${props.subFolder}/${folderToDelete}`
+    }
+    let response = await new FilesAPI().deleteFolder(props.id, props.type, data)
+    if(response.ok){
+      props.deleted();
+      toast.success('Successfully deleted folder.')
+    }else{
+      toast.error(response.data?.errorMessage)
+    }
+    setDeleteFolderNotify(false);
+  }
 
   const  downloadImage = (url) => {
     fetch(url, {
@@ -122,6 +171,11 @@ function FilesContent(props) {
     setItemToDelete(data)
   }
 
+  const handleOnClickFolder = data => {
+    setToFolderDelete(`${data.name}`);
+    setDeleteFolderNotify(true)
+  }
+
   const handleEdit = (item) => {
     let extName = item.name.split('.').pop(),
     tempName = item.name.replace(`.${extName}`, '');
@@ -200,7 +254,7 @@ function FilesContent(props) {
         </Modal.Header>
         <Modal.Body>
         <Form>
-          <p>Current filename: <span>{itemToEdit.fileName}</span></p>
+          <p>Current filename: <span>{itemToEdit.name}</span></p>
             <Form.Label>New Filename</Form.Label>
           <InputGroup className="mb-4">
             <Form.Control defaultValue={newFileName} value={newFileName} type="text" onChange={(e) => setNewFilename(e.target.value.replace('.', ''))} />
@@ -215,15 +269,42 @@ function FilesContent(props) {
     )
   }
 
+  const handleEditFolderName = () => {
+    return(
+      <Modal  size="lg" show={editFolderModal} onHide={ () => setEditFolderModal(false)} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header className='class-modal-header' closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg" >
+            Edit Folder name
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Form>
+          <p>Current folder name: <span>{currentFolderName}</span></p>
+            <Form.Label>New folder name</Form.Label>
+          <InputGroup className="mb-4">
+            <Form.Control defaultValue={newFileName} value={newFolderName} type="text" onChange={(e) => setNewFolderName(e.target.value.replace('.', ''))} />
+          </InputGroup>
+          <Form.Group className='right-btn'>
+            <Button className='tficolorbg-button' onClick={()=> saveNewFolderName()}>Save</Button>
+          </Form.Group>
+        </Form>
+        </Modal.Body>
+      </Modal>
+    )
+  }
+
   return (
     <Table responsive="sm">
       <thead>
         <tr>
           <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
           {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
-          {courseInfo?.isTechfactors? (<></>):(<>
+          {displayButtons ? <>
             <th >Actions</th>
-          </>)}
+          </>
+          :
+          null
+          }
         </tr>
       </thead>
       <tbody>
@@ -243,7 +324,7 @@ function FilesContent(props) {
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
                 } */}
-                {courseInfo?.isTechfactors? (<></>):(<>
+                {displayButtons ? <>
                   <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
@@ -259,19 +340,22 @@ function FilesContent(props) {
                       delay={{ show: 1, hide: 0 }}
                       overlay={renderTooltipEdit}
                     >
-                      <i class="fas fas fa-edit td-file-page" onClick={() => handleEdit(item) } />
+                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fas fa-edit td-file-page"} onClick={() => handleEdit(item) } />
                     </OverlayTrigger>
                   <OverlayTrigger
                     placement="right"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipDelete}>
                     <a>
-                      <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClick(item) }></i>
+                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fa-trash-alt td-file-page"} onClick={() => handleOnClick(item) }></i>
                     </a>
                   </OverlayTrigger>
                   </td>
                 
-                </>)}
+                </>
+                :
+                null
+                }
               </tr>
             )
           })
@@ -281,7 +365,24 @@ function FilesContent(props) {
             item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
             return(
               <tr key={index+item.name}>
-                <td colSpan={3} className='ellipsis w-25 colored-class' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
+                <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
+                <td>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipEdit}
+                  >
+                    <i class="fas fas fa-edit td-file-page" onClick={() => handleClickFolder(item) } />
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipDelete}>
+                    <a>
+                      <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClickFolder(item) }></i>
+                    </a>
+                  </OverlayTrigger>
+                </td>
               </tr>
             )
           })
@@ -289,6 +390,7 @@ function FilesContent(props) {
         }
       </tbody>
       {handleEditFilenameModal()}
+      {handleEditFolderName()}
       <SweetAlert
         warning
         showCancel
@@ -301,6 +403,19 @@ function FilesContent(props) {
         focusCancelBtn
           >
            You will not be able to recover this file!
+      </SweetAlert>
+      <SweetAlert
+        warning
+        showCancel
+        show={deleteFolderNotify}
+        confirmBtnText="Yes, delete it!"
+        confirmBtnBsStyle="danger"
+        title="Are you sure?"
+        onConfirm={() => deleteFolder()}
+        onCancel={() => setDeleteFolderNotify(false)}
+        focusCancelBtn
+          >
+           You will not be able to recover this folder!
       </SweetAlert>
     </Table>
   )
