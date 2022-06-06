@@ -19,6 +19,10 @@ export default function PrivateRoute(props) {
       console.log("Try connecting to socket")
       connect()
     }
+    if(user.isTeacher){
+      console.log("Try connecting to socket")
+      connect()
+    }
   }, [user])
 
 

@@ -3,7 +3,6 @@ import React from 'react'
 import { EQUATION_TAG } from './ContentField'
 
 export default function ContentViewer({className = "", children}) {
-  console.log({children})
   if(children.toString().includes(EQUATION_TAG)){
     return (
         <div className={`content-viewer ${className}`}>
