@@ -34,14 +34,15 @@ const Field = (props) => {
       }}
       onModelChange={onChange}/>;
     default:
-      return (
-        <Form.Control
-          value={value}
-          type='text'
-          placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      );
+      return <FroalaEditor 
+      value={value}
+      model={value}
+      config={{
+        key: config.FROALA_LICENSE,
+        placeholderText: placeholder,
+        charCounterCount: false
+      }}
+      onModelChange={onChange}/>;
   }
 }
 
@@ -79,14 +80,23 @@ export default function ContentField(props) {
     <div className={props.className}>
 
     <div key={`inline-radio`} className="mb-3" >
-      <Form.Check
+      {/* <Form.Check
         inline
         label="Text Editor"
         type={"radio"}
         value=""
         checked={inputType === ""}
         onChange={e => updateInputType(e.target.value)}
+      /> */}
+      <Form.Check
+        inline
+        label="Rich Text Editor"
+        type={"radio"}
+        value="rich-text"
+        checked={inputType === RICH_TEXT || inputType === ""}
+        onChange={e => updateInputType(RICH_TEXT)}
       />
+
       <Form.Check
         inline
         label="Equation Editor"
@@ -94,14 +104,6 @@ export default function ContentField(props) {
         value="equation"
         checked={inputType === EQUATION}
         onChange={e => updateInputType(EQUATION)}
-      />
-      <Form.Check
-        inline
-        label="Rich Text Editor"
-        type={"radio"}
-        value="rich-text"
-        checked={inputType === RICH_TEXT}
-        onChange={e => updateInputType(RICH_TEXT)}
       />
     </div>
 
