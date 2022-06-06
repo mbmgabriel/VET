@@ -29,8 +29,6 @@ export default function Classes() {
     setSearchTerm(text)
   }
 
-  console.log('ios:', studentId)
-
   const joinClassesToggle = () => {
     setJoinClassesModal(!joinClassestModal)
   }

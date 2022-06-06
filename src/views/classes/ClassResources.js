@@ -14,10 +14,13 @@ function ClassResources() {
   const [breadCrumbsItemCourse, setBreadCrumbsItemCourse] = useState([])
   const [filter, setFilter] = useState('');
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
-  
+  const subsType = localStorage.getItem('subsType');
   
   useEffect(() => {
     handleGetTeacherResources('')
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const handleRefetch = () => {

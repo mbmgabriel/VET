@@ -35,7 +35,8 @@ export default function ClassGradingInformation() {
   const { user } = userContext.data;
   const [loading, setLoading] = useState(true);
   const [gradingTemplate, setGradingTemplate] = useState(null);
-
+  const subsType = localStorage.getItem('subsType');
+  
   const total =
     parseFloat(exam || "0") +
     parseFloat(assignment || "0") +
@@ -65,6 +66,9 @@ export default function ClassGradingInformation() {
   console.log({ gradingTemplate });
   useEffect(() => {
     getGradingTemplate();
+  if(subsType != 'LMS'){
+    window.location.href = "/classes"
+  }
   }, []);
 
   if (user.isTeacher) {

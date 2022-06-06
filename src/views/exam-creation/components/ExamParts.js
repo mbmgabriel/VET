@@ -66,7 +66,7 @@ export default function ExamParts({
   )
 
   return (
-    <Accordion  defaultActiveKey='0' className='exam-part-creation'>
+    <Accordion title=""  defaultActiveKey='0' className='exam-part-creation'>
       <SweetAlert
         warning
         showCancel
