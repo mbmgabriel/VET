@@ -10,9 +10,9 @@ import { toast } from 'react-toastify';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import AnnouncementComment from './components/Feed/AnnouncementComment';
+import DiscussionAPI from '../../api/DiscussionAPI';
 
 function ClassFeed() {
-  const [title, setTitle] = useState('Feed')
   const [content, setContent] = useState('')
   const [announcementItem, setAnnouncementItem] = useState([])
   const {id} = useParams();
@@ -30,6 +30,7 @@ function ClassFeed() {
   const [typeId, setTypeId] = useState('')
   const [commentName, setCommentName] = useState([])
   const [commentInfo, setCommentInfo] = useState([])
+  const [classInfo, setClassInfo] = useState(null)
   const subsType = localStorage.getItem('subsType');
 
   const closeNotify = () =>{
@@ -46,6 +47,7 @@ function ClassFeed() {
     let typeId = 3
     let useraccountId = 0
     let status = true
+    let title = classInfo?.classInformation?.className
     let response = await new ClassesAPI().createAnnouncementClass(typeId, {announcement:{content, title, useraccountId, status}, referenceIds:referenceIds})
       if(response.ok){
         // setAddNotity(true)
@@ -64,6 +66,23 @@ function ClassFeed() {
           });
       }
   }
+
+  const getClassInfo = async() => {
+  
+    let response = await new DiscussionAPI().getClassInfo(id)
+    if(response.ok){
+      setClassInfo(response.data)
+    }else{
+      alert("Something went wrong while fetching all courses")
+    }
+  
+  }
+
+  useEffect(() => {
+    getClassInfo();
+  }, [window.location.pathname])
+
+  console.log('classInfo:', classInfo)
 
 const getComment = (item, item1, item3) => {
   setRefId(item)
