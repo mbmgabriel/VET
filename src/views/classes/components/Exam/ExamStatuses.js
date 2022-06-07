@@ -34,6 +34,7 @@ export default function ExamStatuses({ user, exam, startDate, endDate, noAssigne
         </> 
       )}
       {user.isTeacher && exam?.test?.classId && exam?.test?.isShared && <Status>Shared</Status>}
+      
     </div>
   );
 }

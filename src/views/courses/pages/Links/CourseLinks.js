@@ -22,6 +22,7 @@ function CourseLinks() {
   const [itemId, setItemId] = useState()
   const [showTask, setShowTask] = useState(false);
   const [linkName, setLinkName] = useState('')
+  const subsType = localStorage.getItem('subsType');
 
 
   const onSearch = (text) => {
@@ -45,6 +46,9 @@ function CourseLinks() {
 
   useEffect(() => {
     getConfe()
+    if(subsType != 'LMS'){
+      window.location.href = "/courses"
+    }
   }, [])
 
   const getVideos = async() => {

@@ -80,7 +80,7 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
   }, [selectedExam])
 
   const notifyUpdateExam = () => 
-  toast.success('Exam Updated!', {
+  toast.success('Successfully updated the exam!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -128,7 +128,7 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
 
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Update Exam
 										</Button>
 								</span>
 						</Form>

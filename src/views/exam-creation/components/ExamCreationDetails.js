@@ -40,7 +40,7 @@ export default function ExamCreationDetails({
   }, [])
 
   return exam != null ? (
-    <div className='exam-information-container'>
+    <div className='exam-information-container' title="">
       <div className='d-flex justify-content-between '>
         <div>
           <p style={{ fontSize: 36, color: "#707070", margin: 0 }}>

@@ -8,7 +8,7 @@ export default function FloatingOptions() {
   return (
     <div>
       <div className="floating-options">
-        <Link className="floating-option" to="/calendar" >
+        <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >
           <div><i class="far fa-calendar"></i></div>
         </Link>
         <Link className="floating-option" to="#" onClick={() => toast.error("Feature under development")}>

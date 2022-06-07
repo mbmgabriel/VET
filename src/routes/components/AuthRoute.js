@@ -9,7 +9,7 @@ export default function AuthRoute(props) {
   useEffect(() => {
     if(user != null){
       if(user.isSchoolAdmin) return window.location.href = "/dashboard"
-      window.location.href = '/classes'
+      window.location.href = '/teacherdashboard'
     }
   }, [user])
 

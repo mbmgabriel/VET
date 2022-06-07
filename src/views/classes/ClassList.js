@@ -21,6 +21,7 @@ function ClassList() {
   const [loading, setLoading] = useState(false);
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  const subsType = localStorage.getItem('subsType');
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -50,7 +51,9 @@ function ClassList() {
 
   useEffect(() => {
     getStudentWaiting()
-    
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
 
@@ -93,7 +96,7 @@ function ClassList() {
     if(response.ok){
       setLoading(false);
       getStudentEnrolled();
-      toast.success("Class list was successfully uploaded.")
+      toast.success("Successfully uploaded the class list.")
     }else{
       setLoading(false);
       alert("Something went wrong while uploading class list")
@@ -138,7 +141,7 @@ function ClassList() {
       <ClassBreadcrumbs title='' clicked={() => console.log('')}/>
     <Row style={{paddingTop:'15px'}}>
       <Col className='title-header' >
-      <p>Class List </p> 
+      <p>Class List</p> 
       </Col>
       <Col style={{textAlign:'right'}}>
         <Button className='btn-Enrolled' onClick={handleOpenClassEnrolled} size='lg' variant="outline-warning"><b>Enrolled</b></Button>

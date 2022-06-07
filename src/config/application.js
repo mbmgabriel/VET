@@ -19,4 +19,6 @@ switch (ENV) {
     break;
 }
 
+config.FROALA_LICENSE = 'lSA3D-17E4B3A2B2E1F1rXYb1VPUGRHYZNRJd1JVOOb1HAc1zG2B1A2D3D6B1A1C4E1A3=='
+
 export default config;
