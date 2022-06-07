@@ -52,10 +52,10 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     }
   }
 
-  const getTestReport = async(e, selectedClassId,testid) => {
+  const getTestReport = async(e, sessionClass,testid) => {
     setLoading(true)
     // setViewTestReport(false)
-    let response = await new ClassesAPI().getTestReport(selectedClassId, testid)
+    let response = await new ClassesAPI().getTestReport(sessionClass, testid)
     setLoading(false)
     if(response.ok){
       setTestReport(response.data)
@@ -67,7 +67,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   }
 
   useEffect(() => {
-    if(selectedClassId != null){
+    if(sessionClass != null){
       getTestReport(null, sessionClass, sessionTestId)
     }
   }, [])
