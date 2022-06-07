@@ -42,8 +42,9 @@ const IdentificationForm = ({
   }
 
   useEffect(() => {
+    if(window.location.pathname.includes('course')){
     handleGetCourseFiles()
-    
+    }
   }, [])
 
   return (

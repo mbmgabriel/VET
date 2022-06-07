@@ -14,11 +14,14 @@ const QuestionSwitch = ({
   setLoading,
   editable,
   deleteQuestion,
+  examName
 }) => {
+  console.log(part)
   switch (part.questionPart.questionTypeId) {
     case 1:
       return (
         <MultipleChoice
+          examName={examName}
           editable={editable}
           part={part}
           questionTypeId={part.questionPart.questionTypeId}
@@ -30,6 +33,7 @@ const QuestionSwitch = ({
     case 2:
       return (
         <TrueOrFalse
+          examName={examName}
           editable={editable}
           part={part}
           questionTypeId={part.questionPart.questionTypeId}
@@ -41,6 +45,7 @@ const QuestionSwitch = ({
     case 3:
       return (
         <Identification
+          examName={examName}
           editable={editable}
           part={part}
           questionTypeId={part.questionPart.questionTypeId}
@@ -52,6 +57,7 @@ const QuestionSwitch = ({
     case 4:
       return (
         <Essay
+          examName={examName}
           editable={editable}
           part={part}
           questionTypeId={part.questionPart.questionTypeId}
@@ -63,6 +69,7 @@ const QuestionSwitch = ({
     case 5:
       return (
         <Enumeration
+          examName={examName}
           editable={editable}
           part={part}
           questionTypeId={part.questionPart.questionTypeId}
@@ -81,6 +88,7 @@ export default function Questions({
   getExamInformation,
   setLoading,
   editable,
+  examName
 }) {
 
   const [selectedId, setSelectedId] = useState(null)
@@ -112,6 +120,7 @@ export default function Questions({
         You will not be able to recover this exam!
       </SweetAlert>
       <QuestionSwitch
+        examName={examName}
         part={part}
         getExamInformation={getExamInformation}
         setLoading={setLoading}

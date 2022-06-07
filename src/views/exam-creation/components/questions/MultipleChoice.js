@@ -10,6 +10,8 @@ import DEFAULT_CHOICES from "../../../../contants/default-choices";
 import FileHeader from "../../../courses/components/AssignmentFileHeader";
 import QuestionActions from "./QuestionActions";
 import FilesAPI from '../../../../api/FilesApi'
+import { CSVLink } from "react-csv";
+import { displayQuestionType } from "../../../../utils/displayQuestionType";
 
 const MultipleChoiceForm = ({
   selectedQuestion,
@@ -24,7 +26,6 @@ const MultipleChoiceForm = ({
   setChoices,
   editQuestion,
 }) => {
-
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -76,8 +77,9 @@ const MultipleChoiceForm = ({
   } 
 
   useEffect(() => {
+    if(window.location.pathname.includes('course')){
     handleGetCourseFiles()
-    
+    }
   }, [])
 
   return (
@@ -233,7 +235,9 @@ export default function MultipleChoice({
   setLoading,
   deleteQuestion,
   editable,
+  examName
 }) {
+  console.log('Parts', part)
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
   const [rate, setRate] = useState(1);
@@ -244,7 +248,7 @@ export default function MultipleChoice({
   const courseid = sessionStorage.getItem('courseid')
   const [courseInfos, setCourseInfos] = useState([])
   const [editQuestion, setEditQuestion] = useState('')
-
+  const [data, setData] = useState([]);
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
@@ -254,6 +258,7 @@ export default function MultipleChoice({
 
   useEffect(() => {
     getCourseInformation();
+    handleGetItems()
   }, [])
 
   const validChoices = () => {
@@ -359,8 +364,57 @@ export default function MultipleChoice({
     }
   };
 
+  const headers = [
+    { label: "Question", key: "question" },
+
+    { label: "Choice1", key: "choice1" },
+    { label: "IsCorrect1 (1/0)", key: "isCorrect1" },
+
+    { label: "Choice2", key: "choice2" },
+    { label: "Iscorrect2 (1/0)", key: "isCorrect2" },
+
+    { label: "Choice3", key: "choice3" },
+    { label: "iscorrect3 (1/0)", key: "isCorrect3" },
+
+    { label: "Choice4", key: "choice4" },
+    { label: "iscorrect4 (1/0)", key: "isCorrect4" },
+
+    { label: "Rate/Points", key: "rate" }
+  ];
+   
+  // const data = [
+  //   { question: '', choice1: '', isCorrect1: '', choice2: '', isCorrect2: '', choice3: '', isCorrect3: '', choice4: '', isCorrect4: '', rate: ''},
+  //   { question: '', choice1: '', isCorrect1: '', choice2: '', isCorrect2: '', choice3: '', isCorrect3: '', choice4: '', isCorrect4: '', rate: ''},
+  //   { question: '', choice1: '', isCorrect1: '', choice2: '', isCorrect2: '', choice3: '', isCorrect3: '', choice4: '', isCorrect4: '', rate: ''},    
+  // ];
+   
+  const csvReport = {
+    data: data,
+    headers: headers,
+    filename: `${examName}_${displayQuestionType(part.questionPart.questionTypeId)}.csv`
+  };
+
+  const handleGetItems = () => {
+    let sample1 =[],
+    temp= {}
+    part.questionDtos.map((question, index) => {
+      temp.question = question.question.testQuestion
+      temp.rate = question.question.rate
+      // temp.push({question: question.question.testQuestion})
+      question.choices.map((choice, ind) =>{
+        // console.log(choice.testChoices, '-----', choice.isCorrect)
+        temp[`choice${ind+1}`] = choice.testChoices;
+        temp[`isCorrect${ind+1}`] = choice.isCorrect ? 1 : 0;
+      })
+      sample1.push(temp)
+      console.log({sample1}, {temp})
+    })
+    setData(sample1)
+  }
   return (
     <div>
+      <CSVLink {...csvReport}>Export to CSV</CSVLink>
+      {/* <button className="float-right">Export</button> */}
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>

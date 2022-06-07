@@ -40,8 +40,9 @@ const EssayForm = ({
   }
 
   useEffect(() => {
+    if(window.location.pathname.includes('course')){
     handleGetCourseFiles()
-    
+    }
   }, [])
 
   return (

@@ -46,8 +46,9 @@ const EnumerationForm = ({
   }
 
   useEffect(() => {
+    if(window.location.pathname.includes('course')){
     handleGetCourseFiles()
-    
+    }
   }, [])
 
   return (

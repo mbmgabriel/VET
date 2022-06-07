@@ -41,8 +41,9 @@ const TrueOrFalseForm = ({
   }
 
   useEffect(() => {
+    if(window.location.pathname.includes('course')){
     handleGetCourseFiles()
-    
+    }
   }, [])
 
   return (

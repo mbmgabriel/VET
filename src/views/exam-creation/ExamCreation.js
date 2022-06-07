@@ -208,11 +208,11 @@ export default function ExamCreation() {
     }
   }, []);
 
-  useEffect(() =>{
-    if(courseInfos === true){
-      setEditable(false)
-    }
-  }, [courseInfos])
+  // useEffect(() =>{
+  //   if(courseInfos === true){
+  //     setEditable(false)
+  //   }
+  // }, [courseInfos])
 
   
 
