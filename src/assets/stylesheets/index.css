@@ -594,7 +594,7 @@ border-top-right-radius: 0px !important;
   border: '1px';
   border-color: 'var(--primary-color)';
   outline: none !important;
-  padding: 3px 5px !important;
+  padding: 10px 25px !important;
   cursor: pointer !important;
   font-size: 14px !important;
   color: var(--primary-color) !important;
@@ -1201,6 +1201,10 @@ border-top-right-radius: 0px !important;
   text-decoration: none !important;
 }
 
+.analytics-exam-header{
+  font-size: 18px;
+  color: #707070;
+}
 .exam-item-container .exam-actions{
   display: flex;
   align-items: flex-end;

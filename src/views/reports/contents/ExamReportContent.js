@@ -7,6 +7,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { UserContext } from './../../../context/UserContext'
 import ExamAPI from '../../../api/ExamAPI';
 import FrequencyError from './FrequencyError';
+import FrequencyOferror from './FrequencyOferror';
 
 
 function ExamReportContent({ selectedClassId, testReport, setTestReport, showReportHeader, setShowReportHeader}) {
@@ -20,10 +21,19 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   const [isChecked, setIschecked] = useState(false)
   const [frequencyItem, setFrequencyItem] = useState([])
   const [frequencyModal, setFrequencyModal] = useState(false)
+  const [showAnalysis, setShowAnalysis] = useState(false)
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   let sessionClass = sessionStorage.getItem("classId")
   let sessionTestId = sessionStorage.getItem("testid")
+
+  const handleShowAnalysis = () => {
+    setShowAnalysis(true)
+  }
+
+  const handleHideAnalysis =() => {
+    setShowAnalysis(false)
+  }
 
   const getExamAnalysis = async(e, studentid, classid, testid) => {
     sessionStorage.setItem('analysis','true')
@@ -46,6 +56,10 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
       alert(response.data.errorMessage)
     }
   }
+
+  useEffect(() => {
+    getFrequencyReport()
+  }, [])
 
   const handleFrequencyModal = () => {
     setFrequencyModal(true)
@@ -211,11 +225,14 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         </Card>
         </Col>
       </Row> 
-      <div style={{display:'flex', paddingRight:'20px'}}>
-      <div style={{paddingTop:'5px' , paddingRight:'5px'}}>
-          <Button onClick={() => handleFrequencyModal()}  style={{float:'right', marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> Frequency of error </b></Button>
-        </div>
-      <div style={{float:'right', paddingTop:'25px'}}>
+      <div style={{paddingTop:'20px' , paddingRight:'5px', float:'right', paddingBottom:'35px'}}>
+          {/* <Button onClick={() => handleFrequencyModal()}  style={{marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> Frequency of error </b></Button> */}
+        <Button onClick={() => handleHideAnalysis()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Score </b></Button>
+        <Button onClick={() => handleShowAnalysis()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Analysis </b></Button>
+      </div>
+        {showAnalysis === false? (<>
+          <div style={{display:'flex', paddingRight:'20px'}}>
+            <div style={{float:'right', paddingTop:'35px'}}>
           {examReport[0] &&
             examReport?.map(item => {
               return(
@@ -290,11 +307,19 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         }
       </tbody>
     </Table>
+
+        
+      </>):<FrequencyOferror frequencyItem={frequencyItem} />}
+
+
+
+      
     </>
     :
     <div onClick={(e) => getExamAnalysis(e, user.student.id, sessionClass, sessionTestId)}>{user.student.lname}</div>
     }
     <FrequencyError frequencyItem={frequencyItem} setFrequencyModal={setFrequencyModal} frequencyModal={frequencyModal} />
+    
     </>
   )}else{
     return(
@@ -303,5 +328,6 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
       </>
     )
   }
+
 }
 export default ExamReportContent
