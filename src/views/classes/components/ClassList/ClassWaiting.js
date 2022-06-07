@@ -121,7 +121,8 @@ const handleClickIcon = () =>{
       <Table>
         <thead>
           <tr> 
-          <th><div className='class-waiting-header'> Student{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>  
+            <th><div className='class-waiting-header'> Student{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>  
+            <th><div className='class-waiting-header'> Email Address</div></th>
           </tr>
         </thead>
         <tbody>
@@ -137,8 +138,11 @@ const handleClickIcon = () =>{
               <td>
                 <div className='class-waiting-list' style={{fontSize:'24px', color:'#707070', marginLeft:'25px'}} >
                   <i class="fas fa-user-circle fas-1x" style={{color:'#EE9337',fontSize:'36px',}}></i>&nbsp;
-                 <span className='btn-student-portfolio' > {item.fname} {item.lname} </span>
+                  <Button className='btn-student-portfolio' variant="link">{item.fname} {item.lname}</Button>
                 </div>
+              </td>
+              <td>
+                {item?.emailAdd === null ? (<><p style={{color:'#707070'}}>No Email address</p></>):(<> <p style={{color:'#707070'}}>{item?.emailAdd}</p></>)}  
               </td>
               <td className='class-waiting-icon'>
                 <div style={{marginRight:'35px'}} className={user.isSchollAdmin ? 'd-none' : ''}> 

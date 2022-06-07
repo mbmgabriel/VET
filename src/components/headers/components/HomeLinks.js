@@ -9,7 +9,7 @@ export default function HomeLinks() {
   const {themeLogo} = userContext.data
   return (
     <div className="home-links">
-       <Link className="home-link " to="#" onClick={() => toast.error("Feature under development")}>
+       <Link className="home-link " to="/teacherdashboard">
         <div>
           {themeLogo ? <img src={themeLogo} alt="logo" className="home-link-logo"/> : <i className="fas fa-home"></i>}
         </div>

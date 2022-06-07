@@ -139,7 +139,8 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
         <thead>
           <tr> 
             <th><div className='class-enrolled-header'> Student{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
-          </tr>
+            <th><div className='class-enrolled-header'> Email Address</div></th>
+          </tr>       
         </thead>
         <tbody>
         {sortedData?.filter((item) => {
@@ -156,6 +157,9 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
                   <i class="fas fa-user-circle fas-1x" style={{color:'#EE9337',fontSize:'36px'}}></i>&nbsp;
                     <Button className='btn-student-portfolio' onClick={() => openPortfolioToggle(item, enrolledStudent?.classInformation, item.id)} variant="link">{item.fname} {item.lname}</Button>
                 </div>
+              </td>
+              <td>
+                {item?.emailAdd === null ? (<><p style={{color:'#707070'}}>No Email address</p></>):(<> <p style={{color:'#707070'}}>{item?.emailAdd}</p></>)}  
               </td>
               <td className='class-waiting-icon'>
                 <div style={{marginRight:'35px'}}>

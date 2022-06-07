@@ -17,6 +17,7 @@ export default function CourseExamCreation() {
   const userContext = useContext(UserContext);
   const { user } = userContext.data;
   const [courseInfos, setCourseInfos] = useState([])
+  const subsType = localStorage.getItem('subsType');
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(id)
@@ -27,6 +28,9 @@ export default function CourseExamCreation() {
 
   useEffect(() => {
     getCourseInformation();
+    if(subsType != 'LMS'){
+      window.location.href = "/courses"
+    }
   }, [])
 
   return (

@@ -256,6 +256,22 @@ export default function MultipleChoice({
     getCourseInformation();
   }, [])
 
+  const validChoices = () => {
+    let isDuplicated = false;
+    choices.forEach((choice, index) => {
+      choices.forEach((choice2, index2) => {
+        if (index !== index2 && choice.testChoices === choice2.testChoices) {
+          isDuplicated = true;
+        }
+      });
+    });
+
+    if (isDuplicated) {
+      toast.error("You can't have duplicate choices");
+      return false;
+    }
+    return true
+  }
   const submitQuestion = async (e) => {
     e.preventDefault();
     console.log({ selectedQuestion });
@@ -270,6 +286,12 @@ export default function MultipleChoice({
       },
       choices,
     };
+
+    if(!validChoices()){
+      setLoading(false);
+      return
+    }
+    
     if (selectedQuestion != null) {
       if (rate > 0 && rate < 101) {
         updateQuestion(selectedQuestion, data);

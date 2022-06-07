@@ -32,7 +32,7 @@ export default function EditExam({
     console.log({data})
     let response = await new ExamAPI().updateExam(exam.test.id, data)
     if(response.ok){
-      toast.success("Exam updated successfully")
+      toast.success("Successfully updated the exam!")
       setShowEditModal(false)
       fetchExams()
     }else{
@@ -79,7 +79,7 @@ export default function EditExam({
           </Form.Group>
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>
-              Save
+              Update Exam
             </Button>
           </span>
         </Form>

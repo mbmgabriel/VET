@@ -48,6 +48,7 @@ function ClassAssignment() {
   const [unit, setUnit] = useState('')
   const [xmoduleId, setXModuleId] = useState(null)
   const [selectedAssignmentName, setSelectedAssignmentName] = useState("")
+  const subsType = localStorage.getItem('subsType');
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -55,6 +56,9 @@ function ClassAssignment() {
 
   useEffect(() => {
     getClassInfo(); 
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const getClassInfo = async() => {
@@ -210,7 +214,7 @@ function ClassAssignment() {
           </div>
         </Accordion.Header>
         <Accordion.Body>
-          {(user?.isStudent === null)?(
+          {(user?.isStudent)?(
           <>
             <StudentAssignment searchTerm={searchTerm} assignment={assignment} />
           </>

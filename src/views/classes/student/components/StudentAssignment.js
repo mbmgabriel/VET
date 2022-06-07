@@ -72,6 +72,12 @@ function StudentAssignment({assignment, searchTerm}) {
     </Tooltip>
   )
 
+  const renderTooltipGrade = (props) => (
+    <Tooltip id="tooltip-bottom" {...props}>
+      View Grade
+    </Tooltip>
+  )
+
   const renderTooltipView = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       View
@@ -114,13 +120,13 @@ function StudentAssignment({assignment, searchTerm}) {
                         placement="right"
                         delay={{ show: 1, hide: 1 }}
                         overlay={renderTooltipView}>
-                          <Button onClick={() => getStudentAssignmentAnswer(item?.assignment?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
+                          <Button onClick={() => viewAssignmentToggle(item?.assignment, item?.classAssignment?.startDate, item?.classAssignment?.startTime, item?.classAssignment?.endDate, item?.classAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                       </OverlayTrigger>
                       <OverlayTrigger
-                        placement="right"
+                        placement="bottom"
                         delay={{ show: 1, hide: 1 }}
-                        overlay={renderTooltipView}>
-                          <Button onClick={() => viewAssignmentToggle(item?.assignment, item?.classAssignment?.startDate, item?.classAssignment?.startTime, item?.classAssignment?.endDate, item?.classAssignment?.endTime)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
+                        overlay={renderTooltipGrade}>
+                          <Button onClick={() => getStudentAssignmentAnswer(item?.assignment?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
                       </OverlayTrigger>
                     </Col>
                       {
@@ -144,7 +150,7 @@ function StudentAssignment({assignment, searchTerm}) {
                         placement="right"
                         delay={{ show: 1, hide: 1 }}
                         overlay={renderTooltipView}>
-                        <Button onClick={() => viewAssignmentToggle(item?.assignment, item?.classAssignment?.startDate, item?.classAssignment?.startTime, item?.classAssignment?.endDate, item?.classAssignment?.endTime)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
+                        <Button onClick={() => viewAssignmentToggle(item?.assignment, item?.classAssignment?.startDate, item?.classAssignment?.startTime, item?.classAssignment?.endDate, item?.classAssignment?.endTime)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye"></i></Button>
                       </OverlayTrigger>
                       </Col>
                       }
@@ -156,7 +162,7 @@ function StudentAssignment({assignment, searchTerm}) {
                           placement="right"
                           delay={{ show: 1, hide: 1 }}
                           overlay={renderTooltipView}>
-                            <Button onClick={() => viewAssignmentToggle(item?.assignment, item?.classAssignment?.startDate, item?.classAssignment?.startTime, item?.classAssignment?.endDate, item?.classAssignment?.endTime)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
+                            <Button onClick={() => viewAssignmentToggle(item?.assignment, item?.classAssignment?.startDate, item?.classAssignment?.startTime, item?.classAssignment?.endDate, item?.classAssignment?.endTime)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye"></i></Button>
                         </OverlayTrigger>
                         </Col>
                       }
@@ -167,7 +173,7 @@ function StudentAssignment({assignment, searchTerm}) {
                           placement="right"
                           delay={{ show: 1, hide: 1 }}
                           overlay={renderTooltipView}>
-                           <Button onClick={() => viewAssignmentToggle(item?.assignment, item?.classAssignment?.startDate, item?.classAssignment?.startTime, item?.classAssignment?.endDate, item?.classAssignment?.endTime)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
+                           <Button onClick={() => viewAssignmentToggle(item?.assignment, item?.classAssignment?.startDate, item?.classAssignment?.startTime, item?.classAssignment?.endDate, item?.classAssignment?.endTime)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye"></i></Button>
                         </OverlayTrigger>
                       </Col>
                       }
