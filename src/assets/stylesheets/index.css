@@ -1637,3 +1637,25 @@ input::-webkit-inner-spin-button {
   background-color: var(--primary-color) !important;
   outline: none !important;
 }
+
+.like-show-name{
+  text-decoration: none!important;
+  display: flex;
+  color: #707070 !important;
+  font-size: 14px;
+  margin-left: 25px;
+}
+
+.like-show-name a{
+  text-decoration: none!important;
+  display: flex;
+  color: #707070 !important;
+  font-size: 14px;
+}
+
+.like-show-name a:hover{
+  list-style: none !important;
+  display: flex;
+  color: var(--primary-color) !important;
+  font-size: 14px;
+}
