@@ -40,7 +40,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
       let response = await new CoursesAPI().editClassLinks(id, linkId, {description, url})
       if(response.ok){
         // alert('Link Updated')
-        setEditNotify(true)
+        successSave()
         handleCloseModal(e)
         getConfe()
         getVideos()
@@ -66,6 +66,18 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
       setEditUrl(editLinks?.url)
 		}
   }, [editLinks])
+
+  const successSave = () => {
+    toast.success('Successfully created link!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
 
   console.log('editLinks:', editLinks)
   
@@ -98,7 +110,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
             <Form.Control value={editLinks?.type}  type="text" disabled/>
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Links</Button>
             </Form.Group>
           </Form>
         </Modal.Body>
