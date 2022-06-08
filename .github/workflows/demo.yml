@@ -1,0 +1,18 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Demo
+
+on:
+  push:
+    branches: [ demo ]
+
+jobs:
+  test-deployment:
+    runs-on: self-hosted
+    steps:
+       - run: remove-item -path C:\inetpub\wwwroot\CICD\build\LMSv3UI -force -recurse
+       - run: mkdir C:\inetpub\wwwroot\CICD\build\LMSv3UI
+       - run: xcopy C:\inetpub\wwwroot\CICD\v3-dev\10.2-dev\LMSV3FRONTEND\LMSV3FRONTEND\build C:\inetpub\wwwroot\CICD\build\LMSv3UI /E /H /C /I
+
+      
