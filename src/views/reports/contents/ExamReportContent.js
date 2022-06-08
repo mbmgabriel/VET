@@ -199,7 +199,10 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
                   {/* <td>{st.score}</td> */}
                   <td>
                     {/* <Button variant="outline-warning" size="sm" onClick={(e) => retakeExam(e, st.test.classId, st.test.id, item.student.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button> */}
+                    {st.isSubmitted === false ? <spam></spam>: 
                     <Button style={{color:"white"}} variant="warning" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
+                    }
+                    
                     <SweetAlert
                           warning
                           showCancel
