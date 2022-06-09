@@ -252,7 +252,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         <tr>
           <th>Student Name</th>
           <th>Grade</th>
-          <th>status</th>
+          <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>

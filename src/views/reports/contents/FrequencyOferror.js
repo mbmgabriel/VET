@@ -9,7 +9,7 @@ function FrequencyOferror({frequencyItem}) {
       return(
         <>
         <div style={{display:'flex', paddingRight:'20px'}}> 
-            <div style={{float:'right', paddingTop:'35px'}}>
+            <div style={{float:'right', paddingTop:'65px'}}>
             <div className='analytics-exam-header'><b>{item?.questionPart?.instructions}</b></div> 
             </div>
         </div>
@@ -36,9 +36,8 @@ function FrequencyOferror({frequencyItem}) {
                   <td>
                    <span style={{display:'inline-flex'}}><ContentViewer>{item?.noOfCorrectAnswer}</ContentViewer>/<ContentViewer>{item?.noOfTotalAnswer}</ContentViewer></span>
                   </td>
-
                   <td>
-                  {item?.noOfCorrectAnswer / item?.noOfTotalAnswer * 100}%
+                  {(item?.noOfCorrectAnswer / item?.noOfTotalAnswer * 100).toFixed(2)} %
                   </td>
                   </tr>
             </>
