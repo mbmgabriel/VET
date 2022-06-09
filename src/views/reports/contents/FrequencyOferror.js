@@ -38,7 +38,7 @@ function FrequencyOferror({frequencyItem}) {
                   </td>
 
                   <td>
-                  %{item?.noOfCorrectAnswer / item?.noOfTotalAnswer * 100}
+                  {item?.noOfCorrectAnswer / item?.noOfTotalAnswer * 100}%
                   </td>
                   </tr>
             </>

@@ -57,10 +57,6 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     }
   }
 
-  useEffect(() => {
-    getFrequencyReport()
-  }, [])
-
   const handleFrequencyModal = () => {
     setFrequencyModal(true)
     getFrequencyReport()
@@ -98,6 +94,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   useEffect(() => {
     if(sessionTestId != null){
       getTestReport(null, sessionClass, sessionTestId)
+      getFrequencyReport()
     }
   }, [])
 
@@ -256,7 +253,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
           <th>Student Name</th>
           <th>Grade</th>
           <th>status</th>
-          <th>Actions</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -275,13 +272,14 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
                   <td>{st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>: <>{st.score}/{st.rawScore}</>}</td>
                   {/* <td>{st.score}</td> */}
                   <td>
-                    {st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>:<>{st.rawScore/2 <= st.score && <><Badge bg="success">PASSE</Badge></>}
+                    {st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>:<>{st.rawScore/2 <= st.score && <><Badge bg="success">PASSED</Badge></>}
                     {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }</>}
                   
                   </td>
                   <td>
                     {/* <Button variant="outline-warning" size="sm" onClick={(e) => retakeExam(e, st.test.classId, st.test.id, item.student.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button> */}
-                    <Button className='retake-btn' size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo" style={{paddingRight:'10px'}} ></i>Retake</Button>
+                    {st.isSubmitted === false ? <></>:<Button className='retake-btn' size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo" style={{paddingRight:'10px'}} ></i>Retake</Button>}
+                    
                     <SweetAlert
                           warning
                           showCancel
