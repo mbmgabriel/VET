@@ -68,7 +68,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
   }, [editLinks])
 
   const successSave = () => {
-    toast.success('Successfully created link!', {
+    toast.success('Successfully Updated link!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -91,12 +91,12 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
     </Modal.Header>
       <Modal.Body>
           <Form onSubmit={saveEditClassLinks} >
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>Unit</Form.Label>
                 <Form.Select disabled>
                   <option>-- Select Unit Here --</option>
                  </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
             <Form.Group className="mb-4">
               <Form.Label>Description</Form.Label>
             <Form.Control onChange={(e) => setEditDescription(e.target.value)} defaultValue={editLinks?.description} type="text" placeholder='Enter Description name here'/>

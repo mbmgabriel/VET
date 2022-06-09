@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
   const {id} = useParams();
-  const [typeId, setTypeId] = useState('')
+  const [type, setType] = useState('')
   const [description, setDescription] = useState('')
   const [url, setUrl] = useState('')
   const [createNotify, setCreateNotify] = useState(false)
@@ -22,7 +22,7 @@ function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
     e.preventDefault()
     let cid = sessionStorage.getItem('courseid')
     let courseId = JSON.parse(cid);
-    if(typeId === ''){
+    if(type === ''){
       toast.error('Please Select Type', {
         position: "top-right",
         autoClose: 5000,
@@ -33,15 +33,14 @@ function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
         progress: undefined,
         });
     }else{
-      let response = await new CoursesAPI().createLinks(courseId, typeId, {courseId, typeId, description, url})
+      let response = await new CoursesAPI().createLinks(courseId, type, {courseId, type, description, url})
       if(response.ok){
-        // alert('Add')
         successSave()
         toggle(e)
         getConfe()
         getVideos()
         getLinks()
-        setTypeId('')
+        setType('')
         setDescription('')
         setUrl('')
       }else{
@@ -76,7 +75,7 @@ function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
     	<Modal size="lg" show={modal} onHide={toggle} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
-            Create Links
+            Create Links 
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -91,7 +90,7 @@ function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
             </Form.Group>
             <Form.Group className="mb-3">
             <Form.Label>Type</Form.Label>
-              <Form.Select onChange={(e) => setTypeId(e.target.value)}>
+              <Form.Select onChange={(e) => setType(e.target.value)}>
                 <option value=''>-- Select Unit Here --</option>
                 <option value='1'>Conferences</option>
                 <option value='2'>Videos</option>

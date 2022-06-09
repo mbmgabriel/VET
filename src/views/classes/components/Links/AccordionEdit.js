@@ -69,7 +69,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
   console.log('editLinks:', editLinks)
 
   const successSave = () => {
-    toast.success('Successfully Edit link!', {
+    toast.success('Successfully Updated link!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
