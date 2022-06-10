@@ -206,7 +206,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                       <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
                         <div>
                           <span className='font-exam-analysis-content-24' style={{marginRight:10}}> 
-                          <span style={{marginRight:10}}>{ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
+                          <span style={{marginRight:10}}>{ad.studentScore === 1 && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
                             Student Answer :</span><span className='font-exam-analysis-content-24'>
                             <ContentViewer>{ad.studentAnswer}</ContentViewer>
                           </span>
@@ -218,7 +218,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Correct Answer :</span>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad.assignedAnswer}</ContentViewer></span>
                         </div>
-                        {ad.studentAnswer?.toLowerCase() !== ad.assignedAnswer.toLowerCase() &&
+                        {ad.studentScore === 0 &&
                         <Form>
                           <div style={{display:'inline-flex'}}>
                           <Form.Group className="m-b-20">
