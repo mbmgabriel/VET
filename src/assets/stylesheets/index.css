@@ -938,6 +938,11 @@ border-top-right-radius: 0px !important;
   text-decoration: none !important;
 }
 
+.lesson-header:hover{
+  color: var(--primary-color) !important;
+  opacity: 0.7 !important;
+}
+
 .lessonName{
   cursor: pointer;
 }

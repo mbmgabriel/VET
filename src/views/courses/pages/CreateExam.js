@@ -63,7 +63,7 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
   }
 
   const notifySaveExam = () => 
-  toast.success('Exam Saved', {
+  toast.success('Successfully created the exam', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
