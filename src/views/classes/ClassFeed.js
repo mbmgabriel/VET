@@ -416,6 +416,17 @@ const getComment = (item, item1, item3) => {
                   </div>
                 </Col>
               </Row>
+              <div className='like-show-name'>
+              <Link to={'#'} onClick={() => handleShowLike(feedItem)} >
+              {console.log('Like:', feedItem)}
+                      {feedItem?.likes?.slice(0,2).map(item => {
+                        return(
+                          <>{item?.likeBy},</>
+                        )
+                      })}
+                      </Link>
+                      {feedItem?.likes?.length === 0? (<></>):(<>&nbsp;and {feedItem?.likes?.length} others</>)} 
+                 </div>
                 <Col>
                 <hr />
                 </Col>
