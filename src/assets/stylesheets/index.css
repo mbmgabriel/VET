@@ -1152,8 +1152,7 @@ border-top-right-radius: 0px !important;
 .font-exam-analysis-content-24-tfi {
   /* color: var(--primary-color)!important; */
   color:var(--primary-color);
-  font-size: 24px!important;
-  display: flex !important;
+  font-size: 18px!important;
 }
 
 .class-container{

@@ -191,23 +191,30 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
         return(
             <div>
             <div className='inline-flex'>
-              <p className='font-exam-analysis-content-24-tfi' >{index + 1}.&nbsp;</p><p className='font-exam-analysis-content-24-tfi' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
+              <p className='font-exam-analysis-content-24-tfi'>PART {index + 1}</p> <p style={{marginLeft:5}} className='font-exam-analysis-content-24' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
             </div>
               {item.questionDetails.map((qd, index) => {
                 return(
                 qd.answerDetails.map((ad, index) => {
                   return(
                     <>
-                    <br />
-                      <span className='font-exam-analysis-content-24-tfi'>{index + 1}.&nbsp;  <span className='font-question-analysis' style={{color:'#707070'}}><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
-                      <div style={{display:'inline-flex'}}>
-                        <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Student Answer :</span><span className='font-exam-analysis-content-24'>
-                          <ContentViewer>{ad.studentAnswer}</ContentViewer>
-                        </span>
-                          {ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
-                      </div>
-                      <div >
-                        <div style={{display:'inline-flex'}}>
+                    <br></br>
+                    <div className='inline-flex'>
+                      <span className='font-exam-analysis-content-24' style={{marginBottom:"100px !important"}}>{index + 1}.</span> <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span>
+                    </div>
+                    <Row style={{textAlign:'center', padding:10}}>
+                      <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
+                        <div>
+                          <span className='font-exam-analysis-content-24' style={{marginRight:10}}> 
+                          <span style={{marginRight:10}}>{ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
+                            Student Answer :</span><span className='font-exam-analysis-content-24'>
+                            <ContentViewer>{ad.studentAnswer}</ContentViewer>
+                          </span>
+                          
+                        </div>
+                      </Col>
+                      <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
+                      <div>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Correct Answer :</span>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad.assignedAnswer}</ContentViewer></span>
                         </div>
@@ -230,8 +237,9 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                         </Form>
                         }
                       </div>
-                      
-                      <hr></hr>
+                      </Col>
+                    </Row>
+                    <hr></hr>
                     </>
                   )
                 })
