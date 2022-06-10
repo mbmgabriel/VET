@@ -15,9 +15,13 @@ function ClassFiles() {
   const [selectedName, setSelectedName] = useState('');
   const [filter, setFilter] = useState("");
   const subFolderDirectory = breadCrumbsItemClass.map(item => { return `/${item.value}`})
-
+  const subsType = localStorage.getItem('subsType');
+  
   useEffect(() => {
     handleGetClassFiles('')
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const handleRefetch = () => {

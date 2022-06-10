@@ -14,10 +14,13 @@ function ClassResources() {
   const [breadCrumbsItemCourse, setBreadCrumbsItemCourse] = useState([])
   const [filter, setFilter] = useState('');
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
-  
+  const subsType = localStorage.getItem('subsType');
   
   useEffect(() => {
     handleGetTeacherResources('')
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const handleRefetch = () => {
@@ -67,7 +70,7 @@ function ClassResources() {
   return (
     <ClassSideNavigation>
       <div className="row m-b-20 file-content">
-        <FileHeader type='Course'  title='Teacher Resources' id={id} subFolder={subFolderDirectory.join('')}  doneUpload={()=> handleRefetch()}/>
+        <FileHeader type='Class'  title='Teacher Resources' id={id} subFolder={subFolderDirectory.join('')}  doneUpload={()=> handleRefetch()}/>
         <div className="row m-b-20">
           <div className="col-md-12">
             <InputGroup size="lg">

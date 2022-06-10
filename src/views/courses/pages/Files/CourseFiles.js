@@ -15,9 +15,13 @@ function CourseFiles() {
   const [breadCrumbsItemCourse, setBreadCrumbsItemCourse] = useState([])
   const [filter, setFilter] = useState('');
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
+  const subsType = localStorage.getItem('subsType');
 
   useEffect(() => {
     handleGetCourseFiles('')
+    if(subsType != 'LMS'){
+      window.location.href = "/courses"
+    }
   }, [])
 
   const handleRefetch = () => {

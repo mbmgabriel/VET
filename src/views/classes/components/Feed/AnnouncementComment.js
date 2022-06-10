@@ -107,11 +107,10 @@ const AnnouncementComment = ({refId, typeId, getFeedClass, commentInfo}) => {
         )
         
       })}
-
-      <Form>  
+      <Form onSubmit={(e) => commentAnnouncement(e)} >  
         <InputGroup size="xs" style={{padding:20}}>
           <FormControl value={comment} onChange={(e) => setComment(e.target.value)} aria-label="Large" aria-describedby="inputGroup-sizing-xs" placeholder="Write your comment here..." style={{borderRadius:10}}/>
-          <InputGroup.Text style={{borderRadius:"0px 10px 10px 0px"}} onClick={(e) => commentAnnouncement(e)} id="basic-addon2" className="comment-btn"><i className="fas fa-paper-plane"></i></InputGroup.Text>
+          <InputGroup.Text style={{borderRadius:"0px 10px 10px 0px"}} type='submit'  onClick={(e) => commentAnnouncement(e)} id="basic-addon2" className="comment-btn"><i className="fas fa-paper-plane"></i></InputGroup.Text>
         </InputGroup><br />
       </Form> 
     </div>

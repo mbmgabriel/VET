@@ -16,7 +16,7 @@ export default function ExamParts({
   setShowModal,
   editable
 }) {
-  
+  console.log({exam});
   const [selectedId, setSelectedId] = useState(null)
   const [showWarning, setShowWarning] = useState(false)
   const userContext = useContext(UserContext);
@@ -66,7 +66,7 @@ export default function ExamParts({
   )
 
   return (
-    <Accordion  defaultActiveKey='0' className='exam-part-creation'>
+    <Accordion title=""  defaultActiveKey='0' className='exam-part-creation'>
       <SweetAlert
         warning
         showCancel
@@ -93,7 +93,7 @@ export default function ExamParts({
             <div className='accordion-block-header'>
               <div className='header-content'>
                 <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} title='' />
-                <p title=''>{displayQuestionType(part.questionPart.questionTypeId)}</p>
+                <p title=''>{displayQuestionType(part.questionPart.questionTypeId)} </p>
                 <span title=''>{`${part.questionDtos.length} Question(s)`}</span>
               </div>
             </div>
@@ -138,6 +138,7 @@ export default function ExamParts({
           </Accordion.Header>
           <Accordion.Body>
             <Questions
+              examName={exam.test?.testName}
               part={part}
               getExamInformation={getExamInformation}
               setLoading={setLoading}

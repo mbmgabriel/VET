@@ -47,6 +47,8 @@ function ClassAssignment() {
   const [instructions, setInstructions] = useState('')
   const [unit, setUnit] = useState('')
   const [xmoduleId, setXModuleId] = useState(null)
+  const [selectedAssignmentName, setSelectedAssignmentName] = useState("")
+  const subsType = localStorage.getItem('subsType');
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -54,6 +56,9 @@ function ClassAssignment() {
 
   useEffect(() => {
     getClassInfo(); 
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const getClassInfo = async() => {
@@ -95,12 +100,14 @@ function ClassAssignment() {
     setModal(!modal)
   }
 
-  const editAssignedAssignmentToggle = (e, item) => {
+  const editAssignedAssignmentToggle = (e, item, name) => {
+    setSelectedAssignmentName(name)
     setEditAssignAssignmentItem(item)
     setEditAssignedAssignmentModal(!editAssignedAssignmentModal)
   }
 
-  const assignAssignmentToggle = (e, item) => {
+  const assignAssignmentToggle = (e, item, name) => {
+    setSelectedAssignmentName(name)
     setAssignmentId(item)
     setAssignModal(!assginModal)
   }
@@ -207,7 +214,7 @@ function ClassAssignment() {
           </div>
         </Accordion.Header>
         <Accordion.Body>
-          {(user?.isStudent === null)?(
+          {(user?.isStudent)?(
           <>
             <StudentAssignment searchTerm={searchTerm} assignment={assignment} />
           </>
@@ -262,14 +269,14 @@ function ClassAssignment() {
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipReasign}>
-                      <Button onClick={(e) => editAssignedAssignmentToggle(e, assigItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
+                      <Button onClick={(e) => editAssignedAssignmentToggle(e, assigItem, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
                   </OverlayTrigger>
                 ):
                 <OverlayTrigger
                   placement="bottom"
                   delay={{ show: 1, hide: 0 }}
                   overlay={renderTooltipAsign}>
-                    <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                    <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
                 </OverlayTrigger>
                 } 
                 <OverlayTrigger
@@ -304,7 +311,7 @@ function ClassAssignment() {
                 placement="bottom"
                 delay={{ show: 1, hide: 0 }}
                 overlay={renderTooltipReasign}> 
-                <Button onClick={(e) => editAssignedAssignmentToggle(e, assigItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
+                <Button onClick={(e) => editAssignedAssignmentToggle(e, assigItem, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
               </OverlayTrigger>
               </Col>
               </>
@@ -408,8 +415,8 @@ function ClassAssignment() {
       <StudentSubmittedAssigment submittedAssignmentToggle={submittedAssignmentToggle} submittedAssignment={submittedAssignment}  />
       <StudentAnswerAssignment answerAnswerToggle={answerAnswerToggle} answerModal={answerModal} />
       <EditAssignment xmoduleId={xmoduleId} assignmentId={assignmentId} unit={unit} setUnit={setUnit} setAssignmentName={setAssignmentName} assignmentName={assignmentName} setModal={setModal} instructions={instructions} setInstructions={setInstructions} toggle={toggle} modal={modal} editAssignment={editAssignment} getAssignmentList={getAssignmentList} moduleId={moduleId} />
-      <AssignAssignment moduleId={moduleId} assignmentId={assignmentId} assginModal={assginModal} assignAssignmentToggle={assignAssignmentToggle} getAssignmentList={getAssignmentList} />
-      <EditAssignedAssignment moduleId={moduleId} getAssignmentList={getAssignmentList} editAssignAssignmentItem={editAssignAssignmentItem} editAssignedAssignmentModal={editAssignedAssignmentModal} editAssignedAssignmentToggle={editAssignedAssignmentToggle} />
+      <AssignAssignment selectedAssignmentName={selectedAssignmentName} moduleId={moduleId} assignmentId={assignmentId} assginModal={assginModal} assignAssignmentToggle={assignAssignmentToggle} getAssignmentList={getAssignmentList} />
+      <EditAssignedAssignment selectedAssignmentName={selectedAssignmentName} moduleId={moduleId} getAssignmentList={getAssignmentList} editAssignAssignmentItem={editAssignAssignmentItem} editAssignedAssignmentModal={editAssignedAssignmentModal} editAssignedAssignmentToggle={editAssignedAssignmentToggle} />
     </ClassSideNavigation>
   )
 }

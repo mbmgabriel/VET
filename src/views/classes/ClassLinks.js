@@ -20,8 +20,8 @@ function ClassLinks() {
   const [confeDescriptionItem, setConfeDescriptoinItem] = useState('')
   const [confeUrlItem, setConfeUrlItem] = useState('')
   const [itemId, setItemId] = useState()
-
-
+  const subsType = localStorage.getItem('subsType');
+  
   const onSearch = (text) => {
     setSearchTerm(text)
   }
@@ -35,9 +35,12 @@ function ClassLinks() {
       alert("Something went wrong while fetching all Conference")
     }
   }
-
+  
   useEffect(() => {
     getConfe()
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const getVideos = async() => {

@@ -28,6 +28,9 @@ export default function Status({children}) {
     case "Shared":
       color = "#28A745";
       break
+      case "Disable Show Result":
+        color = "#DC3545";
+        break
     case "Not Shared":
       color = "#007BFF";
       break

@@ -43,6 +43,8 @@ function ClassDiscussion() {
   const [getComments, setGetComments] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [classInfo, setClassInfo] = useState({});
+  const [selectedDiscussionName, setSelectedDiscussionName] = useState("")
+  const subsType = localStorage.getItem('subsType');
 
   const getClassInfo = async() => {
     // setLoading(true)
@@ -61,6 +63,9 @@ function ClassDiscussion() {
 
   useEffect(() => {
     getClassInfo()
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
   
   const onSearch = (text) => {
@@ -72,12 +77,14 @@ function ClassDiscussion() {
 
   }
 
-  const assignToggle = (e, item) =>{
+  const assignToggle = (e, item, name) =>{
+    setSelectedDiscussionName(name)
     setDiscussionId(item)
     setAssignModal(!assignModal)
   }
 
-  const editAssignToggle = (e, item) =>{
+  const editAssignToggle = (e, item, name) =>{
+    setSelectedDiscussionName(name)
     setEditAssignDiscussionItem(item)
     setEditAssignModal(!editAssignModal)
   }
@@ -237,7 +244,7 @@ function ClassDiscussion() {
                             placement="bottom"
                             delay={{ show: 1, hide: 1 }}
                             overlay={renderTooltipReasign}>
-                              <Button onClick={(e) => editAssignToggle(e, moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
+                              <Button onClick={(e) => editAssignToggle(e, moduleitem, moduleitem?.discussion?.discussionName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
                           </OverlayTrigger>
                           </>
                         ):
@@ -246,7 +253,7 @@ function ClassDiscussion() {
                               placement="bottom"
                               delay={{ show: 1, hide: 0 }}
                               overlay={renderTooltipAsign}>
-                            <Button onClick={(e) => assignToggle(e, moduleitem?.discussion?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                            <Button onClick={(e) => assignToggle(e, moduleitem?.discussion?.id, moduleitem?.discussion?.discussionName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
                             </OverlayTrigger>
                           </>
                         }
@@ -268,7 +275,7 @@ function ClassDiscussion() {
                           placement="bottom"
                           delay={{ show: 1, hide: 0 }}
                           overlay={renderTooltipReasign}>
-                        <Button onClick={(e) => editAssignToggle(e, moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
+                        <Button onClick={(e) => editAssignToggle(e, moduleitem, moduleitem?.discussion?.discussionName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
                         </OverlayTrigger>
                         </div>
                       </Col>
@@ -281,7 +288,7 @@ function ClassDiscussion() {
                           placement="bottom"
                           delay={{ show: 1, hide: 0 }}
                           overlay={renderTooltipAsign}>
-                        <Button onClick={(e) => assignToggle(e, moduleitem?.discussion?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                        <Button onClick={(e) => assignToggle(e, moduleitem?.discussion?.id, moduleitem?.discussion?.discussionName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
                         </OverlayTrigger>
                       </Col>
                       </>
@@ -380,8 +387,8 @@ function ClassDiscussion() {
           </Accordion>
           <DiscussionComments getDiscussionComments={getDiscussionComments} getComments={getComments} endTime={endTime} endDate={endDate} startTime={startTime} startDate={startDate} getDiscussionUnit={getDiscussionUnit} moduleId={moduleId} discussionId={discussionId} comments={comments} discussionCommentToggle={discussionCommentToggle} discussionCommentModal={discussionCommentModal} />
           <EditDiscussion editDiscussionItem={editDiscussionItem} toggle={toggle} modal={modal} getDiscussionUnit={getDiscussionUnit} /> 
-          <AssignedDiscussion moduleId={moduleId} getDiscussionUnit={getDiscussionUnit} discussionId={discussionId} assignToggle={assignToggle} assignModal={assignModal} />
-          <EditAssignDiscussion getDiscussionUnit={getDiscussionUnit} editAssignDiscussionItem={editAssignDiscussionItem} editAssignToggle={editAssignToggle} editAssignModal={editAssignModal} />
+          <AssignedDiscussion selectedDiscussionName={selectedDiscussionName} moduleId={moduleId} getDiscussionUnit={getDiscussionUnit} discussionId={discussionId} assignToggle={assignToggle} assignModal={assignModal} />
+          <EditAssignDiscussion selectedDiscussionName={selectedDiscussionName} getDiscussionUnit={getDiscussionUnit} editAssignDiscussionItem={editAssignDiscussionItem} editAssignToggle={editAssignToggle} editAssignModal={editAssignModal} />
        </ClassSideNavigation>
     )
   }

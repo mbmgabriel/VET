@@ -643,4 +643,12 @@ creatTask = async (mId, cId,  data) => {
       method: 'GET',
     });
   };
+
+  getFrequencyReport = async (classId, testId) => {
+    return this.sendRequest({
+      path: `/api/Class/${classId}/test/${testId}/report/frequency`,
+      method:'GET'
+    })
+  }
+
 }

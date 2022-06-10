@@ -38,9 +38,10 @@ export default function ExamCreationDetails({
   useEffect(() => {
     getCourseInformation();
   }, [])
+  console.log(!(courseInfos?.isTechfactors), user,  '-----------------------------');
 
   return exam != null ? (
-    <div className='exam-information-container'>
+    <div className='exam-information-container' title="">
       <div className='d-flex justify-content-between '>
         <div>
           <p style={{ fontSize: 36, color: "#707070", margin: 0 }}>
@@ -69,24 +70,44 @@ export default function ExamCreationDetails({
       </div>
       <hr />
       <p className='secondary-title mt-4'>Exam Parts</p>
-      {courseInfos?.isTechfactors? (<>
-      </>):(<>
-        {editable && (
-        <Button
-          className='btn btn-primary my-4'
-          variant='primary'
-          size='lg'
-          title=""
-          onClick={() => {
-            setSelectedPart(null);
-            setShowModal(true);
-          }}
-        >
-          Add Part
-        </Button>
-      )}
-      </>)}
-
+      {courseInfos?.isTechfactors && user?.teacher?.positionID == 7 &&
+        <>
+          {editable && (
+          <Button
+            className='btn btn-primary my-4'
+            variant='primary'
+            size='lg'
+            title=""
+            onClick={() => {
+              setSelectedPart(null);
+              setShowModal(true);
+            }}
+          >
+            Add Part
+          </Button>
+        )
+        }
+        </>
+      }
+      {!(courseInfos?.isTechfactors) && user?.isTeacher &&
+        <>
+          {editable && (
+          <Button
+            className='btn btn-primary my-4'
+            variant='primary'
+            size='lg'
+            title=""
+            onClick={() => {
+              setSelectedPart(null);
+              setShowModal(true);
+            }}
+          >
+            Add Part
+          </Button>
+        )
+        }
+        </>
+    }
       <ExamParts
         selectedPart={selectedPart}
         setSelectedPart={setSelectedPart}

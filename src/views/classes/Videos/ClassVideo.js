@@ -28,7 +28,8 @@ export default function CoursesVideos() {
   const {id} = useParams();
   const [showVideos, setShowVideos] = useState(false);
   const [videoName, setVideoName] = useState('')
-
+  const subsType = localStorage.getItem('subsType');
+  
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
 
@@ -105,6 +106,9 @@ export default function CoursesVideos() {
 
   useEffect(() => {
     getCourseUnitInformation();
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, [])
 
   const notifyDeleteVideo= () => 

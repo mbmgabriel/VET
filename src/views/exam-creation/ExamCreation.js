@@ -142,7 +142,7 @@ export default function ExamCreation() {
     }
     let response = await new ExamAPI().editPart(selectedPart.questionPart.id, data)
     if(response.ok){
-      toast.success("Part updated")
+      toast.success("Successfully Updated Part")
       setShowModal(false)
       getExamInformation()
       setTypeId('1')
@@ -161,7 +161,7 @@ export default function ExamCreation() {
     }
     let response = await new ExamAPI().addPart(examid, typeId, data)
     if(response.ok){
-      toast.success("Part created")
+      toast.success("Successfully Added Part")
       setShowModal(false);
       getExamInformation();
       setInstructions('')
@@ -208,11 +208,11 @@ export default function ExamCreation() {
     }
   }, []);
 
-  useEffect(() =>{
-    if(courseInfos === true){
-      setEditable(false)
-    }
-  }, [courseInfos])
+  // useEffect(() =>{
+  //   if(courseInfos === true){
+  //     setEditable(false)
+  //   }
+  // }, [courseInfos])
 
   
 

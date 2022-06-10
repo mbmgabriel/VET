@@ -63,7 +63,7 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
   }
 
   const notifySaveExam = () => 
-  toast.success('Exam Saved', {
+  toast.success('Successfully created the exam', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -112,7 +112,7 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Save Exam
 										</Button>
 								</span>
 						</Form>
