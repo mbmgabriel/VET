@@ -149,6 +149,10 @@ export default function Essay({
     getCourseInformation();
   }, [])
 
+  useEffect(() => {
+    handleGetItems();
+  },[part])
+
   const submitQuestion = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -206,10 +210,10 @@ export default function Essay({
     } else {
       toast.error(
         response.data?.errorMessage ||
-          "Something went wrong while creating the part"
-      );
-      setLoading(false);
-    }
+        "Something went wrong while creating the part"
+        );
+        setLoading(false);
+      }
   };
 
   const handleGetItems = () => {

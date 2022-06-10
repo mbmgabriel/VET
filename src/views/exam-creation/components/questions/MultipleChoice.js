@@ -261,6 +261,10 @@ export default function MultipleChoice({
     handleGetItems()
   }, [])
 
+  useEffect(() => {
+    handleGetItems();
+  },[part])
+
   const validChoices = () => {
     let isDuplicated = false;
     choices.forEach((choice, index) => {
@@ -358,10 +362,10 @@ export default function MultipleChoice({
     } else {
       toast.error(
         response.data?.errorMessage ||
-          "Something went wrong while creating the Question"
-      );
-      setLoading(false);
-    }
+        "Something went wrong while creating the Question"
+        );
+        setLoading(false);
+      }
   };
 
   const handleMapChoices = (part) => { // get the choices and identify the largest number of choices

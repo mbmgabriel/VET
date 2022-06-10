@@ -170,6 +170,10 @@ export default function TrueOrFalse({
     getCourseInformation();
   }, [])
 
+  useEffect(() => {
+    handleGetItems();
+  },[part])
+
   console.log(part, '..................');
   const submitQuestion = async (e) => {
     e.preventDefault();
@@ -255,10 +259,10 @@ export default function TrueOrFalse({
     } else {
       toast.error(
         response.data?.errorMessage ||
-          "Something went wrong while creating the part"
-      );
-      setLoading(false);
-    }
+        "Something went wrong while creating the part"
+        );
+        setLoading(false);
+      }
   };
 
   const handleGetItems = () => {

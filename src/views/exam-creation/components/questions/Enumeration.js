@@ -212,6 +212,10 @@ export default function Enumeration({
     getCourseInformation();
   }, [])
 
+  useEffect(() => {
+    handleGetItems();
+  },[part])
+
   const submitQuestion = async (e) => {
     e.preventDefault();
     console.log({ selectedQuestion });
@@ -306,10 +310,10 @@ export default function Enumeration({
     } else {
       toast.error(
         response.data?.errorMessage ||
-          "Something went wrong while creating the Question"
-      );
-      setLoading(false);
-    }
+        "Something went wrong while creating the Question"
+        );
+        setLoading(false);
+      }
   };
 
   const handleGetItems = () => {

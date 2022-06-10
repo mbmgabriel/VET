@@ -164,6 +164,10 @@ export default function Identification({
     handleGetItems()
   }, [])
 
+  useEffect(() => {
+    handleGetItems();
+  },[part])
+
   const submitQuestion = async (e) => {
     e.preventDefault();
     console.log({ selectedQuestion });
@@ -247,10 +251,10 @@ export default function Identification({
     } else {
       toast.error(
         response.data?.errorMessage ||
-          "Something went wrong while creating the part"
-      );
-      setLoading(false);
-    }
+        "Something went wrong while creating the part"
+        );
+        setLoading(false);
+      }
   };
 
   const handleGetItems = () => {
