@@ -89,6 +89,7 @@ import Scratch from "../views/scratch/Scratch";
 import CalendarPage from "../views/calendar/CalendarPage";
 import SchoolAnouncementContent from "../views/school-profile/components/SchoolAnouncementContent";
 import SchoolAnnouncement from "../views/school-profile/SchoolAnnouncement";
+import ZoomClient from "../views/zoom-test/ZoomClient";
 
 
 
@@ -187,6 +188,7 @@ export default function Routes() {
             <PrivateRoute path='/admin/grading' exact component={Grading} />
             <PublicRoute path='/calendar' exact component={CalendarPage}/>
             <PublicRoute path='/scratch' exact component={Scratch}/>
+            <PublicRoute path='/zoom-client' exact component={ZoomClient}/>
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>
             <PublicRoute path='/404' exact component={PageNotFound}/>

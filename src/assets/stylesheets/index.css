@@ -1637,3 +1637,14 @@ input::-webkit-inner-spin-button {
   background-color: var(--primary-color) !important;
   outline: none !important;
 }
+
+
+#zmmtg-root {
+  display: none;
+  width: 300px !important;
+  height: 300px  !important;
+  position: fixed;
+  /* top: 0; */
+  /* left: 0; */
+  background-color: black;
+}
