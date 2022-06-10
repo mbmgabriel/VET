@@ -8,6 +8,13 @@ export default class CoursesAPI extends Base {
     });
   };
 
+  getCoursesTeacher = async (id) => {
+    return this.sendRequest({
+      path: `/api/Teacher/${id}/courses`,
+      method: 'GET'
+    });
+  };
+
   editCourse = async (id, data) => {
     return this.sendRequest({
       path: `/api/Course/${id}`,

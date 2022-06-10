@@ -13,6 +13,8 @@ export default function AddPartModal({
   setFilesToUpload
 }) {
 
+  console.log('selectedPart:', selectedPart)
+
   const handleGetUploadedFile = (file) => {
     getBase64(file).then(
       data => {
@@ -42,7 +44,9 @@ export default function AddPartModal({
       onHide={() => setShowModal(false)}
     >
       <Modal.Header className='modal-header' closeButton>
-        Exam Part Form
+        {selectedPart == null && <>Exam Part Form</>}
+        {selectedPart != null && <>Edit Part Form</>}
+        
       </Modal.Header>
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={addPart}>
@@ -77,7 +81,8 @@ export default function AddPartModal({
           </Form.Group>}
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>
-              Save
+            {selectedPart == null && <>Add Part</>}
+            {selectedPart != null && <>Update Part </>}
             </Button>
           </span>
         </Form>

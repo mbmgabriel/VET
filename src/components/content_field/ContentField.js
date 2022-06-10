@@ -2,6 +2,7 @@ import EquationEditor from "equation-editor-react";
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import FroalaEditor from "react-froala-wysiwyg";
+import config from "../../config/application";
 
 const EQUATION = "equation";
 const RICH_TEXT = "rich-text";
@@ -27,6 +28,7 @@ const Field = (props) => {
       value={value}
       model={value}
       config={{
+        key: config.FROALA_LICENSE,
         placeholderText: placeholder,
         charCounterCount: false
       }}

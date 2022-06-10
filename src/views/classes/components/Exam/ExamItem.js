@@ -12,6 +12,8 @@ import ExamItemContent from "./ExamItemContent";
 import ExamStatuses from "./ExamStatuses";
 import TeacherExamActions from "./TeacherExamActions";
 import PreviewExam from "./PreviewExam";
+import ShowResultExam from "./ShowResultExam";
+import {Button} from 'react-bootstrap'
 
 export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
   const userContext = useContext(UserContext);
@@ -21,6 +23,29 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const { startDate, endDate } = getStartAndEndDateFromClassTest(exam);
+  const[examAnalysis, setExamAnalysis] = useState([])
+  const [viewAnalysis, setViewAnalysis] = useState(false)
+
+  const openModalShowResutl = (testId) => {
+    getExamAnalysis(testId)
+    setViewAnalysis(true)
+  }
+  console.log('classId:', id)
+  const getExamAnalysis = async(testid) => {
+    // console.log(selectedClassId)
+    sessionStorage.setItem('analysis','true')
+    let studentId = user?.student?.id
+    let classId = id
+    // sessionStorage.setItem('testid',testid)
+    let response = await new ClassesAPI().getExamAnalysis(studentId, classId, testid)
+    if(response.ok){
+      setExamAnalysis(response.data)
+      console.log(response.data)
+      
+    }else{
+      alert(response.data.errorMessage)
+    }
+  }
 
   const toggleShare = async () => {
     console.log({exam})
@@ -72,6 +97,12 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
         You will not be able to recover this exam!
       </SweetAlert>
       <div className='exam-content'>
+        {user?.isStudent &&
+          exam?.classTest?.showAnalysis && (<>
+            <Button style={{float:'right', marginTop:'15px'}} className='btn-showResult' onClick={() => openModalShowResutl(exam?.test?.id)} size='sm' variant="outline-warning"><b>Show Result</b></Button>
+          </>)
+        }
+
         <ExamItemContent
           id={id}
           exam={exam}
@@ -120,6 +151,7 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
       testItem={testItem}
       questionPartDto={questionPartDto}
       />
+      <ShowResultExam setViewAnalysis={setViewAnalysis} viewAnalysis={viewAnalysis} examAnalysis={examAnalysis} />
     </div>
   );
 }

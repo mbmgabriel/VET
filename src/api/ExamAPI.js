@@ -232,5 +232,4 @@ export default class ExamAPI extends Base {
       method: 'GET'
     })
   }
-  
 }

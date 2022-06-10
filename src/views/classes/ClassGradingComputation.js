@@ -38,7 +38,8 @@ export default function ClassGradingComputation() {
   const [loading, setLoading] = useState(true);
   const [gradingTemplate, setGradingTemplate] = useState(null);
   const [student, setStudent] = useState([]);
-
+  const subsType = localStorage.getItem('subsType');
+  
   const total =
     parseFloat(exam || "0") +
     parseFloat(assignment || "0") +
@@ -82,6 +83,9 @@ export default function ClassGradingComputation() {
   useEffect(() => {
     getGradingTemplate();
     getStudent();
+    if(subsType != 'LMS'){
+      window.location.href = "/classes"
+    }
   }, []);
 
   if (user.isTeacher) {

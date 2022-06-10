@@ -16,13 +16,14 @@ function FilesContent(props) {
   const [itemToEdit, setItemToEdit] = useState({});
   const [newFileName, setNewFilename] = useState('');
   const [extFilename, setExtFilename] = useState('');
-  const [courseInfo, setCourseInfo] = useState("");
+  const [courseInfo, setCourseInfo] = useState("")
   const [currentFolderName, setCurrentFolderName] = useState('');
   const [newFolderName, setNewFolderName] = useState('');
   const [folderToDelete, setToFolderDelete] = useState('')
   const [deleteFolderNotify, setDeleteFolderNotify] = useState(false)
   const [editFolderModal, setEditFolderModal] = useState(false);
   const [displayButtons, setDisplayButtons] = useState(true);
+
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
 
@@ -121,7 +122,7 @@ function FilesContent(props) {
 
   const renderTooltipEdit = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Edit
+      Edit 
     </Tooltip>
   )
   
@@ -261,7 +262,7 @@ function FilesContent(props) {
             <InputGroup.Text>{extFilename}</InputGroup.Text>
           </InputGroup>
           <Form.Group className='right-btn'>
-            <Button className='tficolorbg-button' onClick={()=> handleSaveNewFilename()} >Save</Button>
+            <Button className='tficolorbg-button' onClick={()=> handleSaveNewFilename()} >Update Filename</Button>
           </Form.Group>
         </Form> 
         </Modal.Body>

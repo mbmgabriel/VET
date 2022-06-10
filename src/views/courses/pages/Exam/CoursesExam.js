@@ -33,6 +33,7 @@ export default function CoursesExam() {
   const moduleid = sessionStorage.getItem('moduleid')
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
+  const subsType = localStorage.getItem('subsType');
 
   const getCourseInformation = async() => {
     setLoading(true)
@@ -48,6 +49,9 @@ export default function CoursesExam() {
   useEffect(() => {
     if(courseid != null){
       getCourseInformation();
+    }
+    if(subsType != 'LMS'){
+      window.location.href = "/courses"
     }
   }, [])
 

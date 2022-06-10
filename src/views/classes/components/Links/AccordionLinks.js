@@ -106,6 +106,16 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
                 {/* <Link style={{color:'#EE9337', textDecoration:'none'}} to={item?.url}>{item?.description}</Link> */}
                 <a target="_blank" style={{color:'#EE9337', textDecoration:'none'}} href={item?.url}>{item?.description}</a>
                 </div>
+                <div className='inline-flex'>
+                    <div className='text-color-bcbcbc'>
+                      {
+                      item.classLink === null ?
+                      <span>Post Date {moment(item?.createdDate).format('ll')}</span>
+                      :
+                      <span>Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
+                      }
+                    </div>
+                  </div>
               </Col>
               {(user.teacher === null)?(
               <>
@@ -131,16 +141,6 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
               <Col sm={6}>
               </Col>
                 <Col sm={6} style={{textAlign:'right'}} className='due-date-discusstion' >
-                  <div className='inline-flex'>
-                    <div className='text-color-bcbcbc'>
-                      {
-                      item.classLink === null ?
-                      <span>Post Date {moment(item?.createdDate).format('ll')}</span>
-                      :
-                      <span>Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
-                      }
-                    </div>
-                  </div>
                 </Col>
                 <div className='text-color-bcbcbc' >
                 <hr></hr>
