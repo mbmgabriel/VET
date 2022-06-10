@@ -77,7 +77,7 @@ export default function AddPartModal({
           </Form.Group>
           {selectedPart == null &&<Form.Group className="mb-3">
             <Form.Label for='description'>Upload Excel File</Form.Label>
-            <Form.Control type="file" accept=".xls,.xlsx," onChange={(e) => handleGetUploadedFile(e.target.files[0])} />
+            <Form.Control type="file" accept=".xls,.xlsx,.csv" onChange={(e) => handleGetUploadedFile(e.target.files[0])} />
           </Form.Group>}
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>
