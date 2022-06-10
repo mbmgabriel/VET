@@ -78,10 +78,10 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     }
   }
 
-  const getTestReport = async(e, selectedClassId,testid) => {
+  const getTestReport = async(e, sessionClass,testid) => {
     setLoading(true)
     // setViewTestReport(false)
-    let response = await new ClassesAPI().getTestReport(selectedClassId, testid)
+    let response = await new ClassesAPI().getTestReport(sessionClass, testid)
     setLoading(false)
     if(response.ok){
       setTestReport(response.data)
@@ -278,7 +278,9 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
                   </td>
                   <td>
                     {/* <Button variant="outline-warning" size="sm" onClick={(e) => retakeExam(e, st.test.classId, st.test.id, item.student.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button> */}
-                    {st.isSubmitted === false ? <></>:<Button className='retake-btn' size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo" style={{paddingRight:'10px'}} ></i>Retake</Button>}
+                    {st.isSubmitted === false ? <spam></spam>: 
+                    <Button style={{color:"white"}} variant="warning" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
+                    }
                     
                     <SweetAlert
                           warning
