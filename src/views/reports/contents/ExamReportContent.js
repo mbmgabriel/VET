@@ -1,11 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Badge, Table, Button, Form} from 'react-bootstrap'
+import {Badge, Table, Button, Form, Card, Row, Col} from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
 import ExamAnalysis from './ExamAnalysis'
 import { toast } from 'react-toastify';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { UserContext } from './../../../context/UserContext'
 import ExamAPI from '../../../api/ExamAPI';
+import FrequencyError from './FrequencyError';
+import FrequencyOferror from './FrequencyOferror';
 
 
 function ExamReportContent({ selectedClassId, testReport, setTestReport, showReportHeader, setShowReportHeader}) {
@@ -17,13 +19,23 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   const [studentId, setStudentId] = useState(false)
   const [examReport, setExamReport] = useState([])
   const [isChecked, setIschecked] = useState(false)
+  const [frequencyItem, setFrequencyItem] = useState([])
+  const [frequencyModal, setFrequencyModal] = useState(false)
+  const [showAnalysis, setShowAnalysis] = useState(false)
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   let sessionClass = sessionStorage.getItem("classId")
   let sessionTestId = sessionStorage.getItem("testid")
 
+  const handleShowAnalysis = () => {
+    setShowAnalysis(true)
+  }
+
+  const handleHideAnalysis =() => {
+    setShowAnalysis(false)
+  }
+
   const getExamAnalysis = async(e, studentid, classid, testid) => {
-    console.log(selectedClassId)
     sessionStorage.setItem('analysis','true')
     sessionStorage.setItem('studentid',studentid)
     sessionStorage.setItem('testid',testid)
@@ -31,12 +43,26 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
     if(response.ok){
       setExamAnalysis(response.data)
-      console.log(response.data)
-      
     }else{
       alert("Something went wrong while fetching all courses")
     }
   }
+
+  const getFrequencyReport = async () =>{
+    let response = await new ClassesAPI().getFrequencyReport(sessionClass, sessionTestId)
+    if(response.ok){
+      setFrequencyItem(response.data)
+    }else{
+      alert(response.data.errorMessage)
+    }
+  }
+
+  const handleFrequencyModal = () => {
+    setFrequencyModal(true)
+    getFrequencyReport()
+  }
+
+  console.log('frequencyItem:', frequencyItem)
 
   const retakeExam = async(classid, testid, studentid) => {
     let isConsider = true
@@ -60,15 +86,15 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     if(response.ok){
       setTestReport(response.data)
       setExamReport(response.data[0].studentTests)
-      console.log('asdasda:', response.data)
     }else{
       alert(response.data.errorMessage)
     }
   }
 
   useEffect(() => {
-    if(sessionClass != null){
+    if(sessionTestId != null){
       getTestReport(null, sessionClass, sessionTestId)
+      getFrequencyReport()
     }
   }, [])
 
@@ -96,7 +122,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     setShowReportHeader(true)
   }, [])
 
-  console.log('testReport:' ,  testReport)
+
 
   const updateExamAnalysisTrue = async ( startDate, startTime, endDate, endTime, timeLimit) => {
     let showAnalysis = true
@@ -128,7 +154,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     }
   }
 
-  const handleCheckBox = (e, startDate, startTime, endDate, endTime, timeLimit) =>{
+  const handleCheckBox = (e, startDate, startTime, endDate, endTime, timeLimit, checked) =>{
     handleShowResult(e.target.checked, startDate, startTime, endDate, endTime, timeLimit)
   }
   
@@ -158,45 +184,98 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   return(
     <>
     {user.student === null ?
+      <>
+      <Row>
+        <Col sm={4}>
+        <Card>
+          <Card.Body>
+            <Card.Title><div className='header-analysis-card'><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div></Card.Title>
+            <Card.Text>
+              <hr></hr>
+              <p><b>0</b></p>
+            </Card.Text> 
+          </Card.Body>
+        </Card>    
+        </Col>
+        <Col sm={4}>
+        <Card>
+          <Card.Body>
+            <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div></Card.Title>
+            <Card.Text>
+              <div>
+              <hr></hr>
+              <p><b>0</b></p>
+              </div>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+        </Col>
+        <Col sm={4}>
+        <Card>
+          <Card.Body>
+            <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div></Card.Title>
+            <Card.Text>
+              <hr></hr>
+              <p><b>0</b></p>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+        </Col>
+      </Row> 
+      <div style={{paddingTop:'20px' , paddingRight:'5px', float:'right', paddingBottom:'35px'}}>
+          {/* <Button onClick={() => handleFrequencyModal()}  style={{marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> Frequency of error </b></Button> */}
+        <Button onClick={() => handleHideAnalysis()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Score </b></Button>
+        <Button onClick={() => handleShowAnalysis()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Analysis </b></Button>
+      </div>
+        {showAnalysis === false? (<>
+          <div style={{display:'flex', paddingRight:'20px'}}>
+            <div style={{float:'right', paddingTop:'35px'}}>
+          {examReport[0] &&
+            examReport?.map(item => {
+              return(
+              <Form>
+                <Form.Check 
+                type="switch"
+                name={'showAnalysis'}
+                label='Show result'
+                checked={item?.classTest?.showAnalysis}
+                onChange={(e) => handleCheckBox(e, item?.classTest?.startDate, item?.classTest?.startTime, item?.classTest?.endDate, item?.classTest?.endTime, item?.classTest?.timeLimit, item?.classTest?.showAnalysis)}
+              />
+              </Form>
+              )
+            })
+          }
+        </div>
+        </div>
     <Table striped hover size="sm">
       <thead>
         <tr>
           <th>Student Name</th>
           <th>Grade</th>
-          <th>Actions</th>
-          <th style={{float:'left'}}>
-            {examReport[0] &&
-              examReport?.map(item => {
-                return(
-                  <Form>
-                  <Form.Check 
-                  type="switch"
-                  name={'showAnalysis'}
-                  label='Show Result'
-                  checked={item?.classTest?.showAnalysis}
-                  onChange={(e) => handleCheckBox(e, item?.classTest?.startDate, item?.classTest?.startTime, item?.classTest?.endDate, item?.classTest?.endTime, item?.classTest?.timeLimit)}
-                />
-                </Form>
-                )
-              })
-            }
-          </th>
+          <th>Status</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         {testReport.map(item =>{
           return (
             item.studentTests.map(st =>{
-              return (
+              return (  
                 <tr>
                   <td >
                     <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
-                      <span onClick={(e) => getExamAnalysis(e, item.student.id, st.test.classId, st.test.id)} >
-                      { item.student.lname} { item.student.fname} 
+                      <span style={{cursor:'pointer'}} onClick={(e) => getExamAnalysis(e, item.student.id, st.test.classId, st.test.id)} >
+                      { item.student.lname} { item.student.fname}
+                      {st.isSubmitted == true }
                       </span> 
                   </td>
-                  <td>{st.isSubmitted === false ? <Badge bg="warning">Not Submitted</Badge>: st.score}</td>
+                  <td>{st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>: <>{st.score}/{st.rawScore}</>}</td>
                   {/* <td>{st.score}</td> */}
+                  <td>
+                    {st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>:<>{st.rawScore/2 <= st.score && <><Badge bg="success">PASSED</Badge></>}
+                    {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }</>}
+                  
+                  </td>
                   <td>
                     {/* <Button variant="outline-warning" size="sm" onClick={(e) => retakeExam(e, st.test.classId, st.test.id, item.student.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button> */}
                     {st.isSubmitted === false ? <spam></spam>: 
@@ -228,14 +307,27 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         }
       </tbody>
     </Table>
+
+        
+      </>):<FrequencyOferror frequencyItem={frequencyItem} />}
+
+
+
+      
+    </>
     :
     <div onClick={(e) => getExamAnalysis(e, user.student.id, sessionClass, sessionTestId)}>{user.student.lname}</div>
     }
+    <FrequencyError frequencyItem={frequencyItem} setFrequencyModal={setFrequencyModal} frequencyModal={frequencyModal} />
+    
     </>
   )}else{
     return(
-    <ExamAnalysis showReportHeader={showReportHeader} setShowReportHeader={setShowReportHeader} examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} testReport={testReport}/>
+      <>
+        <ExamAnalysis showReportHeader={showReportHeader} setShowReportHeader={setShowReportHeader} examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} testReport={testReport}/>
+      </>
     )
   }
+
 }
 export default ExamReportContent

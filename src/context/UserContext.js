@@ -5,6 +5,7 @@ import { SIGNALR_URL } from '../contants/url';
 import Logger from '../utils/logger';
 import { onExamRoute } from '../utils/windowLocationHelper';
 import SchoolAPI from '../api/SchoolAPI';
+import { toast } from 'react-toastify';
 
 export const UserContext = React.createContext();
 export class UserContextProvider extends Component {
@@ -85,12 +86,14 @@ export class UserContextProvider extends Component {
       this.connection.current = new HubConnectionBuilder()
       await this.setState({connectionStatus: 'connecting'})
       var token = await window.localStorage.getItem("token")
-      Logger.info({token, SIGNALR_URL})
+      console.log({token, SIGNALR_URL})
       this.connection.current = await new HubConnectionBuilder()
                         .withUrl(SIGNALR_URL, {
                           accessTokenFactory: () => token
                         })
+                        .configureLogging(LogLevel.Debug)
                         .build();
+      console.log({connection: this.connection.current})
 
       this.connection.current.on("OnthemeLogoutMessage", (user, message) => {
         Logger.info('themeLogout message received:', message);
@@ -123,6 +126,13 @@ export class UserContextProvider extends Component {
         }
       });
 
+      this.connection.current.on("Notification", (user, message) => {
+        Logger.info('Notification received:');
+        console.log({message})
+        toast.info(message?.message ?? "Notification received")
+        
+      });
+
       this.connection.current.onreconnecting(() => {
         Logger.info('reconnecting');
         this.setState({connectionStatus: 'reconnecting'});
@@ -141,6 +151,11 @@ export class UserContextProvider extends Component {
     } catch (e){
       Logger.info(e);
     }
+  }
+
+
+  notify = async ({description = "", classId, activityType}) => {
+    await this.connection.current.invoke("Notifications", description, classId, activityType)
   }
 
   endExam = async () => {
@@ -179,6 +194,7 @@ export class UserContextProvider extends Component {
             connect: this.connect,
             setThemeColor: this.setThemeColor,
             setThemeLogo: this.setThemeLogo,
+            notify: this.notify,
           },
         }}>
         {children}

@@ -186,7 +186,7 @@ export default function Routes() {
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
             <PublicRoute path='/calendar' exact component={CalendarPage}/>
-            <PublicRoute path='/scratch' exact component={Scratch}/>
+            <PrivateRoute path='/scratch' exact component={Scratch}/>
             <AuthRoute path='/login' exact component={Login}/>
             <AuthRoute path='/forgot_password' exact component={ForgotPassword}/>
             <PublicRoute path='/404' exact component={PageNotFound}/>
