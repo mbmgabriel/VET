@@ -302,7 +302,7 @@ export default function TrueOrFalse({
 
   return (
     <div>
-      <button onClick={(e) => downloadxls(e, data)}>Export Exam Part</button>
+      <Button className='tficolorbg-button m-r-5 mb-3' onClick={(e) => downloadxls(e, data)} >Export Exam Part</Button>
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>
