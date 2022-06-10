@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../../../context/UserContext'
 
-function AssignedDiscussion({assignToggle, assignModal, discussionId, moduleId, getDiscussionUnit}) {
+function AssignedDiscussion({selectedDiscussionName, assignToggle, assignModal, discussionId, moduleId, getDiscussionUnit}) {
   console.log('discussionId:', discussionId)
   const [startDate, setStartDate] = useState('')
   const [startTime, setStartTime] = useState('')
@@ -14,6 +15,18 @@ function AssignedDiscussion({assignToggle, assignModal, discussionId, moduleId, 
   const [endTime, setEndTime] = useState('')
   const [assignNotify, setAssignNotify] = useState(false)
   const {id} = useParams();
+  const userContext = useContext(UserContext)
+  const {notify} = userContext.data
+
+  const notifyStudent = () => {
+    const config = {
+      "description": `discussion ${selectedDiscussionName} to you.`, 
+      "activityType": "", 
+      "classId": `${id}`
+    }
+    console.log({notification: config})
+    notify(config)
+  }
 
   const closeNotify = () =>{
     setAssignNotify(false)
@@ -24,6 +37,7 @@ function AssignedDiscussion({assignToggle, assignModal, discussionId, moduleId, 
     let response = await new ClassesAPI().assignDiscussion(id, discussionId, {startDate, startTime, endDate, endTime})
       if(response.ok){
         // alert('Discussion Assigned')
+        notifyStudent()
         success()
         setStartDate('')
         setStartTime('')

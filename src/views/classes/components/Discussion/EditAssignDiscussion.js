@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
@@ -6,8 +6,9 @@ import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
 import { toast } from 'react-toastify';
+import { UserContext } from '../../../../context/UserContext'
 
-function EditAssignDiscussion({editAssignToggle, editAssignModal, editAssignDiscussionItem, getDiscussionUnit}) {
+function EditAssignDiscussion({selectedDiscussionName, editAssignToggle, editAssignModal, editAssignDiscussionItem, getDiscussionUnit}) {
   const [startDate, setStartDate] = useState('')
   const [startTime, setStartTime] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -15,6 +16,18 @@ function EditAssignDiscussion({editAssignToggle, editAssignModal, editAssignDisc
   const [editNotufy, setEditNotify] = useState(false)
   const {id} = useParams();
 
+  const userContext = useContext(UserContext)
+  const {notify} = userContext.data
+
+  const notifyStudent = () => {
+    const config = {
+      "description": `discussion ${selectedDiscussionName} to you.`, 
+      "activityType": "", 
+      "classId": `${id}`
+    }
+    console.log({notification: config})
+    notify(config)
+  }
   const closeNotify = () =>{
     setEditNotify(false)
   }
@@ -24,6 +37,7 @@ function EditAssignDiscussion({editAssignToggle, editAssignModal, editAssignDisc
     let dId = editAssignDiscussionItem?.discussion?.id
     let response = await new ClassesAPI().updateAssignDiscusion(id, dId, {startDate, startTime, endDate, endTime})
       if(response.ok){
+        notifyStudent()
         success()
         getDiscussionUnit(null, editAssignDiscussionItem?.module?.id)
         editAssignToggle(e)

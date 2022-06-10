@@ -32,7 +32,7 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
       notifyUpdateExam()
       getExamInfo(null, sessionModule)
     }else{
-      toast.error(response.data.errorMessage, {
+      toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

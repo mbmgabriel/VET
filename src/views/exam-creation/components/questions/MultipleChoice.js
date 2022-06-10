@@ -10,6 +10,8 @@ import DEFAULT_CHOICES from "../../../../contants/default-choices";
 import FileHeader from "../../../courses/components/AssignmentFileHeader";
 import QuestionActions from "./QuestionActions";
 import FilesAPI from '../../../../api/FilesApi'
+import { displayQuestionType } from "../../../../utils/displayQuestionType";
+import {writeFileXLSX, utils} from "xlsx";
 
 const MultipleChoiceForm = ({
   selectedQuestion,
@@ -24,7 +26,6 @@ const MultipleChoiceForm = ({
   setChoices,
   editQuestion,
 }) => {
-
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -76,8 +77,9 @@ const MultipleChoiceForm = ({
   } 
 
   useEffect(() => {
+    if(window.location.pathname.includes('course')){
     handleGetCourseFiles()
-    
+    }
   }, [])
 
   return (
@@ -233,7 +235,9 @@ export default function MultipleChoice({
   setLoading,
   deleteQuestion,
   editable,
+  examName
 }) {
+  console.log('Parts', part)
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
   const [rate, setRate] = useState(1);
@@ -244,7 +248,7 @@ export default function MultipleChoice({
   const courseid = sessionStorage.getItem('courseid')
   const [courseInfos, setCourseInfos] = useState([])
   const [editQuestion, setEditQuestion] = useState('')
-
+  const [data, setData] = useState([]);
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
@@ -254,7 +258,12 @@ export default function MultipleChoice({
 
   useEffect(() => {
     getCourseInformation();
+    handleGetItems()
   }, [])
+
+  useEffect(() => {
+    handleGetItems();
+  },[part])
 
   const validChoices = () => {
     let isDuplicated = false;
@@ -353,14 +362,58 @@ export default function MultipleChoice({
     } else {
       toast.error(
         response.data?.errorMessage ||
-          "Something went wrong while creating the Question"
-      );
-      setLoading(false);
+        "Something went wrong while creating the Question"
+        );
+        setLoading(false);
+      }
+  };
+
+  const handleMapChoices = (part) => { // get the choices and identify the largest number of choices
+    let lenght = 0;
+    let choices = {};
+    part.questionDtos.map((question, index) => {
+      lenght = question.choices.length > lenght ? question.choices.length : lenght
+    })
+    for (let i = 0; i < lenght; i++) {
+      choices[`choice${i+1}`] = '';
+      choices[`isCorrect${i+1}`] = 0;
     }
+    return choices;
+  }
+
+  const handleGetItems = () => {
+    let tempData =[]
+    part.questionDtos.map((question, index) => {
+      let temp= {
+        question: '',
+        ...handleMapChoices(part), //map the largest number of choices to put the rate at the end
+        rate: 0
+      };
+      temp.question = question.question.testQuestion //set the temp question
+      question.choices.map((choice, ind) =>{ //map choices and fill each fields
+        temp[`choice${ind+1}`] = choice.testChoices;
+        temp[`isCorrect${ind+1}`] = choice.isCorrect ? 1 : 0;
+      })
+      temp.rate = question.question.rate //add rate
+      tempData.push(temp)
+    })
+    setData(tempData)
+  }
+
+  const downloadxls = (e, data) => {
+    console.log(data);
+    e.preventDefault();
+    const ws =utils.json_to_sheet(data);
+    const wb =utils.book_new();
+   utils.book_append_sheet(wb, ws, "SheetJS");
+    /* generate XLSX file and send to client */
+    writeFileXLSX(wb, `${examName}_${displayQuestionType(part.questionPart.questionTypeId)}.xlsx`);
   };
 
   return (
     <div>
+      <Button className='tficolorbg-button m-r-5 mb-3' onClick={(e) => downloadxls(e, data)} >Export Exam Part</Button>
+      <br/>
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>

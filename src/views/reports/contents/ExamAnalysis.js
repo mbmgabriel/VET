@@ -39,18 +39,14 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     setSelectedTestId(testid)
     setSelectedAnswerId(answerid)
     setSelectedQuestionId(questionid)
-    console.log(answerid)
 }
 
   const getExamAnalysis = async(e, studentid, classid, testid) => {
     e.preventDefault()
-    console.log(selectedClassId)
     setShowExamAnalysis(true)
-    console.log(showExamAnalysis)
     let response = await new ClassesAPI().getExamAnalysis(studentid, classid, testid)
     if(response.ok){
       setExamAnalysis(response.data)
-      console.log(response.data)
       
     }else{
       alert("Something went wrong while fetching all courses")
@@ -65,7 +61,6 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       studentid, classid, testid, answerid, {isConsider}
     )
     if(response.ok){
-      console.log(response.data)
     }else{
       alert(response.data.errorMessage)
     }
@@ -127,7 +122,6 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
   const handleInputChange = (e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
     setConsiderAnswer(true)
-    console.log(studentid)
     isChecked(e, e.target.checked, questionid, answerid, studentid, testid, rate);
   }
 
@@ -184,7 +178,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
         <span className='font-exam-analysis-header'>{examAnalysis.student?.lname},  {examAnalysis.student?.fname}</span>
       </Col>
       <Col md={6}>
-        <span className='font-exam-analysis-header float-right'>{examAnalysis.score} / {examAnalysis.rawScore}</span>
+        <span className='font-exam-analysis-header float-right'>{examAnalysis.score} / {examAnalysis.assignedRawScore}</span>
       </Col>
       <Col md={6}>
         <p className='font-exam-analysis-content-24-tfi'>{testname} </p>
@@ -197,26 +191,36 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
         return(
             <div>
             <div className='inline-flex'>
-              <p className='font-exam-analysis-content-24-tfi' >{index + 1}.</p><p className='font-exam-analysis-content-24-tfi' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
+              <p className='font-exam-analysis-content-24-tfi'>PART {index + 1}</p> <p style={{marginLeft:5}} className='font-exam-analysis-content-24' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
             </div>
               {item.questionDetails.map((qd, index) => {
                 return(
                 qd.answerDetails.map((ad, index) => {
                   return(
                     <>
-                    <br />
-                      <span className='font-exam-analysis-content-24-tfi'>{index + 1}.  <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
-                      <div>
-                        <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Student Answer :</span><span className='font-exam-analysis-content-24'>
-                          <ContentViewer>{ad.studentAnswer}</ContentViewer>
-                        </span>
-                          {ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
-                      </div>
+                    <br></br>
+                    <div className='inline-flex'>
+                      <span className='font-exam-analysis-content-24' style={{marginBottom:"100px !important"}}>{index + 1}.</span> <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span>
+                    </div>
+                    <Row style={{textAlign:'center', padding:10}}>
+                      <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
+                        <div>
+                          <span className='font-exam-analysis-content-24' style={{marginRight:10}}> 
+                          <span style={{marginRight:10}}>{ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
+                            Student Answer :</span><span className='font-exam-analysis-content-24'>
+                            <ContentViewer>{ad.studentAnswer}</ContentViewer>
+                          </span>
+                          
+                        </div>
+                      </Col>
+                      <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
                       <div>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Correct Answer :</span>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad.assignedAnswer}</ContentViewer></span>
+                        </div>
                         {ad.studentAnswer?.toLowerCase() !== ad.assignedAnswer.toLowerCase() &&
                         <Form>
+                          <div style={{display:'inline-flex'}}>
                           <Form.Group className="m-b-20">
                             <Form.Check
                             label="Consider"
@@ -226,12 +230,15 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                             onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
                             /> 
                           </Form.Group>
+                          <span>{ad.isConsider == true &&  <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
+                          <span>{ad.isConsider == false &&  <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
                           {' '}
+                          </div>
                         </Form>
-                        }
-                      </div>
-                      
-                      <hr></hr>
+                        } 
+                      </Col>
+                    </Row>
+                    <hr></hr>
                     </>
                   )
                 })

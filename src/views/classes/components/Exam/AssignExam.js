@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import moment from "moment";
 import ExamAPI from "../../../../api/ExamAPI";
+import { UserContext } from "../../../../context/UserContext";
 
 export default function AssignExam({ showModal, setShowModal, exam, id, setLoading, fetchExams, closeModal }) {
   const [endDate, setEndDate] = useState("");
@@ -11,6 +12,8 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
   const [startDate, setStartDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [timeLimit, setTimeLimit] = useState("");
+  const userContext = useContext(UserContext)
+  const {notify} = userContext.data
 
   useEffect(() => {
     if(exam.classTest){
@@ -53,11 +56,21 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
     }
   };
 
+  const notifyStudent = () => {
+    const config = {
+      "description": `exam ${exam.test.testName} to you.`, 
+      "activityType": "", 
+      "classId": `${id}`
+    }
+    notify(config)
+  }
+
   const handleSendRequest = async(data) => {
     if(exam.classTest){
       let response = await new ExamAPI().reAssignExam(id, exam.test.id, data)
       if(response.ok){
         toast.success("Exam assigned successfully")
+        notifyStudent()
         fetchExams()
         closeModal()
       }else{
@@ -69,6 +82,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
       let response = await new ExamAPI().assignExam(id, exam.test.id, data)
       if(response.ok){
         toast.success("Exam assigned successfully")
+        notifyStudent()
         fetchExams()
         closeModal()
       }else{

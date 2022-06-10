@@ -45,7 +45,15 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
         getLinks()
         successSave()
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
 
     }
@@ -61,7 +69,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
   console.log('editLinks:', editLinks)
 
   const successSave = () => {
-    toast.success('Successfully Edit link!', {
+    toast.success('Successfully Updated link!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -101,7 +109,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
             <Form.Control value={editLinks?.classLink?.type}  type="text" disabled/>
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Links</Button>
             </Form.Group>
           </Form>
         </Modal.Body>
