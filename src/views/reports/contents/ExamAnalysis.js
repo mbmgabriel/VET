@@ -236,8 +236,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                           </div>
                         </Form>
                         }
-                      </div>
-                      </Col>
+                      
                     </Row>
                     <hr></hr>
                     </>
