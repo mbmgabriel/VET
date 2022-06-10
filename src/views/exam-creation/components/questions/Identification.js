@@ -9,6 +9,8 @@ import ContentViewer from "../../../../components/content_field/ContentViewer";
 import QuestionActions from "./QuestionActions";
 import FilesAPI from '../../../../api/FilesApi'
 import FileHeader from "../../../courses/components/AssignmentFileHeader";
+import {writeFileXLSX, utils} from "xlsx";
+import { displayQuestionType } from "../../../../utils/displayQuestionType";
 
 const IdentificationForm = ({
   showModal,
@@ -137,6 +139,7 @@ export default function Identification({
   setLoading,
   deleteQuestion,
   editable,
+  examName
 }) {
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
@@ -147,6 +150,7 @@ export default function Identification({
   const courseid = sessionStorage.getItem('courseid')
   const [courseInfos, setCourseInfos] = useState([])
   const [editQuestion, setEditQuestion] = useState('')
+  const [data, setData] = useState([]);
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -157,6 +161,7 @@ export default function Identification({
 
   useEffect(() => {
     getCourseInformation();
+    handleGetItems()
   }, [])
 
   const submitQuestion = async (e) => {
@@ -248,8 +253,47 @@ export default function Identification({
     }
   };
 
+  const handleGetItems = () => {
+    console.log(part.questionDtos, '----------')
+    let tempData =[]
+    part.questionDtos.map((question, index) => {
+      let temp= {};
+      temp.question = question.question.testQuestion
+      // temp.push({question: question.question.testQuestion})
+      question.choices.map((choice, ind) =>{
+        // console.log(choice.testChoices, '-----', choice.isCorrect)
+        temp[`choice${ind+1}`] = choice.testChoices;
+        temp[`isCorrect${ind+1}`] = choice.isCorrect ? 1 : 0;
+
+        temp[`choice2`] = '';
+        temp[`isCorrect2`] = 0;
+
+        temp[`choice3`] = '';
+        temp[`isCorrect3`] = 0;
+
+        temp[`choice4`] = '';
+        temp[`isCorrect4`] = 0;
+      })
+      temp.rate = question.question.rate
+      tempData.push(temp)
+      console.log({tempData}, {temp})
+    })
+    setData(tempData)
+  }
+
+  const downloadxls = (e, data) => {
+    console.log(data);
+    e.preventDefault();
+    const ws =utils.json_to_sheet(data);
+    const wb =utils.book_new();
+   utils.book_append_sheet(wb, ws, "SheetJS");
+    /* generate XLSX file and send to client */
+    writeFileXLSX(wb, `${examName}_${displayQuestionType(part.questionPart.questionTypeId)}.xlsx`);
+  };
+
   return (
     <div>
+      <button onClick={(e) => downloadxls(e, data)} >Export Exam Part</button>
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>

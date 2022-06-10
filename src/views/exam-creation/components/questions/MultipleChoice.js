@@ -10,8 +10,8 @@ import DEFAULT_CHOICES from "../../../../contants/default-choices";
 import FileHeader from "../../../courses/components/AssignmentFileHeader";
 import QuestionActions from "./QuestionActions";
 import FilesAPI from '../../../../api/FilesApi'
-import { CSVLink } from "react-csv";
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
+import {writeFileXLSX, utils} from "xlsx";
 
 const MultipleChoiceForm = ({
   selectedQuestion,
@@ -364,56 +364,51 @@ export default function MultipleChoice({
     }
   };
 
-  const headers = [
-    { label: "Question", key: "question" },
-
-    { label: "Choice1", key: "choice1" },
-    { label: "IsCorrect1 (1/0)", key: "isCorrect1" },
-
-    { label: "Choice2", key: "choice2" },
-    { label: "Iscorrect2 (1/0)", key: "isCorrect2" },
-
-    { label: "Choice3", key: "choice3" },
-    { label: "iscorrect3 (1/0)", key: "isCorrect3" },
-
-    { label: "Choice4", key: "choice4" },
-    { label: "iscorrect4 (1/0)", key: "isCorrect4" },
-
-    { label: "Rate/Points", key: "rate" }
-  ];
-   
-  // const data = [
-  //   { question: '', choice1: '', isCorrect1: '', choice2: '', isCorrect2: '', choice3: '', isCorrect3: '', choice4: '', isCorrect4: '', rate: ''},
-  //   { question: '', choice1: '', isCorrect1: '', choice2: '', isCorrect2: '', choice3: '', isCorrect3: '', choice4: '', isCorrect4: '', rate: ''},
-  //   { question: '', choice1: '', isCorrect1: '', choice2: '', isCorrect2: '', choice3: '', isCorrect3: '', choice4: '', isCorrect4: '', rate: ''},    
-  // ];
-   
-  const csvReport = {
-    data: data,
-    headers: headers,
-    filename: `${examName}_${displayQuestionType(part.questionPart.questionTypeId)}.csv`
-  };
+  const handleMapChoices = (part) => { // get the choices and identify the largest number of choices
+    let lenght = 0;
+    let choices = {};
+    part.questionDtos.map((question, index) => {
+      lenght = question.choices.length > lenght ? question.choices.length : lenght
+    })
+    for (let i = 0; i < lenght; i++) {
+      choices[`choice${i+1}`] = '';
+      choices[`isCorrect${i+1}`] = 0;
+    }
+    return choices;
+  }
 
   const handleGetItems = () => {
-    let sample1 =[],
-    temp= {}
+    let tempData =[]
     part.questionDtos.map((question, index) => {
-      temp.question = question.question.testQuestion
-      temp.rate = question.question.rate
-      // temp.push({question: question.question.testQuestion})
-      question.choices.map((choice, ind) =>{
-        // console.log(choice.testChoices, '-----', choice.isCorrect)
+      let temp= {
+        question: '',
+        ...handleMapChoices(part), //map the largest number of choices to put the rate at the end
+        rate: 0
+      };
+      temp.question = question.question.testQuestion //set the temp question
+      question.choices.map((choice, ind) =>{ //map choices and fill each fields
         temp[`choice${ind+1}`] = choice.testChoices;
         temp[`isCorrect${ind+1}`] = choice.isCorrect ? 1 : 0;
       })
-      sample1.push(temp)
-      console.log({sample1}, {temp})
+      temp.rate = question.question.rate //add rate
+      tempData.push(temp)
     })
-    setData(sample1)
+    setData(tempData)
   }
+
+  const downloadxls = (e, data) => {
+    console.log(data);
+    e.preventDefault();
+    const ws =utils.json_to_sheet(data);
+    const wb =utils.book_new();
+   utils.book_append_sheet(wb, ws, "SheetJS");
+    /* generate XLSX file and send to client */
+    writeFileXLSX(wb, `${examName}_${displayQuestionType(part.questionPart.questionTypeId)}.xlsx`);
+  };
+
   return (
     <div>
-      <CSVLink {...csvReport}>Export to CSV</CSVLink>
+      <button onClick={(e) => downloadxls(e, data)} >Export Exam Part</button>
       {/* <button className="float-right">Export</button> */}
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>

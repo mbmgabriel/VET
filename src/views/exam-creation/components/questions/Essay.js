@@ -9,6 +9,8 @@ import ContentViewer from "../../../../components/content_field/ContentViewer";
 import QuestionActions from "./QuestionActions";
 import FilesAPI from '../../../../api/FilesApi'
 import FileHeader from "../../../courses/components/AssignmentFileHeader";
+import {writeFileXLSX, utils} from "xlsx";
+import { displayQuestionType } from "../../../../utils/displayQuestionType";
 
 const EssayForm = ({
   showModal,
@@ -123,6 +125,7 @@ export default function Essay({
   setLoading,
   deleteQuestion,
   editable,
+  examName,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
@@ -132,6 +135,7 @@ export default function Essay({
   const courseid = sessionStorage.getItem('courseid')
   const [courseInfos, setCourseInfos] = useState([])
   const [editQuestion, setEditQuestion] = useState('')
+  const [data, setData] = useState([]);
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -141,6 +145,7 @@ export default function Essay({
   }
 
   useEffect(() => {
+    handleGetItems();
     getCourseInformation();
   }, [])
 
@@ -207,8 +212,30 @@ export default function Essay({
     }
   };
 
+  const handleGetItems = () => {
+    console.log(part.questionDtos, '----------=======')
+    let tempData =[]
+    part.questionDtos.map((question, index) => {
+      let temp= { Question:  question.question.testQuestion, choice1: '', isCorrect1: '', choice2: '', isCorrect2: '', choice3: '', isCorrect3: '', choice4: '', isCorrect4: '', Rate: question.question.rate};
+      tempData.push(temp)
+      console.log({tempData}, {temp}, '------')
+    })
+    setData(tempData)
+  }
+
+  const downloadxls = (e, data) => {
+    console.log(data);
+    e.preventDefault();
+    const ws =utils.json_to_sheet(data);
+    const wb =utils.book_new();
+   utils.book_append_sheet(wb, ws, "SheetJS");
+    /* generate XLSX file and send to client */
+    writeFileXLSX(wb, `${examName}_${displayQuestionType(part.questionPart.questionTypeId)}.xlsx`);
+  };
+
   return (
     <div>
+      <button onClick={(e) => downloadxls(e, data)}>Export Exam Part</button>
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>
