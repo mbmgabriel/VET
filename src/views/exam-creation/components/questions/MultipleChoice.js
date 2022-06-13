@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ import QuestionActions from "./QuestionActions";
 import FilesAPI from '../../../../api/FilesApi'
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
 import {writeFileXLSX, utils} from "xlsx";
+import { UserContext } from '../../../../context/UserContext';
 
 const MultipleChoiceForm = ({
   selectedQuestion,
@@ -249,6 +250,11 @@ export default function MultipleChoice({
   const [courseInfos, setCourseInfos] = useState([])
   const [editQuestion, setEditQuestion] = useState('')
   const [data, setData] = useState([]);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const contentCreator = user?.teacher?.positionID == 7;
+  const isCourse = window.location.pathname.includes('course');
+
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
@@ -412,7 +418,7 @@ export default function MultipleChoice({
 
   return (
     <div>
-      <Button className='tficolorbg-button m-r-5 mb-3' onClick={(e) => downloadxls(e, data)} >Export Exam Part</Button>
+      {courseInfos?.isTechfactors && contentCreator && isCourse && <Button className='tficolorbg-button m-r-5 mb-3' onClick={(e) => downloadxls(e, data)} >Export Exam Part</Button>}
       <br/>
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
