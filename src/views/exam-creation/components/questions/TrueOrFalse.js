@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import FileHeader from "../../../courses/components/AssignmentFileHeader";
 import FilesAPI from '../../../../api/FilesApi'
 import {writeFileXLSX, utils} from "xlsx";
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
+import { UserContext } from '../../../../context/UserContext';
 
 const TrueOrFalseForm = ({
   showModal,
@@ -157,6 +158,10 @@ export default function TrueOrFalse({
   const [courseInfos, setCourseInfos] = useState([])
   const [editQuestion, setEditQuestion] = useState('')
   const [data, setData] = useState([]);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const contentCreator = user?.teacher?.positionID == 7;
+  const isCourse = window.location.pathname.includes('course');
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -271,12 +276,9 @@ export default function TrueOrFalse({
     part.questionDtos.map((question, index) => {
       let temp= {};
       temp.question = question.question.testQuestion
-      // temp.push({question: question.question.testQuestion})
       question.choices.map((choice, ind) =>{
-        // console.log(choice.testChoices, '-----', choice.isCorrect)
         temp[`choice${ind+1}`] = choice.testChoices;
         temp[`isCorrect${ind+1}`] = choice.isCorrect ? 1 : 0;
-
       })
       temp[`choice3`] = '';
       temp[`isCorrect3`] = 0;
@@ -285,7 +287,6 @@ export default function TrueOrFalse({
       temp[`isCorrect4`] = 0;
       temp.rate = question.question.rate
       tempData.push(temp)
-      console.log({tempData}, {temp}, '------')
     })
     setData(tempData)
   }
@@ -302,7 +303,7 @@ export default function TrueOrFalse({
 
   return (
     <div>
-      <Button className='tficolorbg-button m-r-5 mb-3' onClick={(e) => downloadxls(e, data)} >Export Exam Part</Button>
+      {courseInfos?.isTechfactors && contentCreator && isCourse && <Button className='tficolorbg-button m-r-5 mb-3' onClick={(e) => downloadxls(e, data)} >Export Exam Part</Button>}
       <br/>
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
