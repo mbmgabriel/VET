@@ -310,7 +310,7 @@ const getComment = (item, item1, item3) => {
                         )
                       })}
                       </Link>
-                      {feedItem?.likes?.length === 0? (<></>):(<>&nbsp;and {feedItem?.likes?.length} others</>)} 
+                      {feedItem?.likes?.length <= 2? (<></>):(<>&nbsp;and {feedItem?.likes?.length - 2} others</>)}   
                  </div>
                 <hr />
                 <Col style={{textAlign:'center'}}>
@@ -425,7 +425,7 @@ const getComment = (item, item1, item3) => {
                         )
                       })}
                       </Link>
-                      {feedItem?.likes?.length === 0? (<></>):(<>&nbsp;and {feedItem?.likes?.length} others</>)} 
+                      {feedItem?.likes?.length <= 2? (<></>):(<>&nbsp;and {feedItem?.likes?.length - 2} others</>)} 
                  </div>
                 <Col>
                 <hr />
