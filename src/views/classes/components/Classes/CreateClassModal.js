@@ -9,7 +9,7 @@ import AcademicTermAPI from '../../../../api/AcademicTermAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 
-function CreateClassModal({modal, toggle,getClasses}) {
+function CreateClassModal({setModal, modal, getClasses}) {
   const [addNotify, setAddNotity] = useState(false)
   const [grade, setGreade] = useState([])
   const [course, setCourse] = useState([])
@@ -26,6 +26,17 @@ function CreateClassModal({modal, toggle,getClasses}) {
     setAddNotity(false)
   }
 
+  console.log('course12312:', course)
+
+  const toggle = () =>{
+    setModal(!modal)
+    setGetCode('')
+    setGetGradeLevel('')
+    setGetCourseId('')
+    setClassName('')
+    setAcademicTermId('')
+  }
+
   const getClassCode = e =>{
     e.preventDefault()
     setGetCode(createRandomCode(4))
@@ -33,7 +44,7 @@ function CreateClassModal({modal, toggle,getClasses}) {
   }
 
   const success = () => {
-    toast.success('Successfully updated class', {
+    toast.success('Successfully created class', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -87,18 +98,8 @@ function CreateClassModal({modal, toggle,getClasses}) {
 
   const addClass = async(e) => {
     e.preventDefault()
-    let teacherId = user.teacher.id
-    let response = await new ClassesAPI().createClasses(
-      {classCode, gradeLevelId, className, courseId, teacherId, academicTermId}
-    )
-    if(response.ok){
-      success()
-      toggle(e)
-      getClasses()
-      setGetCode('')
-
-    }else{
-      toast.error(response.data.errorMessage, {
+    if(academicTermId == '' || courseId == '' || gradeLevelId == '' ){
+      toast.error('Please input all required fields', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -107,7 +108,30 @@ function CreateClassModal({modal, toggle,getClasses}) {
         draggable: true,
         progress: undefined,
         });
+    }else{
+      let teacherId = user.teacher.id
+      let response = await new ClassesAPI().createClasses(
+        {classCode, gradeLevelId, className, courseId, teacherId, academicTermId}
+      )
+      if(response.ok){
+        success()
+        toggle(e)
+        getClasses()
+        setGetCode('')
+  
+      }else{
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+      }
     }
+
   }
 
 
@@ -178,10 +202,10 @@ function CreateClassModal({modal, toggle,getClasses}) {
           		<Form.Label >Class Name</Form.Label>
                 <Form.Control onChange={(e) => setClassName(e.target.value)} type="text" placeholder='Enter class name here'/>
             </Form.Group>
-            <Form.Group className="mb-4">
+            {/* <Form.Group className="mb-4">
             <Form.Label >Class Description</Form.Label>
               <Form.Control type="text" placeholder='Enter class Description here' />
-            </Form.Group>
+            </Form.Group> */}
               <Form.Group className='mb-4'>
                 <Form.Label >Class Code</Form.Label>&nbsp;{' '}
                 	<Button  className='tficolorbg-button' onClick={getClassCode}>
