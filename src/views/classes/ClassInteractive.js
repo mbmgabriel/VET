@@ -507,7 +507,7 @@ function ClassInteractive() {
                             {schoolCode.id}
                       </button>
                       :
-                      <a target="_blank" style={{color:'#EE9337', textDecoration:'none'}} href={interItem?.interactive?.path}>{interItem?.interactive?.interactiveName}</a>
+                      <a target="_blank" className='class-links' href={interItem?.interactive?.path}>{interItem?.interactive?.interactiveName}</a>
                     }
                   </div>
                 </Col>

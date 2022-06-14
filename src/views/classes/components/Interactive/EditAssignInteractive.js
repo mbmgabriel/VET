@@ -5,6 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
+import { toast } from 'react-toastify';
 
 function EditAssignInteractive({getIndteractive, editAssignInteractiveItem, editAssignIteractiveToggle, editAssignInteractiveModal}) {
   const [startDate, setStartDate] = useState('')
@@ -24,11 +25,19 @@ function EditAssignInteractive({getIndteractive, editAssignInteractiveItem, edit
     let moduleId = editAssignInteractiveItem?.module?.id
     let response = await new ClassesAPI().updateAssignInteractive(id, interactiveId, {startDate, startTime, endDate, endTime})
       if(response.ok){
-        setEditNotify(true)
+        success()
         getIndteractive(null, moduleId)
         editAssignIteractiveToggle(e)
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
   }
 
@@ -41,12 +50,24 @@ function EditAssignInteractive({getIndteractive, editAssignInteractiveItem, edit
 		}
   }, [editAssignInteractiveItem])
 
+  const success = () => {
+    toast.success('Successfully reassigned interactive!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
   return (
     <div>
        <Modal  size="lg" show={editAssignInteractiveModal} onHide={editAssignIteractiveToggle} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
-            Edit Assign Discussion
+            Edit Assign Class Interactive
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -68,7 +89,7 @@ function EditAssignInteractive({getIndteractive, editAssignInteractiveItem, edit
               <Form.Control type="time" onChange={(e) => setEndTime(e.target.value)} defaultValue={editAssignInteractiveItem?.classInteractiveAssignment?.endTime} />
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Class Interactive</Button>
             </Form.Group>
           </Form> 
         </Modal.Body>
