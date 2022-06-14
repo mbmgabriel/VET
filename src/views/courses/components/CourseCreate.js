@@ -13,7 +13,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 	const [subjectAreaId, setSubjectArea] = useState('')
 	const [sarea, setSarea] = useState([])
 	const [status, setStatus] = useState('')
-	const [locked, setLockStatus]= useState('')
+	const [locked, setLockStatus]= useState(false)
 	const userContext = useContext(UserContext)
   const {user} = userContext.data
 
@@ -70,7 +70,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 			setDescription('')
 			setSubjectArea('')
 			setStatus('')
-			setLockStatus('')
+			setLockStatus(false)
 			getCourses()
 			}else{
 				toast.error(response.data.errorMessage, {
@@ -180,7 +180,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 								</Form.Group>
 								{' '}
 
-								<Form.Group className="m-b-20">
+								{/* <Form.Group className="m-b-20">
 										<Form.Label for="lock">
 												Lock Status
 										</Form.Label>
@@ -195,7 +195,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 												Unlocked
 											</option>
 										</Form.Select>
-								</Form.Group>
+								</Form.Group> */}
 								{' '}
 
 								<span style={{float:"right"}}>

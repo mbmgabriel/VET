@@ -194,9 +194,22 @@ export default function Courses() {
               <CourseCreate  subjectAreaName={subjectAreaName} setSubjectAreaName={setSubjectAreaName} getCourses={getCourses} setCourse={setCourse} openModal={openModal} setOpenModal={setOpenModal} /> 
               <CourseEdit getCourses={getCourses} handleOnclick={handleOnclick} setCourse={setCourse} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} selectedCourse={selectedCourse} /> 
               {showActive === false? 
-                (<CoursesItem getCourses={getCourses} subjectAreaName={subjectAreaName} filter={filter} setFilter={setFilter} course={course} setLoading={setLoading} setOpenEditModal={setOpenEditModal} setSelectedCourse={setSelectedCourse}/>)
+                (<CoursesItem 
+                  getCourses={getCourses} 
+                  subjectAreaName={subjectAreaName} 
+                  filter={filter} setFilter={setFilter} 
+                  course={course} setLoading={setLoading} 
+                  setOpenEditModal={setOpenEditModal} 
+                  setSelectedCourse={setSelectedCourse}/>)
               :
-              (<InactiveCourses  inActive={inActive} />)
+              (<InactiveCourses 
+                getCourses={getCourses} 
+                subjectAreaName={subjectAreaName} 
+                filter={filter} setFilter={setFilter} 
+                course={course} setLoading={setLoading} 
+                setOpenEditModal={setOpenEditModal} 
+                setSelectedCourse={setSelectedCourse}
+                inActive={inActive} />)
               }
             </CardGroup>
         </div>

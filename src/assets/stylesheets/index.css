@@ -585,10 +585,10 @@ border-top-right-radius: 0px !important;
   color: white !important;
 }
 
-.btn-Enrolled:active{
+/* .btn-Enrolled:active{
   background-color: var(--primary-color) !important;
   color: white !important;
-}
+} */
 
 .btn-showResult{
   border: '1px';

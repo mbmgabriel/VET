@@ -7,7 +7,7 @@ import { UserContext } from './../../../context/UserContext'
 import CoursesAPI from "../../../api/CoursesAPI";
 import { ToastContainer, toast } from 'react-toastify';
 
-function InactiveCourses({inActive, filter, getCourses, setFilter, course, setLoading, setOpenEditModal, setSelectedCourse}) {
+function InactiveCourses({subjectAreaName, inActive, filter, getCourses, setFilter, course, setLoading, setOpenEditModal, setSelectedCourse}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [openDropdown, setOpenDropdown] = useState(false)
@@ -23,6 +23,7 @@ function InactiveCourses({inActive, filter, getCourses, setFilter, course, setLo
     setOpenEditModal(true)
   }
 
+  console.log('inActive:', inActive)
 
   const setCourseId = (item) => {
     sessionStorage.setItem('courseid', item)
@@ -109,12 +110,17 @@ function InactiveCourses({inActive, filter, getCourses, setFilter, course, setLo
     localStorage.setItem('typeresource', 'course')
   });
 
+  console.log('subjectAreaName:', subjectAreaName)
+
 
   return (
     <>
-       {inActive?.map(item => {  
+      {inActive.filter(item =>
+          item.courseName.toLowerCase().includes(filter.toLowerCase())).map
+          ((item, index) => {  
         return(
           <>
+            <Link to={user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}`} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
             <Card className="card-design b-0px m-r-10">
               {/* <Card.Header className="card-header-courses" style={{backgroundImage: `url(${"https://cdn.tekteachlms.com/tficontent/_cover/Basic_calculus.jpg"})`}}> */}
                   <Card.Header className="card-header-courses" style={{ backgroundImage: `url(${item.courseCover})` }}>
@@ -196,6 +202,7 @@ function InactiveCourses({inActive, filter, getCourses, setFilter, course, setLo
                     </Card.Text>
                 </Card.Body>
             </Card>
+            </Link>
           </>
         )
         })  
