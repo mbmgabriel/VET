@@ -7,11 +7,8 @@ import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 
 
-function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
+function CreateLinks({setUrl, typeId, setTypeId, url, modal, setDescription, description, toggle, getConfe, getVideos, getLinks}) {
   const {id} = useParams();
-  const [typeId, setTypeId] = useState('')
-  const [description, setDescription] = useState('')
-  const [url, setUrl] = useState('')
 
   
   const addLinks = async (e) => {

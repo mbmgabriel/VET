@@ -6,10 +6,16 @@ import { UserContext } from '../../../../context/UserContext'
 function HeaderLinks({getConfe, getVideos, getLinks, onSearch}) {
 const [modal, setModal] = useState(false)
 const userContext = useContext(UserContext)
+const [typeId, setTypeId] = useState('')
+const [description, setDescription] = useState('')
+const [url, setUrl] = useState('')
 const {user} = userContext.data
 
 const toggle = () =>{
     setModal(!modal)
+		setTypeId('')
+		setDescription('')
+		setUrl('')
   }
 	return (
 		<div>
@@ -32,7 +38,7 @@ const toggle = () =>{
 					</InputGroup>
 				</div>
 			</div>
-			<CreateLinks getConfe={getConfe} getVideos={getVideos} getLinks={getLinks} toggle={toggle} modal={modal} />
+			<CreateLinks setUrl={setUrl} url={url} setDescription={setDescription}  description={description} setTypeId={setTypeId}  typeId={typeId} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks} toggle={toggle} modal={modal} />
 		</div>
 	)
 }
