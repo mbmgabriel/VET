@@ -39,6 +39,12 @@ export default function TeacherExamActions({
       Assign
     </Tooltip>
   )
+  
+  const renderTooltipReassign = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Reassign
+    </Tooltip>
+  )
 
   const renderTooltipDelete = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -46,7 +52,7 @@ export default function TeacherExamActions({
     </Tooltip>
   )
 
-  
+  console.log('exam123:', exam)
 
   return (
     <div className='exam-actions'>
@@ -80,7 +86,23 @@ export default function TeacherExamActions({
         </a>
       </OverlayTrigger>
       ) }
+       {exam?.isScheduled?(<>
       <OverlayTrigger
+        placement="bottom"
+        delay={{ show: 1, hide: 0 }}
+        overlay={renderTooltipReassign}>
+        <a
+          href='#assign'
+          onClick={(e) => {
+            e.preventDefault();
+            setShowModal(true);
+          }}
+        >
+         <i class="fas fa-clock"></i>
+         </a>
+         </OverlayTrigger>
+          </>):(<>
+            <OverlayTrigger
         placement="bottom"
         delay={{ show: 1, hide: 0 }}
         overlay={renderTooltipAssign}>
@@ -91,9 +113,13 @@ export default function TeacherExamActions({
             setShowModal(true);
           }}
         >
-          <i class='fas fa-user-clock'></i>
-        </a>
-      </OverlayTrigger>
+         <i class='fas fa-user-clock'></i>
+         </a>
+         </OverlayTrigger>
+          </>)}
+          
+        
+      
       {exam.test.classId != null && !exam.test.isShared && (
       <OverlayTrigger
         placement="bottom"
