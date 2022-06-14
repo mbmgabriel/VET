@@ -44,6 +44,11 @@ export default function CourseContent({children}) {
     }
   }
 
+  useEffect( async() => {
+    let response = await new CoursesAPI().getDistributor(id)
+    console.log(response, "--------------------------------");
+  },[])
+
   useEffect(() => {
     setShowTab(localStorage.getItem('collapsCourse') == 'false' ? false : true)
   }, [collapseSide]);

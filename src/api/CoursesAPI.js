@@ -320,4 +320,11 @@ export default class CoursesAPI extends Base {
     })
   }
 
+  getDistributor = (id) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/distributor`,
+      method: 'GET'
+    })
+  }
+  
 }
