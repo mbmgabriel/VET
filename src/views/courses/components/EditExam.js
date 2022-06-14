@@ -100,28 +100,28 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
 						<Form onSubmit={saveEditExam}>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
-												Test Name
+												Exam Name
 										</Form.Label>
 										<Form.Control 
                       defaultValue={selectedExam?.testName}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test name"
+                      placeholder="Enter exam name"
                       onChange={(e) => setTestName(e.target.value)}
                     />
 								</Form.Group>
 
 								<Form.Group className="m-b-20">
 										<Form.Label for="description">
-												Test Instructions
+												Exam Instructions
 										</Form.Label>
 										<Form.Control 
                       defaultValue={selectedExam?.testInstructions}
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test instructions"
+                      placeholder="Enter exam instructions"
                       onChange={(e) => setTestInstructions(e.target.value)}
                     />
 								</Form.Group>

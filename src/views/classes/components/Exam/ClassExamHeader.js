@@ -100,25 +100,25 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
               </Form.Select>
             </Form.Group>
             <Form.Group className="m-b-20">
-              <Form.Label for="courseName">Test Name</Form.Label>
+              <Form.Label for="courseName">Exam Name</Form.Label>
               <Form.Control
                 defaultValue={""}
                 className="custom-input"
                 size="lg"
                 type="text"
-                placeholder="Enter test name"
+                placeholder="Enter exam name"
                 onChange={(e) => setTestName(e.target.value)}
               />
             </Form.Group>
 
             <Form.Group className="m-b-20">
-              <Form.Label for="description">Test Instructions</Form.Label>
+              <Form.Label for="description">Exam Instructions</Form.Label>
               <Form.Control
                 defaultValue={""}
                 className="custom-input"
                 size="lg"
                 type="text"
-                placeholder="Enter test instructions"
+                placeholder="Enter exam instructions"
                 onChange={(e) => setTestInstructions(e.target.value)}
               />
             </Form.Group>

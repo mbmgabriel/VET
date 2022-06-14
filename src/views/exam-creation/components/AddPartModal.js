@@ -64,14 +64,14 @@ export default function AddPartModal({
             </Form.Select>
           </Form.Group>}
           <Form.Group className='m-b-20'>
-            <Form.Label for='description'>Test Instructions</Form.Label>
+            <Form.Label for='description'>Exam Instructions</Form.Label>
             <Form.Control
               defaultValue={""}
               className='custom-input'
               size='lg'
               type='text'
               value={instructions}
-              placeholder='Enter test instructions'
+              placeholder='Enter exam instructions'
               onChange={(e) => setInstructions(e.target.value)}
             />
           </Form.Group>

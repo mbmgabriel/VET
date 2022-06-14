@@ -103,7 +103,7 @@ const TrueOrFalseForm = ({
               className='custom-input'
               size='lg'
               type='number'
-              placeholder='Enter test points'
+              placeholder='Enter exam points'
               onChange={(e) => setRate(e.target.value)}
             />
           </Form.Group>
@@ -116,7 +116,7 @@ const TrueOrFalseForm = ({
               className='custom-input'
               size='lg'
               type='text'
-              placeholder='Enter test instructions'
+              placeholder='Enter exam instructions'
               onChange={(e) => setAnswer(e.target.value)}
             /> */}
             <Form.Select
