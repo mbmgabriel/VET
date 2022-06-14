@@ -63,7 +63,7 @@ export default function ExamDetails({
               size='lg'
               onClick={() => startExam()}
             >
-              START TEST
+              START EXAM
             </Button>
           )}
         </div>
