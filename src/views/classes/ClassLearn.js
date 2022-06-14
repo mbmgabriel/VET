@@ -7,6 +7,7 @@ import ClassesAPI from '../../api/ClassesAPI'
 import DiscussionAPI from '../../api/DiscussionAPI'
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreedCrumbs from './components/ClassBreedCrumbs';
+import ZoomClient from '../zoom-test/ZoomClient';
 
 function ClassLearn() {
   const [selectedModuleId, setSelectedModuleId] = useState(null)
@@ -123,6 +124,7 @@ function ClassLearn() {
           </Col>
         </Row>
       </div>
+      <ZoomClient/>
     </ClassSideNavigation>
   )
 }

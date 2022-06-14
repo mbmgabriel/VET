@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ZoomMtgEmbedded from '@zoomus/websdk/embedded';
 
 import { ZoomMtg } from '@zoomus/websdk';
@@ -13,24 +13,31 @@ ZoomMtg.i18n.reload('en-US');
 
 
 export default function ZoomClient() {
+  const client = ZoomMtgEmbedded.createClient();
 
   // setup your signature endpoint here: https://github.com/zoom/meetingsdk-sample-signature-node.js
-  var signatureEndpoint = 'http://localhost:4000'
+  var signatureEndpoint = 'http://199.91.69.155:4000/'
   // This Sample App has been updated to use SDK App type credentials https://marketplace.zoom.us/docs/guides/build/sdk-app
   var sdkKey = 'JlY0w5XWHkfAVjM0Ee4R0617nE5ZVlpLZ7AL'
-  var meetingNumber = '95799625060'
+  var meetingNumber = '99106021895'
   var role = 0
-  var leaveUrl = 'http://localhost:3000'
+  var leaveUrl = '/'
   var userName = 'React'
   var userEmail = ''
-  var passWord = 'ACmqi2'
+  var passWord = '5w3nQZ'
   // pass in the registrant's token if your meeting or webinar requires registration. More info here:
   // Meetings: https://marketplace.zoom.us/docs/sdk/native-sdks/web/client-view/meetings#join-registered
   // Webinars: https://marketplace.zoom.us/docs/sdk/native-sdks/web/client-view/webinars#join-registered
   var registrantToken = ''
 
-  function getSignature(e) {
-    e.preventDefault();
+  useEffect(() => {
+    getSignature()
+  }, [])
+  
+
+  function getSignature() {
+    console.log("Getting signature")
+    // e.preventDefault();
 
     fetch(signatureEndpoint, {
       method: 'POST',
@@ -41,52 +48,85 @@ export default function ZoomClient() {
       })
     }).then(res => res.json())
     .then(response => {
+      console.log({response})
+      console.log("starting meeting")
       startMeeting(response.signature)
     }).catch(error => {
+      console.log("error")
       console.error(error)
     })
   }
 
   function startMeeting(signature) {
-    console.log({signature})
-    console.log("Starting meeting")
+    // console.log({signature})
+    // console.log("Starting meeting")
 
-    document.getElementById('zmmtg-root').style.display = 'block'
+    // document.getElementById('zmmtg-root').style.display = 'block'
 
-    ZoomMtg.init({
-      leaveUrl: leaveUrl,
-      success: (success) => {
-        console.log(success)
+    // ZoomMtg.init({
+    //   leaveUrl: leaveUrl,
+    //   success: (success) => {
+    //     console.log(success)
 
-        ZoomMtg.join({
-          signature: signature,
-          meetingNumber: meetingNumber,
-          userName: userName,
-          sdkKey: sdkKey,
-          userEmail: userEmail,
-          passWord: passWord,
-          tk: registrantToken,
-          success: (success) => {
-            console.log(success)
-          },
-          error: (error) => {
-            console.log(error)
-          }
-        })
+    //     ZoomMtg.join({
+    //       signature: signature,
+    //       meetingNumber: meetingNumber,
+    //       userName: userName,
+    //       sdkKey: sdkKey,
+    //       userEmail: userEmail,
+    //       passWord: passWord,
+    //       tk: registrantToken,
+    //       success: (success) => {
+    //         console.log(success)
+    //       },
+    //       error: (error) => {
+    //         console.log(error)
+    //       }
+    //     })
 
-      },
-      error: (error) => {
-        console.log(error)
+    //   },
+    //   error: (error) => {
+    //     console.log(error)
+    //   }
+    // })
+
+
+    let meetingSDKElement = document.getElementById('meetingSDKElement');
+
+    client.init({
+      debug: true,
+      zoomAppRoot: meetingSDKElement,
+      language: 'en-US',
+      customize: {
+        meetingInfo: ['topic', 'host', 'mn', 'pwd', 'telPwd', 'invite', 'participant', 'dc', 'enctype'],
+        toolbar: {
+          buttons: [
+            {
+              text: 'Custom Button',
+              className: 'CustomButton',
+              onClick: () => {
+                console.log('custom button');
+              }
+            }
+          ]
+        }
       }
+    });
+
+    client.join({
+    	sdkKey: sdkKey,
+    	signature: signature,
+    	meetingNumber: meetingNumber,
+    	password: passWord,
+    	userName: userName,
+      userEmail: userEmail,
+      tk: registrantToken
     })
   }
 
   return (
-    <div className="App">
-      <main>
-        <h1>Zoom Meeting SDK Sample React</h1>
-        <button onClick={getSignature}>Join Meeting</button>
-      </main>
+    <div id="meetingSDKElement" style={{position: 'absolute', top: 0}}>
+      {/* Zoom Meeting SDK Component View Rendered Here */}
     </div>
   );
 }
