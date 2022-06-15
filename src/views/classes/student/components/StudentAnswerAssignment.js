@@ -41,7 +41,7 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
       let response = await new ClassesAPI().submitStudentAssignmentAnswer(studentId, id, assignmentId, {assignmentAnswer, fileDetails: files})
         if(response.data){
           // setAssignNotify(true)
-          toast.success('Successfully submited task answer.')
+          toast.success('Successfully submited assignment answer.')
           setAssignmentAnswer('');
           setUploadingFiles('done');
           setFiles([]);

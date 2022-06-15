@@ -31,7 +31,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
       if(response.ok){
         setTaskAnswer('')
         // setAssignNotify(true)
-        toast.success('Successfully submitted assignment answer.');
+        toast.success('Successfully submitted task answer.');
         setUploadingFiles('done');
         setFiles([]);
         answerTaskToggle(false)
