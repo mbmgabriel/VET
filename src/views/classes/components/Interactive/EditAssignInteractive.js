@@ -21,24 +21,36 @@ function EditAssignInteractive({getIndteractive, editAssignInteractiveItem, edit
 
   const updateAssignInteractive = async (e) => {
     e.preventDefault()
-    let interactiveId = editAssignInteractiveItem?.interactive?.id
-    let moduleId = editAssignInteractiveItem?.module?.id
-    let response = await new ClassesAPI().updateAssignInteractive(id, interactiveId, {startDate, startTime, endDate, endTime})
-      if(response.ok){
-        success()
-        getIndteractive(null, moduleId)
-        editAssignIteractiveToggle(e)
-      }else{
-        toast.error(response.data.errorMessage, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          });
-      }
+    if(startDate == endDate && startTime == endTime){
+      toast.error('Start date must not earlier than the end date', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else{
+      let interactiveId = editAssignInteractiveItem?.interactive?.id
+      let moduleId = editAssignInteractiveItem?.module?.id
+      let response = await new ClassesAPI().updateAssignInteractive(id, interactiveId, {startDate, startTime, endDate, endTime})
+        if(response.ok){
+          success()
+          getIndteractive(null, moduleId)
+          editAssignIteractiveToggle(e)
+        }else{
+          toast.error(response.data.errorMessage, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        }
+    }
   }
 
   useEffect(() => {

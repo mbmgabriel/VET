@@ -127,6 +127,12 @@ function ClassInteractive() {
 
   const renderTooltipReasign = (props) => (
     <Tooltip id="button-tooltip" {...props}>
+      Reassign
+    </Tooltip>
+  )
+
+  const renderTooltipAssign = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
       Assign
     </Tooltip>
   )
@@ -537,7 +543,7 @@ function ClassInteractive() {
                     <OverlayTrigger
                       placement="bottom"
                       delay={{ show: 1, hide: 0 }}
-                      overlay={renderTooltipReasign}>
+                      overlay={renderTooltipAssign}>
                         <Button onClick={(e) => assignInteractiveToggle(e, interItem?.interactive?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
                     </OverlayTrigger>
                     </>}

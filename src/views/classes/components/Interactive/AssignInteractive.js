@@ -20,7 +20,18 @@ function AssignInteractive({moduleId, getIndteractive, assignInteractiveToggle, 
 
   const assignInteractive = async (e) => {
     e.preventDefault()
-    let response = await new ClassesAPI().assignInteractive(id, interactiveId, {startDate, startTime, endDate, endTime})
+    if(startDate == endDate && startTime == endTime){
+      toast.error('Start date must not earlier than the end date', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else{
+      let response = await new ClassesAPI().assignInteractive(id, interactiveId, {startDate, startTime, endDate, endTime})
       if(response.ok){
         success()
         setStartDate('')
@@ -40,6 +51,7 @@ function AssignInteractive({moduleId, getIndteractive, assignInteractiveToggle, 
           progress: undefined,
           });
       }
+    }
   }
 
   const success = () => {
