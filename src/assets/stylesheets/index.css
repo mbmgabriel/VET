@@ -1054,6 +1054,9 @@ border-top-right-radius: 0px !important;
   font-size: 18px!important;
   text-decoration: none!important
 }
+.btn-create-discussion:hover{
+  opacity: 0.7;
+}
 .btn-create-assignment{
   color: var(--primary-color)!important;
   font-size: 18px!important;

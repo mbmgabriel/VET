@@ -73,7 +73,7 @@ const EssayForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={courseid}  subFolder={''} doneUpload={()=> handleGetFiles()} />
+          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={id}  subFolder={''} doneUpload={()=> handleGetFiles()} />
           {/* {
             (displayFiles || []).map( (item,ind) => {
               return(
@@ -100,7 +100,7 @@ const EssayForm = ({
           }
         </div>
         <div>
-          <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
         </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>

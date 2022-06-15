@@ -117,7 +117,7 @@ function FileHeader(props) {
             setFiles([])
             setDoneUpload(false)
             setUploadStarted(false)
-            toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
+            toast.error(response.data?.errorMessage?.replace('distributor', 'contributor'));
           }
         }
       })

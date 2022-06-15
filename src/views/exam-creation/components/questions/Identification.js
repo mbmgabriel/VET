@@ -103,7 +103,7 @@ const IdentificationForm = ({
           }
         </div>
         <div>
-          <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
         </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>
