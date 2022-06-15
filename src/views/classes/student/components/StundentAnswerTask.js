@@ -135,7 +135,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
               </tbody>
             </Table>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit'>Save Answer</Button>
+              <Button className='tficolorbg-button' type='submit'>Submit Answer</Button>
             </Form.Group>
           </Form> 
           </Modal.Body>
