@@ -189,7 +189,8 @@ function CreateClassModal({modal, toggle,getClasses}) {
                 	</Button>
               </Form.Group>
               <Form.Group className="mb-4">
-                <Form.Control value={classCode} onChange={(e) => setGetCode(e.target.value) } type="text" placeholder='Enter class Code here'/>
+                <Form.Control pattern="^[a-zA-Z0-9]+$" title='Please Avoid special character on Class Code' value={classCode} onChange={(e) => setGetCode(e.target.value) } type="text" placeholder='Enter class Code here'/>
+                
             </Form.Group>
             <Form.Group className='right-btn'>
 							<Button className='tficolorbg-button' type='submit'>Save Class</Button>
