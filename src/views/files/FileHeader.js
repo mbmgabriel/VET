@@ -234,13 +234,13 @@ function FileHeader(props) {
         (
         <>
           <div>
-            <OverlayTrigger
+            {/* <OverlayTrigger
               placement="right"
               delay={{ show: 1, hide: 0 }}
               overlay={renderTooltipUploadFiles}
-            >
+            > */}
               <i style={{marginTop: 10}} className="fas fa-folder-plus file-upload-content font-size-35 cursor-pointer" onClick={() => setShowAddFolderModal(true)}/>
-            </OverlayTrigger>
+            {/* </OverlayTrigger> */}
           </div>
           <div>
             <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowAddFolderModal(true)}> New Folder  </Button>
