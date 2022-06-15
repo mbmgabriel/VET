@@ -13,13 +13,13 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
   const {user} = userContext.data
   const [assignmentAnswer, setAssignmentAnswer] = useState('')
   // const [files, setFiles] = useState('')
-  const [assignNotify, setAssignNotify] = useState(false)
+  // const [assignNotify, setAssignNotify] = useState(false)
   const [files, setFiles] = useState([]);
   const [uploadingFiles, setUploadingFiles] = useState('pending');
 
-  const closeNotify = () => {
-    setAssignNotify(false)
-  }
+  // const closeNotify = () => {
+  //   setAssignNotify(false)
+  // }
 
   // console.log("user:", user?.userId)
 
@@ -40,7 +40,8 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
       let studentId = user?.student?.id
       let response = await new ClassesAPI().submitStudentAssignmentAnswer(studentId, id, assignmentId, {assignmentAnswer, fileDetails: files})
         if(response.data){
-          setAssignNotify(true)
+          // setAssignNotify(true)
+          toast.success('Successfully submited task answer.')
           setAssignmentAnswer('');
           setUploadingFiles('done');
           setFiles([]);
@@ -151,12 +152,12 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
           </Form> 
           </Modal.Body>
         </Modal>
-        <SweetAlert 
+        {/* <SweetAlert 
           success
           show={assignNotify} 
           title="Done!" 
            onConfirm={closeNotify}>
-        </SweetAlert>
+        </SweetAlert> */}
     </div>
   )
 }

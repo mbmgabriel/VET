@@ -13,15 +13,15 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
   const {user} = userContext.data
   const  [taskAnswer, setTaskAnswer] = useState('')
   // const [files, setFiles] = useState('')
-  const [assignNotify, setAssignNotify] = useState(false);
+  // const [assignNotify, setAssignNotify] = useState(false);
   const [files, setFiles] = useState([]);
   const [uploadingFiles, setUploadingFiles] = useState('pending');
 
   console.log('taskId:', taskId)
 
-  const closeNotify = () => {
-    setAssignNotify(false)
-  }
+  // const closeNotify = () => {
+  //   setAssignNotify(false)
+  // }
 
   const submitStudentTaskAnswer = async (e) =>{
     e.preventDefault()
@@ -30,7 +30,8 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
     let response = await new ClassesAPI().submitStudentTaskAnswer(studentId, id, taskId, {taskAnswer, fileDetails: files})
       if(response.ok){
         setTaskAnswer('')
-        setAssignNotify(true)
+        // setAssignNotify(true)
+        toast.success('Successfully submitted assignment answer.');
         setUploadingFiles('done');
         setFiles([]);
         answerTaskToggle(false)
@@ -140,12 +141,12 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
           </Form> 
           </Modal.Body>
         </Modal>
-        <SweetAlert 
+        {/* <SweetAlert 
           success
           show={assignNotify} 
           title="Done!" 
            onConfirm={closeNotify}>
-        </SweetAlert>
+        </SweetAlert> */}
     </div>
   )
 }
