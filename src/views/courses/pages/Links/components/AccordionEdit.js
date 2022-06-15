@@ -18,6 +18,12 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
     setOpenEditModal(false)
   }
 
+  const toggle =() =>{
+    setOpenEditModal(false)
+    setEditDescription(editLinks?.description)
+    setEditUrl(editLinks?.url)
+  }
+
   const closeNotify = () =>{
     setEditNotify(false)
   }
@@ -83,7 +89,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
   
   return (
     <div>		
-      <Modal size="lg" show={openEditModal} onHide={()=> setOpenEditModal(!setOpenEditModal)} aria-labelledby="example-modal-sizes-title-lg">
+      <Modal size="lg" show={openEditModal} onHide={()=> toggle()} aria-labelledby="example-modal-sizes-title-lg">
     <Modal.Header className='class-modal-header' closeButton>
       <Modal.Title id="example-modal-sizes-title-lg" >
         Edit Links

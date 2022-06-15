@@ -11,9 +11,6 @@ const [courseInfo, setCourseInfo] = useState("");
 const {user} = userContext.data
 const {id} = useParams();
 
-const toggle = () =>{
-    setModal(!modal)
-  }
 
   useEffect(() => {
     getCourseInformation();
@@ -51,7 +48,7 @@ const toggle = () =>{
 					</InputGroup>
 				</div>
 			</div>
-			<CreateLinks getConfe={getConfe} getVideos={getVideos} getLinks={getLinks} toggle={toggle} modal={modal} />
+			<CreateLinks getConfe={getConfe} getVideos={getVideos} getLinks={getLinks} setModal={setModal} modal={modal} />
 		</div>
 	)
 }
