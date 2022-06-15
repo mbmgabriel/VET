@@ -111,7 +111,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
               <Form.Control onChange={(e) => setTaskAnswer(e.target.value)}  as="textarea" rows={3}  />
             </Form.Group>
             <Form.Group className="mb-1">
-              <Button className='tficolorbg-button' onClick={() => { document.getElementById('attachedFile').click() }}>Attache File</Button>
+              <Button className='tficolorbg-button' onClick={() => { document.getElementById('attachedFile').click() }}>Attach File</Button>
               <input id='attachedFile' className='d-none' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
             </Form.Group>
             <Table responsive="sm" className={files.length == 0 ? 'd-none' : ''}>
@@ -135,7 +135,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
               </tbody>
             </Table>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit'>Save Answer</Button>
             </Form.Group>
           </Form> 
           </Modal.Body>
