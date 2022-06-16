@@ -278,11 +278,12 @@ function FileHeader(props) {
                   <p className='mb-0 text-center'>Drag files here</p>
                   <i className='text-center fa fa-download font-size-30'/>
                 </div>
-                <input className='opacity-0 w-100 height-80px' id='inputFile' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
+                <input className='opacity-0 w-100 height-80px' accept=".pptx,.docx,.xlsx,.ppt,.doc,.xls,.pdf,.jpeg,.jpg,.png" id='inputFile' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
               </Col>
               <Col className='d-flex align-items-center'>
                 <p>Maximum file size: 25 MB.</p>
               </Col>
+              <p className='font-13 mb-0'>.pptx, .docx, .xlsx, .ppt, .doc, .xls, .pdf, .jpeg, .jpg, .png</p>
           </Row>
           <Table responsive="sm">
             <thead>
