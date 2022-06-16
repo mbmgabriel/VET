@@ -15,6 +15,15 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
   const userContext = useContext(UserContext)
   const {notify} = userContext.data
 
+  // const toggle = () => {
+  //   setShowModal(false)
+  //   setEndDate('')
+  //   setEndTime('')
+  //   setStartDate('')
+  //   setStartTime('')
+  //   setTimeLimit('')
+  // }
+
   useEffect(() => {
     if(exam.classTest){
       let { endDate, endTime, startDate, startTime, timeLimit} = exam?.classTest;
@@ -30,30 +39,37 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
 
   const assignExam = async(e) => {
     e.preventDefault();
-    const data = {
-      allowLate: true,
-      endDate,
-      endTime,
-      startDate,
-      startTime,
-      timeLimit,
-    };
-    console.log({ data }, exam);
-    setLoading(true);
-    console.log(startDate == endDate);
-    let compareDate = startDate == endDate,
-      compareTime = startTime < endTime;
-    if(compareDate){
-      if(compareTime){
+    if(endDate == '' || endTime == '' || startDate== '' || startTime == '' || timeLimit == ''){
+      toast.error('Please input all the required fields.')
+    }else if(timeLimit <= 1){
+      toast.error('Time limit should be greater than 1 minute.')
+    }else{
+      const data = {
+        allowLate: true,
+        endDate,
+        endTime,
+        startDate,
+        startTime,
+        timeLimit,
+      };
+      console.log({ data }, exam);
+      setLoading(true);
+      console.log(startDate == endDate);
+      let compareDate = startDate == endDate,
+        compareTime = startTime < endTime;
+      if(compareDate){
+        if(compareTime){
+          handleSendRequest(data)
+        }
+        else{
+          setLoading(false);
+          toast.error('Time limit should be greater than 1 minute.')
+        }
+      }else{
         handleSendRequest(data)
       }
-      else{
-        setLoading(false);
-        toast.error('Invalid end time.')
-      }
-    }else{
-      handleSendRequest(data)
-    }
+
+    }  
   };
 
   const notifyStudent = () => {
