@@ -10,7 +10,7 @@ function CourseSideNav({active, courseInfos}) {
   console.log('sample', courseInfos)
 
   useEffect( async() => {
-    let response = await new CoursesAPI().getDistributor(id)
+    let response = await new CoursesAPI().getContributor(id)
     console.log(response, "--------------------------------");
   },[])
 

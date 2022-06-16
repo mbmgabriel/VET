@@ -1,10 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-bootstrap'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import FilesAPI from '../../api/FilesApi';
+import CoursesAPI from '../../api/CoursesAPI';
 import Modal from 'react-bootstrap/Modal'
 import moment from 'moment';
+import { UserContext } from '../../context/UserContext';
 
 function FilesContent(props) {
 
@@ -14,6 +16,9 @@ function FilesContent(props) {
   const [itemToEdit, setItemToEdit] = useState({});
   const [newFileName, setNewFilename] = useState('');
   const [extFilename, setExtFilename] = useState('');
+  const [displayButtons, setDisplayButtons] = useState(true);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data;
 
   const  downloadImage = (url) => {
     fetch(url, {
@@ -63,6 +68,22 @@ function FilesContent(props) {
       handleDeleteCourseFile();
     }
   }
+
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(props.id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setDisplayButtons(ifContri ? true : false);
+    }
+  }
+
+  useEffect(() => {
+    if(window.location.pathname.includes('course')){
+      getContributor();
+    }
+  }, [])
 
   const handleDeleteClassFile = async() => {
     let data = {
@@ -220,7 +241,8 @@ function FilesContent(props) {
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
                 } */}
-                <td style={{paddingRight:'15px'}} >
+                 {displayButtons ? <>
+                  <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
                       delay={{ show: 1, hide: 0 }}
@@ -235,17 +257,32 @@ function FilesContent(props) {
                       delay={{ show: 1, hide: 0 }}
                       overlay={renderTooltipEdit}
                     >
-                      <i class="fas fas fa-edit td-file-page" onClick={() => handleEdit(item) } />
+                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fas fa-edit td-file-page"} onClick={() => handleEdit(item) } />
                     </OverlayTrigger>
                   <OverlayTrigger
                     placement="right"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipDelete}>
                     <a>
-                      <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClick(item) }></i>
+                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fa-trash-alt td-file-page"} onClick={() => handleOnClick(item) }></i>
                     </a>
                   </OverlayTrigger>
                   </td>
+                
+                </>
+                :
+                <td>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
+                  >
+                    <a href={item.pathBase} download={true} target='_blank'>                     
+                      <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
+                    </a> 
+                  </OverlayTrigger>
+                </td>
+                }
               </tr>
             )
           })

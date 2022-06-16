@@ -17,10 +17,21 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
   const {user} = userContext.data
   const [confiId, setConfiId] = useState()
   const [courseInfo, setCourseInfo] = useState("");
+  const [isContributor, setIsContributor] = useState(false)
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
   }
+
+  useEffect( async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  },[])
 
   useEffect(() => {
     getCourseInformation();
@@ -122,7 +133,7 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
               <></>
               ):(
               <>
-                {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? null :
+                {isContributor &&
                   <Col sm={3} className='icon-exam'>
                     <OverlayTrigger
                       placement="bottom"

@@ -45,7 +45,7 @@ export default function CourseContent({children}) {
   }
 
   useEffect( async() => {
-    let response = await new CoursesAPI().getDistributor(id)
+    let response = await new CoursesAPI().getContributor(id)
     console.log(response, "--------------------------------");
   },[])
 

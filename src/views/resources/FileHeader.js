@@ -30,8 +30,19 @@ function FileHeader(props) {
   useEffect(() => {
     if(props.type == 'Course'){
       getCourseInformation();
+      getContributor();
     }
   }, [])
+
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(props.id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setDisplayButtons(ifContri ? true : false);
+    }
+  }
 
   const getCourseInformation = async() => {
     let response = await new CoursesAPI().getCourseInformation(id)
@@ -40,7 +51,7 @@ function FileHeader(props) {
       let temp = response.data.isTechfactors
       if(temp){
         let temp = window.location.pathname.includes('resources')
-       setDisplayButtons(user?.teacher.positionID == 7 && temp ? true : false)
+      //  setDisplayButtons(user?.teacher.positionID == 7 && temp ? true : false)
       }
       console.log(response.data, 'heheheheheh -------')
     }else{
