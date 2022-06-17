@@ -180,10 +180,10 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
             	<Form.Label >Class Name</Form.Label>
                 <Form.Control defaultValue={seletedClass?.className} onChange={(e) => setClassName(e.target.value)} type="text" placeholder='Enter class name here'/>
             </Form.Group>
-            <Form.Group className="mb-4">
+            {/* <Form.Group className="mb-4">
             	<Form.Label >Class Description</Form.Label>
                 <Form.Control type="text" placeholder='Enter class Description here'/>
-            </Form.Group>
+            </Form.Group> */}
               <Form.Group className='mb-4'>
               	<Form.Label >Class Code</Form.Label>{' '}
                 	<Button className='tficolorbg-button' disabled>

@@ -43,16 +43,6 @@ export default function ExamParts({
     }
   }, [])
 
-  const arrageAlphabetical = (data) => {
-    let temp = Object.values(data).sort(function(a, b){
-      let nameA = displayQuestionType(a.questionPart.questionTypeId).toLocaleLowerCase();
-      let nameB = displayQuestionType(b.questionPart.questionTypeId).toLocaleLowerCase();
-      if(nameA < nameB)
-        return -1
-    });
-    return temp;
-  }
-
   const renderTooltipEdit = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Edit
@@ -83,7 +73,7 @@ export default function ExamParts({
       >
         You will not be able to recover this exam!
       </SweetAlert>
-      {arrageAlphabetical(exam.questionPartDto).map((part, index) => (
+      {exam.questionPartDto.map((part, index) => (
         <Accordion.Item
           style={{ border: "1px solid #f1f1f1", padding: "8px 16px" }}
           eventKey={index}

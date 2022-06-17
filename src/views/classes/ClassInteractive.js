@@ -127,6 +127,12 @@ function ClassInteractive() {
 
   const renderTooltipReasign = (props) => (
     <Tooltip id="button-tooltip" {...props}>
+      Reassign
+    </Tooltip>
+  )
+
+  const renderTooltipAssign = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
       Assign
     </Tooltip>
   )
@@ -507,7 +513,7 @@ function ClassInteractive() {
                             {schoolCode.id}
                       </button>
                       :
-                      <a target="_blank" style={{color:'#EE9337', textDecoration:'none'}} href={interItem?.interactive?.path}>{interItem?.interactive?.interactiveName}</a>
+                      <a target="_blank" className='class-links' href={interItem?.interactive?.path}>{interItem?.interactive?.interactiveName}</a>
                     }
                   </div>
                 </Col>
@@ -537,7 +543,7 @@ function ClassInteractive() {
                     <OverlayTrigger
                       placement="bottom"
                       delay={{ show: 1, hide: 0 }}
-                      overlay={renderTooltipReasign}>
+                      overlay={renderTooltipAssign}>
                         <Button onClick={(e) => assignInteractiveToggle(e, interItem?.interactive?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
                     </OverlayTrigger>
                     </>}

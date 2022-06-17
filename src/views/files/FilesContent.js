@@ -311,7 +311,7 @@ function FilesContent(props) {
         <tr>
           <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
           {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
-          {displayButtons ? <>
+          {displayButtons && user.isTeacher ? <>
             <th >Actions</th>
           </>
           :
@@ -330,13 +330,13 @@ function FilesContent(props) {
               item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
             return(
               <tr key={index+item.name}>
-                <td className='ellipsis w-75 colored-class font-size-22'>{item.name}</td>
+                <td className='ellipsis w-75 file-name font-size-22'>{item.name}</td>
                 {/* {
                   props.type == 'Class' ? <td className='ellipsis w-50' style={{fontSize:'20px'}}>{item.classFiles ? moment(item.classFiles?.createdDate).format('LL') : moment(item.courseFiles?.createdDate).format('LL')}</td> 
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
                 } */}
-                {displayButtons ? <>
+                {displayButtons && user.isTeacher ? <>
                   <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
@@ -387,23 +387,27 @@ function FilesContent(props) {
             return(
               <tr key={index+item.name}>
                 <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
-                <td>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 1, hide: 0 }}
-                    overlay={renderTooltipEdit}
-                  >
-                    <i class="fas fas fa-edit td-file-page" onClick={() => handleClickFolder(item) } />
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 1, hide: 0 }}
-                    overlay={renderTooltipDelete}>
-                    <a>
-                      <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClickFolder(item) }></i>
-                    </a>
-                  </OverlayTrigger>
-                </td>
+               {
+                displayButtons && user.isTeacher ? <td>
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={renderTooltipEdit}
+                    >
+                      <i class="fas fas fa-edit td-file-page" onClick={() => handleClickFolder(item) } />
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={renderTooltipDelete}>
+                      <a>
+                        <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClickFolder(item) }></i>
+                      </a>
+                    </OverlayTrigger>
+                  </td>
+                  :
+                  <td></td>
+                }
               </tr>
             )
           })

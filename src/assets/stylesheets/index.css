@@ -255,6 +255,11 @@ color:#BCBCBC !important;
   padding-left: 10px !important;
   display: inline-flex;
 }
+
+.file-upload-content:hover{
+  opacity: 0.7;
+}
+
 .fileupload{
   padding-top: 12px;
   padding-left: 12px;
@@ -585,10 +590,10 @@ border-top-right-radius: 0px !important;
   color: white !important;
 }
 
-.btn-Enrolled:active{
+/* .btn-Enrolled:active{
   background-color: var(--primary-color) !important;
   color: white !important;
-}
+} */
 
 .btn-showResult{
   border: '1px';
@@ -1053,6 +1058,9 @@ border-top-right-radius: 0px !important;
   color: var(--primary-color)!important;
   font-size: 18px!important;
   text-decoration: none!important
+}
+.btn-create-discussion:hover{
+  opacity: 0.7;
 }
 .btn-create-assignment{
   color: var(--primary-color)!important;
@@ -1702,6 +1710,28 @@ input::-webkit-inner-spin-button {
   color: #f1f1f1 !important;
   background-color: var(--primary-color) !important;
   outline: none !important;
+}
+
+.like-show-name{
+  text-decoration: none!important;
+  display: flex;
+  color: #707070 !important;
+  font-size: 14px;
+  margin-left: 25px;
+}
+
+.like-show-name a{
+  text-decoration: none!important;
+  display: flex;
+  color: #707070 !important;
+  font-size: 14px;
+}
+
+.like-show-name a:hover{
+  list-style: none !important;
+  display: flex;
+  color: var(--primary-color) !important;
+  font-size: 14px;
 }
 
 .class-links{

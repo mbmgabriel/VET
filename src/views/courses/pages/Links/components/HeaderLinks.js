@@ -13,9 +13,6 @@ const {user} = userContext.data
 const {id} = useParams();
 const [isContributor, setIsContributor] = useState(false)
 
-const toggle = () =>{
-    setModal(!modal)
-  }
 
   useEffect( async() => {
     let response = await new CoursesAPI().getContributor(id)
@@ -63,7 +60,7 @@ const toggle = () =>{
 					</InputGroup>
 				</div>
 			</div>
-			<CreateLinks getConfe={getConfe} getVideos={getVideos} getLinks={getLinks} toggle={toggle} modal={modal} />
+			<CreateLinks getConfe={getConfe} getVideos={getVideos} getLinks={getLinks} setModal={setModal} modal={modal} />
 		</div>
 	)
 }

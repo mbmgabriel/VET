@@ -54,7 +54,7 @@ export default function ExamDetails({
           {!examStarted && !isDoneTest && (
             <Status>Not Started</Status>
           )}
-          {examStarted && <Status>{"Test is Ongoing.."}</Status>}
+          {examStarted && <Status>{"Exam is Ongoing.."}</Status>}
           <br />
           {!examStarted && !isDoneTest && startDate < new Date() && endDate > new Date() && (
             <Button
@@ -63,7 +63,7 @@ export default function ExamDetails({
               size='lg'
               onClick={() => startExam()}
             >
-              START TEST
+              START EXAM
             </Button>
           )}
         </div>

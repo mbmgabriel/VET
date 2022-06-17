@@ -6,6 +6,7 @@ import { Button, InputGroup, FormControl, CardGroup, Row, Col } from 'react-boot
 import CourseEdit from "./components/CourseEdit";
 import CoursesAPI from "../../api/CoursesAPI";
 import { UserContext } from './../../context/UserContext'
+import InactiveCourses from "./components/InactiveCourses";
 
 
 export default function Courses() {
@@ -36,7 +37,9 @@ export default function Courses() {
   const [mapehItem, setMapehItem] = useState([])
   const [cleItem, setCleItem] = useState([])
   const [godsParkItem, setGodsParkItem] = useState([])
-	
+  const [inActive, setInActive] = useState([])
+  const [showActive, setShowActive] = useState(false)
+
 	const onSearch = (text) => {
     setFilter(text)
   }
@@ -44,6 +47,14 @@ export default function Courses() {
   const handleOpenModal = e => {
       e.preventDefault()
       setOpenModal(true)
+  }
+
+  const handleShowActive = ()=> {
+    setShowActive(false)
+  }
+
+  const handleShowInactive = ()=>{
+    setShowActive(true)
   }
 
   const getCourses = async() => {
@@ -55,6 +66,9 @@ export default function Courses() {
       setSubjectAreaName(sorted);
       const sortedCourse = response.data.sort((a,b) => a.courseName.toLowerCase() > b.courseName.toLowerCase() ? 1 : -1);
       setCourse(sortedCourse);
+
+      const inActive = response.data.filter((item) => item?.status == false && item?.isTechfactors == false)
+      setInActive(inActive)
 
       const dataIct = response.data.filter((item) => item.subjectArea.id == '1')
       setIctItem(dataIct.sort((a,b) => a.courseName.toLowerCase() > b.courseName.toLowerCase() ? 1 : -1))
@@ -129,10 +143,15 @@ export default function Courses() {
         <div className="containerpages">
           {user.isTeacher &&
             <>
-          <div className="row m-b-20">
-              {/* <div className="col-md-10 pages-header"><h1>Courses <Button variant="outline-warning" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button></h1></div> */}
-              <div className="col-md-10 pages-header"><h1>Courses <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button></h1></div>
-          </div>
+            			<Row style={{paddingTop:'15px'}}>
+        <Col className='title-header' >
+        <h1>Courses <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button></h1>
+        </Col>
+        <Col style={{textAlign:'right'}} className={user.isSchoolAdmin ? 'd-none' : ''}>
+                  <Button onClick={() => handleShowActive()} className='btn-Enrolled'  size='lg' variant="outline-warning"><b>Active</b></Button>
+                  <Button onClick={() => handleShowInactive()}  className='btn-Enrolled'  size='lg' variant="outline-warning"><b>Inactive</b></Button>
+        </Col>
+      </Row>
             </>
           }
           {user.isSchoolAdmin &&
@@ -172,9 +191,26 @@ export default function Courses() {
              <Button onClick={() => handleOnclick(tleItem)} className="m-r-5 color-white btn-filter" size="sm">TLE</Button>
            </div>
             <CardGroup className="justify-content-center">
-              <CoursesItem getCourses={getCourses} subjectAreaName={subjectAreaName} filter={filter} setFilter={setFilter} course={course} setLoading={setLoading} setOpenEditModal={setOpenEditModal} setSelectedCourse={setSelectedCourse}/>
               <CourseCreate  subjectAreaName={subjectAreaName} setSubjectAreaName={setSubjectAreaName} getCourses={getCourses} setCourse={setCourse} openModal={openModal} setOpenModal={setOpenModal} /> 
               <CourseEdit getCourses={getCourses} handleOnclick={handleOnclick} setCourse={setCourse} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} selectedCourse={selectedCourse} /> 
+              {showActive === false? 
+                (<CoursesItem 
+                  getCourses={getCourses} 
+                  subjectAreaName={subjectAreaName} 
+                  filter={filter} setFilter={setFilter} 
+                  course={course} setLoading={setLoading} 
+                  setOpenEditModal={setOpenEditModal} 
+                  setSelectedCourse={setSelectedCourse}/>)
+              :
+              (<InactiveCourses 
+                getCourses={getCourses} 
+                subjectAreaName={subjectAreaName} 
+                filter={filter} setFilter={setFilter} 
+                course={course} setLoading={setLoading} 
+                setOpenEditModal={setOpenEditModal} 
+                setSelectedCourse={setSelectedCourse}
+                inActive={inActive} />)
+              }
             </CardGroup>
         </div>
       </div>

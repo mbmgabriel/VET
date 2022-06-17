@@ -53,7 +53,6 @@ function FileHeader(props) {
         let temp = window.location.pathname.includes('resources')
       //  setDisplayButtons(user?.teacher.positionID == 7 && temp ? true : false)
       }
-      console.log(response.data, 'heheheheheh -------')
     }else{
       alert("Something went wrong while fetching course information")
     }
@@ -227,6 +226,8 @@ function FileHeader(props) {
       }
     }
   }
+
+  console.log('============================================================', user?.teacher.positionID == 7)
 
   return (
     <div>

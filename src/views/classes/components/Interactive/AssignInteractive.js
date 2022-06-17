@@ -4,6 +4,7 @@ import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function AssignInteractive({moduleId, getIndteractive, assignInteractiveToggle, assignInteractiveModal, interactiveId}) {
   const [startDate, setStartDate] = useState('')
@@ -19,9 +20,20 @@ function AssignInteractive({moduleId, getIndteractive, assignInteractiveToggle, 
 
   const assignInteractive = async (e) => {
     e.preventDefault()
-    let response = await new ClassesAPI().assignInteractive(id, interactiveId, {startDate, startTime, endDate, endTime})
+    if(startDate == endDate && startTime == endTime){
+      toast.error('Start date must not earlier than the end date', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else{
+      let response = await new ClassesAPI().assignInteractive(id, interactiveId, {startDate, startTime, endDate, endTime})
       if(response.ok){
-        setAssignNotify(true)
+        success()
         setStartDate('')
         setStartTime('')
         setEndDate('')
@@ -29,8 +41,29 @@ function AssignInteractive({moduleId, getIndteractive, assignInteractiveToggle, 
         getIndteractive(null, moduleId)
         assignInteractiveToggle(e)
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
+    }
+  }
+
+  const success = () => {
+    toast.success('Successfully assigned interactive!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   return (
@@ -38,7 +71,7 @@ function AssignInteractive({moduleId, getIndteractive, assignInteractiveToggle, 
    <Modal  size="lg" show={assignInteractiveModal} onHide={assignInteractiveToggle} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
-            Assign Discussion
+            Assign Class Interactive
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -60,7 +93,7 @@ function AssignInteractive({moduleId, getIndteractive, assignInteractiveToggle, 
               <Form.Control type="time" onChange={(e) => setEndTime(e.target.value)} />
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Save Class Interactive</Button>
             </Form.Group>
           </Form> 
         </Modal.Body>
