@@ -12,7 +12,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 	const [subjectAreaId, setSubjectArea] = useState('')
 	const [sarea, setSarea] = useState([])
 	const [status, setStatus] = useState('')
-	const [locked, setLockStatus]= useState('')
+	const [locked, setLockStatus]= useState(false)
 
 	const handleCloseModal = e => {
     e.preventDefault()
@@ -98,7 +98,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
   }, [selectedCourse])
 
 	const successSave = () => {
-		toast.success('Course has been updated successfully', {
+		toast.success('Successfully updated course', {
 			position: "top-right",
 			autoClose: 5000,
 			hideProgressBar: false,
@@ -176,7 +176,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 										</Form.Select>
 								</Form.Group>
 								{' '}
-
+							{/* 
 								<Form.Group className="m-b-20">
 										<Form.Label for="lock">
 												Lock Status
@@ -189,7 +189,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 												Unlocked
 											</option>
 										</Form.Select>
-								</Form.Group>
+								</Form.Group> */}
 								{' '}
 						
 							<span style={{float:"right"}}>
