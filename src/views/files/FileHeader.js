@@ -230,7 +230,7 @@ function FileHeader(props) {
         <div>
           <p className='title-header'>{props.title}</p>
         </div>
-        {displayButtons ? 
+        {displayButtons && user.isTeacher ? 
         (
         <>
           <div>
