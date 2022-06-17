@@ -319,7 +319,7 @@ function FilesContent(props) {
               item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
             return(
               <tr key={index+item.name}>
-                <td className='ellipsis w-75 colored-class font-size-22'>{item.name}</td>
+                <td className='ellipsis w-75 file-name font-size-22'>{item.name}</td>
                 {/* {
                   props.type == 'Class' ? <td className='ellipsis w-50' style={{fontSize:'20px'}}>{item.classFiles ? moment(item.classFiles?.createdDate).format('LL') : moment(item.courseFiles?.createdDate).format('LL')}</td> 
                     :

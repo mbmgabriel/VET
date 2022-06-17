@@ -255,6 +255,11 @@ color:#BCBCBC !important;
   padding-left: 10px !important;
   display: inline-flex;
 }
+
+.file-upload-content:hover{
+  opacity: 0.7;
+}
+
 .fileupload{
   padding-top: 12px;
   padding-left: 12px;
