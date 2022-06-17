@@ -10,9 +10,6 @@ function ClassHeader({getClasses, onSearch}) {
   const {user} = userContext.data
 
 	const history = useHistory();
-  const toggle = () =>{
-    setModal(!modal)
-  }
 
 	const handleHistoryArchive = () => {
 		history.push('/archive')
@@ -41,7 +38,7 @@ function ClassHeader({getClasses, onSearch}) {
 					</InputGroup>
 				</div>
 			</div>
-			<CreateClassModal toggle={toggle} modal={modal} getClasses={getClasses}  />
+			<CreateClassModal setModal={setModal} modal={modal} getClasses={getClasses}  />
 		</div>
 	)
 }
