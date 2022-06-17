@@ -30,24 +30,37 @@ const IdentificationForm = ({
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
   const courseid = sessionStorage.getItem('courseid')
+  const { id } = useParams();
 
-  const handleGetCourseFiles = async() => {
-    // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(courseid)
-    // setLoading(false)
-    if(response.ok){
-      console.log(response, '-----------------------')
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
-    }else{
-      alert("Something went wrong while fetching class files.")
+  const handleGetFiles = async() => {
+    if(window.location.pathname.includes('course')){
+      let response = await new FilesAPI().getCourseFiles(id)
+      // setLoading(false)
+      if(response.ok){
+        console.log(response, '-----------------------')
+        setDisplayFiles(response.data.files)
+        setDisplayFolder(response.data.folders)
+      }else{
+        alert("Something went wrong while fetching course files.")
+      }
     }
+    if(window.location.pathname.includes('class')){
+      let response = await new FilesAPI().getClassFiles(id)
+      // setLoading(false)
+      if(response.ok){
+        console.log(response, '-----------------------')
+        setDisplayFiles(response.data.files)
+        setDisplayFolder(response.data.folders)
+      }else{
+        alert("Something went wrong while fetching class files.")
+      }
+    }
+    // setLoading(true)
   }
 
   useEffect(() => {
-    if(window.location.pathname.includes('course')){
-    handleGetCourseFiles()
-    }
+    console.log(window.location.pathname)
+    handleGetFiles()
   }, [])
 
   return (
@@ -63,7 +76,7 @@ const IdentificationForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <FileHeader type='Course' id={courseid}  subFolder={''} doneUpload={()=> handleGetCourseFiles()} />
+          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={id}  subFolder={''} doneUpload={()=> handleGetFiles()} />
           {/* {
             (displayFiles || []).map( (item,ind) => {
               return(
@@ -90,7 +103,7 @@ const IdentificationForm = ({
           }
         </div>
         <div>
-          <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
         </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>
