@@ -7,7 +7,7 @@ import { useParams } from 'react-router'
 import { toast } from 'react-toastify';
 
 
-function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
+function CreateLinks({modal, setModal, getConfe, getVideos, getLinks}) {
   const {id} = useParams();
   const [type, setType] = useState('')
   const [description, setDescription] = useState('')
@@ -17,13 +17,20 @@ function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
   const closeNotify = () => {
     setCreateNotify(false)
   }
+
+  const toggle = () =>{
+    setModal(!modal)
+    setType('')
+    setDescription('')
+    setUrl('')
+  }
   
   const addLinks = async (e) => {
     e.preventDefault()
     let cid = sessionStorage.getItem('courseid')
     let courseId = JSON.parse(cid);
-    if(type === ''){
-      toast.error('Please Select Type', {
+    if(type === '' || description == '' || url == ''){
+      toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
