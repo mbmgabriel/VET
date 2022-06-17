@@ -95,7 +95,7 @@ const IdentificationForm = ({
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>
             
-            <ContentField value={question} placeholder="Enter test question" onChange={value => setQuestion(value)} />
+            <ContentField value={question} placeholder="Enter exam question" onChange={value => setQuestion(value)} />
           </Form.Group>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Points</Form.Label>
@@ -105,7 +105,7 @@ const IdentificationForm = ({
               className='custom-input'
               size='lg'
               type='number'
-              placeholder='Enter test points'
+              placeholder='Enter exam points'
               onChange={(e) => setRate(e.target.value)}
             />
           </Form.Group>
@@ -118,7 +118,7 @@ const IdentificationForm = ({
               className='custom-input'
               size='lg'
               type='text'
-              placeholder='Enter test answer'
+              placeholder='Enter exam answer'
               onChange={(e) => setAnswer(e.target.value)}
             />
           </Form.Group>

@@ -140,7 +140,7 @@ const MultipleChoiceForm = ({
               className='custom-input'
               size='lg'
               type='number'
-              placeholder='Enter test points'
+              placeholder='Enter exam points'
               onChange={(e) => setRate(e.target.value)}
             />
           </Form.Group>

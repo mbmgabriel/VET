@@ -112,7 +112,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
               className='custom-input'
               size='lg'
               type='date'
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setStartDate(e.target.value)}
             />
           </Form.Group>
@@ -124,7 +124,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
               className='custom-input'
               size='lg'
               type='time'
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setStartTime(e.target.value)}
             />
           </Form.Group>
@@ -137,7 +137,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
               size='lg'
               type='date'
               min={startDate}
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setEndDate(e.target.value)}
             />
           </Form.Group>
@@ -150,7 +150,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
               size='lg'
               type='time'
               disabled={endDate ? false : true}
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setEndTime(e.target.value)}
             />
           </Form.Group>
