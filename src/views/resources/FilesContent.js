@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-bootstrap'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import FilesAPI from '../../api/FilesApi';
 import Modal from 'react-bootstrap/Modal'
 import moment from 'moment';
+import { UserContext } from '../../context/UserContext'
 
 function FilesContent(props) {
 
@@ -14,6 +15,8 @@ function FilesContent(props) {
   const [itemToEdit, setItemToEdit] = useState({});
   const [newFileName, setNewFilename] = useState('');
   const [extFilename, setExtFilename] = useState('');
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
 
   const  downloadImage = (url) => {
     fetch(url, {
@@ -220,7 +223,8 @@ function FilesContent(props) {
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
                 } */}
-                <td style={{paddingRight:'15px'}} >
+               {user?.teacher.positionID == 7 ? 
+                  <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
                       delay={{ show: 1, hide: 0 }}
@@ -246,6 +250,9 @@ function FilesContent(props) {
                     </a>
                   </OverlayTrigger>
                   </td>
+                  :
+                  <td />
+                  }
               </tr>
             )
           })

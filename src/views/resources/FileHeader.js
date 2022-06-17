@@ -39,10 +39,10 @@ function FileHeader(props) {
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
       if(temp){
-        let temp = window.location.pathname.includes('resources')
-       setDisplayButtons(user?.teacher.positionID == 7 && temp ? true : false)
+        let loc = window.location.pathname
+       setDisplayButtons(user?.teacher.positionID !==7 && loc ? true : false)
+       console.log(response.data, 'heheheheheh -------', user?.teacher.positionID !== 7 && loc ? true : false, '--', loc)
       }
-      console.log(response.data, 'heheheheheh -------')
     }else{
       alert("Something went wrong while fetching course information")
     }
@@ -217,6 +217,8 @@ function FileHeader(props) {
     }
   }
 
+  console.log('============================================================', user?.teacher.positionID == 7)
+
   return (
     <div>
       <div style={{flexDirection: 'row', paddingLeft: 0}} className="pages-header file-content">
@@ -228,7 +230,7 @@ function FileHeader(props) {
             ""
           :
         <>
-          {displayButtons && <>
+          {user?.teacher.positionID == 7 && <>
             <div>
               <OverlayTrigger
                 placement="right"
