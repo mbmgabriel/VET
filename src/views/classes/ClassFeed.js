@@ -24,7 +24,7 @@ function ClassFeed() {
   const [editAnnouncementItem, setEditAssignAssignmentItem] = useState()
   const [feedClass, setFeedClass] = useState([])
   const userContext = useContext(UserContext)
-  const {user} = userContext.data
+  const {user, selectedClassId, setSelectedClassId} = userContext.data
   const [showComment, setShowComment] = useState(Fade)
   const [refId, setRefId] = useState()
   const [typeId, setTypeId] = useState('')
@@ -104,6 +104,8 @@ const getComment = (item, item1, item3) => {
    }
   }
   useEffect(() => {
+    console.log("Selecting class: " + id)
+    setSelectedClassId(id)
     getFeedClass();
     if(subsType != 'LMS'){
       window.location.href = "/classes"

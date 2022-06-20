@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import ZoomMtgEmbedded from '@zoomus/websdk/embedded';
 
 import { ZoomMtg } from '@zoomus/websdk';
+import { UserContext } from '../../context/UserContext';
+import ClassesAPI from '../../api/ClassesAPI';
 
 ZoomMtg.setZoomJSLib('https://source.zoom.us/2.4.5/lib', '/av');
 
@@ -14,26 +16,37 @@ ZoomMtg.i18n.reload('en-US');
 
 export default function ZoomClient() {
   const client = ZoomMtgEmbedded.createClient();
+  const {user, selectedClassId} = useContext(UserContext).data
 
-  // setup your signature endpoint here: https://github.com/zoom/meetingsdk-sample-signature-node.js
   var signatureEndpoint = 'http://199.91.69.155:4000/'
-  // This Sample App has been updated to use SDK App type credentials https://marketplace.zoom.us/docs/guides/build/sdk-app
   var sdkKey = 'JlY0w5XWHkfAVjM0Ee4R0617nE5ZVlpLZ7AL'
-  var meetingNumber = '99106021895'
   var role = 0
   var leaveUrl = '/'
-  var userName = 'React'
+  var userName = user.name || "No Name"
   var userEmail = ''
+  var meetingNumber = '99106021895'
   var passWord = '5w3nQZ'
-  // pass in the registrant's token if your meeting or webinar requires registration. More info here:
-  // Meetings: https://marketplace.zoom.us/docs/sdk/native-sdks/web/client-view/meetings#join-registered
-  // Webinars: https://marketplace.zoom.us/docs/sdk/native-sdks/web/client-view/webinars#join-registered
   var registrantToken = ''
 
+
+  const getClassInformation = async() => {
+    let response = await new ClassesAPI().getClassInformation(selectedClassId)
+    if(response.ok){
+      console.log({response})
+      meetingNumber = response.data?.meeting_Id
+      passWord = response.data?.password
+      if(meetingNumber && passWord){
+        getSignature()
+      }
+    }
+  }
+
   useEffect(() => {
-    getSignature()
-  }, [])
-  
+    console.log({selectedClassId, user})
+    if(selectedClassId != null && user.isStudent) {
+      getClassInformation()
+    }
+  }, [selectedClassId])
 
   function getSignature() {
     console.log("Getting signature")
@@ -58,39 +71,6 @@ export default function ZoomClient() {
   }
 
   function startMeeting(signature) {
-    // console.log({signature})
-    // console.log("Starting meeting")
-
-    // document.getElementById('zmmtg-root').style.display = 'block'
-
-    // ZoomMtg.init({
-    //   leaveUrl: leaveUrl,
-    //   success: (success) => {
-    //     console.log(success)
-
-    //     ZoomMtg.join({
-    //       signature: signature,
-    //       meetingNumber: meetingNumber,
-    //       userName: userName,
-    //       sdkKey: sdkKey,
-    //       userEmail: userEmail,
-    //       passWord: passWord,
-    //       tk: registrantToken,
-    //       success: (success) => {
-    //         console.log(success)
-    //       },
-    //       error: (error) => {
-    //         console.log(error)
-    //       }
-    //     })
-
-    //   },
-    //   error: (error) => {
-    //     console.log(error)
-    //   }
-    // })
-
-
     let meetingSDKElement = document.getElementById('meetingSDKElement');
 
     client.init({

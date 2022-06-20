@@ -124,7 +124,6 @@ function ClassLearn() {
           </Col>
         </Row>
       </div>
-      <ZoomClient/>
     </ClassSideNavigation>
   )
 }
