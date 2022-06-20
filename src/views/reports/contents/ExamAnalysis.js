@@ -49,9 +49,18 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       setExamAnalysis(response.data)
       
     }else{
-      alert("Something went wrong while fetching all courses")
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
-  }
+    }
+  
 
   const considerAnswerExamT = async(e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
@@ -62,9 +71,18 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     )
     if(response.ok){
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
-  }
+    }
+  
 
 
 
@@ -79,9 +97,18 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       notifyUnconsidered()
       getExamAnalysis(e, studentidsession, classid, testidsession)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
-  }
+    }
+  
 
   const updatePoints = async(e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
@@ -97,7 +124,15 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       notifyConsidered()
       getExamAnalysis(e, selectedStudentId, classid, selectedTestId)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   }
 
@@ -114,7 +149,15 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       setOpenModal(false)
       getExamAnalysis(e, selectedStudentId, classid, selectedTestId)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   }
 
@@ -274,7 +317,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
 								</Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Update Point
 										</Button>
 								</span>
 						</Form>
