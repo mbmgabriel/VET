@@ -118,6 +118,8 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     }
   }
 
+  console.log('examAnalysis:', examAnalysis)
+
 
   const handleInputChange = (e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
@@ -200,13 +202,14 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                     <>
                     <br></br>
                     <div className='inline-flex'>
-                      <span className='font-exam-analysis-content-24' style={{marginBottom:"100px !important"}}>{index + 1}.</span> <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span>
+                      <span className='font-exam-analysis-content-24' style={{marginBottom:"100px !important"}}></span> <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span>
                     </div>
                     <Row style={{textAlign:'center', padding:10}}>
                       <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
                         <div>
                           <span className='font-exam-analysis-content-24' style={{marginRight:10}}> 
-                          <span style={{marginRight:10}}>{ad.studentScore === 1 && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
+                          <span style={{marginRight:10}}>{ad.studentScore >= 1 && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
+                          <span style={{marginRight:10}}>{ad.studentScore == 0 && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
                             Student Answer :</span><span className='font-exam-analysis-content-24'>
                             <ContentViewer>{ad.studentAnswer}</ContentViewer>
                           </span>
@@ -218,24 +221,44 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Correct Answer :</span>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad.assignedAnswer}</ContentViewer></span>
                         </div>
-                        {ad.studentScore === 0 &&
-                        <Form>
-                          <div style={{display:'inline-flex'}}>
-                          <Form.Group className="m-b-20">
-                            <Form.Check
-                            label="Consider"
-                            name={"answerid" + ad.id}
-                            type="checkbox"
-                            checked={ad.isConsider}
-                            onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
-                            /> 
-                          </Form.Group>
-                          <span>{ad.isConsider == true &&  <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
-                          <span>{ad.isConsider == false &&  <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
-                          {' '}
-                          </div>
-                        </Form>
-                        } 
+                            {ad.studentScore === 0 && ad.isConsider === false ?(
+                            <>
+                              <Form>
+                                <div style={{display:'inline-flex'}}>
+                                <Form.Group className="m-b-20">
+                                  <Form.Check
+                                  label="Consider"
+                                  name={"answerid" + ad.id}
+                                  type="checkbox"
+                                  checked={ad.isConsider}
+                                  onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
+                                  /> 
+                                </Form.Group>
+                                </div>
+                              </Form>
+                            </>
+                              ):
+                              <></>
+                              }
+                          {ad.studentScore >= 0 && ad.isConsider === true ?(
+                            <>
+                              <Form>
+                                <div style={{display:'inline-flex'}}>
+                                <Form.Group className="m-b-20">
+                                  <Form.Check
+                                  label="Unconsider"
+                                  name={"answerid" + ad.id}
+                                  type="checkbox"
+                                  checked={ad.isConsider}
+                                  onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
+                                  /> 
+                                </Form.Group>
+                                </div>
+                              </Form>
+                            </>
+                              ):
+                              <></>
+                              }
                       </Col>
                     </Row>
                     <hr></hr>
