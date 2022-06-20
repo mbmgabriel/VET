@@ -302,6 +302,10 @@ code {
   padding: 10px;
 }
 
+.active-nav-item:hover{
+  opacity: 0.7;
+}
+
 .nav-item{
   color: gray !important;
   border-radius: 10px !important;
@@ -412,10 +416,20 @@ code {
   padding-left: 15px;
 }
 
+.file-name{
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 25px;
+}
+
 .colored-class{
   color: var(--primary-color);
   cursor: pointer;
   font-size: 25px;
+}
+
+.colored-class:hover{
+  opacity: 0.7;
 }
 
 .font-size-22{
@@ -543,4 +557,8 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 
 .calendar-view{
   height: 900px;
+}
+
+.file-library-btn:hover{
+  opacity: 0.7;
 }

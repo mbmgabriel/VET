@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import moment from "moment";
 import ExamAPI from "../../../../api/ExamAPI";
+import { UserContext } from "../../../../context/UserContext";
 
 export default function AssignExam({ showModal, setShowModal, exam, id, setLoading, fetchExams, closeModal }) {
   const [endDate, setEndDate] = useState("");
@@ -11,6 +12,17 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
   const [startDate, setStartDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [timeLimit, setTimeLimit] = useState("");
+  const userContext = useContext(UserContext)
+  const {notify} = userContext.data
+
+  // const toggle = () => {
+  //   setShowModal(false)
+  //   setEndDate('')
+  //   setEndTime('')
+  //   setStartDate('')
+  //   setStartTime('')
+  //   setTimeLimit('')
+  // }
 
   useEffect(() => {
     if(exam.classTest){
@@ -27,37 +39,54 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
 
   const assignExam = async(e) => {
     e.preventDefault();
-    const data = {
-      allowLate: true,
-      endDate,
-      endTime,
-      startDate,
-      startTime,
-      timeLimit,
-    };
-    console.log({ data }, exam);
-    setLoading(true);
-    console.log(startDate == endDate);
-    let compareDate = startDate == endDate,
-      compareTime = startTime < endTime;
-    if(compareDate){
-      if(compareTime){
+    if(endDate == '' || endTime == '' || startDate== '' || startTime == '' || timeLimit == ''){
+      toast.error('Please input all the required fields.')
+    }else if(timeLimit <= 1){
+      toast.error('Time limit should be greater than 1 minute.')
+    }else{
+      const data = {
+        allowLate: true,
+        endDate,
+        endTime,
+        startDate,
+        startTime,
+        timeLimit,
+      };
+      console.log({ data }, exam);
+      setLoading(true);
+      console.log(startDate == endDate);
+      let compareDate = startDate == endDate,
+        compareTime = startTime < endTime;
+      if(compareDate){
+        if(compareTime){
+          handleSendRequest(data)
+        }
+        else{
+          setLoading(false);
+          toast.error('Time limit should be greater than 1 minute.')
+        }
+      }else{
         handleSendRequest(data)
       }
-      else{
-        setLoading(false);
-        toast.error('Invalid end time.')
-      }
-    }else{
-      handleSendRequest(data)
-    }
+
+    }  
   };
+
+  const notifyStudent = () => {
+    const config = {
+      "description": `exam ${exam.test.testName} to you.`, 
+      "activityType": "", 
+      "classId": `${id}`
+    }
+    notify(config)
+  }
 
   const handleSendRequest = async(data) => {
     if(exam.classTest){
       let response = await new ExamAPI().reAssignExam(id, exam.test.id, data)
       if(response.ok){
         toast.success("Exam assigned successfully")
+        notifyStudent()
         fetchExams()
         closeModal()
       }else{
@@ -69,6 +98,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
       let response = await new ExamAPI().assignExam(id, exam.test.id, data)
       if(response.ok){
         toast.success("Exam assigned successfully")
+        notifyStudent()
         fetchExams()
         closeModal()
       }else{
@@ -98,7 +128,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
               className='custom-input'
               size='lg'
               type='date'
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setStartDate(e.target.value)}
             />
           </Form.Group>
@@ -110,7 +140,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
               className='custom-input'
               size='lg'
               type='time'
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setStartTime(e.target.value)}
             />
           </Form.Group>
@@ -123,7 +153,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
               size='lg'
               type='date'
               min={startDate}
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setEndDate(e.target.value)}
             />
           </Form.Group>
@@ -136,7 +166,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
               size='lg'
               type='time'
               disabled={endDate ? false : true}
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setEndTime(e.target.value)}
             />
           </Form.Group>

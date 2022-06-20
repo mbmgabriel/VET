@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
@@ -6,6 +6,7 @@ import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
 import { toast } from 'react-toastify';
+import { UserContext } from '../../../../context/UserContext'
 
 function EditAssignTask({editAssignTaskItem, editAssignTaskToggle, editAssignTaskModal, getTaskModule}) {
   console.log('editAssignTaskItem:', editAssignTaskItem)
@@ -15,9 +16,26 @@ function EditAssignTask({editAssignTaskItem, editAssignTaskToggle, editAssignTas
   const [endTime, setEndTime] = useState('')
   const [editNotufy, setEditNotify] = useState(false)
   const {id} = useParams();
+  const {notify} = useContext(UserContext).data
 
   const closeNotify = () =>{
     setEditNotify(false)
+  }
+
+  const stripHTMLTags = (str) => {
+    if (str) {
+      return str.replace(/<(?:.|\n)*?>/gm, '')
+    }
+  }
+  
+  const notifyStudent = () => {
+    const config = {
+      "description": `task ${stripHTMLTags(editAssignTaskItem?.task?.taskName)} to you.`, 
+      "activityType": "", 
+      "classId": `${id}`
+    }
+    console.log({notification: config})
+    notify(config)
   }
 
   const updateAssignTask = async (e) => {
@@ -26,6 +44,7 @@ function EditAssignTask({editAssignTaskItem, editAssignTaskToggle, editAssignTas
     let  moduleId = editAssignTaskItem?.module?.id
     let response = await new ClassesAPI().updateAssignTask(id, taskId, {startDate, startTime, endDate, endTime})
       if(response.ok){
+        notifyStudent()
         getTaskModule(null, moduleId)
         success()
         editAssignTaskToggle(e)

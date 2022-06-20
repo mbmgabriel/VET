@@ -1,21 +1,34 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../../../context/UserContext'
 
-function AssignTask({moduleId, getTaskModule, assignTaskModal, assignTaskToggle, assingTaskId}) {
+function AssignTask({moduleId, getTaskModule, assignTaskModal, assignTaskToggle, taskName, assingTaskId, selectedTaskName}) {
   const [startDate, setStartDate] = useState('')
   const [startTime, setStartTime] = useState('')
   const [endDate, setEndDate] = useState('')
   const [endTime, setEndTime] = useState('')
   const [assignNotify, setAssignNotify] = useState(false)
   const {id} = useParams();
+  const {notify} = useContext(UserContext).data
 
   const closeNotify = () =>{
     setAssignNotify(false)
+  }
+
+  const notifyStudent = () => {
+    console.log({selectedTaskName})
+    const config = {
+      "description": `task ${selectedTaskName} to you.`, 
+      "activityType": "", 
+      "classId": `${id}`
+    }
+    console.log({notification: config})
+    notify(config)
   }
 
   const assignTask = async (e) => {
@@ -23,6 +36,7 @@ function AssignTask({moduleId, getTaskModule, assignTaskModal, assignTaskToggle,
     let response = await new ClassesAPI().assignTask(id, assingTaskId, {startDate, startTime, endDate,endTime })
       if(response.ok){
         success()
+        notifyStudent()
         setStartDate('')
         setStartTime('')
         setEndDate('')

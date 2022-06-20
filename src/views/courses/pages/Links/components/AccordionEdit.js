@@ -18,6 +18,12 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
     setOpenEditModal(false)
   }
 
+  const toggle =() =>{
+    setOpenEditModal(false)
+    setEditDescription(editLinks?.description)
+    setEditUrl(editLinks?.url)
+  }
+
   const closeNotify = () =>{
     setEditNotify(false)
   }
@@ -40,7 +46,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
       let response = await new CoursesAPI().editClassLinks(id, linkId, {description, url})
       if(response.ok){
         // alert('Link Updated')
-        setEditNotify(true)
+        successSave()
         handleCloseModal(e)
         getConfe()
         getVideos()
@@ -67,11 +73,23 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
 		}
   }, [editLinks])
 
+  const successSave = () => {
+    toast.success('Successfully Updated link!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
   console.log('editLinks:', editLinks)
   
   return (
     <div>		
-      <Modal size="lg" show={openEditModal} onHide={()=> setOpenEditModal(!setOpenEditModal)} aria-labelledby="example-modal-sizes-title-lg">
+      <Modal size="lg" show={openEditModal} onHide={()=> toggle()} aria-labelledby="example-modal-sizes-title-lg">
     <Modal.Header className='class-modal-header' closeButton>
       <Modal.Title id="example-modal-sizes-title-lg" >
         Edit Links
@@ -79,12 +97,12 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
     </Modal.Header>
       <Modal.Body>
           <Form onSubmit={saveEditClassLinks} >
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>Unit</Form.Label>
                 <Form.Select disabled>
                   <option>-- Select Unit Here --</option>
                  </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
             <Form.Group className="mb-4">
               <Form.Label>Description</Form.Label>
             <Form.Control onChange={(e) => setEditDescription(e.target.value)} defaultValue={editLinks?.description} type="text" placeholder='Enter Description name here'/>
@@ -98,7 +116,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
             <Form.Control value={editLinks?.type}  type="text" disabled/>
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Links</Button>
             </Form.Group>
           </Form>
         </Modal.Body>

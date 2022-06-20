@@ -259,16 +259,16 @@ export default function ExamInformation() {
         if (!examStarted) return;
         setRemainingTime((value) => value - 1);
         if (remainingTime == 600) {
-          toast.success("You only have 10 minutes left to finish the test");
+          toast.success("You only have 10 minutes left to finish the exam");
         }
         if (remainingTime == 300) {
-          toast.success("You only have 5 minutes left to finish the test");
+          toast.success("You only have 5 minutes left to finish the exam");
         }
         if (remainingTime == 60) {
-          toast.success("You only have 1 minute left to finish the test");
+          toast.success("You only have 1 minute left to finish the exam");
         }
         if (remainingTime == 10) {
-          toast.success("You only have 10 seconds left to finish the test");
+          toast.success("You only have 10 seconds left to finish the exam");
         }
       }, 1000);
     } else {

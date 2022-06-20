@@ -16,7 +16,7 @@ export default function ExamParts({
   setShowModal,
   editable
 }) {
-  
+  console.log({exam});
   const [selectedId, setSelectedId] = useState(null)
   const [showWarning, setShowWarning] = useState(false)
   const userContext = useContext(UserContext);
@@ -42,16 +42,6 @@ export default function ExamParts({
       getCourseInformation();
     }
   }, [])
-
-  const arrageAlphabetical = (data) => {
-    let temp = Object.values(data).sort(function(a, b){
-      let nameA = displayQuestionType(a.questionPart.questionTypeId).toLocaleLowerCase();
-      let nameB = displayQuestionType(b.questionPart.questionTypeId).toLocaleLowerCase();
-      if(nameA < nameB)
-        return -1
-    });
-    return temp;
-  }
 
   const renderTooltipEdit = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -83,7 +73,7 @@ export default function ExamParts({
       >
         You will not be able to recover this exam!
       </SweetAlert>
-      {arrageAlphabetical(exam.questionPartDto).map((part, index) => (
+      {exam.questionPartDto.map((part, index) => (
         <Accordion.Item
           style={{ border: "1px solid #f1f1f1", padding: "8px 16px" }}
           eventKey={index}
@@ -93,7 +83,7 @@ export default function ExamParts({
             <div className='accordion-block-header'>
               <div className='header-content'>
                 <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} title='' />
-                <p title=''>{displayQuestionType(part.questionPart.questionTypeId)}</p>
+                <p title=''>{displayQuestionType(part.questionPart.questionTypeId)} </p>
                 <span title=''>{`${part.questionDtos.length} Question(s)`}</span>
               </div>
             </div>
@@ -138,6 +128,7 @@ export default function ExamParts({
           </Accordion.Header>
           <Accordion.Body>
             <Questions
+              examName={exam.test?.testName}
               part={part}
               getExamInformation={getExamInformation}
               setLoading={setLoading}

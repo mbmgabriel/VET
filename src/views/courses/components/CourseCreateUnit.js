@@ -117,7 +117,7 @@ export default function CourseCreateUnit({moduleInfo, setModuleInfo, openCreateU
 				
 						<span style={{float:"right"}}>
 							<Button className="tficolorbg-button" type="submit">
-									Save
+									Add Module
 							</Button>
 						</span>
 					</Form>

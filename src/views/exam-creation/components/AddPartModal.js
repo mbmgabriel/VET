@@ -13,6 +13,8 @@ export default function AddPartModal({
   setFilesToUpload
 }) {
 
+  console.log('selectedPart:', selectedPart)
+
   const handleGetUploadedFile = (file) => {
     getBase64(file).then(
       data => {
@@ -42,7 +44,9 @@ export default function AddPartModal({
       onHide={() => setShowModal(false)}
     >
       <Modal.Header className='modal-header' closeButton>
-        Exam Part Form
+        {selectedPart == null && <>Exam Part Form</>}
+        {selectedPart != null && <>Edit Part Form</>}
+        
       </Modal.Header>
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={addPart}>
@@ -60,24 +64,25 @@ export default function AddPartModal({
             </Form.Select>
           </Form.Group>}
           <Form.Group className='m-b-20'>
-            <Form.Label for='description'>Test Instructions</Form.Label>
+            <Form.Label for='description'>Exam Instructions</Form.Label>
             <Form.Control
               defaultValue={""}
               className='custom-input'
               size='lg'
               type='text'
               value={instructions}
-              placeholder='Enter test instructions'
+              placeholder='Enter exam instructions'
               onChange={(e) => setInstructions(e.target.value)}
             />
           </Form.Group>
           {selectedPart == null &&<Form.Group className="mb-3">
             <Form.Label for='description'>Upload Excel File</Form.Label>
-            <Form.Control type="file" accept=".xls,.xlsx," onChange={(e) => handleGetUploadedFile(e.target.files[0])} />
+            <Form.Control type="file" accept=".xls,.xlsx,.csv" onChange={(e) => handleGetUploadedFile(e.target.files[0])} />
           </Form.Group>}
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>
-              Save
+            {selectedPart == null && <>Add Part</>}
+            {selectedPart != null && <>Update Part </>}
             </Button>
           </span>
         </Form>
