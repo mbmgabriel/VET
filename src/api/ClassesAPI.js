@@ -643,4 +643,12 @@ creatTask = async (mId, cId,  data) => {
       method: 'GET',
     });
   };
+
+  updateMeeting = async (id, data) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/Meeting`,
+      method: 'PUT',
+      data,
+    });
+  };
 }
