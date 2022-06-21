@@ -305,7 +305,6 @@ const getComment = (item, item1, item3) => {
               <Row>
                 <div className='like-show-name'>
               <Link to={'#'} onClick={() => handleShowLike(feedItem)} >
-              {console.log('Like:', feedItem)}
                       {feedItem?.likes?.slice(0,2).map(item => {
                         return(
                           <>{item?.likeBy},</>
@@ -420,7 +419,6 @@ const getComment = (item, item1, item3) => {
               </Row>
               <div className='like-show-name'>
               <Link to={'#'} onClick={() => handleShowLike(feedItem)} >
-              {console.log('Like:', feedItem)}
                       {feedItem?.likes?.slice(0,2).map(item => {
                         return(
                           <>{item?.likeBy},</>

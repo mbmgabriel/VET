@@ -22,7 +22,7 @@ export default function ZoomClient() {
   var sdkKey = 'JlY0w5XWHkfAVjM0Ee4R0617nE5ZVlpLZ7AL'
   var role = 0
   var leaveUrl = '/'
-  var userName = user.name || "No Name"
+  var userName = user?.name || "No Name"
   var userEmail = ''
   var meetingNumber = '99106021895'
   var passWord = '5w3nQZ'
