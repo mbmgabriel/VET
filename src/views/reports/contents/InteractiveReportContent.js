@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Accordion, Row, Col, Table, Button} from 'react-bootstrap'
+import {Accordion, Row, Col, Table, Button, Badge} from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
 
 function InteractiveReportContent({setShowInteractiveHeader, showInteractiveHeader, classesModules, setClassesModules, selectedClassId, viewInteractiveReport, interactiveReport, setinteractiveReport, showReportHeader, setShowReportHeader}) {
@@ -16,9 +16,11 @@ function InteractiveReportContent({setShowInteractiveHeader, showInteractiveHead
       <thead>
         <tr>
           <th>Student Name</th>
-          <th>Easy Score</th>
-          <th>Average Score</th>
-          <th>Hard Score</th>
+          {/* <th>Easy Score</th> */}
+          <th>Score</th>
+          {/* <th>Challenging Score</th> */}
+          {/* <th>Completion</th> */}
+          {/* <th>Completion Time</th> */}
         </tr>
       </thead>
       <tbody>
@@ -28,9 +30,12 @@ function InteractiveReportContent({setShowInteractiveHeader, showInteractiveHead
           return (
             <tr>
               <td ><i class="fas fa-user-circle td-icon-report-person"></i>{item.student.fname}</td>
-              <td>{st.easyScore}</td>
-              <td>{st.averageScore}</td>
-              <td>{st.hardScore}</td>
+              {/* {st.easyScore === 'Not Submitted' ?(<><td><Badge bg="danger">{st.easyScore}</Badge></td></>):(<><td>{st.easyScore}</td></>)} */}
+              {st.averageScore === 'Not Submitted' ?(<><td><Badge bg="danger">{st.averageScore}</Badge></td></>):(<></>)}
+              {st.averageScore === 'Completed' ?(<><td><Badge bg="success">{st.averageScore}</Badge></td></>):(<></>)}
+              {st.averageScore === 'Not Completed' ?(<><td><Badge bg="warning">{st.averageScore}</Badge></td></>):(<></>)}
+              {/* {st.hardScore === 'Not Submitted' ?(<><td><Badge bg="danger">{st.hardScore}</Badge></td></>):(<><td>{st.hardScore}</td></>)} */}
+              {/* {st.noDifficultyScore === 'Not Completed' || st.noDifficultyScore === 'Not Submitted'  ?(<><td><Badge bg="danger">{st.noDifficultyScore}</Badge></td></>):(<><td><Badge bg="success">{st.noDifficultyScore}</Badge></td></>)} */}
             </tr>
           )
         })
@@ -38,7 +43,6 @@ function InteractiveReportContent({setShowInteractiveHeader, showInteractiveHead
       })}
       </tbody>
     </Table>
-    
     </>
   )
 }
