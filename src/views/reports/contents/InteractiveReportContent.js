@@ -31,9 +31,10 @@ function InteractiveReportContent({setShowInteractiveHeader, showInteractiveHead
             <tr>
               <td ><i class="fas fa-user-circle td-icon-report-person"></i>{item.student.fname}</td>
               {/* {st.easyScore === 'Not Submitted' ?(<><td><Badge bg="danger">{st.easyScore}</Badge></td></>):(<><td>{st.easyScore}</td></>)} */}
-              {st.averageScore === 'Not Submitted' ?(<><td><Badge bg="danger">{st.averageScore}</Badge></td></>):(<></>)}
-              {st.averageScore === 'Completed' ?(<><td><Badge bg="success">{st.averageScore}</Badge></td></>):(<></>)}
-              {st.averageScore === 'Not Completed' ?(<><td><Badge bg="warning">{st.averageScore}</Badge></td></>):(<></>)}
+              {st.averageScore !== null && st.easyScore !== null && st.hardScore !== null?(<><td><Badge bg="success">Easy Score: &nbsp; {st.easyScore}</Badge>&nbsp;<Badge bg="success">Normal Score: &nbsp;{st.averageScore}</Badge>&nbsp;<Badge bg="success">Challenging Score: &nbsp;{st.hardScore}</Badge></td></>):(<></>)}
+              {st.noDifficultyScore !== null ?(<><td><Badge bg="success">{st.noDifficultyScore}</Badge></td></>):(<></>)}
+              {st.noDifficultyScore !== null || st.averageScore !== null && st.easyScore !== null && st.hardScore !== null ?(<></>):(<><td><Badge bg="danger">Not Submitted</Badge></td></>)}
+              {/* {st.noDifficultyScore !== null && st.averageScore === null && st.easyScore === null && st.hardScore === null ?(<></>):(<></>)} */}
               {/* {st.hardScore === 'Not Submitted' ?(<><td><Badge bg="danger">{st.hardScore}</Badge></td></>):(<><td>{st.hardScore}</td></>)} */}
               {/* {st.noDifficultyScore === 'Not Completed' || st.noDifficultyScore === 'Not Submitted'  ?(<><td><Badge bg="danger">{st.noDifficultyScore}</Badge></td></>):(<><td><Badge bg="success">{st.noDifficultyScore}</Badge></td></>)} */}
             </tr>
