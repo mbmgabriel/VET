@@ -26,7 +26,7 @@ function FilesContent(props) {
 
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
-
+  const displayHeader = window.location.pathname.includes(props.type.toLowerCase()) ||  window.location.pathname.includes('files'); //if file header is called from files
   const courseid = sessionStorage.getItem('courseid')
 
   const getCourseInformation = async() => {
@@ -300,7 +300,7 @@ function FilesContent(props) {
         <tr>
           <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
           {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
-          {displayButtons && user.isTeacher ? <>
+          {displayButtons && user.isTeacher  & displayHeader ? <>
             <th >Actions</th>
           </>
           :
@@ -325,7 +325,7 @@ function FilesContent(props) {
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
                 } */}
-                {displayButtons && user.isTeacher && window.location.pathname.includes(props.type.toLowerCase()) ? <>
+                {displayButtons && user.isTeacher && displayHeader ? <>
                   <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
@@ -378,7 +378,7 @@ function FilesContent(props) {
               <tr key={index+item.name}>
                 <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
                {
-                displayButtons && user.isTeacher && window.location.pathname.includes(props.type.toLowerCase())? <td>
+                displayButtons && user.isTeacher && displayHeader? <td>
                     <OverlayTrigger
                       placement="right"
                       delay={{ show: 1, hide: 0 }}

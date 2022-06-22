@@ -20,7 +20,7 @@ function FileHeader(props) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const courseid = sessionStorage.getItem('courseid')
-  
+  const displayHeader = window.location.pathname.includes(props.type.toLowerCase()) ||  window.location.pathname.includes('files'); //if file header is called from files
 
   const getCourseInformation = async() => {
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -230,7 +230,7 @@ function FileHeader(props) {
         <div>
           <p className='title-header'>{props.title}</p>
         </div>
-        {displayButtons && user.isTeacher &&  window.location.pathname.includes(props.type.toLowerCase())? 
+        {displayButtons && user.isTeacher &&  displayHeader ? 
         (
         <>
           <div>

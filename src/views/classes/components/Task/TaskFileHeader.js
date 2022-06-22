@@ -140,7 +140,7 @@ function FileHeader(props) {
     setDoneUpload(false)
     setUploadStarted(false)
     setUploadStarted(false)
-    doneToast()
+    // doneToast()
   }
 
 
