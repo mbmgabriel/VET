@@ -59,6 +59,12 @@ export default function CoursesVideos() {
     }
   }
 
+  useEffect(() => {
+    if(localModuleId !== ''){
+      getVideoInfo(courseid, moduleid)
+    }
+  }, [localModuleId])
+
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseUnit(id)
@@ -167,14 +173,14 @@ export default function CoursesVideos() {
           </InputGroup>
         </div>
       </div>
-      <EditVideos setVideoInfo={setVideoInfo} selectedVideo={selectedVideo} openEditVideoModal={openEditVideoModal} setOpenEditVideoModal={setOpenEditVideoModal}/>
-      <CreateVideos setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
+      <EditVideos getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} selectedVideo={selectedVideo} openEditVideoModal={openEditVideoModal} setOpenEditVideoModal={setOpenEditVideoModal}/>
+      <CreateVideos getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
       <Accordion defaultActiveKey="0">
         {moduleInfo.map((item, index) => {
           return(
             <>
             <Accordion.Item eventKey={item.id}> 
-              <Accordion.Header onClick={(e) => {getVideoInfo(e, item.id)}}>
+              <Accordion.Header onClick={(e) => getVideoInfo(e, item.id)}>
                 <span className="unit-title">{item.moduleName} 
                 {courseInfo?.isTechfactors && user?.teacher.positionID == 7 && <Button className="btn-create-class" variant="link" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Video</Button>}
                 </span>
