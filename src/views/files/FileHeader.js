@@ -230,7 +230,7 @@ function FileHeader(props) {
         <div>
           <p className='title-header'>{props.title}</p>
         </div>
-        {displayButtons && user.isTeacher ? 
+        {displayButtons && user.isTeacher &&  window.location.pathname.includes(props.type.toLowerCase())? 
         (
         <>
           <div>
