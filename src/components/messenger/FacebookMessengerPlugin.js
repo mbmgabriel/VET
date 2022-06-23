@@ -7,7 +7,7 @@ export default function FacebookMessengerPlugin() {
       pageId="103022335784792"
       language="en_US"
       themeColor={"#EE9337"}
-      bottomSpacing={40}
+      bottomSpacing={44}
       loggedInGreeting="Hi. How can I help you?"
       loggedOutGreeting="Thank you for visiting. Please log in to continue."
       greetingDialogDisplay={"show"}
