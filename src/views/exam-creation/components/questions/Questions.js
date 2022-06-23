@@ -13,6 +13,7 @@ const QuestionSwitch = ({
   getExamInformation,
   setLoading,
   editable,
+  shared,
   deleteQuestion,
   examName
 }) => {
@@ -21,6 +22,7 @@ const QuestionSwitch = ({
     case 1:
       return (
         <MultipleChoice
+          shared={shared}  
           examName={examName}
           editable={editable}
           part={part}
@@ -33,6 +35,7 @@ const QuestionSwitch = ({
     case 2:
       return (
         <TrueOrFalse
+          shared={shared}  
           examName={examName}
           editable={editable}
           part={part}
@@ -45,6 +48,7 @@ const QuestionSwitch = ({
     case 3:
       return (
         <Identification
+          shared={shared}  
           examName={examName}
           editable={editable}
           part={part}
@@ -57,6 +61,7 @@ const QuestionSwitch = ({
     case 4:
       return (
         <Essay
+          shared={shared}  
           examName={examName}
           editable={editable}
           part={part}
@@ -69,6 +74,7 @@ const QuestionSwitch = ({
     case 5:
       return (
         <Enumeration
+          shared={shared}  
           examName={examName}
           editable={editable}
           part={part}
@@ -88,6 +94,7 @@ export default function Questions({
   getExamInformation,
   setLoading,
   editable,
+  shared,
   examName
 }) {
 
@@ -125,6 +132,7 @@ export default function Questions({
         getExamInformation={getExamInformation}
         setLoading={setLoading}
         editable={editable}
+        shared={shared}
         deleteQuestion={(e, id) => {
           e.preventDefault();
           setShowWarning(true)

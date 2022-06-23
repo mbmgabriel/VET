@@ -14,7 +14,8 @@ export default function ExamParts({
   setLoading,
   setSelectedPart,
   setShowModal,
-  editable
+  editable,
+  
 }) {
   console.log({exam});
   const [selectedId, setSelectedId] = useState(null)
@@ -22,7 +23,7 @@ export default function ExamParts({
   const userContext = useContext(UserContext);
   const { user } = userContext.data;
   const [courseInfo, setCourseInfo] = useState("")
-  
+  const shared = exam?.test?.isShared
 
   const courseid = sessionStorage.getItem('courseid')
 
@@ -92,7 +93,7 @@ export default function ExamParts({
             </>)} */}
             {user?.isTeacher &&
             <>  
-              {editable && (
+              {editable & !shared && (
                 <div className='exam-actions' >
                   <OverlayTrigger
                     placement="right"
@@ -133,6 +134,7 @@ export default function ExamParts({
               getExamInformation={getExamInformation}
               setLoading={setLoading}
               editable={editable}
+              shared={shared}
             />
           </Accordion.Body>
         </Accordion.Item>

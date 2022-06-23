@@ -24,7 +24,7 @@ const EnumerationForm = ({
   choices,
   setChoices,
   selectedQuestion,
-  editQuestion
+  editQuestion,
 }) => {
   const addAnswer = () => {
     setChoices([...choices, { testChoices: "", choicesImage: "" }]);
@@ -199,7 +199,8 @@ export default function Enumeration({
   setLoading,
   deleteQuestion,
   editable,
-  examName
+  examName,
+  shared
 }) {
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
@@ -388,7 +389,7 @@ export default function Enumeration({
             <hr/>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable && (
+          {editable && !shared && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -406,7 +407,7 @@ export default function Enumeration({
         </div>
       ))}
       {courseInfos?.isTechfactors? (<></>):(<>
-        {editable && (
+        {editable && !shared && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'

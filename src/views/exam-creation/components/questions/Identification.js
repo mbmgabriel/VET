@@ -153,7 +153,8 @@ export default function Identification({
   setLoading,
   deleteQuestion,
   editable,
-  examName
+  examName,
+  shared
 }) {
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
@@ -323,7 +324,7 @@ export default function Identification({
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
 
-          {editable && (
+          {editable && !shared && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -339,7 +340,7 @@ export default function Identification({
         </div>
       ))}
       {courseInfos?.isTechfactors? (<></>):(<>
-        {editable && (
+        {editable && !shared && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'
