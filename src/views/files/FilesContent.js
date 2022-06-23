@@ -35,16 +35,27 @@ function FilesContent(props) {
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
       if(temp){
-       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+      //  setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
       }
     }else{
       alert("Something went wrong while fetching course information")
     }
   }
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(props.id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setDisplayButtons(ifContri ? true : false);
+    }
+  }
+
   useEffect(() => {
     if(window.location.pathname.includes('course')){
       getCourseInformation();
+      getContributor();
     }
   }, [])
 
@@ -352,20 +363,19 @@ function FilesContent(props) {
                     </a>
                   </OverlayTrigger>
                   </td>
-                
                 </>
                 :
-                <td style={{paddingRight:'15px'}} >
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 1, hide: 0 }}
-                      overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
-                    >
-                      <a href={item.pathBase} download={true} target='_blank'>                     
-                        <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
-                      </a> 
-                    </OverlayTrigger>
-                    </td>
+                <td>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
+                  >
+                    <a href={item.pathBase} download={true} target='_blank'>                     
+                      <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
+                    </a> 
+                  </OverlayTrigger>
+                </td>
                 }
               </tr>
             )

@@ -4,13 +4,25 @@ import CreateLinks from './CreateLinks';
 import { UserContext } from '../../../../../context/UserContext'
 import {useParams} from 'react-router';
 import CoursesAPI from '../../../../../api/CoursesAPI';
+
 function HeaderLinks({getConfe, getVideos, getLinks, onSearch}) {
 const [modal, setModal] = useState(false)
 const userContext = useContext(UserContext)
 const [courseInfo, setCourseInfo] = useState("");
 const {user} = userContext.data
 const {id} = useParams();
+const [isContributor, setIsContributor] = useState(false)
 
+
+  useEffect( async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  },[])
 
   useEffect(() => {
     getCourseInformation();
@@ -34,7 +46,7 @@ const {id} = useParams();
 			):(
 			<>
 				<p className='title-header'>
-          {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? null : <Button className='btn-create-link' variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Links  </Button>}
+          {isContributor && <Button className='btn-create-link' variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Links  </Button>}
         </p>
 			</>
 			)}
