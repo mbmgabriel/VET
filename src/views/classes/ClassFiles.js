@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import FilesContent from '../files/FilesContent';
+import ClassFilesContent from './components/ClassFileContent';
 import { useParams } from 'react-router';
-import FileHeader from '../files/FileHeader'
+import ClassFileHeader from './components/ClassFileHeader'
 import { InputGroup, FormControl, Table } from 'react-bootstrap';
 import FilesAPI from '../../api/FilesApi';
 import ClassesAPI from '../../api/ClassesAPI';
@@ -122,7 +122,7 @@ function ClassFiles() {
       <ClassBreadcrumbs title={ displayClassCourse ? `${displayType} Files` : ''} clicked={() => {setDisplayClassCourse(false); setDisplayType('');}} />
       {displayClassCourse ?
         <div className="row m-b-20 file-content">
-          <FileHeader type={displayType}  title={`${displayType} Files`} subFolder={subFolderDirectory.join('')} id={id} doneUpload={()=> handleRefetch()}/>
+          <ClassFileHeader type={displayType}  title={`${displayType} Files`} subFolder={subFolderDirectory.join('')} id={id} doneUpload={()=> handleRefetch()}/>
           <div className="col-md-12 m-b-20">
             <InputGroup size="lg">
               <FormControl onChange={(e) => setFilter(e.target.value)} aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search Class Files Here" type="search"/>
@@ -130,14 +130,14 @@ function ClassFiles() {
             </InputGroup>
           </div>
           <div>
-            <span onClick={()=> handleClickedClassBread()} className={breadCrumbsItemClass.length == 0 ? 'fix-color-bread' : 'colored-files-bread'}>Class Files</span>
+            <span onClick={()=> handleClickedClassBread()} className={breadCrumbsItemClass.length == 0 ? 'fix-color-bread' : 'colored-files-bread'}>{displayType} Files</span>
             {
               breadCrumbsItemClass.map((item, index) => {
                 return <span onClick={() => handleClickedBreadcrumbsItem(item.value, index, 'Class')} className={breadCrumbsItemClass.length == (index+1) ? 'fix-color-bread' : 'colored-files-bread'}>  <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {item.naame}</span>
               })
             }
           </div>
-          <FilesContent filter={filter} data={filesToDisplay} subFolder={subFolderDirectory.join('')} folders={foldersToDisplay} clickedFolder={(data) => handleClickedFolder(data.name, displayType)} type={displayType} id={displayType == 'Class' ? id : courseId} deleted={()=> handleRefetch()} />
+          <ClassFilesContent filter={filter} data={filesToDisplay} subFolder={subFolderDirectory.join('')} folders={foldersToDisplay} clickedFolder={(data) => handleClickedFolder(data.name, displayType)} type={displayType} id={displayType == 'Class' ? id : courseId} deleted={()=> handleRefetch()} />
         </div>
         :
         <>

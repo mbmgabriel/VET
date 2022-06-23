@@ -177,7 +177,7 @@ export default function ClassSideNavigation({children}) {
               </Link>
             }
             <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/files`}>
-              Class Files
+              Files
             </Link>
             {
               (user?.teacher != null) && 
