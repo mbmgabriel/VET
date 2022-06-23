@@ -2,11 +2,11 @@ import React, {useState, useEffect, useContext} from 'react'
 import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-bootstrap'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
-import FilesAPI from '../../api/FilesApi';
+import FilesAPI from '../../../api/FilesApi';
 import Modal from 'react-bootstrap/Modal'
-import { UserContext } from '../../context/UserContext';
+import { UserContext } from '../../../context/UserContext';
 import moment from 'moment';
-import CoursesAPI from '../../api/CoursesAPI';
+import CoursesAPI from '../../../api/CoursesAPI';
 
 function FilesContent(props) {
 
@@ -23,10 +23,9 @@ function FilesContent(props) {
   const [deleteFolderNotify, setDeleteFolderNotify] = useState(false)
   const [editFolderModal, setEditFolderModal] = useState(false);
   const [displayButtons, setDisplayButtons] = useState(true);
-
+  const displayHeader = window.location.pathname.includes(props.type.toLowerCase()) //if file header is called from files
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
-  const displayHeader = window.location.pathname.includes(props.type.toLowerCase()) ||  window.location.pathname.includes('files'); //if file header is called from files
   const courseid = sessionStorage.getItem('courseid')
 
   const getCourseInformation = async() => {
@@ -35,27 +34,16 @@ function FilesContent(props) {
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
       if(temp){
-      //  setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
       }
     }else{
       alert("Something went wrong while fetching course information")
     }
   }
 
-  const getContributor = async() => {
-    let response = await new CoursesAPI().getContributor(props.id)
-    if(response.ok){
-      let temp = response.data;
-      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
-      setDisplayButtons(ifContri ? true : false);
-    }
-  }
-
   useEffect(() => {
     if(window.location.pathname.includes('course')){
       getCourseInformation();
-      getContributor();
     }
   }, [])
 
@@ -311,7 +299,7 @@ function FilesContent(props) {
         <tr>
           <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
           {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
-          {displayButtons && user.isTeacher  & displayHeader ? <>
+          {displayButtons && user.isTeacher && displayHeader ? <>
             <th >Actions</th>
           </>
           :
@@ -363,19 +351,20 @@ function FilesContent(props) {
                     </a>
                   </OverlayTrigger>
                   </td>
+                
                 </>
                 :
-                <td>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 1, hide: 0 }}
-                    overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
-                  >
-                    <a href={item.pathBase} download={true} target='_blank'>                     
-                      <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
-                    </a> 
-                  </OverlayTrigger>
-                </td>
+                <td style={{paddingRight:'15px'}} >
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
+                    >
+                      <a href={item.pathBase} download={true} target='_blank'>                     
+                        <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
+                      </a> 
+                    </OverlayTrigger>
+                    </td>
                 }
               </tr>
             )
@@ -388,7 +377,7 @@ function FilesContent(props) {
               <tr key={index+item.name}>
                 <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
                {
-                displayButtons && user.isTeacher && displayHeader? <td>
+                displayButtons && user.isTeacher && displayHeader ? <td>
                     <OverlayTrigger
                       placement="right"
                       delay={{ show: 1, hide: 0 }}
