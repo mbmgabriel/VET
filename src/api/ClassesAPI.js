@@ -644,6 +644,14 @@ creatTask = async (mId, cId,  data) => {
     });
   };
 
+  updateMeeting = async (id, data) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/Meeting`,
+      method: 'PUT',
+      data,
+    });
+  };
+  
   getFrequencyReport = async (classId, testId) => {
     return this.sendRequest({
       path: `/api/Class/${classId}/test/${testId}/report/frequency`,

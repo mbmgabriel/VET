@@ -16,7 +16,7 @@ export default function MainContainer({children, headerVisible = true, fluid, lo
           {children}
           
         </div>
-        <div class="footer text-dark">
+        <div class="lms-footer text-dark">
           <img src={logo} alt="logo"/>
           <p className="m-0">
             {ENV !== ENV_LIST.PRODUCTION ? `${ENV} BUILD` : ''}  

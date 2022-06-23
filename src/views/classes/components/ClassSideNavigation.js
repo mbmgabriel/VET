@@ -39,8 +39,6 @@ export default function ClassSideNavigation({children}) {
     setLoading(false)
   }
 
-  console.log(user, user?.role != 'Student', 's-----')
-
   const renderTooltipFeed = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Feed
@@ -183,11 +181,14 @@ export default function ClassSideNavigation({children}) {
               (user?.teacher != null) && 
               <>
                 <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
-                Class List
-              </Link>
-                <Link className={currentLoc.includes('class_grading') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/class_grading`}>
-                Class Grading
-              </Link>
+                  Class List
+                </Link>
+                  <Link className={currentLoc.includes('class_grading') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/class_grading`}>
+                  Class Grading
+                </Link>
+                  <Link className={currentLoc.includes('class_meeting') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/class_meeting`}>
+                  Class Meeting
+                </Link>
               </>
             }
           </ListGroup>
