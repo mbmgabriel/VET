@@ -280,7 +280,7 @@ code {
 }
 
 .capitalize {
-  text-transform: capitalize;
+  text-transform: capitalize !important;
 }
 
 .bread-crumbs-position{
@@ -569,3 +569,7 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 .fb_iframe_widget iframe{
   bottom: 10vh !important;
 } */
+
+.hand{
+  cursor: pointer;
+}

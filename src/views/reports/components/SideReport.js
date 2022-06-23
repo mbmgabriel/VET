@@ -151,7 +151,7 @@ function SideReport() {
               <ListGroup.Item className="list-group-item-o " action href="#link6" onClick={showTask}>
                 Task
               </ListGroup.Item>
-              <ListGroup.Item className="list-group-item-o " action href="#link7" >
+              <ListGroup.Item className="list-group-item-o " action href="#link7" onClick={showInteractive} >
                 Interactive
               </ListGroup.Item>
             </ListGroup>

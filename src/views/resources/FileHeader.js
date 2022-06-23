@@ -30,8 +30,19 @@ function FileHeader(props) {
   useEffect(() => {
     if(props.type == 'Course'){
       getCourseInformation();
+      getContributor();
     }
   }, [])
+
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(props.id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setDisplayButtons(ifContri ? true : false);
+    }
+  }
 
   const getCourseInformation = async() => {
     let response = await new CoursesAPI().getCourseInformation(id)
@@ -39,9 +50,8 @@ function FileHeader(props) {
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
       if(temp){
-        let loc = window.location.pathname
-       setDisplayButtons(user?.teacher.positionID !==7 && loc ? true : false)
-       console.log(response.data, 'heheheheheh -------', user?.teacher.positionID !== 7 && loc ? true : false, '--', loc)
+        let temp = window.location.pathname.includes('resources')
+      //  setDisplayButtons(user?.teacher.positionID == 7 && temp ? true : false)
       }
     }else{
       alert("Something went wrong while fetching course information")
@@ -230,7 +240,7 @@ function FileHeader(props) {
             ""
           :
         <>
-          {user?.teacher.positionID == 7 && <>
+          {displayButtons && <>
             <div>
               <OverlayTrigger
                 placement="right"

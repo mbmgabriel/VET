@@ -35,7 +35,7 @@ export default function CoursesVideos() {
   const moduleid = sessionStorage.getItem('moduleid')
   const [courseInfo, setCourseInfo] = useState("");
   const subsType = localStorage.getItem('subsType');
-
+  const [isContributor, setIsContributor] = useState(false);
   const handleOpenCreateVideoModal = () =>{
     setOpenCreateVideoModal(!openCreateVideoModal)
   }
@@ -58,6 +58,12 @@ export default function CoursesVideos() {
       alert("Something went wrong while fetching all task")
     }
   }
+
+  useEffect(() => {
+    if(localModuleId !== ''){
+      getVideoInfo(courseid, moduleid)
+    }
+  }, [localModuleId])
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
@@ -113,6 +119,16 @@ export default function CoursesVideos() {
     }
   }
 
+  useEffect( async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  },[])
+
   useEffect(() => {
     getCourseUnitInformation();
     getCourseInformation();
@@ -167,16 +183,16 @@ export default function CoursesVideos() {
           </InputGroup>
         </div>
       </div>
-      <EditVideos setVideoInfo={setVideoInfo} selectedVideo={selectedVideo} openEditVideoModal={openEditVideoModal} setOpenEditVideoModal={setOpenEditVideoModal}/>
-      <CreateVideos setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
+      <EditVideos getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} selectedVideo={selectedVideo} openEditVideoModal={openEditVideoModal} setOpenEditVideoModal={setOpenEditVideoModal}/>
+      <CreateVideos getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
       <Accordion defaultActiveKey="0">
         {moduleInfo.map((item, index) => {
           return(
             <>
             <Accordion.Item eventKey={item.id}> 
-              <Accordion.Header onClick={(e) => {getVideoInfo(e, item.id)}}>
+              <Accordion.Header onClick={(e) => getVideoInfo(e, item.id)}>
                 <span className="unit-title">{item.moduleName} 
-                {courseInfo?.isTechfactors && user?.teacher.positionID == 7 && <Button className="btn-create-class" variant="link" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Video</Button>}
+                {isContributor && <Button className="btn-create-class" variant="link" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Video</Button>}
                 </span>
               </Accordion.Header>
               <Accordion.Body>
@@ -187,7 +203,7 @@ export default function CoursesVideos() {
                     <Col className="lesson-header" md={9}>
                       <span onClick={(e) => {viewVideoState(vi)}}>{vi?.title}</span>
                     </Col>
-                    {courseInfo?.isTechfactors && user?.teacher.positionID == 7 && <Col className="align-right-content" md={3}>
+                    {isContributor && <Col className="align-right-content" md={3}>
                       <OverlayTrigger
                         placement="bottom"
                         delay={{ show: 1, hide: 25 }}

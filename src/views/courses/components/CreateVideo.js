@@ -8,7 +8,7 @@ import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './AssignmentFileHeader';
 import { useParams } from "react-router";
 
-export default function CreateVideos({openCreateVideoModal, setCreateVideoModal, setVideoInfo, setOpenCreateVideoModal}){
+export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCreateVideoModal, setOpenCreateVideoModal}){
 
   const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
@@ -36,8 +36,8 @@ export default function CreateVideos({openCreateVideoModal, setCreateVideoModal,
       {title, sequenceNo, fileName: fileName+extFilename, base64String}
     )
     if(response.ok){
-			handleCloseModal(e)
-      getVideoInfo(sessionModule)
+			setOpenCreateVideoModal(false)
+      getVideoInfo(sessionCourse, sessionModule)
       notifySaveVideo()
     }else{
       toast.error(response.data.errorMessage, {
@@ -62,18 +62,6 @@ export default function CreateVideos({openCreateVideoModal, setCreateVideoModal,
       console.log(response.data)
     }else{
       alert("Something went wrong while fetching all pages")
-    }
-  }
-
-  const getVideoInfo = async(e, data) => {
-    setLoading(true)
-    let response = await new CoursesAPI().getVideoInformation(sessionModule)
-    setLoading(false)
-    if(response.ok){
-      setVideoInfo(response.data)
-      console.log(response.data)
-    }else{
-      alert("Something went wrong while fetching all task")
     }
   }
 

@@ -16,11 +16,11 @@ function StudentInteractive({interactive, searchTerm, classInfo}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const {id} = useParams();
-  let dev = 'dev'
 
-  const getInteractiveLink = (e, path, userId, gameId, classId, dev) => {
+  const getInteractiveLink = (e, path, userId, gameId, classId) => {
+    let InterActiveShoolCode = schoolCode.code
     e.preventDefault()
-    window.open(path + '?sid=' + userId + '&gid=' + gameId + '&cid=' + classId + '#' + dev) 
+    window.open(path + '?sid=' + userId + '&gid=' + gameId + '&cid=' + classId + '#' + InterActiveShoolCode) 
   }
 
   const renderTooltipPlay = (props) => (
@@ -439,7 +439,7 @@ const renderTooltipPlay1 = (props) => (
                           placement="right"
                           delay={{ show: 10, hide: 25 }}
                           overlay={renderTooltipPlay}> 
-                            <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id, dev)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>  
+                            <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>  
                             </OverlayTrigger>
                         }
                     </Col>
@@ -463,7 +463,7 @@ const renderTooltipPlay1 = (props) => (
                                 {schoolCode.id}
                           </button>
                           :
-                          <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id, dev)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
                         }
                       </OverlayTrigger>
                       </Col>
@@ -484,7 +484,7 @@ const renderTooltipPlay1 = (props) => (
                                 {schoolCode.id}
                           </button>
                           :
-                          <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id, dev)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
                         }
                       </OverlayTrigger>
                       </Col>
