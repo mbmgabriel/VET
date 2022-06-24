@@ -267,23 +267,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad.assignedAnswer}</ContentViewer></span>
                         </div>
 
-                        {/* {ad.studentScore === 0 && */}
-                          <Form>
-                            <div style={{display:'inline-flex'}}>
-                            <Form.Group className="m-b-20">
-                              <Form.Check
-                              label={ad.isConsider === true ? "Unconsider" : "Consider"}
-                              name={"answerid" + ad.id}
-                              type="checkbox"
-                              checked={ad.isConsider}
-                              onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
-                              /> 
-                            </Form.Group>
-                            {/* <span>{ad.isConsider == true && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
-                            <span>{ad.isConsider == false &&  <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span> */}
-                            </div>
-                          </Form>
-                        {/* }  */}
+                       
 
                             {ad.studentScore === 0 && ad.isConsider === false ?(
                             <>
