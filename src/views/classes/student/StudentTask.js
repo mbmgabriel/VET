@@ -9,7 +9,7 @@ import ClassesAPI from '../../../api/ClassesAPI';
 import StudentViewTask from './components/StudentViewTask';
 import ContentViewer from '../../../components/content_field/ContentViewer';
 
-function StudentTask({taskModule, searchTerm}) {
+function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [answerTaskModal, setAnswerTaskModal] = useState(false)
@@ -54,6 +54,7 @@ function StudentTask({taskModule, searchTerm}) {
     if(response.ok){
       setTaskAnswerItem(response.data)
       setSubmittedTaskModal(!submittedTaskModal)
+      getTaskModule(id, moduleId)
     }else{
       alert('ERROR')
     }
@@ -118,6 +119,7 @@ function StudentTask({taskModule, searchTerm}) {
                       {(item.isLoggedUserDone === true)?(
                     <>
                       <Col sm={3} className='icon-exam'>
+                      <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Submitted</Button>
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 1}}

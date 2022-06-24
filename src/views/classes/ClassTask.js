@@ -201,7 +201,7 @@ function ClassTask() {
             <Accordion.Body>
               {(user?.teacher === null)?(
               <>
-                <StudentTask searchTerm={searchTerm} taskModule={taskModule} />
+                <StudentTask searchTerm={searchTerm} taskModule={taskModule} getTaskModule={getTaskModule} moduleId={moduleId} />
               </>):<>
               {taskModule?.filter((moduleitem) => {
                 if(searchTerm == ''){
