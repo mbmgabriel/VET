@@ -18,7 +18,7 @@ export default function ZoomClient() {
   const client = ZoomMtgEmbedded.createClient();
   const {user, selectedClassId} = useContext(UserContext).data
 
-  var signatureEndpoint = 'http://199.91.69.155:4000/'
+  var signatureEndpoint = 'https://zoom.tekteachlms.com/'
   var sdkKey = 'JlY0w5XWHkfAVjM0Ee4R0617nE5ZVlpLZ7AL'
   var role = 0
   var leaveUrl = '/'
