@@ -15,7 +15,7 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [courseInfo, setCourseInfo] = useState("");
-
+  const [isContributor, setIsContributor] = useState(false);
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
   }
@@ -32,6 +32,16 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
     setOpenEditModal(true)
     
   }
+
+  useEffect( async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  },[])
 
   useEffect(() => {
     getCourseInformation();
@@ -120,7 +130,7 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
               </>
               ):(
               <>
-               {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? null :
+               {isContributor &&
                <Col sm={3} className='icon-exam'>
                 <OverlayTrigger
                     placement="bottom"

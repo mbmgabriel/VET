@@ -1,8 +1,8 @@
 import React, {useState, useContext} from 'react'
 import CreateDiscussion from "././CreateDiscussion"
 import { Button, InputGroup, FormControl, CardGroup } from 'react-bootstrap';
-import CreateAssignment from './CreateAssignment'
 import { UserContext } from '../../../../context/UserContext'
+import MainContainer from '../../../../components/layouts/MainContainer';
 
 
 export default function Discussion() {

@@ -1712,6 +1712,17 @@ input::-webkit-inner-spin-button {
   outline: none !important;
 }
 
+
+#zmmtg-root {
+  display: none;
+  width: 300px !important;
+  height: 300px  !important;
+  position: fixed;
+  /* top: 0; */
+  /* left: 0; */
+  background-color: black;
+}
+
 .like-show-name{
   text-decoration: none!important;
   display: flex;

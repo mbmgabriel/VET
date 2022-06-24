@@ -63,7 +63,7 @@ code {
   height: 100vh !important;
 }
 
-.main-container .content .footer{
+.main-container .content .lms-footer{
   margin: 80px;
   text-align: right;
 }
@@ -280,7 +280,7 @@ code {
 }
 
 .capitalize {
-  text-transform: capitalize;
+  text-transform: capitalize !important;
 }
 
 .bread-crumbs-position{
@@ -561,4 +561,15 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 
 .file-library-btn:hover{
   opacity: 0.7;
+}
+/* 
+.fb_dialog_content iframe{
+  bottom: 
+
+.fb_iframe_widget iframe{
+  bottom: 10vh !important;
+} */
+
+.hand{
+  cursor: pointer;
 }

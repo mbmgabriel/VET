@@ -1,10 +1,12 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Button, Modal,Table, ProgressBar, Col, Row,  InputGroup, FormControl, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FilesAPI from '../../../../api/FilesApi';
+import FilesAPI from '../../../api/FilesApi';
+import { UserContext } from '../../../context/UserContext';
+import CoursesAPI from '../../../api/CoursesAPI'
 
-function FileHeader(props) {
+function ClassFileHeader(props) {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [files, setFiles] = useState([]);
   const [doneUpload, setDoneUpload] = useState(false)
@@ -12,11 +14,39 @@ function FileHeader(props) {
   const [showAddFolderModal, setShowAddFolderModal] = useState(false);
   const [folderName, setFolderName] = useState('')
   const [folderCreatedCourse, setFolderCreatedCourse] = useState(false); 
+  const [courseInfo, setCourseInfo] = useState("");
+  const [displayButtons, setDisplayButtons] = useState(true);
+  const displayHeader = window.location.pathname.includes(props.type.toLowerCase()) //if file header is called from files
+
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const courseid = sessionStorage.getItem('courseid')
+
+  const getCourseInformation = async() => {
+    let response = await new CoursesAPI().getCourseInformation(courseid)
+    if(response.ok){
+      setCourseInfo(response.data)
+      let temp = response.data.isTechfactors
+      if(temp){
+       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+      }
+      console.log(response.data, 'heheheheheh')
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  useEffect(() => {
+    if(window.location.pathname.includes('course')){
+      getCourseInformation();
+    }
+  }, [])
+
+
   const allUploaded = files.filter(itm => { //check if all items is already 100% uploaded
     return itm.progress != 100
   })
 
-  console.log(props.subFolder, 'heeeeeeeere')
   const handlefilesUpload = (file) => {
     if(file != ''){
       
@@ -31,16 +61,16 @@ function FileHeader(props) {
                 fileName: itm.name,
                 base64String: data,
                 size: itm.size,
-                progress: 0
+                progress: 0,
+                status: ''
               };
               files.push(toAdd)
               setFiles([...files]);
             }
           );
-        }
-        else{
-          toast.error('Please select a file below 25mb.');
-        }
+        }else(
+          toast.error('Please select a file below 25mb.')
+        )
       })
     }
   }
@@ -59,7 +89,6 @@ function FileHeader(props) {
     //course uploading
     if(props.type == 'Course'){
       files.map( async(item, index) => {
-        console.log(item);
         if(item.progress == 0){
           let tempData = {
             fileName: item.fileName,
@@ -82,11 +111,17 @@ function FileHeader(props) {
             setDoneUpload(allUploaded.length == 0 ? true : false)
             setUploadStarted(allUploaded.length == 0 ? false : true)
           }else{
-            setShowUploadModal(false)
             setFiles([])
             setDoneUpload(false)
             setUploadStarted(false)
-            toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+            if(response.data?.errorMessage.includes('exist')){
+              files[index].progress = 100;
+              files[index].status = 'failed';
+              setFiles([...files])
+            }else{
+              setShowUploadModal(false)
+              toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+            }
           }
         }
       })
@@ -94,6 +129,7 @@ function FileHeader(props) {
     // class uploading
     if(props.type == 'Class'){
       files.map( async(item, index) => {
+        console.log(item)
         if(item.progress == 0){
           let tempData = {
             fileName: item.fileName,
@@ -116,11 +152,18 @@ function FileHeader(props) {
             setDoneUpload(allUploaded.length == 0 ? true : false)
             setUploadStarted(allUploaded.length == 0 ? false : true)
           }else{
-            setShowUploadModal(false)
             setFiles([])
             setDoneUpload(false)
             setUploadStarted(false)
-            toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
+            if(response.data?.errorMessage.includes('exist')){
+              files[index].progress = 100;
+              files[index].status = 'failed';
+              setFiles([...files])
+            }else{
+              setShowUploadModal(false)
+              toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+            }
+            // toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
           }
         }
       })
@@ -140,30 +183,11 @@ function FileHeader(props) {
     setDoneUpload(false)
     setUploadStarted(false)
     setUploadStarted(false)
-    // doneToast()
   }
-
-
-  const doneToast = () => 
-  toast.success('Successfully uploaded file!', {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  });
 
   const renderTooltipUploadFiles = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Upload files
-    </Tooltip>
-  )
-
-  const renderTooltipChooseFiles = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Choose files
+      Create Folder
     </Tooltip>
   )
 
@@ -175,11 +199,12 @@ function FileHeader(props) {
       }
       let response = await new FilesAPI().createCourseFolder(props.id, data)
       if(response.ok){
-        console.log(response, 'herrrrrrrree')
         props.doneUpload()
         setShowAddFolderModal(false)
+        toast.success('Successfully created folder.')
       }else{
-        toast.error('Something went wrong while creating folder.'); 
+        setShowAddFolderModal(false)
+        toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
       }
     }
     if(props.type == 'Class'){
@@ -189,11 +214,12 @@ function FileHeader(props) {
       }
       let response = await new FilesAPI().createCLassFolder(props.id, data)
       if(response.ok){
-        console.log(response, 'herrrrrrrree')
         props.doneUpload()
         setShowAddFolderModal(false)
+        toast.success('Successfully created folder.')
       }else{
-        toast.error('Something went wrong while creating folder.'); 
+        setShowAddFolderModal(false)
+        toast.error(response.data?.errorMessage.replace('distributor', 'contributor'));
       }
     }
   }
@@ -202,34 +228,37 @@ function FileHeader(props) {
     <div>
       <div style={{flexDirection: 'row', paddingLeft: 0}} className="pages-header file-content">
         <div>
-          <p className='title-header'>Files</p>
+          <p className='title-header'>{props.title}</p>
         </div>
-        {/* <div>
-          <OverlayTrigger
-            placement="right"
-            delay={{ show: 1, hide: 0 }}
-            overlay={renderTooltipUploadFiles}
-          >
-            <i style={{marginTop: 10}} className="fas fa-folder-plus file-upload-content font-size-35 cursor-pointer" onClick={() => setShowAddFolderModal(true)}/>
-          </OverlayTrigger>
-        </div>
-        <div>
-          <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowAddFolderModal(true)}> New Folder  </Button>
-        </div>
-        <div>
-          <h5 style={{paddingTop: 15}} className="fileupload"> OR </h5>
-        </div> */}
-        <div>
-          <p>
-          <OverlayTrigger
-            placement="bottom"
-            delay={{ show: 1, hide: 0 }}
-            overlay={renderTooltipUploadFiles}>
-              <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button>
-            </OverlayTrigger>
-            </p>
-        </div>
+        {displayButtons && user.isTeacher && displayHeader ? 
+        (
+        <>
+          <div>
+            {/* <OverlayTrigger
+              placement="right"
+              delay={{ show: 1, hide: 0 }}
+              overlay={renderTooltipUploadFiles}
+            > */}
+              <i style={{marginTop: 10}} className="fas fa-folder-plus file-upload-content font-size-35 cursor-pointer" onClick={() => setShowAddFolderModal(true)}/>
+            {/* </OverlayTrigger> */}
+          </div>
+          <div>
+            <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowAddFolderModal(true)}> New Folder  </Button>
+          </div>
+          <div>
+            <h5 style={{paddingTop: 15}} className="fileupload"> OR </h5>
+          </div>
+          <div>
+            <p><Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowUploadModal(true)}> + Upload Files  </Button></p>
+          </div>
+        </>
+        )
+        :
+        <>
+        </>
+        }
       </div>
+
       <Modal size="lg" show={showUploadModal} onHide={() => setShowUploadModal(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
@@ -239,26 +268,22 @@ function FileHeader(props) {
         <Modal.Body>
           <Row style={{paddingTop:'25px', paddingBottom: '20px'}}>
             <Col lg={3} className='mt-3'>
-            <OverlayTrigger
-            placement="bottom"
-            delay={{ show: 1, hide: 0 }}
-            overlay={renderTooltipChooseFiles}>
               <Button size='lg' variant="outline-warning" className="file-library" onClick={() => { document.getElementById('inputFile').click() }}>
                 <i className="fas fa-paperclip"></i>
                 Choose Files
               </Button>
-            </OverlayTrigger>
             </Col>
               <Col lg={4} className='bg-gray d-flex justify-content-center br-5px'>
                 <div className='row position-absolute d-flex p-2'>
                   <p className='mb-0 text-center'>Drag files here</p>
                   <i className='text-center fa fa-download font-size-30'/>
                 </div>
-                <input className='opacity-0 w-100 height-80px' id='inputFile' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
+                <input className='opacity-0 w-100 height-80px' accept=".pptx,.docx,.xlsx,.ppt,.doc,.xls,.pdf,.jpeg,.jpg,.png" id='inputFile' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
               </Col>
               <Col className='d-flex align-items-center'>
                 <p>Maximum file size: 25 MB.</p>
               </Col>
+              <p className='font-13 mb-0'>.pptx, .docx, .xlsx, .ppt, .doc, .xls, .pdf, .jpeg, .jpg, .png</p>
           </Row>
           <Table responsive="sm">
             <thead>
@@ -273,7 +298,8 @@ function FileHeader(props) {
               return(
                 <tr key={item.fileName}>
                   <td>{item.fileName}</td>
-                  <td><ProgressBar variant="warning" now={item.progress} /></td>
+                  {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="warning" now={item.progress} /></td>}
+                  {/* <td><ProgressBar variant="warning" now={item.progress} /></td> */}
                   <td>{item.size} B <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                 </tr>
               );
@@ -325,7 +351,7 @@ function FileHeader(props) {
                 return(
                   <tr key={item.fileName}>
                     <td>{item.fileName}</td>
-                    <td><ProgressBar variant="warning" now={item.progress} /></td>
+                   {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="warning" now={item.progress} /></td>}
                     <td>{item.size} B <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                   </tr>
                 );
@@ -345,5 +371,5 @@ function FileHeader(props) {
     </div>
 	)
 }
-export default FileHeader
+export default ClassFileHeader
 
