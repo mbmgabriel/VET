@@ -11,6 +11,8 @@ import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import AnnouncementComment from './components/Feed/AnnouncementComment';
 import DiscussionAPI from '../../api/DiscussionAPI';
+import {Link} from 'react-router-dom'
+import ShowLike from './components/Feed/ShowLike';
 
 function ClassFeed() {
   const [content, setContent] = useState('')
@@ -24,7 +26,7 @@ function ClassFeed() {
   const [editAnnouncementItem, setEditAssignAssignmentItem] = useState()
   const [feedClass, setFeedClass] = useState([])
   const userContext = useContext(UserContext)
-  const {user} = userContext.data
+  const {user, selectedClassId, setSelectedClassId} = userContext.data
   const [showComment, setShowComment] = useState(Fade)
   const [refId, setRefId] = useState()
   const [typeId, setTypeId] = useState('')
@@ -32,9 +34,17 @@ function ClassFeed() {
   const [commentInfo, setCommentInfo] = useState([])
   const [classInfo, setClassInfo] = useState(null)
   const subsType = localStorage.getItem('subsType');
+  const [showLike, setShowLike] = useState(false)
+  const [feedItemLike, setFeedItemLike] = useState([])
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const closeNotify = () =>{
     setAddNotity(false)
+  }
+
+  const handleShowLike = (feedItem) => {
+    setShowLike(true)
+    setFeedItemLike(feedItem)
   }
 
   const openEditAnnouncementToggle = (item) =>{
@@ -44,6 +54,8 @@ function ClassFeed() {
   
   const createAnnouncementClass = async (e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     let typeId = 3
     let useraccountId = 0
     let status = true
@@ -104,6 +116,8 @@ const getComment = (item, item1, item3) => {
    }
   }
   useEffect(() => {
+    console.log("Selecting class: " + id)
+    setSelectedClassId(id)
     getFeedClass();
     if(subsType != 'LMS'){
       window.location.href = "/classes"
@@ -216,7 +230,7 @@ const getComment = (item, item1, item3) => {
                   <FormControl onChange={(e) => setContent(e.target.value)} value={content} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type an Announcement for the class here" type="text"/> 
               </InputGroup>
               <div style={{textAlign:'right', paddingTop:'15px'}}>
-              <Button className='tficolorbg-button' type='submit' >POST</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >POST</Button>
               </div>
             </Form>
           </Card.Body>
@@ -265,7 +279,7 @@ const getComment = (item, item1, item3) => {
                     <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
                   </div>
                   <div className='inline-flex' style={{paddingTop:'1px', fontSize:'18px', color: "#7D7D7D"}}>
-                    <b>{feedItem?.updatedBy}</b> &nbsp; has Post an <div className='font-color' > &nbsp; <b>Announcement </b> </div>
+                    <b>{feedItem?.updatedBy}</b> &nbsp; has Posted an <div className='font-color' > &nbsp; <b>Announcement </b> </div>
                   </div>
                   <p style={{marginLeft:58}}><small><i className="fas fa-clock"></i> {moment(item?.dateUpdated).format('LL')}&nbsp;</small></p> 
                 </Col>
@@ -292,11 +306,22 @@ const getComment = (item, item1, item3) => {
                 </Col>
               </Row>
               <Row>
+                <div className='like-show-name'>
+              <Link to={'#'} onClick={() => handleShowLike(feedItem)} >
+                      {feedItem?.likes?.slice(0,2).map(item => {
+                        return(
+                          <>{item?.likeBy},</>
+                        )
+                      })}
+                      </Link>
+                      {feedItem?.likes?.length <= 2? (<></>):(<>&nbsp;and {feedItem?.likes?.length - 2} others</>)}   
+                 </div>
                 <hr />
                 <Col style={{textAlign:'center'}}>
                   <div className='inline-flex' >
                     <div style={{color:'#EE9337', }}>
                       </div>
+      
                       <div > 
                         {feedItem?.isLike === true ? <>
                           <OverlayTrigger
@@ -395,6 +420,16 @@ const getComment = (item, item1, item3) => {
                   </div>
                 </Col>
               </Row>
+              <div className='like-show-name'>
+              <Link to={'#'} onClick={() => handleShowLike(feedItem)} >
+                      {feedItem?.likes?.slice(0,2).map(item => {
+                        return(
+                          <>{item?.likeBy},</>
+                        )
+                      })}
+                      </Link>
+                      {feedItem?.likes?.length <= 2? (<></>):(<>&nbsp;and {feedItem?.likes?.length - 2} others</>)} 
+                 </div>
                 <Col>
                 <hr />
                 </Col>
@@ -476,6 +511,7 @@ const getComment = (item, item1, item3) => {
           onConfirm={closeNotify}>
         </SweetAlert>
         <EditAnnouncement getFeedClass={getFeedClass} editAnnouncementItem={editAnnouncementItem} editAnnouncementModal={editAnnouncementModal} openEditAnnouncementToggle={openEditAnnouncementToggle} />
+        <ShowLike feedItemLike={feedItemLike} showLike={showLike} setShowLike={setShowLike} /> 
     </div>
     </ClassSideNavigation>
   )

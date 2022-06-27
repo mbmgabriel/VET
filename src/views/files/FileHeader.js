@@ -20,7 +20,6 @@ function FileHeader(props) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const courseid = sessionStorage.getItem('courseid')
-  
 
   const getCourseInformation = async() => {
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -28,7 +27,7 @@ function FileHeader(props) {
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
       if(temp){
-       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+      //  setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
       }
       console.log(response.data, 'heheheheheh')
     }else{
@@ -36,9 +35,20 @@ function FileHeader(props) {
     }
   }
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(props.id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setDisplayButtons(ifContri ? true : false);
+    }
+  }
+
   useEffect(() => {
     if(window.location.pathname.includes('course')){
       getCourseInformation();
+      getContributor();
     }
   }, [])
 
@@ -230,17 +240,17 @@ function FileHeader(props) {
         <div>
           <p className='title-header'>{props.title}</p>
         </div>
-        {displayButtons ? 
+        {displayButtons && user.isTeacher ? 
         (
         <>
           <div>
-            <OverlayTrigger
+            {/* <OverlayTrigger
               placement="right"
               delay={{ show: 1, hide: 0 }}
               overlay={renderTooltipUploadFiles}
-            >
+            > */}
               <i style={{marginTop: 10}} className="fas fa-folder-plus file-upload-content font-size-35 cursor-pointer" onClick={() => setShowAddFolderModal(true)}/>
-            </OverlayTrigger>
+            {/* </OverlayTrigger> */}
           </div>
           <div>
             <Button style={{paddingTop:14}} className='btn-create-discussion' variant="link" onClick={() => setShowAddFolderModal(true)}> New Folder  </Button>
@@ -278,11 +288,12 @@ function FileHeader(props) {
                   <p className='mb-0 text-center'>Drag files here</p>
                   <i className='text-center fa fa-download font-size-30'/>
                 </div>
-                <input className='opacity-0 w-100 height-80px' id='inputFile' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
+                <input className='opacity-0 w-100 height-80px' accept=".pptx,.docx,.xlsx,.ppt,.doc,.xls,.pdf,.jpeg,.jpg,.png" id='inputFile' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
               </Col>
               <Col className='d-flex align-items-center'>
                 <p>Maximum file size: 25 MB.</p>
               </Col>
+              <p className='font-13 mb-0'>.pptx, .docx, .xlsx, .ppt, .doc, .xls, .pdf, .jpeg, .jpg, .png</p>
           </Row>
           <Table responsive="sm">
             <thead>

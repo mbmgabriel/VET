@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../../../context/UserContext'
 
-function AssignAssignment({ moduleId, getAssignmentList, assginModal, assignAssignmentToggle, assignmentId }) {
+function AssignAssignment({ selectedAssignmentName, moduleId, getAssignmentList, assginModal, assignAssignmentToggle, assignmentId }) {
   console.log('assingmentId:', assignmentId)
   const [startDate, setStartDate] = useState('')
   const [startTime, setStartTime] = useState('')
@@ -14,6 +15,19 @@ function AssignAssignment({ moduleId, getAssignmentList, assginModal, assignAssi
   const [endTime, setEndTime] = useState('')
   const [assignNotify, setAssignNotify] = useState(false)
   const {id} = useParams()
+  
+  const userContext = useContext(UserContext)
+  const {notify} = userContext.data
+
+  const notifyStudent = () => {
+    const config = {
+      "description": `assignment ${selectedAssignmentName} to you.`, 
+      "activityType": "", 
+      "classId": `${id}`
+    }
+    console.log({notification: config})
+    notify(config)
+  }
   
   const closeNotify = () => {
     setAssignNotify(false)
@@ -23,6 +37,7 @@ function AssignAssignment({ moduleId, getAssignmentList, assginModal, assignAssi
     e.preventDefault()
     let response = await new ClassesAPI().assignAssignment(id, assignmentId, {startDate, startTime, endDate, endTime})
       if(response.ok){
+        notifyStudent()
         success()
         setStartDate('')
         setStartTime('')

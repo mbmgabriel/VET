@@ -15,6 +15,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [courseInfo, setCourseInfo] = useState("");
+  const [isContributor, setIsContributor] = useState(false);
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
@@ -32,6 +33,16 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
     setOpenEditModal(true)
     
   }
+
+  useEffect( async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  },[])
 
   useEffect(() => {
     getCourseInformation();
@@ -112,7 +123,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
               <Col sm={9}>
                 <div className='title-exam'>
                   {/* <Link style={{color:'#EE9337', textDecoration:'none'}} to={item?.url}>{item?.description}</Link> */}
-                  <a target="_blank" className='teacher-resources' href={item?.url}>{item?.description}</a>
+                  <a target="_blank" className='class-links' href={item?.url}>{item?.description}</a>
                 </div>
               </Col>
               {(user.teacher === null)?(
@@ -120,7 +131,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
               </>
               ):(
               <>
-               {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? null :
+               {isContributor &&
                 <Col sm={3} className='icon-exam'>
                   <OverlayTrigger
                     placement="bottom"

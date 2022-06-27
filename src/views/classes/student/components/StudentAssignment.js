@@ -9,7 +9,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import StudentViewAssignment from './StudentViewAssignment'
 import ContentViewer from '../../../../components/content_field/ContentViewer'
 
-function StudentAssignment({assignment, searchTerm}) {
+function StudentAssignment({assignment, searchTerm, getAssignmentList, moduleId}) {
   const [answerModal, setAnswerModal] = useState(false)
   const [submittedAssignment, setSubmittedAssignment] = useState(false)
   const [studentAnswer, setStudentAnswer] = useState()
@@ -52,6 +52,7 @@ function StudentAssignment({assignment, searchTerm}) {
       if(response.ok){
         setStudentAnswer(response.data)
         submittedAssignmentToggle()
+        getAssignmentList(id, moduleId)
       }else{
        alert('ERROR getStudentAssignmentAnswer')
       }
@@ -116,6 +117,7 @@ function StudentAssignment({assignment, searchTerm}) {
                       {(item.isLoggedUserDone === true)?(
                     <>
                       <Col sm={3} className='icon-exam'>
+                      <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Submitted</Button>
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 1 }}

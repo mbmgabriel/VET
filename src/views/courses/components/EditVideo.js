@@ -3,13 +3,16 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import CoursesAPI from "../../../api/CoursesAPI";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ClassesAPI from "../../../api/ClassesAPI";
 
-export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEditVideoModal, selectedVideo}){
+export default function EditVideos({ getVideoInfo, openEditVideoModal, setOpenEditVideoModal, selectedVideo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
 	const [title, setTitle] = useState('')
 	const [sequenceNo, setSequenceNo] = useState('')
+  const [moduleId, setModuleId] = useState('')
+  const [module, setModule] = useState([])
   
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
@@ -20,17 +23,29 @@ export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEdi
     setOpenEditVideoModal(false)
   }
 
+  const getModule = async(sessionCourse) =>{
+    let response = await new ClassesAPI().getModule(sessionCourse)
+    if(response.ok){
+        setModule(response.data)
+    }else{
+    }
+  }
+
+  useEffect(() => {
+    getModule(sessionCourse)
+  }, [])
+
 	const saveEditVideo = async(e) => {
     e.preventDefault()
     setLoading(true)
     let response = await new CoursesAPI().editVideo(
-      selectedVideo?.id,
-      {title, sequenceNo}
+      sessionCourse, selectedVideo?.id,
+      {title, sequenceNo, moduleId}
     )
     if(response.ok){
 			handleCloseModal(e)
       notifyUpdateVideo()
-      getVideoInfo(null, sessionModule)
+      getVideoInfo(sessionCourse, sessionModule)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -43,17 +58,6 @@ export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEdi
         });
     }
     setLoading(false)
-  }
-
-  const getVideoInfo = async(e, data) => {
-    setLoading(true)
-    let response = await new CoursesAPI().getVideoInformation(data)
-    setLoading(false)
-    if(response.ok){
-      setVideoInfo(response.data)
-    }else{
-      alert("Something went wrong while fetching all discussion")
-    }
   }
 
 	useEffect(() => {
@@ -85,6 +89,15 @@ export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEdi
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveEditVideo}>
+            <Form.Group className="mb-3">
+          <Form.Label>Unit</Form.Label>
+            <Form.Select onChange={(e) => setModuleId(e.target.value)}>
+              <option>Select Unit Here </option>
+                {module.map(item => {
+                  return(<option value={item.id}>{item.moduleName}</option>)
+                })}
+            </Form.Select>
+              </Form.Group>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
 												Video Name
@@ -94,7 +107,7 @@ export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEdi
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test name"
+                      placeholder="Enter video name"
                       onChange={(e) => setTitle(e.target.value)}
                     />
 								</Form.Group>
@@ -108,7 +121,7 @@ export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEdi
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test instructions"
+                      placeholder="Enter Sequence number"
                       onChange={(e) => setSequenceNo(e.target.value)}
                     />
 								</Form.Group>

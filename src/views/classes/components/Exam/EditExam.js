@@ -54,26 +54,26 @@ export default function EditExam({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={updateExam}>
           <Form.Group className='m-b-20'>
-            <Form.Label for='courseName'>Test Name</Form.Label>
+            <Form.Label for='courseName'>Exam Name</Form.Label>
             <Form.Control
               // defaultValue={testName}
               className='custom-input'
               value={testName}
               size='lg'
               type='text'
-              placeholder='Enter test name'
+              placeholder='Enter exam name'
               onChange={(e) => setTestName(e.target.value)}
             />
           </Form.Group>
           <Form.Group className='m-b-20'>
-            <Form.Label for='courseName'>Test Instruction</Form.Label>
+            <Form.Label for='courseName'>Exam Instruction</Form.Label>
             <Form.Control
               // defaultValue={testInstructions}
               className='custom-input'
               value={testInstructions}
               size='lg'
               type='text'
-              placeholder='Enter test instruction'
+              placeholder='Enter exam instruction'
               onChange={(e) => setTestInstructions(e.target.value)}
             />
           </Form.Group>

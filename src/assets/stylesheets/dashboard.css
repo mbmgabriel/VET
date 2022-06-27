@@ -63,7 +63,7 @@ code {
   height: 100vh !important;
 }
 
-.main-container .content .footer{
+.main-container .content .lms-footer{
   margin: 80px;
   text-align: right;
 }
@@ -280,7 +280,7 @@ code {
 }
 
 .capitalize {
-  text-transform: capitalize;
+  text-transform: capitalize !important;
 }
 
 .bread-crumbs-position{
@@ -300,6 +300,10 @@ code {
   border-radius: 10px !important;
   text-decoration: none !important;
   padding: 10px;
+}
+
+.active-nav-item:hover{
+  opacity: 0.7;
 }
 
 .nav-item{
@@ -412,10 +416,20 @@ code {
   padding-left: 15px;
 }
 
+.file-name{
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 25px;
+}
+
 .colored-class{
   color: var(--primary-color);
   cursor: pointer;
   font-size: 25px;
+}
+
+.colored-class:hover{
+  opacity: 0.7;
 }
 
 .font-size-22{
@@ -543,4 +557,19 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 
 .calendar-view{
   height: 900px;
+}
+
+.file-library-btn:hover{
+  opacity: 0.7;
+}
+/* 
+.fb_dialog_content iframe{
+  bottom: 
+
+.fb_iframe_widget iframe{
+  bottom: 10vh !important;
+} */
+
+.hand{
+  cursor: pointer;
 }

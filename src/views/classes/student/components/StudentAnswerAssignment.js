@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext} from 'react'
-import { Form, Button, Table, ProgressBar} from 'react-bootstrap'
+import { Form, Button, Table, ProgressBar, Col} from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
 import { useParams } from 'react-router'
 import ClassesAPI from '../../../../api/ClassesAPI'
@@ -13,13 +13,13 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
   const {user} = userContext.data
   const [assignmentAnswer, setAssignmentAnswer] = useState('')
   // const [files, setFiles] = useState('')
-  const [assignNotify, setAssignNotify] = useState(false)
+  // const [assignNotify, setAssignNotify] = useState(false)
   const [files, setFiles] = useState([]);
   const [uploadingFiles, setUploadingFiles] = useState('pending');
 
-  const closeNotify = () => {
-    setAssignNotify(false)
-  }
+  // const closeNotify = () => {
+  //   setAssignNotify(false)
+  // }
 
   // console.log("user:", user?.userId)
 
@@ -40,7 +40,8 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
       let studentId = user?.student?.id
       let response = await new ClassesAPI().submitStudentAssignmentAnswer(studentId, id, assignmentId, {assignmentAnswer, fileDetails: files})
         if(response.data){
-          setAssignNotify(true)
+          // setAssignNotify(true)
+          toast.success('Successfully submitted assignment answer.')
           setAssignmentAnswer('');
           setUploadingFiles('done');
           setFiles([]);
@@ -122,7 +123,7 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
               <Form.Control onChange={(e) => setAssignmentAnswer(e.target.value)}  as="textarea" rows={3}  />
             </Form.Group>
             <Form.Group className="mb-1">
-              <Button className='tficolorbg-button' onClick={() => { document.getElementById('attachedFile').click() }}>Attache File</Button>
+              <Button className='tficolorbg-button' onClick={() => { document.getElementById('attachedFile').click() }}>Attach File</Button>
               <input id='attachedFile' className='d-none' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
             </Form.Group>
             <Table responsive="sm" className={files.length == 0 ? 'd-none' : ''}>
@@ -146,17 +147,17 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
               </tbody>
             </Table>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit'>Submit Answer</Button>
             </Form.Group>
           </Form> 
           </Modal.Body>
         </Modal>
-        <SweetAlert 
+        {/* <SweetAlert 
           success
           show={assignNotify} 
           title="Done!" 
            onConfirm={closeNotify}>
-        </SweetAlert>
+        </SweetAlert> */}
     </div>
   )
 }

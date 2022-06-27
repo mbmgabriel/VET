@@ -33,8 +33,6 @@ export default function Classes() {
     setJoinClassesModal(!joinClassestModal)
   }
 
-  console.log('classesclassesclasses:', classes)
-
   const getClasses = async() => {
     setLoading(true)
     let response = await new ClassesAPI().getClasses(user.isTeacher ? user?.teacher?.id : user?.student?.id)
@@ -83,8 +81,6 @@ export default function Classes() {
    
   }, [])
 
-  console.log('searchTerm:', searchTerm)
-
   return (
     <MainContainer activeHeader={'classes'} loading={loading}>
       <div className='page-container'>
@@ -97,7 +93,7 @@ export default function Classes() {
             studentClasses.filter((item) => {
               if(searchTerm == ''){
                 return item
-              }else if (item.className.toLowerCase().includes(searchTerm.toLocaleLowerCase())){
+              }else if (item.className.toLowerCase().includes(searchTerm.toLocaleLowerCase()) || item?.classCode.toLowerCase().includes(searchTerm.toLowerCase()) ){
                 return item
               }
             }).map(item => {
@@ -110,7 +106,7 @@ export default function Classes() {
             pendingClasses.filter((item) => {
               if(searchTerm == ''){
                 return item
-              } else if (item.className.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())){
+              } else if (item.className.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) || item?.classCode.toLowerCase().includes(searchTerm.toLowerCase())){
                 return item
               }
             }).map(item =>{
@@ -130,7 +126,7 @@ export default function Classes() {
               classes.filter((item) => {
                 if(searchTerm == '') {
                   return item
-                } else if (item?.className.toLowerCase().includes(searchTerm.toLowerCase())){
+                } else if (item?.className.toLowerCase().includes(searchTerm.toLowerCase()) || item?.classCode.toLowerCase().includes(searchTerm.toLowerCase())){
                   return item
                 }
               }).map(item => {

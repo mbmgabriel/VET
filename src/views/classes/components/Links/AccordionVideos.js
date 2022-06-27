@@ -105,7 +105,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
               <Col sm={9}>
                 <div className='title-exam'>
                   {/* <Link style={{color:'#EE9337', textDecoration:'none'}} to={item?.url}>{item?.description}</Link> */}
-                  <a target="_blank" style={{color:'#EE9337', textDecoration:'none'}} href={item?.url}>{item?.description}</a>
+                  <a target="_blank" className='class-links' href={item?.url}>{item?.description}</a>
                 </div>
                 <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>

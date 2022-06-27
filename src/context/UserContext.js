@@ -5,6 +5,7 @@ import { SIGNALR_URL } from '../contants/url';
 import Logger from '../utils/logger';
 import { onExamRoute } from '../utils/windowLocationHelper';
 import SchoolAPI from '../api/SchoolAPI';
+import { toast } from 'react-toastify';
 
 export const UserContext = React.createContext();
 export class UserContextProvider extends Component {
@@ -19,9 +20,13 @@ export class UserContextProvider extends Component {
       examUrl: null,
       themeColor: '#EE9337',
       themeLogo: null,
+      selectedClassId: null
     };
     this.connection = React.createRef();
+  }
 
+  setSelectedClassId = (id) => {
+    this.setState({selectedClassId: id})
   }
 
   refreshUser = async () => {
@@ -85,12 +90,14 @@ export class UserContextProvider extends Component {
       this.connection.current = new HubConnectionBuilder()
       await this.setState({connectionStatus: 'connecting'})
       var token = await window.localStorage.getItem("token")
-      Logger.info({token, SIGNALR_URL})
+      console.log({token, SIGNALR_URL})
       this.connection.current = await new HubConnectionBuilder()
                         .withUrl(SIGNALR_URL, {
                           accessTokenFactory: () => token
                         })
+                        .configureLogging(LogLevel.Debug)
                         .build();
+      console.log({connection: this.connection.current})
 
       this.connection.current.on("OnthemeLogoutMessage", (user, message) => {
         Logger.info('themeLogout message received:', message);
@@ -123,6 +130,13 @@ export class UserContextProvider extends Component {
         }
       });
 
+      this.connection.current.on("Notification", (user, message) => {
+        Logger.info('Notification received:');
+        console.log({message})
+        toast.info(message?.message ?? "Notification received")
+        
+      });
+
       this.connection.current.onreconnecting(() => {
         Logger.info('reconnecting');
         this.setState({connectionStatus: 'reconnecting'});
@@ -143,6 +157,11 @@ export class UserContextProvider extends Component {
     }
   }
 
+
+  notify = async ({description = "", classId, activityType}) => {
+    await this.connection.current.invoke("Notifications", description, classId, activityType)
+  }
+
   endExam = async () => {
     await this.connection.current.invoke("OnEndExam")
   }
@@ -160,7 +179,8 @@ export class UserContextProvider extends Component {
       themeColor,
       connectionStatus,
       takingExam,
-      themeLogo
+      themeLogo,
+      selectedClassId
     } = this.state;
     return (
       <UserContext.Provider
@@ -173,12 +193,15 @@ export class UserContextProvider extends Component {
             takingExam,
             themeColor,
             themeLogo,
+            selectedClassId,
+            setSelectedClassId: this.setSelectedClassId,
             takeExam: this.takeExam,
             endExam: this.endExam,
             refreshUser: this.refreshUser,
             connect: this.connect,
             setThemeColor: this.setThemeColor,
             setThemeLogo: this.setThemeLogo,
+            notify: this.notify,
           },
         }}>
         {children}

@@ -38,6 +38,7 @@ export default function ExamCreationDetails({
   useEffect(() => {
     getCourseInformation();
   }, [])
+  console.log(!(courseInfos?.isTechfactors), user,  '-----------------------------');
 
   return exam != null ? (
     <div className='exam-information-container' title="">

@@ -63,7 +63,7 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
   }
 
   const notifySaveExam = () => 
-  toast.success('Exam Saved', {
+  toast.success('Successfully created the exam', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -86,26 +86,26 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 						<Form onSubmit={saveExam}>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
-												Test Name
+												Exam Name
 										</Form.Label>
 										<Form.Control 
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test name"
+                      placeholder="Enter exam name"
                       onChange={(e) => setTestName(e.target.value)}
                     />
 								</Form.Group>
 
 								<Form.Group className="m-b-20">
 										<Form.Label for="description">
-												Test Instructions
+												Exam Instructions
 										</Form.Label>
 										<Form.Control 
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test instructions"
+                      placeholder="Enter exam instructions"
                       onChange={(e) => setTestInstructions(e.target.value)}
                     />
 								</Form.Group>

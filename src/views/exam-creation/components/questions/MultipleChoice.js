@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { toast } from "react-toastify";
@@ -10,6 +10,9 @@ import DEFAULT_CHOICES from "../../../../contants/default-choices";
 import FileHeader from "../../../courses/components/AssignmentFileHeader";
 import QuestionActions from "./QuestionActions";
 import FilesAPI from '../../../../api/FilesApi'
+import { displayQuestionType } from "../../../../utils/displayQuestionType";
+import {writeFileXLSX, utils} from "xlsx";
+import { UserContext } from '../../../../context/UserContext';
 
 const MultipleChoiceForm = ({
   selectedQuestion,
@@ -24,11 +27,11 @@ const MultipleChoiceForm = ({
   setChoices,
   editQuestion,
 }) => {
-
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
   const courseid = sessionStorage.getItem('courseid')
+  const { id } = useParams();
 
   console.log(editQuestion)
   
@@ -62,22 +65,34 @@ const MultipleChoiceForm = ({
     setChoices([...tempChoices])
   };
 
-  const handleGetCourseFiles = async() => {
-    // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(courseid)
-    // setLoading(false)
-    if(response.ok){
-      console.log(response, '-----------------------')
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
-    }else{
-      alert("Something went wrong while fetching class files.")
+  const handleGetFiles = async() => {
+    if(window.location.pathname.includes('course')){
+      let response = await new FilesAPI().getCourseFiles(id)
+      // setLoading(false)
+      if(response.ok){
+        console.log(response, '-----------------------')
+        setDisplayFiles(response.data.files)
+        setDisplayFolder(response.data.folders)
+      }else{
+        alert("Something went wrong while fetching course files.")
+      }
     }
-  } 
+    if(window.location.pathname.includes('class')){
+      let response = await new FilesAPI().getClassFiles(id)
+      // setLoading(false)
+      if(response.ok){
+        console.log(response, '-----------------------')
+        setDisplayFiles(response.data.files)
+        setDisplayFolder(response.data.folders)
+      }else{
+        alert("Something went wrong while fetching class files.")
+      }
+    }
+    // setLoading(true)
+  }
 
   useEffect(() => {
-    handleGetCourseFiles()
-    
+    handleGetFiles()
   }, [])
 
   return (
@@ -93,7 +108,7 @@ const MultipleChoiceForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <FileHeader type='Course' id={courseid}  subFolder={''} doneUpload={()=> handleGetCourseFiles()} />
+          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={id}  subFolder={''} doneUpload={()=> handleGetFiles()} />
           {/* {
             (displayFiles || []).map( (item,ind) => {
               return(
@@ -120,7 +135,7 @@ const MultipleChoiceForm = ({
           }
         </div>
         <div>
-          <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
         </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>
@@ -137,7 +152,7 @@ const MultipleChoiceForm = ({
               className='custom-input'
               size='lg'
               type='number'
-              placeholder='Enter test points'
+              placeholder='Enter exam points'
               onChange={(e) => setRate(e.target.value)}
             />
           </Form.Group>
@@ -233,7 +248,9 @@ export default function MultipleChoice({
   setLoading,
   deleteQuestion,
   editable,
+  examName
 }) {
+  console.log('Parts', part)
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
   const [rate, setRate] = useState(1);
@@ -244,6 +261,11 @@ export default function MultipleChoice({
   const courseid = sessionStorage.getItem('courseid')
   const [courseInfos, setCourseInfos] = useState([])
   const [editQuestion, setEditQuestion] = useState('')
+  const [data, setData] = useState([]);
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const contentCreator = user?.teacher?.positionID == 7;
+  const isCourse = window.location.pathname.includes('course');
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -254,7 +276,12 @@ export default function MultipleChoice({
 
   useEffect(() => {
     getCourseInformation();
+    handleGetItems()
   }, [])
+
+  useEffect(() => {
+    handleGetItems();
+  },[part])
 
   const validChoices = () => {
     let isDuplicated = false;
@@ -353,14 +380,58 @@ export default function MultipleChoice({
     } else {
       toast.error(
         response.data?.errorMessage ||
-          "Something went wrong while creating the Question"
-      );
-      setLoading(false);
+        "Something went wrong while creating the Question"
+        );
+        setLoading(false);
+      }
+  };
+
+  const handleMapChoices = (part) => { // get the choices and identify the largest number of choices
+    let lenght = 0;
+    let choices = {};
+    part.questionDtos.map((question, index) => {
+      lenght = question.choices.length > lenght ? question.choices.length : lenght
+    })
+    for (let i = 0; i < lenght; i++) {
+      choices[`choice${i+1}`] = '';
+      choices[`isCorrect${i+1}`] = 0;
     }
+    return choices;
+  }
+
+  const handleGetItems = () => {
+    let tempData =[]
+    part.questionDtos.map((question, index) => {
+      let temp= {
+        question: '',
+        ...handleMapChoices(part), //map the largest number of choices to put the rate at the end
+        rate: 0
+      };
+      temp.question = question.question.testQuestion //set the temp question
+      question.choices.map((choice, ind) =>{ //map choices and fill each fields
+        temp[`choice${ind+1}`] = choice.testChoices;
+        temp[`isCorrect${ind+1}`] = choice.isCorrect ? 1 : 0;
+      })
+      temp.rate = question.question.rate //add rate
+      tempData.push(temp)
+    })
+    setData(tempData)
+  }
+
+  const downloadxls = (e, data) => {
+    console.log(data);
+    e.preventDefault();
+    const ws =utils.json_to_sheet(data);
+    const wb =utils.book_new();
+   utils.book_append_sheet(wb, ws, "SheetJS");
+    /* generate XLSX file and send to client */
+    writeFileXLSX(wb, `${examName}_${displayQuestionType(part.questionPart.questionTypeId)}.xlsx`);
   };
 
   return (
     <div>
+      {courseInfos?.isTechfactors && contentCreator && isCourse && <Button className='tficolorbg-button m-r-5 mb-3' onClick={(e) => downloadxls(e, data)} >Export Exam Part</Button>}
+      <br/>
       {part.questionDtos.map((question, index) => (
         <div key={index} className='d-flex hover-link p-3 rounded'>
           <div style={{ flex: 1 }}>

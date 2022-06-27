@@ -13,15 +13,15 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
   const {user} = userContext.data
   const  [taskAnswer, setTaskAnswer] = useState('')
   // const [files, setFiles] = useState('')
-  const [assignNotify, setAssignNotify] = useState(false);
+  // const [assignNotify, setAssignNotify] = useState(false);
   const [files, setFiles] = useState([]);
   const [uploadingFiles, setUploadingFiles] = useState('pending');
 
   console.log('taskId:', taskId)
 
-  const closeNotify = () => {
-    setAssignNotify(false)
-  }
+  // const closeNotify = () => {
+  //   setAssignNotify(false)
+  // }
 
   const submitStudentTaskAnswer = async (e) =>{
     e.preventDefault()
@@ -30,7 +30,8 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
     let response = await new ClassesAPI().submitStudentTaskAnswer(studentId, id, taskId, {taskAnswer, fileDetails: files})
       if(response.ok){
         setTaskAnswer('')
-        setAssignNotify(true)
+        // setAssignNotify(true)
+        toast.success('Successfully submitted task answer.');
         setUploadingFiles('done');
         setFiles([]);
         answerTaskToggle(false)
@@ -111,7 +112,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
               <Form.Control onChange={(e) => setTaskAnswer(e.target.value)}  as="textarea" rows={3}  />
             </Form.Group>
             <Form.Group className="mb-1">
-              <Button className='tficolorbg-button' onClick={() => { document.getElementById('attachedFile').click() }}>Attache File</Button>
+              <Button className='tficolorbg-button' onClick={() => { document.getElementById('attachedFile').click() }}>Attach File</Button>
               <input id='attachedFile' className='d-none' multiple type='file' placeholder='Choose color' style={{ backgroundColor: 'inherit' }} onChange={(e) => handlefilesUpload(e.target.files)} />
             </Form.Group>
             <Table responsive="sm" className={files.length == 0 ? 'd-none' : ''}>
@@ -135,17 +136,17 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
               </tbody>
             </Table>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit'>Submit Answer</Button>
             </Form.Group>
           </Form> 
           </Modal.Body>
         </Modal>
-        <SweetAlert 
+        {/* <SweetAlert 
           success
           show={assignNotify} 
           title="Done!" 
            onConfirm={closeNotify}>
-        </SweetAlert>
+        </SweetAlert> */}
     </div>
   )
 }

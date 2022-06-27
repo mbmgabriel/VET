@@ -7,16 +7,24 @@ import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 
 
-function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
+function CreateLinks({setUrl, typeId, setTypeId, url, modal, setDescription, description, toggle, getConfe, getVideos, getLinks}) {
   const {id} = useParams();
-  const [typeId, setTypeId] = useState('')
-  const [description, setDescription] = useState('')
-  const [url, setUrl] = useState('')
 
   
   const addLinks = async (e) => {
     e.preventDefault()
-    let response = await new ClassesAPI().createLinks(id, typeId, {typeId, description, url})
+    if(typeId === ''){
+      toast.error('Please Select Type', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else{
+      let response = await new ClassesAPI().createLinks(id, typeId, {typeId, description, url})
       if(response.ok){
         // alert('Add')
         toggle(e)
@@ -24,11 +32,25 @@ function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
         getVideos()
         getLinks()
         successSave()
+        setTypeId('')
+        setDescription('')
+        setUrl('')
       }else{
-        alert(response.data.errorMessage);
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+        
    
       }
   }
+    }
+   
 
   const successSave = () => {
     toast.success('Successfully created link!', {
@@ -76,7 +98,7 @@ function CreateLinks({modal, toggle, getConfe, getVideos, getLinks}) {
               </Form.Select>
             </Form.Group>
 			      <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Save Links</Button>
             </Form.Group>
           </Form>
         </Modal.Body>

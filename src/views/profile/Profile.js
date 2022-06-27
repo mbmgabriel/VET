@@ -167,12 +167,12 @@ function Profile() {
       </div>
       {user?.isStudent && 
       <>
-      <ProfileEdit getStudentInfo={getStudentInfo} openUserInfoModal={openUserInfoModal} openUserInfoToggle={openUserInfoToggle} userInfo={userInfo} />
+      <ProfileEdit setUserInfoModal={setUserInfoModal} getStudentInfo={getStudentInfo} openUserInfoModal={openUserInfoModal} openUserInfoToggle={openUserInfoToggle} userInfo={userInfo} />
       </>}
 
       {user?.isTeacher && 
       <>
-      <ProfileTeacherEdit getTeacherInfo={getTeacherInfo} openTeacherInfoToggle={openTeacherInfoToggle} openTeacherInfoModal={openTeacherInfoModal} userInfo={userInfo} />
+      <ProfileTeacherEdit setOpenTeacherInfoModal={setOpenTeacherInfoModal} getTeacherInfo={getTeacherInfo} openTeacherInfoToggle={openTeacherInfoToggle} openTeacherInfoModal={openTeacherInfoModal} userInfo={userInfo} />
       </>
       }
      

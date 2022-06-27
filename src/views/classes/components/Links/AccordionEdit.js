@@ -20,7 +20,13 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
   const closeNotify = () =>{
     setEditNotify(false)
   }
-  
+
+  const toggle =() =>{
+    setOpenEditModal(false)
+    setEditDescription(editLinks?.description)
+    setEditUrl(editLinks?.url)
+  }
+
   const saveEditClassLinks = async (e) =>{
     e.preventDefault()
     if(description === '' || url === ''){
@@ -45,7 +51,15 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
         getLinks()
         successSave()
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
 
     }
@@ -61,7 +75,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
   console.log('editLinks:', editLinks)
 
   const successSave = () => {
-    toast.success('Successfully Edit link!', {
+    toast.success('Successfully Updated link!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -74,7 +88,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
   
   return (
     <div>		
-      <Modal size="lg" show={openEditModal} onHide={()=> setOpenEditModal(!setOpenEditModal)} aria-labelledby="example-modal-sizes-title-lg">
+      <Modal size="lg" show={openEditModal} onHide={()=> toggle()} aria-labelledby="example-modal-sizes-title-lg">
     <Modal.Header className='class-modal-header' closeButton>
       <Modal.Title id="example-modal-sizes-title-lg" >
         Edit Links
@@ -101,7 +115,7 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
             <Form.Control value={editLinks?.classLink?.type}  type="text" disabled/>
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Links</Button>
             </Form.Group>
           </Form>
         </Modal.Body>

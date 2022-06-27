@@ -94,7 +94,7 @@ export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEdi
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test name"
+                      placeholder="Enter video name"
                       onChange={(e) => setTitle(e.target.value)}
                     />
 								</Form.Group>
@@ -108,7 +108,7 @@ export default function EditVideos({setVideoInfo, openEditVideoModal, setOpenEdi
                       className="custom-input" 
                       size="lg" 
                       type="text" 
-                      placeholder="Enter test instructions"
+                      placeholder="Enter Sequence No"
                       onChange={(e) => setSequenceNo(e.target.value)}
                     />
 								</Form.Group>

@@ -183,7 +183,7 @@ export default function CourseLearn() {
           <span className="content-pane-title">
             Learn 
               {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
-                <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus"></i> Add Unit</Button>
+                <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus"></i> Add Module</Button>
               </>)}
              
             <CourseCreateUnit moduleInfo={moduleInfo} setModuleInfo={setModuleInfo} openCreateUnitModal={openCreateUnitModal} setOpenCreateUnitModal={setOpenCreateUnitModal}/>
@@ -191,7 +191,7 @@ export default function CourseLearn() {
           <div className="row m-b-20 m-t-30">
             <div className="col-md-12">
               <InputGroup size="lg">
-                <FormControl aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search unit or lesson here" type="search" onChange={(e) => onSearch(e.target.value)}/>
+                <FormControl aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search module or lesson here" type="search" onChange={(e) => onSearch(e.target.value)}/>
                 <InputGroup.Text id="basic-addon2" className="search-button"><i className="fas fa-search fa-1x"></i></InputGroup.Text>
               </InputGroup>
             </div>
