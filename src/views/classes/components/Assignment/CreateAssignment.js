@@ -299,6 +299,9 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
               </Table>
             }
           </div>
+          <div className='text-align-right'>
+            <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          </div>
           <Form onSubmit={createAssignment} > 
             <Form.Group className="mb-3">
               <Form.Label>Unit</Form.Label>
@@ -309,9 +312,6 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
                     })}
                 </Form.Select>
               </Form.Group>
-              <div className='text-align-right'>
-                <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-              </div>
               <Form.Group className="mb-4">
                 <Form.Label>Assignment Name</Form.Label>
                   <Form.Control onChange={(e) => setAssignmentName(e.target.value)} type="text" placeholder='Enter Assignment Name here'/>
