@@ -99,7 +99,7 @@ function ClassList() {
       toast.success("Successfully uploaded the class list.")
     }else{
       setLoading(false);
-      alert("Something went wrong while uploading class list")
+      toast.error("Something went wrong while uploading class list.")
     }
   }
 
