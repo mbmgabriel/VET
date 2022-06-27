@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+
 import { useContext } from 'react';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
-import { UserContext } from '../../context/UserContext';
-import MainContainer from '../../components/layouts/MainContainer'
+import { UserContext } from '../../../context/UserContext';
+import MainContainer from '../../../components/layouts/MainContainer'
 import { Col, Row } from 'react-bootstrap';
 import {  Doughnut, Line } from 'react-chartjs-2';
 
-export default function Dashboard() {
+export default function SystemAdminDashboard() {
 
   const userContext = useContext(UserContext)
   const {user} = userContext.data  
 
-  if(user.isSchoolAdmin){
+  
+  if(user.isSystemAdmin){
     return (
       <MainContainer title="Dashboard" activeHeader={"dashboard"}>
         <Row>
@@ -84,6 +86,6 @@ export default function Dashboard() {
       </MainContainer>
     )
   }
-
   return <Redirect to="/404"/>
+
 }
