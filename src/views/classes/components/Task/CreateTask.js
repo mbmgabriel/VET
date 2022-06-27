@@ -213,7 +213,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
         <Form onSubmit={saveTask} >  
           <div className={showFiles ? 'mb-3' : 'd-none'}>
             {displayType == 'Class' ?
-              <FileHeader type='Class' id={classId}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
+              <FileHeader type='Class' id={classId}  subFolder={`${subFolderDirectory.join('')}`}  doneUpload={()=> handleGetClassFiles(subFolderDirectory.join(''))} />
               :
               <div>
                 <p className='title-header'>Files</p>
