@@ -3,6 +3,7 @@ import {Accordion, Row, Col, Button} from 'react-bootstrap'
 import AssignmentContent from './AssignmentContent'
 import AssignmentReportContent from '../contents/AssignmentReportContent'
 import ClassesAPI from './../../../api/ClassesAPI'
+import { toast } from 'react-toastify';
 
 function AssignmentReport({filter, setFilter, classesModules, setClassesModules, selectedClassId, viewAssignmentReport, setViewAssignmentReport, showAssignmentHeader, setShowAssignmentHeader}) {
 
@@ -96,7 +97,7 @@ if(viewAssignmentReport === true){
     </div>
   )}else{
     return(
-      <AssignmentReportContent showAssignmentHeader={showAssignmentHeader} setShowAssignmentHeader={setShowAssignmentHeader} assignmentColumns={assignmentColumns()} setAssignmentReport={setAssignmentReport} assignmentReport={assignmentReport}/>
+      <AssignmentReportContent getAssignmentReport={getAssignmentReport} showAssignmentHeader={showAssignmentHeader} setShowAssignmentHeader={setShowAssignmentHeader} assignmentColumns={assignmentColumns()} setAssignmentReport={setAssignmentReport} assignmentReport={assignmentReport}/>
     )
   }
   

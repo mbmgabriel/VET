@@ -659,4 +659,18 @@ creatTask = async (mId, cId,  data) => {
     })
   }
 
+  reTakeAssigment = async (id, assignmentId, studentId) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/assignment/${assignmentId}/student/${studentId}/retake`,
+      method: 'DELETE'
+    })
+  }
+
+  reTakeTask = async (id, taskId, studentId) => {
+    return this.sendRequest({
+      path:`/api/Class/${id}/task/${taskId}/student/${studentId}/retake`,
+      method: 'DELETE'
+    })
+  }
+
 }
