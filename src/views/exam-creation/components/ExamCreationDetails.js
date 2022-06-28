@@ -24,9 +24,19 @@ export default function ExamCreationDetails({
   const { startDate, endDate } = getStartAndEndDateFromClassTest(exam);
   const courseid = sessionStorage.getItem('courseid')
   const [courseInfos, setCourseInfos] = useState([])
+  const [isContributor, setIsContributor] = useState(true);
 
-  console.log('courseidcourseidcourseid:', courseid)
-  console.log('courseInfoscourseInfoscourseInfos:', courseInfos)
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(courseid)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
+  // console.log('courseidcourseidcourseid:', courseid)
+  // console.log('courseInfoscourseInfoscourseInfos:', courseInfos)
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -36,9 +46,10 @@ export default function ExamCreationDetails({
   }
 
   useEffect(() => {
+    getContributor();
     getCourseInformation();
   }, [])
-  console.log(!(courseInfos?.isTechfactors), user,  '-----------------------------');
+  // console.log(!(courseInfos?.isTechfactors), user,  '-----------------------------');
 
   return exam != null ? (
     <div className='exam-information-container' title="">
@@ -70,7 +81,7 @@ export default function ExamCreationDetails({
       </div>
       <hr />
       <p className='secondary-title mt-4'>Exam Parts</p>
-      {courseInfos?.isTechfactors && user?.teacher?.positionID == 7 &&
+      {isContributor &&
         <>
           {editable && (
           <Button
@@ -83,26 +94,7 @@ export default function ExamCreationDetails({
               setShowModal(true);
             }}
           >
-            Add Part
-          </Button>
-        )
-        }
-        </>
-      }
-      {!(courseInfos?.isTechfactors) && user?.isTeacher &&
-        <>
-          {editable && (
-          <Button
-            className='btn btn-primary my-4'
-            variant='primary'
-            size='lg'
-            title=""
-            onClick={() => {
-              setSelectedPart(null);
-              setShowModal(true);
-            }}
-          >
-            Add Part
+            Add Part-
           </Button>
         )
         }
