@@ -102,7 +102,7 @@ export default function ExamCreationDetails({
               setShowModal(true);
             }}
           >
-            Add Part
+            Add Part 1
           </Button>
         )
         }
