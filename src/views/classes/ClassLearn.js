@@ -94,7 +94,7 @@ function ClassLearn() {
                 <div className="row calendar-subtitle">
                   <div>
                   <Form.Select onChange={onModuleChange} aria-label="Default select example">
-                <option value="">--SELECT UNIT HERE--</option>
+                <option value="">--Select Module Here--</option>
                 {modules.map(item =>{
                     return (<option value={item?.id} > {item?.moduleName}</option>)
                   })}
