@@ -43,7 +43,7 @@ export default function SchoolTermTable() {
     if (selectedTerm != null) {
       const response = await new GradeTermAPI().updateTerm(selectedTerm.id, data);
       if(response.ok) {
-        toast.success("Term updated successful")
+        toast.success("Successfully Updated Term")
         handleGetAllTerms()
         reset()
         setShowForm(false)
@@ -54,12 +54,12 @@ export default function SchoolTermTable() {
     } else {
       const response = await new GradeTermAPI().createTerm(data);
       if (response.ok) {
-        toast.success("Term created successful");
+        toast.success("Successfully Created Term");
         handleGetAllTerms();
         reset();
         setShowForm(false);
       } else {
-        toast.error("Something went wrong while creating the term");
+        toast.error(response.data.errorMessage);
       }
     }
     setLoading(false);
@@ -70,7 +70,7 @@ export default function SchoolTermTable() {
     setResetNotify(false);
     const response = await new GradeTermAPI().deleteTerm(id);
     if (response.ok) {
-      toast.success("Term deleted successful");
+      toast.success("Successfully Deleted Term");
       handleGetAllTerms();
     } else {
       toast.error("Something went wrong while deleting terms");
@@ -81,6 +81,7 @@ export default function SchoolTermTable() {
 
   const handleCloseModal = () => {
     setShowForm(false);
+    setSelectedTerm(null);
   };
 
   return (
@@ -106,7 +107,7 @@ export default function SchoolTermTable() {
                 id: "edit",
                 accessor: (d) => d.id,
                 Cell: (row) => (
-                  <div className=''>
+                  <div style={{textAlign:'center'}} className=''>
                     <button
                       onClick={() => {
                         setValue('description', row.original.description)
@@ -167,7 +168,7 @@ export default function SchoolTermTable() {
           <Modal.Body>
             <div className='col-md-12 m-b-15'>
               <label className='control-label mb-2'>Term name</label>
-              <input
+                <input
                 {...register("description", {
                   required: "Term name is required",
                 })}
@@ -180,9 +181,15 @@ export default function SchoolTermTable() {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <button type='submit' className='btn btn-primary'>
-              Save
+            {selectedTerm != null ? 
+                <button type='submit' className='btn btn-primary'>
+                Update Save
+              </button>  
+              :
+              <button type='submit' className='btn btn-primary'>
+              Save Term
             </button>
+            }
           </Modal.Footer>
         </form>
       </Modal>
