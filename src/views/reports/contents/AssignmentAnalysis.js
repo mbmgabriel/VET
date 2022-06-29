@@ -128,17 +128,24 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
         <Col md={12}>No Answer Yet</Col>
         :
           <>
-            <Col md={12}>Assignment Name : {assignmentAnalysis.assignment?.assignmentName}</Col>
+            <Col md={12}>Assignment Name: {assignmentAnalysis.assignment?.assignmentName}</Col>
             <hr></hr>
             <Col md={12}>{assignmentAnalysis.studentAssignment?.assignmentAnswer}</Col>
             <hr></hr>
             
-            <Col md={12}>{assignmentAnalysis.studentAssignment?.assignmentGrade}
-              <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, classid, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
-                <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Score
-              </Button>
+            <Col md={12}>
+              {assignmentAnalysis.studentAssignment?.assignmentGrade}
+              {console.log('assignmentAnalysis.studentAssignment?.assignmentGrade:', assignmentAnalysis.studentAssignment?.assignmentGrade)}
+              {assignmentAnalysis.studentAssignment?.assignmentGrade === null ?
+                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, classid, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
+                  <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Add Score
+                </Button>
+                         :
+                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, classid, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
+                 <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Score
+                </Button>
+            }
             </Col>
-            <hr />
             <Col className='mb-3'>
               <Row>
                 {

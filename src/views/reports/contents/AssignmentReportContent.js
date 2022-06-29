@@ -68,7 +68,7 @@ function AssignmentReportContent({showAssignmentHeader, setShowAssignmentHeader,
               return (
                 <>
                 <td><i class="fas fa-user-circle td-icon-report-person"></i> 
-                  <span onClick={(e) => getAssignmentAnalysis(e, item.student.id, sessionClass, sessionAssignmentId)}>{item.student.lname}, {item.student.fname}</span>
+                  <span style={{cursor:'pointer'}} onClick={(e) => getAssignmentAnalysis(e, item.student.id, sessionClass, sessionAssignmentId)}>{item.student.lname}, {item.student.fname}</span>
                 </td>
                 <td>{st.score} </td>
                 </>
