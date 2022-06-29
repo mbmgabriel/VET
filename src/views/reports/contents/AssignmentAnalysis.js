@@ -66,6 +66,24 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
     }
   }
 
+  const addScoreAssignment = async(e, studentid, classid, assignmentid, answerid) => {
+    e.preventDefault()
+    let isConsider = true
+    let response = await new ClassesAPI().updateAssignmentPoints
+    (
+      selectedStudentId, sClassId, selectedAssignmentId, selectedAnswerId, {assignmentGrade, feedback}
+    )
+    if(response.ok){
+      // setSweetError(true);
+      setShow(true);
+      setOpenModal(false)
+      notifySaveAssignmentScore()
+      getAssignmentAnalysis(e, selectedStudentId, sClassId, selectedAssignmentId)
+    }else{
+      alert(response.data.errorMessage)
+    }
+  }
+
   const updateScoreAssignment = async(e, studentid, classid, assignmentid, answerid) => {
     e.preventDefault()
     let isConsider = true
@@ -94,7 +112,18 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
   }, [])
 
   const notifyUpdateAssignmentScore = () => 
-  toast.success('Score Saved', {
+  toast.success('Successfully Updated Score', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+
+  const notifySaveAssignmentScore = () => 
+  toast.success('Successfully Saved Score', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -174,10 +203,10 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
       </Row>
       <Modal size="lg" className="modal-all" show={openModal} onHide={()=> setOpenModal(!openModal)} backdrop="static">
         <Modal.Header className="modal-header" closeButton>
-        Update Points
+          {assignmentAnalysis.studentAssignment?.assignmentGrade === null ? <>Add Points</>:<>Update Points</>}
         </Modal.Header>
         <Modal.Body className="modal-label b-0px">
-          <Form onSubmit={updateScoreAssignment}>
+          <Form onSubmit={assignmentAnalysis.studentAssignment?.assignmentGrade === null ? addScoreAssignment: updateScoreAssignment}>
               <Form.Group className="m-b-20">
                   <Form.Label for="courseName">
                       Rate / Points
