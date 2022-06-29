@@ -130,7 +130,7 @@ function ClassFiles() {
             </InputGroup>
           </div>
           <div>
-            <span onClick={()=> handleClickedClassBread()} className={breadCrumbsItemClass.length == 0 ? 'fix-color-bread' : 'colored-files-bread'}>{displayType} Files --</span>
+            <span onClick={()=> handleClickedClassBread()} className={breadCrumbsItemClass.length == 0 ? 'fix-color-bread' : 'colored-files-bread'}>{displayType} Files </span>
             {
               breadCrumbsItemClass.map((item, index) => {
                 return <span onClick={() => handleClickedBreadcrumbsItem(item.value, index, 'Class')} className={breadCrumbsItemClass.length == (index+1) ? 'fix-color-bread' : 'colored-files-bread'}>  <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {item.naame}</span>
