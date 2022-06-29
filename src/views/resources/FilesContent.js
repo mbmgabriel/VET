@@ -202,7 +202,7 @@ function FilesContent(props) {
       "oldFileName": currentFolderName,
       "subFolderLocation": `${props.subFolder}`
     }
-    let response = await new FilesAPI().updateFolderName(props.id, 'Class', data)
+    let response = await new FilesAPI().updateTeacherResource(props.id, props.type, data)
     if(response.ok){
       props.deleted();
       toast.success('Successfully renamed folder.')
