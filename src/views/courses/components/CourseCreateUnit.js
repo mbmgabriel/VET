@@ -44,7 +44,7 @@ export default function CourseCreateUnit({moduleInfo, setModuleInfo, openCreateU
 			}
     )
     if(response.ok){
-			toast.success('Successfully Add Module!', {
+			toast.success('Successfully Added Module!', {
 				position: "top-right",
 				autoClose: 5000,
 				hideProgressBar: false,
