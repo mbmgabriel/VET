@@ -13,6 +13,7 @@ import {writeFileXLSX, utils} from "xlsx";
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
 import { UserContext } from '../../../../context/UserContext';
 import CourseFileLibrary from "../../../courses/components/CourseFileLibrary";
+import ClassCourseFileLibrary from '../../../classes/components/ClassCourseFileLibrary';
 
 const TrueOrFalseForm = ({
   showModal,
@@ -31,6 +32,7 @@ const TrueOrFalseForm = ({
   const [displayFolder, setDisplayFolder] = useState([]);
   const courseid = sessionStorage.getItem('courseid')
   const { id } = useParams();
+  const tabType = window.location.pathname.includes("class") ? true : false; // if class or course
 
   return (
     <Modal
@@ -45,7 +47,7 @@ const TrueOrFalseForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <CourseFileLibrary />
+          {tabType ? <ClassCourseFileLibrary /> : <CourseFileLibrary />}
         </div>
         <div>
           <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
