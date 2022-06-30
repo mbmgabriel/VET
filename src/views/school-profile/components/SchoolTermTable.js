@@ -151,10 +151,9 @@ export default function SchoolTermTable() {
         confirmBtnText='Confirm'
         confirmBtnBsStyle='danger'
         cancelBtnBsStyle='secondary'
-        title='Are you sure?'
+        title='Are you sure to delete this term?'
         onCancel={() => setResetNotify(false)}
       >
-        Are you sure you want to delete this term?
       </SweetAlert>
       <Modal show={showForm} onHide={() => handleCloseModal()}>
         <form onSubmit={handleSubmit(submitForm)}>
