@@ -25,6 +25,7 @@ export default function ExamCreation() {
   const [editable, setEditable] = useState(true)
   const [courseInfos, setCourseInfos] = useState([])
   const courseid = sessionStorage.getItem('courseid')
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -155,6 +156,8 @@ export default function ExamCreation() {
 
   const addPart = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true)
     const data = {
       instructions
@@ -243,6 +246,7 @@ export default function ExamCreation() {
         setInstructions={setInstructions}
         instructions={instructions}
         selectedPart={selectedPart}
+        isButtonDisabled={isButtonDisabled}
         addPart={submitPartForm}/>
     </Container>
   );
