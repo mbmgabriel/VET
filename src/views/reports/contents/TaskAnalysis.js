@@ -108,7 +108,7 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
   }, [])
 
   const notifyUpdateTaskScore = () => 
-  toast.success('Successfully Updated Score', {
+  toast.success('Successfully Updated Points', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -119,7 +119,7 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
   });
 
   const notifyAddTaskScore = () => 
-  toast.success('Successfully Saved Score', {
+  toast.success('Successfully Saved Points', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -163,14 +163,14 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
                           onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, classid, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
                         >
                           <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>
-                          Add Score
+                          Add Points
                         </Button>
                         :
                         <Button variant="outline-warning" className='mb-2 mx-3' size="sm"
                         onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, classid, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
                       >
                         <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>
-                        Update Score
+                        Update Points
                       </Button>  
           }
 
@@ -235,9 +235,15 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
               />
             </Form.Group>
             <span style={{float:"right"}}>
+            {taskAnalysis.studentTask?.taskGrade === null ? 
               <Button className="tficolorbg-button" type="submit">
-                Save
+               Save Points
               </Button>
+            :
+              <Button className="tficolorbg-button" type="submit">
+                Update Points
+              </Button>
+            }
             </span>
           </Form>
         </Modal.Body>

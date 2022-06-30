@@ -112,7 +112,7 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
   }, [])
 
   const notifyUpdateAssignmentScore = () => 
-  toast.success('Successfully Updated Score', {
+  toast.success('Successfully Updated Points', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -123,7 +123,7 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
   });
 
   const notifySaveAssignmentScore = () => 
-  toast.success('Successfully Saved Score', {
+  toast.success('Successfully Saved Points', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -167,11 +167,11 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
               {console.log('assignmentAnalysis.studentAssignment?.assignmentGrade:', assignmentAnalysis.studentAssignment?.assignmentGrade)}
               {assignmentAnalysis.studentAssignment?.assignmentGrade === null ?
                 <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, classid, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
-                  <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Add Score
+                  <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Add Points
                 </Button>
                          :
                 <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, classid, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
-                 <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Score
+                 <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Points
                 </Button>
             }
             </Col>
@@ -231,9 +231,15 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
                 />
               </Form.Group>
               <span style={{float:"right"}}>
-                <Button className="tficolorbg-button" type="submit">
-                  Save
-                </Button>
+              {assignmentAnalysis.studentAssignment?.assignmentGrade === null ? 
+              <Button className="tficolorbg-button" type="submit">
+                Save Points
+              </Button>
+              :
+              <Button className="tficolorbg-button" type="submit">
+                Update Points
+               </Button>
+              }
               </span>
           </Form>
         </Modal.Body>
