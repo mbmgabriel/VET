@@ -16,6 +16,7 @@ import ExamCreation from "../../../exam-creation/ExamCreation";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
 
+
 export default function CoursesExam() {
   const {id} = useParams();
   const [loading, setLoading] = useState(false)
@@ -67,12 +68,12 @@ export default function CoursesExam() {
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
-    let response = await new CoursesAPI().getCourseUnit(courseid)
+    let response = await new CoursesAPI().getCourseUnit(id)
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
     }else{
-      alert("Something went wrong while fetching all exam")
+      alert("Something went wrong while fetching all exam!!!!!!!!!!")
     }
   }
 
@@ -125,6 +126,7 @@ export default function CoursesExam() {
   });
 
   useEffect(() => {
+    
     getCourseUnitInformation()
   }, [])
 

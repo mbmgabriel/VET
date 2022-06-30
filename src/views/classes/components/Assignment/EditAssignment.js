@@ -77,7 +77,7 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
       setDisplayFiles(response.data.files)
       setDisplayFolder(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files.")
+      alert("Something went wrong while fetching class files11111111.")
     }
   }
 

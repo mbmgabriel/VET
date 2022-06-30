@@ -25,7 +25,7 @@ export default function CourseCreateUnit({moduleInfo, setModuleInfo, openCreateU
       setModuleInfo(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching course unit")
+      alert("Something went wrong while fetching course unit111111")
     }
   }
 
