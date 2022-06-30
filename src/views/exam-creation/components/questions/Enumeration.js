@@ -12,6 +12,7 @@ import FileHeader from "../../../courses/components/AssignmentFileHeader";
 import {writeFileXLSX, utils} from "xlsx";
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
 import { UserContext } from '../../../../context/UserContext';
+import CourseFileLibrary from "../../../courses/components/CourseFileLibrary";
 
 const EnumerationForm = ({
   showModal,
@@ -35,66 +36,7 @@ const EnumerationForm = ({
   const [displayFolder, setDisplayFolder] = useState([]);
   const courseid = sessionStorage.getItem('courseid')
   const { id } = useParams();
-  const tabType = window.location.pathname.includes('course') ? 'Course' : 'Class'; //to identify if the component is call from class or course
-  const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
-  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
-
-  const handleGetFiles = async(name) => {
-    if(window.location.pathname.includes('course')){
-      let data = {
-        "subFolderLocation": name
-      }
-      let response = await new FilesAPI().getCourseFiles(id, data)
-    // setLoading(false)
-      if(response.ok){
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        toast.error("Something went wrong while fetching Course files.")
-      }
-    }
-    if(window.location.pathname.includes('class')){
-      let data = {
-        "subFolderLocation": name
-      }
-      let response = await new FilesAPI().getClassFiles(id, data)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        toast.error("Something went wrong while fetching class files.")
-      }
-    }
-    // setLoading(true)
-  }
-
-  const clickFile = (link) => {
-    navigator.clipboard.writeText(link)
-    toast.success('File link copied to clipboard.')
-  }
-
-  const handleClickedFolder = (name) =>{
-    let temp = {
-      naame: name,
-      value: name
-    }
-    breedCrumbsItemClass.push(temp)
-    setBreedCrumbsItemClass(breedCrumbsItemClass);
-    handleGetFiles(`${subFolderDirectory.join('')}/${name}`);
-  }
-
-  const handleClickedBreadcrumbsItem = (value, index) => {
-    subFolderDirectory.length = index+1;
-    breedCrumbsItemClass.length = index+1;
-    handleGetFiles(subFolderDirectory.join(''));
-  }
-
-  useEffect(() => {
-    handleGetFiles('')
-  }, [])
-
+  
   return (
     <Modal
       size='lg'
@@ -108,52 +50,7 @@ const EnumerationForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={id}  subFolder={''} doneUpload={()=> handleGetFiles(subFolderDirectory.join(''))} />
-          <div>
-            <span onClick={()=> {handleGetFiles(''); setBreedCrumbsItemClass([]);}} className={breedCrumbsItemClass.length != 0 ? 'colored-class-task' : 'fix-color-bread'}>Files</span>
-            {
-              breedCrumbsItemClass.map((item, index) => {
-                return <span onClick={() => handleClickedBreadcrumbsItem(item.value, index)} className={breedCrumbsItemClass.length == (index+1) ? 'fix-color-bread' : 'colored-class-task'}>  <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {item.naame}</span>
-              })
-            }
-          </div>
-          {
-          displayFiles.map( (item,ind) => {
-            console.log(item)
-              return(
-                <OverlayTrigger
-                  placement="bottom"
-                  delay={{ show: 1, hide: 0 }}
-                  overlay={(props) => 
-                    <Tooltip id="button-tooltip" {...props}>
-                      {item.name}
-                    </Tooltip>}
-                >
-                {item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                  <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} onClick={() => clickFile(item.pathBase)} className='p-1' alt={item.name} height={30} width={30}/>
-                  :
-                  <i className="fas fa-sticky-note" onClick={() => clickFile(item.pathBase)} style={{paddingRight: 5}}/>
-                }
-                </OverlayTrigger>
-              )
-            })
-          }
-          {
-            displayFolder.map((itm) => {
-              return(
-                <OverlayTrigger
-                  placement="bottom"
-                  delay={{ show: 1, hide: 0 }}
-                  overlay={(props) => 
-                    <Tooltip id="button-tooltip" {...props}>
-                      {itm.name}
-                    </Tooltip>}
-                >
-                  <i className='fas fa-folder-open' onClick={()=> handleClickedFolder(itm.name)} title='' style={{height: 30, width: 30}}/>
-                </OverlayTrigger>
-              )
-            })
-          }
+          <CourseFileLibrary />
         </div>
         <div>
           <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>

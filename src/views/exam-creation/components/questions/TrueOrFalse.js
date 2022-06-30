@@ -12,6 +12,7 @@ import FilesAPI from '../../../../api/FilesApi'
 import {writeFileXLSX, utils} from "xlsx";
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
 import { UserContext } from '../../../../context/UserContext';
+import CourseFileLibrary from "../../../courses/components/CourseFileLibrary";
 
 const TrueOrFalseForm = ({
   showModal,
@@ -31,36 +32,6 @@ const TrueOrFalseForm = ({
   const courseid = sessionStorage.getItem('courseid')
   const { id } = useParams();
 
-  const handleGetFiles = async() => {
-    if(window.location.pathname.includes('course')){
-      let response = await new FilesAPI().getCourseFiles(id)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        alert("Something went wrong while fetching course files.")
-      }
-    }
-    if(window.location.pathname.includes('class')){
-      let response = await new FilesAPI().getClassFiles(id)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        alert("Something went wrong while fetching class files.")
-      }
-    }
-    // setLoading(true)
-  }
-
-  useEffect(() => {
-    handleGetFiles()
-  }, [])
-
   return (
     <Modal
       size='lg'
@@ -74,31 +45,7 @@ const TrueOrFalseForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={id}  subFolder={''} doneUpload={()=> handleGetFiles()} />
-          {/* {
-            (displayFiles || []).map( (item,ind) => {
-              return(
-                <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-              )
-            })
-          } */}
-          {
-          (displayFiles || []).map( (item,ind) => {
-            return(
-              item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-              <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-              :
-              <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-            )
-          })
-          }
-          {
-            (displayFolder || []).map((itm) => {
-              return(
-                <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-              )
-            })
-          }
+          <CourseFileLibrary />
         </div>
         <div>
           <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
