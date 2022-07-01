@@ -4,12 +4,13 @@ import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
+import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
 function EditDiscussion({modal, toggle, editDiscussionItem, getDiscussionUnit}) {
   const [discussionName, setDiscussionName] = useState('')
   const [instructions, setInstructions] = useState('')
   const [editNotufy, setEditNotify] = useState(false)
-
+  const [showFiles, setShowFiles] = useState(false);
   const closeNotify = () =>{
     setEditNotify(false)
   }
@@ -64,6 +65,12 @@ function EditDiscussion({modal, toggle, editDiscussionItem, getDiscussionUnit}) 
         </Modal.Header>
         <Modal.Body>
         <Form onSubmit={updateDiscussion}>  
+          <div className={showFiles ? 'mb-3' : 'd-none'}>
+            <ClassCourseFileLibrary />
+          </div>
+          <div className='text-align-right'>
+            <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          </div>
           <Form.Group className="mb-3">
           <Form.Label>Unit</Form.Label>
             <Form.Select disabled>
