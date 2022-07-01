@@ -67,5 +67,28 @@ export default class SchoolAPI extends Base {
       data
     })
   }
+  
+  getSchoolList = async() => {
+    return this.sendRequest({
+      path: `/api/School`,
+      method: 'GET'
+    })
+  }
+
+  getSchoolInfo = async(sc, df, dt) => {
+    return this.sendRequest({
+      path: `/api/Admin/schoolcode/${sc}/datefrom/${df}/dateto/${dt}`,
+      method: 'GET'
+    })
+  }
+
+  getTeachers = async() => {
+    return this.sendRequest({
+      path: `/api/Teacher`,
+      method: 'GET'    
+    })
+  }
+
+  
 
 }
