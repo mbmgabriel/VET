@@ -35,7 +35,17 @@ export default function CoursesExam() {
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
   const subsType = localStorage.getItem('subsType');
+  const [isContributor, setIsContributor] = useState(true);
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
   const getCourseInformation = async() => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -48,6 +58,7 @@ export default function CoursesExam() {
   }
 
   useEffect(() => {
+    getContributor();
     if(courseid != null){
       getCourseInformation();
     }
@@ -175,9 +186,10 @@ export default function CoursesExam() {
                 <Accordion.Item eventKey={item.id}> 
                   <Accordion.Header onClick={(e) => getExamInfo(e, item.id)}>
                     <span className="unit-title">{item.moduleName} 
-                    {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                    {
+                    isContributor &&
                       <Button className="btn-create-class" variant="link" onClick={handleOpenCreateExamModal}><i className="fa fa-plus"></i> Add Exam</Button>
-                    </>)}
+                    }
                     </span>
                   </Accordion.Header>
                   <Accordion.Body>
@@ -195,35 +207,35 @@ export default function CoursesExam() {
                              <p dangerouslySetInnerHTML={{__html:ei?.testInstructions }} />
                             </div>
                           </Col>
-                          {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                          {isContributor &&
                             <Col className="align-right-content" md={3}>
-                            <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 1, hide: 25 }}
-                              overlay={renderTooltipEdit}>
-                                <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditExamModal(e, ei)}><i className="fa fa-edit"></i></Button>
-                            </OverlayTrigger>
-                            <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 1, hide: 25 }}
-                              overlay={renderTooltipDelete}>
-                              <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => setSweetError(true)}><i className="fa fa-trash" ></i></Button>
-                            </OverlayTrigger>
-                            <SweetAlert
-                              warning
-                              showCancel
-                              show={sweetError}
-                              confirmBtnText="Yes, delete it!"
-                              confirmBtnBsStyle="danger"
-                              title="Are you sure?"
-                              onConfirm={() => confirmSweetError(ei.id)}
-                              onCancel={cancelSweetError}
-                              focusCancelBtn
-                            >
-                              You will not be able to recover this imaginary file!
-                            </SweetAlert>
-                          </Col>
-                          </>)}
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 25 }}
+                                overlay={renderTooltipEdit}>
+                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditExamModal(e, ei)}><i className="fa fa-edit"></i></Button>
+                              </OverlayTrigger>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 25 }}
+                                overlay={renderTooltipDelete}>
+                                <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => setSweetError(true)}><i className="fa fa-trash" ></i></Button>
+                              </OverlayTrigger>
+                              <SweetAlert
+                                warning
+                                showCancel
+                                show={sweetError}
+                                confirmBtnText="Yes, delete it!"
+                                confirmBtnBsStyle="danger"
+                                title="Are you sure?"
+                                onConfirm={() => confirmSweetError(ei.id)}
+                                onCancel={cancelSweetError}
+                                focusCancelBtn
+                              >
+                                You will not be able to recover this imaginary file!
+                              </SweetAlert>
+                            </Col>
+                          }
                           {examInfo.length == 0 && !loading && <div className="no-exams">No exam found...</div>}
                         </Row>
                         <hr></hr>

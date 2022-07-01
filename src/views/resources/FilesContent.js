@@ -17,6 +17,11 @@ function FilesContent(props) {
   const [newFileName, setNewFilename] = useState('');
   const [extFilename, setExtFilename] = useState('');
   const [displayButtons, setDisplayButtons] = useState(true);
+  const [currentFolderName, setCurrentFolderName] = useState('');
+  const [newFolderName, setNewFolderName] = useState('');
+  const [folderToDelete, setToFolderDelete] = useState('')
+  const [deleteFolderNotify, setDeleteFolderNotify] = useState(false)
+  const [editFolderModal, setEditFolderModal] = useState(false);
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
 
@@ -166,7 +171,7 @@ function FilesContent(props) {
         // classId: itemToEdit.classFiles.classId,
         // fileId: itemToEdit.classFiles.id
       }
-      let response = await new FilesAPI().editClassFile(props.id, data);
+      let response = await new FilesAPI().updateTeacherResource(props.id, data);
       if(response.ok){
         showModal(false)
         props.deleted(); //to refetch data
@@ -188,6 +193,36 @@ function FilesContent(props) {
     if(props.type == 'Course'){
       handleSaveNewCourseFileName();
     }
+  }
+
+  const saveNewFolderName = async() => {
+    setEditFolderModal(false);
+    let data = {
+      "newFileName": newFolderName,
+      "oldFileName": currentFolderName,
+      "subFolderLocation": `${props.subFolder}`
+    }
+    let response = await new FilesAPI().updateTeacherResource(props.id, props.type, data)
+    if(response.ok){
+      props.deleted();
+      toast.success('Successfully renamed folder.')
+    }else{
+      toast.error("Something went wrong while updating folder name.")
+    }
+  }
+
+  const deleteFolder = async() => {
+    let data = {
+      "subFolderLocation": `${props.subFolder}/${folderToDelete}`
+    }
+    let response = await new FilesAPI().deleteFolder(props.id, props.type, data)
+    if(response.ok){
+      props.deleted();
+      toast.success('Successfully deleted folder.')
+    }else{
+      toast.error(response.data?.errorMessage)
+    }
+    setDeleteFolderNotify(false);
   }
 
   const handleEditFilenameModal = () => {
@@ -213,6 +248,41 @@ function FilesContent(props) {
         </Modal.Body>
       </Modal>
     )
+  }
+
+  const handleEditFolderName = () => {
+    return(
+      <Modal  size="lg" show={editFolderModal} onHide={ () => setEditFolderModal(false)} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header className='class-modal-header' closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg" >
+            Edit Folder name
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Form>
+          <p>Current folder name: <span>{currentFolderName}</span></p>
+            <Form.Label>New folder name</Form.Label>
+          <InputGroup className="mb-4">
+            <Form.Control defaultValue={newFileName} value={newFolderName} type="text" onChange={(e) => setNewFolderName(e.target.value.replace('.', ''))} />
+          </InputGroup>
+          <Form.Group className='right-btn'>
+            <Button className='tficolorbg-button' onClick={()=> saveNewFolderName()}>Save</Button>
+          </Form.Group>
+        </Form>
+        </Modal.Body>
+      </Modal>
+    )
+  }
+
+  const handleClickFolder = (data) => {
+    setCurrentFolderName(data.name);
+    setNewFolderName(data.name)
+    setEditFolderModal(true);
+  }
+
+  const handleOnClickFolder = data => {
+    setToFolderDelete(`${data.name}`);
+    setDeleteFolderNotify(true)
   }
 
   return (
@@ -241,7 +311,7 @@ function FilesContent(props) {
                     :
                   <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
                 } */}
-                 {displayButtons ? <>
+                 {displayButtons && window.location.pathname.includes("course") ? <>
                   <td style={{paddingRight:'15px'}} >
                     <OverlayTrigger
                       placement="right"
@@ -291,14 +361,35 @@ function FilesContent(props) {
             item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
             return(
               <tr key={index+item.name}>
-                <td colSpan={3} className='ellipsis w-25 colored-class' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
+                <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
+               {
+                displayButtons && window.location.pathname.includes("course") ? <td>
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={renderTooltipEdit}
+                    >
+                      <i class="fas fas fa-edit td-file-page" onClick={() => handleClickFolder(item) } />
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={renderTooltipDelete}>
+                      <a>
+                        <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClickFolder(item) }></i>
+                      </a>
+                    </OverlayTrigger>
+                  </td>
+                  :
+                  <td></td>
+                }
               </tr>
             )
           })
-
         }
       </tbody>
       {handleEditFilenameModal()}
+      {handleEditFolderName()}
       <SweetAlert
         warning
         showCancel
@@ -311,6 +402,19 @@ function FilesContent(props) {
         focusCancelBtn
           >
            You will not be able to recover this file!
+      </SweetAlert>
+      <SweetAlert
+        warning
+        showCancel
+        show={deleteFolderNotify}
+        confirmBtnText="Yes, delete it!"
+        confirmBtnBsStyle="danger"
+        title="Are you sure?"
+        onConfirm={() => deleteFolder()}
+        onCancel={() => setDeleteFolderNotify(false)}
+        focusCancelBtn
+          >
+           You will not be able to recover this folder!
       </SweetAlert>
     </Table>
   )

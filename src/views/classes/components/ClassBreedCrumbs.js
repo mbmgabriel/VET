@@ -22,7 +22,7 @@ const handleDisplayTab = () => {
     <div className="row font-20">
       <div className="bread-margin bread-crumbs-position">
         <span><Link className="text-decoration-none text-black" to='/classes'>Classes</Link> <i class="fas fa-chevron-right m-l-10 m-r-10"></i></span>
-        <span className={title == '' ? "tfi-font-color" : 'capitalize hand'} onClick={clicked}>{handleDisplayTab()} </span>
+        <span className={title == '' ? "tfi-font-color capitalize" : 'capitalize hand'} onClick={clicked}>{handleDisplayTab()} </span>
       {title !== '' && <span className={title !== '' ? "tfi-font-color capitalize" : ''}><i class="text-black fas fa-chevron-right m-l-10 m-r-10 "></i>{title}</span>}
       </div>
     </div>

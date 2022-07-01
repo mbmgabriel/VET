@@ -15,6 +15,7 @@ function ClassResources() {
   const [filter, setFilter] = useState('');
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
   const subsType = localStorage.getItem('subsType');
+  const courseid = localStorage.getItem("courseid")
   
   useEffect(() => {
     handleGetTeacherResources('')
@@ -92,7 +93,7 @@ function ClassResources() {
               })
           }
         </p>
-        <FilesContent filter={filter} data={filesToDisplay} folders={foldersToDisplay} subFolder={subFolderDirectory.join('')} clickedFolder={(data) => handleClickedFolder(data.name)} deleted={() => handleRefetch()} type='Course' id={id}/>
+        <FilesContent filter={filter} data={filesToDisplay} folders={foldersToDisplay} subFolder={subFolderDirectory.join('')} clickedFolder={(data) => handleClickedFolder(data.name)} deleted={() => handleRefetch()} type='Course' id={courseid}/>
       </div>
     </ClassSideNavigation>
   )

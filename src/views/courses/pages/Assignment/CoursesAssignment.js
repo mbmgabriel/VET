@@ -38,7 +38,17 @@ export default function CoursesAssignment() {
   const moduleid = sessionStorage.getItem('moduleid')
   const subsType = localStorage.getItem('subsType');
   const {id} = useParams()
+  const [isContributor, setIsContributor] = useState(true);
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(courseid)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
   const getCourseInformation = async() => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(id)
@@ -51,6 +61,7 @@ export default function CoursesAssignment() {
   }
 
   useEffect(() => {
+    getContributor();
     getCourseInformation();
     if(subsType != 'LMS'){
       window.location.href = "/courses"
@@ -210,9 +221,10 @@ export default function CoursesAssignment() {
                 <Accordion.Item eventKey={item.id}> 
                   <Accordion.Header onClick={(e) => getAssignmentInfo(e, item.id)}>
                     <span className="unit-title">{item.moduleName} 
-                    { courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? <></>:(<>
+                    { 
+                      isContributor &&
                       <Button className="btn-create-class" variant="link" onClick={handleOpenCreateAssignmentModal}><i className="fa fa-plus"></i> Add Assignment</Button>
-                    </>)}
+                    }
                     </span>
                   </Accordion.Header>
                   <Accordion.Body>
@@ -223,23 +235,25 @@ export default function CoursesAssignment() {
                         <Col className="lesson-header" md={9} >
                           <span onClick={(e) => {viewAss(as)}}>{as?.assignmentName}</span>
                         </Col>
-                        {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
-                          <Col className="align-right-content" md={3}>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 25 }}
-                            overlay={renderTooltipEdit}>
-                              <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id)}><i className="fa fa-edit"></i></Button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 25 }}
-                            overlay={renderTooltipDelete}> 
-                            <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => {setSweetError(true); setAssignmentId(as.id)}}><i className="fa fa-trash"  ></i></Button>
-                          </OverlayTrigger>
-                        </Col>
-                        {assignmentInfo.length == 0 && !loading && <div className="no-exams">No assignment found...</div>}
-                        </>)}
+                        {isContributor &&
+                          <>
+                            <Col className="align-right-content" md={3}>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 25 }}
+                                overlay={renderTooltipEdit}>
+                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id)}><i className="fa fa-edit"></i></Button>
+                              </OverlayTrigger>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 25 }}
+                                overlay={renderTooltipDelete}> 
+                                <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => {setSweetError(true); setAssignmentId(as.id)}}><i className="fa fa-trash"  ></i></Button>
+                              </OverlayTrigger>
+                            </Col>
+                            {assignmentInfo.length == 0 && !loading && <div className="no-exams">No assignment found...</div>}
+                          </>
+                        }
                       </Row>
                     ))}
                     <SweetAlert

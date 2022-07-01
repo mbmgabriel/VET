@@ -35,7 +35,17 @@ export default function CoursesTask() {
   const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
   const subsType = localStorage.getItem('subsType');
+  const [isContributor, setIsContributor] = useState(true);
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
   const getCourseInformation = async() => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -48,6 +58,7 @@ export default function CoursesTask() {
   }
 
   useEffect(() => {
+    getContributor();
     if(courseid != null){
       getCourseInformation();
     }
@@ -191,9 +202,10 @@ export default function CoursesTask() {
             <Accordion.Item eventKey={item.id}> 
               <Accordion.Header onClick={(e) => {getTaskInfo(e, item.id)}}>
                 <span className="unit-title">{item.moduleName} 
-                {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                {
+                  isContributor &&
                   <Button className="btn-create-class" variant="link" onClick={handleOpenCreateTaskModal}><i className="fa fa-plus"></i> Add Task</Button>
-                </>)}
+                }
                 </span>
               </Accordion.Header>
               <Accordion.Body>
@@ -204,22 +216,22 @@ export default function CoursesTask() {
                     <Col className="lesson-header" md={9}>
                       <span onClick={(e) => {viewTas(ti)}}>{ti?.taskName}</span>
                     </Col>
-                    {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                    {isContributor &&
                       <Col className="align-right-content" md={3}>
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 1, hide: 25 }}
+                          overlay={renderTooltipEdit}>
+                          <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti?.taskName, ti?.instructions, ti?.id)}><i className="fa fa-edit"></i></Button>
+                      </OverlayTrigger>
                       <OverlayTrigger
-                        placement="bottom"
-                        delay={{ show: 1, hide: 25 }}
-                        overlay={renderTooltipEdit}>
-                        <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti?.taskName, ti?.instructions, ti?.id)}><i className="fa fa-edit"></i></Button>
-                     </OverlayTrigger>
-                     <OverlayTrigger
-                        placement="bottom"
-                        delay={{ show: 1, hide: 25 }}
-                        overlay={renderTooltipDelete}>
-                      <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setTaskId(ti.id)}}></i></Button>
-                    </OverlayTrigger>
-                    </Col>
-                    </>)}
+                          placement="bottom"
+                          delay={{ show: 1, hide: 25 }}
+                          overlay={renderTooltipDelete}>
+                        <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i className="fa fa-trash"  onClick={() => {setSweetError(true); setTaskId(ti.id)}}></i></Button>
+                      </OverlayTrigger>
+                      </Col>
+                    }
                   </Row>
                 ))}
                     <SweetAlert

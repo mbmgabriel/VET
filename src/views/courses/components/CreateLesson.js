@@ -18,6 +18,7 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const {id} = useParams()
 
@@ -44,6 +45,8 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
 
 	const saveLesson = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     if(sequenceNo == null){
       toast.error('Please input all the required fields.', {
         position: "top-right",
@@ -203,7 +206,7 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
                 {' '}
     
 								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
+										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
 												Save Lesson
 										</Button>
 								</span>
