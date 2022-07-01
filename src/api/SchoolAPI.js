@@ -82,4 +82,13 @@ export default class SchoolAPI extends Base {
     })
   }
 
+  getTeachers = async() => {
+    return this.sendRequest({
+      path: `/api/Teacher`,
+      method: 'GET'    
+    })
+  }
+
+  
+
 }

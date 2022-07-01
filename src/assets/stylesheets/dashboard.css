@@ -592,3 +592,13 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 .hand{
   cursor: pointer;
 }
+
+.contributors-container{
+  border-radius: 5px;
+  border: 1px solid #7D7D7D;
+  padding: 0 5px;
+}
+
+.br-3{
+  border-radius: 3px;
+}

@@ -341,5 +341,20 @@ export default class CoursesAPI extends Base {
       method: 'GET'
     })
   }
+
+  addDistributor = async (id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/distributor`,
+      method: 'POST',
+      data
+    })
+  }
   
+  removeContributor = async (id, distributorId) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/distributor/${distributorId}`,
+      method: 'DELETE'
+    })
+  }
+
 }
