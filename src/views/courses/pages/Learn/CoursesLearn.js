@@ -50,7 +50,17 @@ export default function CourseLearn() {
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+  const [isContributor, setIsContributor] = useState(true);
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
   console.log('moduleInfo:', moduleInfo)
 
   const toggleModelEditModule = (moduleId, sequenceNoEdit, moduleDescription, moduleName) =>{
@@ -194,6 +204,7 @@ export default function CourseLearn() {
   }
 
   useEffect(() => {
+    getContributor();
     getCourseUnitInformation();
     getCourseInformation();
   }, [])
@@ -245,9 +256,10 @@ export default function CourseLearn() {
         <React.Fragment>
           <span className="content-pane-title">
             Learn 
-              {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+              {
+                isContributor && 
                 <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus"></i> Add Module</Button>
-              </>)}
+              }
              
             <CourseCreateUnit moduleInfo={moduleInfo} setModuleInfo={setModuleInfo} openCreateUnitModal={openCreateUnitModal} setOpenCreateUnitModal={setOpenCreateUnitModal}/>
           </span>
@@ -280,17 +292,16 @@ export default function CourseLearn() {
               return(
                   <Accordion.Item eventKey={item.id}> 
                     <Accordion.Header onClick={(e) => {getCourseLessons(e, item.id, item.moduleName)}}>
-                      <span>{item.moduleName}
-                      {courseInfo?.isTechfactors && user?.teacher.positionID != 7? (<></>):(<>
-                      
+                      <span className="unit-title">{item.moduleName}
+                      {isContributor &&
+                      <>
                         <Button className="btn-create-class" variant="link"  onClick={handleOpenCreateLessonModal}><i className="fa fa-plus"></i> Add Lesson</Button>
-                        {/* <Button className="btn-create-class" variant="link"> Edit</Button>
-                        <Button className="btn-create-class" variant="link"> Delete</Button> */}
                         <div>
                         <span  className='dash-read-more' ><Link to={'#'} onClick={() => toggleModelEditModule(item?.id, item?.sequenceNo, item?.moduleDescription, item?.moduleName)}> Edit </Link></span> |
                           <span  className='dash-read-more' ><Link to={'#'} onClick={() => confirmSweetErrorModule(item.id)} > Delete </Link></span> 
                         </div>
-                      </>)}
+                      </>
+                      }
                       </span>
                     </Accordion.Header>
                     <Accordion.Body>                         
@@ -302,22 +313,22 @@ export default function CourseLearn() {
                             <Col className="lesson-header" md={9} onClick={(e) => getModuleContent(e, moduleid, li.id, li?.pageName)}>
                              <p className="lessonName">{li?.pageName}</p>
                             </Col>
-                            {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                            {isContributor &&
                               <Col className="align-right-content" md={3}>
-                              <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 1, hide: 0 }}
-                                overlay={renderTooltipEdit}>
-                                  <Button key={li.id} className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditLessonModal(e, li?.content, li?.pageName, li?.sequenceNo, li?.id )}><i className="fa fa-edit"></i></Button>
-                              </OverlayTrigger>
-                              <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 1, hide: 0 }}
-                                overlay={renderTooltipDelete}>
-                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => confirmSweetError(li.id)} ><i className="fa fa-trash"></i></Button>
-                              </OverlayTrigger>
-                            </Col>
-                            </>)}
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 1, hide: 0 }}
+                                  overlay={renderTooltipEdit}>
+                                    <Button key={li.id} className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditLessonModal(e, li?.content, li?.pageName, li?.sequenceNo, li?.id )}><i className="fa fa-edit"></i></Button>
+                                </OverlayTrigger>
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 1, hide: 0 }}
+                                  overlay={renderTooltipDelete}>
+                                    <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => confirmSweetError(li.id)} ><i className="fa fa-trash"></i></Button>
+                                </OverlayTrigger>
+                              </Col>
+                            }
                           </Row>
                         )
                       })}

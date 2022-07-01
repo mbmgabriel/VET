@@ -153,7 +153,17 @@ export default function Essay({
   const {user} = userContext.data
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
+  const [isContributor, setIsContributor] = useState(true);
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
@@ -162,6 +172,7 @@ export default function Essay({
   }
 
   useEffect(() => {
+    getContributor()
     handleGetItems();
     getCourseInformation();
   }, [])
@@ -264,7 +275,7 @@ export default function Essay({
             </p>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable && (
+          {editable &&  isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -278,8 +289,7 @@ export default function Essay({
           )}
         </div>
       ))}
-      {courseInfos?.isTechfactors? (<></>):(<>
-        {editable && (
+      {isContributor && editable && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'
@@ -294,7 +304,6 @@ export default function Essay({
           Add question
         </Button> 
       )}
-      </>)}
       <EssayForm
         showModal={showModal}
         setShowModal={setShowModal}
