@@ -79,7 +79,7 @@ const updateScoreTask = async(e, studentid, classid, assignmentid, answerid) => 
   }
 
   useEffect(() => {
-    if(taskAnalysis?.task){
+    if(taskAnalysis?.studentTask != null){
       getTaskAnswer(studentidsession, classid, taskAnalysis?.task?.id)
     }
   }, [taskAnalysis])

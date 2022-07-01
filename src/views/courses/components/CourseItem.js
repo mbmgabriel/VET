@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import userEvent from "@testing-library/user-event";
 import { UserContext } from './../../../context/UserContext'
 import CoursesAPI from "../../../api/CoursesAPI";
+import SchoolAPI from "../../../api/SchoolAPI";
 import { ToastContainer, toast } from 'react-toastify';
 import CoursesItemCard from "./CourseItemCard";
 
@@ -15,8 +16,14 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   const [data, setData] = useState([])
   const [uploadModal, setUploadModal] = useState(false);
   const [fileToUpload, setFileToUpload] = useState({});
-  const [id, setId] = useState('')
- 
+  const [id, setId] = useState('');
+  const [contributorModal, setContributorModal] = useState(false);
+  const [teachersList, setTeachersList] = useState([]);
+  const [contributorsList, setContributorsList] = useState([]);
+  const [courseID, setCourseID] = useState('');
+  const [courseInfo, setCourseInfo] = useState({});
+  const [authorId, setAuthorId] = useState('');
+
   const handleOpeEditModal = (e, item) => {
     e.preventDefault()
     sessionStorage.setItem('courseid', item.id)
@@ -67,6 +74,17 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     }
   }
 
+  const getTeacherList = async() => {
+    console.log(fileToUpload)
+    setUploadModal(false)
+    let response = await new SchoolAPI().getTeachers()
+    if(response.ok){
+      setTeachersList(response.data)
+    }else{
+      toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+    }
+  }
+
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -91,6 +109,64 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     }
   }
 
+  const getCourseInfo = async(id) => {
+    let response = await new CoursesAPI().getCourseInformation(id)
+    if(response.ok){
+      setCourseInfo(response.data)
+      setAuthorId(response.data.createdBy)
+      console.log(response, '-=-=-')
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  const handleGetContributors = async(id) => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      setContributorsList([...response.data])
+    }else{
+      toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+    }
+  }
+
+  const addContributor = async(item) => {
+    console.log(item)
+    let data = {
+      "courseId": courseID,
+      "userAccountId": item.userAccountID,
+    }
+    let response = await new CoursesAPI().addDistributor(courseID, data)
+    if(response.ok){
+      toast.success('Contributor added successfully');
+      handleGetContributors(courseID);
+    }else{
+      toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+    }
+  }
+
+  const handleClickContributor = (id) => {
+    setContributorModal(!contributorModal)
+    getTeacherList()
+    handleGetContributors(id)
+    setCourseID(id)
+    getCourseInfo(id)
+  }
+
+  const handleRemoveContributor = async(data) => {
+    console.log(data)
+    if(data.distributorInformation.userAccountId == authorId){
+      toast.error("You can't remove the author of this course.")
+    }else{
+      let response = await new CoursesAPI().removeContributor(courseID, data.distributorInformation.id)
+      if(response.ok){
+        toast.success('Contributor removed successfully');
+        handleGetContributors(courseID);
+      }else{
+        toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+      }
+    }
+  }
+
   const handleDisplayUploadMOdal = () => {
     return(
       <Modal size="lg" className="modal-all" show={uploadModal} onHide={()=> setUploadModal(false)} >
@@ -106,6 +182,60 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
 			</Modal>
     )
   }
+
+  const handleDisplayContributorMOdal = () => {
+    return(
+      <Modal size="lg" className="modal-all" show={contributorModal} onHide={()=> setContributorModal(false)} >
+				<Modal.Header className="modal-header" closeButton>
+          Contributor
+				</Modal.Header>
+					<Modal.Body className="modal-label b-0px">
+           <Row>
+              <Col md={6}>
+                <div className='contributors-container'>
+                  <p className="font-20">Contributor/s</p>
+                  {
+                    contributorsList.map((contributor, key) => {
+                      return (
+                        <Row className="mb-3">
+                          <Col md={8}>
+                            <span>{contributor.userInformation.firstname} {contributor.userInformation.lastname} </span>
+                          </Col>
+                          <Col>
+                            <span><i onClick={() => handleRemoveContributor(contributor)} className="fa fa-minus bg-danger color-white d-flex justify-content-center align-items-center br-3" style={{width: 23, height: 23}}/></span>
+                          </Col>
+                        </Row>
+                      )
+                    })
+                  }
+                </div>
+              </Col>
+              <Col md={6}>
+                <div className='contributors-container'>
+                <p className="font-20">Teacher/s</p>
+                {
+                  teachersList.map((teacher, key) => {
+                    return (
+                    <Row className="mb-3">
+                      <Col md={8}>
+                        <span className="w-75">{teacher.fname} {teacher.lname}</span>
+                      </Col>
+                      <Col>
+                        <span><i onClick={() => addContributor(teacher)} className="fa fa-plus tficolorbg-button color-white d-flex justify-content-center align-items-center br-3" style={{width: 23, height: 23}}/></span>
+                      </Col>
+                    </Row>
+                      )
+                  })
+                }
+                </div>
+              </Col>
+           </Row>
+            {/* <Button onClick={() => handleContributorCover()} className="m-r-5 color-white tficolorbg-button float-right" size="sm">UPLOAD</Button> */}
+					</Modal.Body>
+			</Modal>
+    )
+  }
+
   useEffect(() => {
     localStorage.setItem('typeresource', 'course')
   });
@@ -140,6 +270,7 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
         })  
     }
     {handleDisplayUploadMOdal()}
+    {handleDisplayContributorMOdal()}
     </React.Fragment>
   )
 }

@@ -94,7 +94,7 @@ export const ClassExam = () => {
     <ClassSideNavigation>
       <ClassBreadcrumbs title={''} clicked={() => console.log('')}/>
       <div className="class-container position-relative">
-        {loading && <ActivityIndicator />}
+        {/* {loading && <ActivityIndicator />} */}
         <ClassExamHeader onSearch={onSearch} modules={modules} fetchExams={fetchExams} />
         <Accordion defaultActiveKey="0">
           {modules.map((module, index) => {

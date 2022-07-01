@@ -409,11 +409,20 @@ code {
   padding-left: 15px;
 }
 
+
+.colored-class-task{
+  cursor: pointer;
+  color: var(--primary-color);
+  font-size: 15px;
+  padding-left: 5px;
+}
+
+
 .fix-color-bread{
   cursor: pointer;
   color: #7D7D7D;
-  font-size: 20px;
-  padding-left: 15px;
+  font-size: 15px;
+  padding-left: 5px;
 }
 
 .file-name{
@@ -429,6 +438,16 @@ code {
 }
 
 .colored-class:hover{
+  opacity: 0.7;
+}
+
+.task-folder{
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.task-folder:hover{
   opacity: 0.7;
 }
 
@@ -572,4 +591,14 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 
 .hand{
   cursor: pointer;
+}
+
+.contributors-container{
+  border-radius: 5px;
+  border: 1px solid #7D7D7D;
+  padding: 0 5px;
+}
+
+.br-3{
+  border-radius: 3px;
 }

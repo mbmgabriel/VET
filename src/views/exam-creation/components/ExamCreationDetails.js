@@ -94,12 +94,12 @@ export default function ExamCreationDetails({
               setShowModal(true);
             }}
           >
-            Add Part-
+            Add Part
           </Button>
         )
         }
         </>
-    }
+      }
       <ExamParts
         selectedPart={selectedPart}
         setSelectedPart={setSelectedPart}
