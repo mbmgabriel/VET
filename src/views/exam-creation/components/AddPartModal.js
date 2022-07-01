@@ -10,7 +10,8 @@ export default function AddPartModal({
   instructions,
   addPart,
   selectedPart,
-  setFilesToUpload
+  setFilesToUpload,
+  isButtonDisabled
 }) {
 
   console.log('selectedPart:', selectedPart)
@@ -80,8 +81,8 @@ export default function AddPartModal({
             <Form.Control type="file" accept=".xls,.xlsx,.csv" onChange={(e) => handleGetUploadedFile(e.target.files[0])} />
           </Form.Group>}
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
-            {selectedPart == null && <>Add Part</>}
+            <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>
+            {selectedPart == null && <>Add Part </>}
             {selectedPart != null && <>Update Part </>}
             </Button>
           </span>

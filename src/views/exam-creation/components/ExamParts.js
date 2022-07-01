@@ -22,10 +22,19 @@ export default function ExamParts({
   const userContext = useContext(UserContext);
   const { user } = userContext.data;
   const [courseInfo, setCourseInfo] = useState("")
-  
-
   const courseid = sessionStorage.getItem('courseid')
+  const [isContributor, setIsContributor] = useState(true);
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(courseid)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
+  
   const getCourseInformation = async() => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -38,6 +47,7 @@ export default function ExamParts({
   }
 
   useEffect(() => {
+    getContributor();
     if(courseid != null){
       getCourseInformation();
     }
@@ -90,7 +100,7 @@ export default function ExamParts({
             {/* {courseInfo?.isTechfactors? (<></>):(<>
 
             </>)} */}
-            {user?.isTeacher &&
+            {isContributor &&
             <>  
               {editable && (
                 <div className='exam-actions' >

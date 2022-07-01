@@ -91,7 +91,7 @@ function TaskReport({filter, setFilter, classesModules, setClassesModules, selec
   )
   }else{
     return(
-      <TaskReportContent showTaskHeader={showTaskHeader} setShowTaskHeader={setShowTaskHeader} setTaskReport={setTaskReport} taskReport={taskReport} taskColumns={taskColumns()}/>
+      <TaskReportContent getTaskReport={getTaskReport} showTaskHeader={showTaskHeader} setShowTaskHeader={setShowTaskHeader} setTaskReport={setTaskReport} taskReport={taskReport} taskColumns={taskColumns()}/>
     )
   }
 }

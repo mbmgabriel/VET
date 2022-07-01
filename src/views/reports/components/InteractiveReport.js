@@ -36,6 +36,8 @@ function InteractiveReport({filter, setFilter, classesModules, setClassesModules
     }
   }
 
+  console.log('interactivePerModule:', interactivePerModule)
+
   if(viewInteractiveReport === true){
   return (
     <div>
@@ -55,19 +57,19 @@ function InteractiveReport({filter, setFilter, classesModules, setClassesModules
                     <div className='title-exam' onClick={(e) => getInteractiveReport(e, item.interactive?.id, item.interactive?.interactiveName)}>
                       {item.interactive?.interactiveName}
                     </div>
-                    <div className='code-exam'>
+                    {/* <div className='code-exam'>
                       EQF1
-                    </div>
+                    </div> */}
                   </Col>
                   <Col sm={9} className='instruction-exam' >
                     {/* <p>{item.task.instructions}</p> */}
                     {/* <div dangerouslySetInnerHTML={{ __html: item.task.instructions }} /> */}
                   </Col>
-                  <Col sm={3} className='icon-exam'>
+                  {/* <Col sm={3} className='icon-exam'>
                     <i class="fas fa-eye" style={{paddingRight:'10px'}} ></i>{' '}
                     <i class="fas fa-edit"style={{paddingRight:'10px'}}></i>
                     <i class="fas fa-trash-alt" style={{paddingRight:'10px'}}></i>
-                  </Col>
+                  </Col> */}
                   <hr></hr>
                 </Row>
                 )
