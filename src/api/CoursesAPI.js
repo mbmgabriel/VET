@@ -46,6 +46,21 @@ export default class CoursesAPI extends Base {
     });
   };
 
+  updateModule = async (id, data) =>{
+    return this.sendRequest({
+      path: `/api/Module/${id}`,
+      method: 'PUT',
+      data
+    })
+  }
+
+  deleteModule = async (id) =>{
+    return this.sendRequest({
+      path: `/api/Module/${id}`,
+      method: 'DELETE'
+    })
+  }
+
   getCourseUnit = async (id) => {
     return this.sendRequest({
       path: `/api/Module/course/${id}/item/1`,
