@@ -107,7 +107,7 @@ export default function ExamCreationDetails({
         )
         }
         </>
-    }
+      }
       <ExamParts
         selectedPart={selectedPart}
         setSelectedPart={setSelectedPart}
