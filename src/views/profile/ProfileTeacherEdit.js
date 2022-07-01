@@ -6,7 +6,7 @@ import ProfileInfoAPI from '../../api/ProfileInfoAPI'
 import { useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 
-function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userInfo, getTeacherInfo}) {
+function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userInfo, getTeacherInfo, setOpenTeacherInfoModal}) {
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
   const [permanentAddress, setPermanentAddress] = useState('')
@@ -25,11 +25,36 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
         getTeacherInfo()
         openTeacherInfoToggle(e)
         successUpdate()
+        setFname('')
+        setLname('')
+        setPermanentAddress('')
+        setContactNo('')
+        setBday('')
+        setSex('')
+        setemailAdd('')
       }else{
-        alert(response.data.errorMessag)
+        toast.error('Please insert all the required fields.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
   }
 
+  const closeTeacherInfoToggle = ()=>{
+    setOpenTeacherInfoModal(false)
+    setFname('')
+    setLname('')
+    setPermanentAddress('')
+    setContactNo('')
+    setBday('')
+    setSex('')
+    setemailAdd('')
+  }
 
   useEffect(() => {
     if(userInfo !== null) {
@@ -85,9 +110,8 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
       });
   }
 
-
   return (
-    <div><Modal  size="lg" show={openTeacherInfoModal} onHide={openTeacherInfoToggle} aria-labelledby="example-modal-sizes-title-lg">
+    <div><Modal  size="lg" show={openTeacherInfoModal} onHide={closeTeacherInfoToggle} aria-labelledby="example-modal-sizes-title-lg">
     <Modal.Header className='class-modal-header' closeButton>
       <Modal.Title id="example-modal-sizes-title-lg" >
         Edit Personal Information
@@ -132,7 +156,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Birthday</Form.Label>
-          <Form.Control type="date" defaultValue={moment(userInfo?.bday).format('YYYY-MM-DD')} onChange={(e) => setBday(e.target.value)}/>
+          <Form.Control type="date" required defaultValue={moment(userInfo?.bday).format('YYYY-MM-DD')} onChange={(e) => setBday(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>
@@ -140,7 +164,8 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Gender</Form.Label>
-            <Form.Select defaultValue={userInfo?.sex} onChange={(e) => setSex(e.target.value)}>
+            <Form.Select required defaultValue={userInfo?.sex} onChange={(e) => setSex(e.target.value)}>
+                <option value=''>Gender</option>
                 <option value='Male'>Male</option>
                 <option value='Female'>Female</option>
               </Form.Select>
@@ -159,7 +184,7 @@ function ProfileTeacherEdit({openTeacherInfoToggle, openTeacherInfoModal, userIn
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Address</Form.Label>
-          <Form.Control placeholder='Address' required defaultValue={userInfo?.permanentAddress} onChange={(e) => setPermanentAddress(e.target.value)}/>
+          <Form.Control  placeholder='Address' required defaultValue={userInfo?.permanentAddress} onChange={(e) => setPermanentAddress(e.target.value)}/>
             </Form.Group>
           </div>
         </Col>

@@ -63,7 +63,7 @@ code {
   height: 100vh !important;
 }
 
-.main-container .content .footer{
+.main-container .content .lms-footer{
   margin: 80px;
   text-align: right;
 }
@@ -581,7 +581,24 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 .file-library-btn:hover{
   opacity: 0.7;
 }
+/* 
+.fb_dialog_content iframe{
+  bottom: 
+
+.fb_iframe_widget iframe{
+  bottom: 10vh !important;
+} */
 
 .hand{
   cursor: pointer;
+}
+
+.contributors-container{
+  border-radius: 5px;
+  border: 1px solid #7D7D7D;
+  padding: 0 5px;
+}
+
+.br-3{
+  border-radius: 3px;
 }

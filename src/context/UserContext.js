@@ -20,9 +20,13 @@ export class UserContextProvider extends Component {
       examUrl: null,
       themeColor: '#EE9337',
       themeLogo: null,
+      selectedClassId: null
     };
     this.connection = React.createRef();
+  }
 
+  setSelectedClassId = (id) => {
+    this.setState({selectedClassId: id})
   }
 
   refreshUser = async () => {
@@ -175,7 +179,8 @@ export class UserContextProvider extends Component {
       themeColor,
       connectionStatus,
       takingExam,
-      themeLogo
+      themeLogo,
+      selectedClassId
     } = this.state;
     return (
       <UserContext.Provider
@@ -188,6 +193,8 @@ export class UserContextProvider extends Component {
             takingExam,
             themeColor,
             themeLogo,
+            selectedClassId,
+            setSelectedClassId: this.setSelectedClassId,
             takeExam: this.takeExam,
             endExam: this.endExam,
             refreshUser: this.refreshUser,

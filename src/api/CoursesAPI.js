@@ -46,6 +46,21 @@ export default class CoursesAPI extends Base {
     });
   };
 
+  updateModule = async (id, data) =>{
+    return this.sendRequest({
+      path: `/api/Module/${id}`,
+      method: 'PUT',
+      data
+    })
+  }
+
+  deleteModule = async (id) =>{
+    return this.sendRequest({
+      path: `/api/Module/${id}`,
+      method: 'DELETE'
+    })
+  }
+
   getCourseUnit = async (id) => {
     return this.sendRequest({
       path: `/api/Module/course/${id}/item/1`,
@@ -316,6 +331,28 @@ export default class CoursesAPI extends Base {
   deleteVideo = async(id, videoid) => {
     return this.sendRequest({
       path: `/api/Course/${id}/video/${videoid}`,
+      method: 'DELETE'
+    })
+  }
+
+  getContributor = (id) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/distributor`,
+      method: 'GET'
+    })
+  }
+
+  addDistributor = async (id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/distributor`,
+      method: 'POST',
+      data
+    })
+  }
+  
+  removeContributor = async (id, distributorId) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/distributor/${distributorId}`,
       method: 'DELETE'
     })
   }

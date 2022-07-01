@@ -7,6 +7,7 @@ import ClassesAPI from '../../api/ClassesAPI'
 import DiscussionAPI from '../../api/DiscussionAPI'
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreedCrumbs from './components/ClassBreedCrumbs';
+import ZoomClient from '../zoom-test/ZoomClient';
 
 function ClassLearn() {
   const [selectedModuleId, setSelectedModuleId] = useState(null)
@@ -93,7 +94,7 @@ function ClassLearn() {
                 <div className="row calendar-subtitle">
                   <div>
                   <Form.Select onChange={onModuleChange} aria-label="Default select example">
-                <option value="">--SELECT UNIT HERE--</option>
+                <option value="">--SELECT MODULE HERE--</option>
                 {modules.map(item =>{
                     return (<option value={item?.id} > {item?.moduleName}</option>)
                   })}

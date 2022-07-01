@@ -644,10 +644,32 @@ creatTask = async (mId, cId,  data) => {
     });
   };
 
+  updateMeeting = async (id, data) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/Meeting`,
+      method: 'PUT',
+      data,
+    });
+  };
+  
   getFrequencyReport = async (classId, testId) => {
     return this.sendRequest({
       path: `/api/Class/${classId}/test/${testId}/report/frequency`,
       method:'GET'
+    })
+  }
+
+  reTakeAssigment = async (id, assignmentId, studentId) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/assignment/${assignmentId}/student/${studentId}/retake`,
+      method: 'DELETE'
+    })
+  }
+
+  reTakeTask = async (id, taskId, studentId) => {
+    return this.sendRequest({
+      path:`/api/Class/${id}/task/${taskId}/student/${studentId}/retake`,
+      method: 'DELETE'
     })
   }
 

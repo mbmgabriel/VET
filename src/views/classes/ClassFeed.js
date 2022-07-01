@@ -26,7 +26,7 @@ function ClassFeed() {
   const [editAnnouncementItem, setEditAssignAssignmentItem] = useState()
   const [feedClass, setFeedClass] = useState([])
   const userContext = useContext(UserContext)
-  const {user} = userContext.data
+  const {user, selectedClassId, setSelectedClassId} = userContext.data
   const [showComment, setShowComment] = useState(Fade)
   const [refId, setRefId] = useState()
   const [typeId, setTypeId] = useState('')
@@ -36,6 +36,7 @@ function ClassFeed() {
   const subsType = localStorage.getItem('subsType');
   const [showLike, setShowLike] = useState(false)
   const [feedItemLike, setFeedItemLike] = useState([])
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -53,6 +54,8 @@ function ClassFeed() {
   
   const createAnnouncementClass = async (e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     let typeId = 3
     let useraccountId = 0
     let status = true
@@ -113,6 +116,8 @@ const getComment = (item, item1, item3) => {
    }
   }
   useEffect(() => {
+    console.log("Selecting class: " + id)
+    setSelectedClassId(id)
     getFeedClass();
     if(subsType != 'LMS'){
       window.location.href = "/classes"
@@ -225,7 +230,7 @@ const getComment = (item, item1, item3) => {
                   <FormControl onChange={(e) => setContent(e.target.value)} value={content} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type an Announcement for the class here" type="text"/> 
               </InputGroup>
               <div style={{textAlign:'right', paddingTop:'15px'}}>
-              <Button className='tficolorbg-button' type='submit' >POST</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >POST</Button>
               </div>
             </Form>
           </Card.Body>
@@ -303,7 +308,6 @@ const getComment = (item, item1, item3) => {
               <Row>
                 <div className='like-show-name'>
               <Link to={'#'} onClick={() => handleShowLike(feedItem)} >
-              {console.log('Like:', feedItem)}
                       {feedItem?.likes?.slice(0,2).map(item => {
                         return(
                           <>{item?.likeBy},</>
@@ -418,7 +422,6 @@ const getComment = (item, item1, item3) => {
               </Row>
               <div className='like-show-name'>
               <Link to={'#'} onClick={() => handleShowLike(feedItem)} >
-              {console.log('Like:', feedItem)}
                       {feedItem?.likes?.slice(0,2).map(item => {
                         return(
                           <>{item?.likeBy},</>

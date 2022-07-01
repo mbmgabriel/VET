@@ -27,7 +27,7 @@ function FileHeader(props) {
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
       if(temp){
-       setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
+      //  setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
       }
       console.log(response.data, 'heheheheheh')
     }else{
@@ -35,9 +35,20 @@ function FileHeader(props) {
     }
   }
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(props.id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setDisplayButtons(ifContri ? true : false);
+    }
+  }
+
   useEffect(() => {
     if(window.location.pathname.includes('course')){
       getCourseInformation();
+      getContributor();
     }
   }, [])
 
