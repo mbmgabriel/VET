@@ -155,7 +155,7 @@ function ClassCourseFileLibrary() {
                   {item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
                     <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} onClick={() => clickFile(item.pathBase)} className='p-1' alt={item.name} height={30} width={30}/>
                     :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
+                    <i className="fas fa-sticky-note" onClick={() => clickFile(item.pathBase)} style={{paddingRight: 5}}/>
                   }
                   </OverlayTrigger>
                 )
