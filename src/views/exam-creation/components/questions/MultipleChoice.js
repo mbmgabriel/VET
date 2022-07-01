@@ -29,6 +29,8 @@ const MultipleChoiceForm = ({
   setChoices,
   editQuestion,
 }) => {
+  const userContext = useContext(UserContext);
+  const { user } = userContext.data;
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -216,6 +218,17 @@ export default function MultipleChoice({
   const {user} = userContext.data
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
+  const [isContributor, setIsContributor] = useState(true);
+
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -225,6 +238,7 @@ export default function MultipleChoice({
   }
 
   useEffect(() => {
+    getContributor();
     getCourseInformation();
     handleGetItems()
   }, [])
@@ -403,7 +417,7 @@ export default function MultipleChoice({
             </h5>
             <p title="" className=''>Point(s): {question.question.rate}</p>
           </div>
-          {editable && (
+          {editable &&  isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -420,8 +434,8 @@ export default function MultipleChoice({
           )}
         </div>
       ))}
-      {courseInfos?.isTechfactors? (<></>):(<>
-        {editable && (
+      {isContributor &&
+        editable && (
         <Button
           className='tficolorbg-button m-r-5'
           type='submit'
@@ -439,7 +453,6 @@ export default function MultipleChoice({
           Add question
         </Button>
       )}
-      </>)}
       <MultipleChoiceForm
         selectedQuestion={selectedQuestion}
         showModal={showModal}
