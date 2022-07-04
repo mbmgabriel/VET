@@ -11,6 +11,7 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
   const [discussionName, setDiscussionName] = useState('')
   const [instructions, setInstructions] = useState('')
   const [addNotify, setAddNotity] = useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const courseId = classInfo?.classInformation?.courseId
   const allowLate = true
   const {id} = useParams();
@@ -28,6 +29,8 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
 
   const saveDiscussion = async (e) =>{
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     if(moduleId === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
@@ -101,7 +104,7 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
                     <Form.Control onChange={(e) => setInstructions(e.target.value)} type="text" placeholder='Enter instruction here'/>
                   </Form.Group>
               <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Save Discussion</Button>
             </Form.Group>
         </Form> 
         </Modal.Body>
