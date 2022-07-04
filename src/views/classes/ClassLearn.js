@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
+import { Link } from 'react-router-dom'
 import ClassLearnHeader from './components/Learn/ClassLearnHeader'
 import {  Col, Row, Card, Form, Button } from 'react-bootstrap';
 // import ClassCalendar from './components/ClassCalendar'
@@ -8,14 +9,22 @@ import DiscussionAPI from '../../api/DiscussionAPI'
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreedCrumbs from './components/ClassBreedCrumbs';
 import ZoomClient from '../zoom-test/ZoomClient';
+import { UserContext } from '../../context/UserContext'
 
 function ClassLearn() {
   const [selectedModuleId, setSelectedModuleId] = useState(null)
   const [modules, setModules] = useState([])
   const [Pages, setPages] = useState([])
   const [content, setContent] = useState([]);
+  const [pageName, setPageName] = useState("");
+  const [cName, setCname] = useState("")
   const [classInfo, setClassInfo] = useState({});
+  const [tMiranda, setTMiranda] = useState({});
+  const [sMiranda, setSMiranda] = useState({});
   const {id} = useParams()
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  
 
   const getClassInfo = async() => {
     // setLoading(true)
@@ -24,7 +33,7 @@ function ClassLearn() {
       console.log({response})
       getModules(response.data.classInformation?.courseId)
       setClassInfo(response.data)
-      console.log(response.data)
+      setCname(response.data.classInformation?.courseName)
     }else{
       alert("Something went wrong while fetching all courses")
     }
@@ -42,6 +51,7 @@ function ClassLearn() {
 
   useEffect(() => {
     getClassInfo()
+    getTeacherMiranda()
   }, [])
 
   const onModuleChange = (e) => {
@@ -70,10 +80,43 @@ function ClassLearn() {
     if(response.ok){
       setContent(response.data)
       console.log(response.data)
+      // localStorage.setItem("lesson", response.data.pageName)
     }else{
       alert("Something went wrong while fetching all pages")
     }
   }
+
+  const setLessonName = async(item) => {
+    setPageName(item)
+  }
+
+  const getTeacherMiranda = async() => {
+    let response = await new ClassesAPI().teacherMiranda()
+    if(response.ok){
+      setTMiranda(response.data)
+    }else{
+      alert("Teacher Miranda Error")
+    }
+  }
+
+  const getStudentMiranda = async() => {
+    let response = await new ClassesAPI().studentMiranda()
+    if(response.ok){
+      setSMiranda(response.data)
+    }else{
+      alert("Student Miranda Error")
+    }
+  }
+
+  const goToMirandaTeacher = async(tCode, tUser, tPass) => {
+      window.open('https://irai2.com/mir2021.1.2/?'+ tCode +','+ tUser +','+ tPass) 
+  }
+
+  const goToMirandaStudent = async(sCode, sRoom, sUser, sPass) => {
+    window.open('https://irai2.com/mir2021.1.2/?'+sCode+','+sRoom+':'+sUser+','+sPass ) 
+}
+
+  
   
   return (
     <ClassSideNavigation setLoading={()=> console.log('sample')}>
@@ -81,10 +124,38 @@ function ClassLearn() {
       <div style={{position:'relative'}} className='not-scrollable'>
         <Row>
           <Col className='scrollable vh-80 pb-5' style={{marginLeft:'15px'}} >
-            <ClassLearnHeader content={content}  classInfo={classInfo}/>
+            <ClassLearnHeader content={content}  classInfo={classInfo}/> 
+            {cName === 'Innovators 1 (Second Edition)' && pageName === 'Lesson 3- Introduction to Miranda Simulator' &&
+            <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+              {user?.teacher ?
+              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                <i class="fas fa-tv"></i> Robotics Simulator T
+              </Link>
+              :
+              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                <i class="fas fa-tv"></i> Robotics Simulator S
+              </Link>
+              }
+            </Card>
+            }
+
+            {cName === 'Creators 1 (Second Edition)' && pageName === 'Lesson 10' &&
+            <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+              {user?.teacher ?
+              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                <i class="fas fa-tv"></i> Robotics Simulator T
+              </Link>
+              :
+              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                <i class="fas fa-tv"></i> Robotics Simulator S
+              </Link>
+              }
+            </Card>
+            }
           </Col>
           <Col md='3'>
             <Card className='calendar kb-0px'style={{backgroundColor:'white'}}>
+              
               <Card.Header className='calendar-header' style={{backgroundColor:'white'}}>
                 <div className="row calendar-title">
                   <div>
@@ -106,13 +177,14 @@ function ClassLearn() {
               <Card.Body >
                 <Card.Title tag="h5" className='card-title'>
                   Pages
+                  
                 </Card.Title>
                 <Card.Text className='card-title' >
                 <ul style={{listStyle:'none', height: '50vh'}} className='scrollable pb-5'>
                 {Pages.map(item =>{
                     return (
                       <>
-                        <li><p onClick={() => getContent(item?.id)} className='btn-create-discussion' variant="link" > {item?.pageName}  </p></li>
+                        <li><p onClick={(e) => {getContent(item?.id); setLessonName(item?.pageName)}} className='btn-create-discussion' variant="link" > {item?.pageName}  </p></li>
                       </>
                     )
                   })}
