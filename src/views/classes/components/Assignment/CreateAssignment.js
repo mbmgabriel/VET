@@ -21,6 +21,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
   const [displayType, setDisplayType] = useState('');
   const [showFilesFolders, setShowFilesFolders] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [courseId, setCourseId] = useState(null)
   const {id} = useParams();
 
@@ -29,6 +30,8 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   }
   const createAssignment = async (e) =>{
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     if(moduleId == ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
@@ -321,7 +324,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
                   <ContentField  value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
               </Form.Group>  
               <Form.Group className='right-btn'>
-                  <Button className='tficolorbg-button' type='submit' >Save Assignment</Button>
+                  <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Save Assignment</Button>
               </Form.Group>
           </Form> 
         </Modal.Body>

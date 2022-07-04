@@ -19,6 +19,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
   let sessionModule = sessionStorage.getItem('moduleid')
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const {id} = useParams();
   const [displayFolder, setDisplayFolder] = useState([])
 
@@ -42,6 +43,8 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
 
 	const saveAssignmennt = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true)
     let response = await new CoursesAPI().createAssignment(
       sessionModule,
@@ -165,7 +168,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
 								</Form.Group>
 								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
+										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
 												Save Assignment
 										</Button>
 								</span>
