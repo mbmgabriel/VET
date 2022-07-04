@@ -21,7 +21,8 @@ const EssayForm = ({
   setQuestion,
   rate,
   setRate,
-  editQuestion
+  editQuestion,
+  isButtonDisabled
 }) => {
 
   const [displayFiles, setDisplayFiles] = useState([]);
@@ -121,7 +122,7 @@ const EssayForm = ({
           </Form.Group>
 
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
+            <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>
               {editQuestion ? <>Save Question</> : <>Update Question</>}
             </Button>
           </span>
@@ -154,6 +155,7 @@ export default function Essay({
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
@@ -183,6 +185,8 @@ export default function Essay({
 
   const submitQuestion = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true);
     const data = {
       questionTypeId,
@@ -313,6 +317,7 @@ export default function Essay({
         setRate={setRate}
         onSubmit={submitQuestion}
         editQuestion={editQuestion}
+        isButtonDisabled={isButtonDisabled}
       />
     </div>
   );

@@ -23,7 +23,8 @@ const IdentificationForm = ({
   setRate,
   answer,
   setAnswer,
-  editQuestion
+  editQuestion,
+  isButtonDisabled
 }) => {
 
   const [displayFiles, setDisplayFiles] = useState([]);
@@ -136,7 +137,7 @@ const IdentificationForm = ({
             />
           </Form.Group>
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
+            <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>
               {editQuestion ? <>Save Question</> : <>Update Question</>}
             </Button>
           </span>
@@ -170,6 +171,7 @@ export default function Identification({
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
@@ -199,6 +201,8 @@ export default function Identification({
 
   const submitQuestion = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     console.log({ selectedQuestion });
     setLoading(true);
     const data = {
@@ -377,6 +381,7 @@ export default function Identification({
         setAnswer={setAnswer}
         onSubmit={submitQuestion}
         editQuestion={editQuestion}
+        isButtonDisabled={isButtonDisabled}
       />
     </div>
   );

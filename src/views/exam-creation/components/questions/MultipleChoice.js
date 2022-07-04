@@ -26,6 +26,7 @@ const MultipleChoiceForm = ({
   choices,
   setChoices,
   editQuestion,
+  isButtonDisabled
 }) => {
   const userContext = useContext(UserContext);
   const { user } = userContext.data;
@@ -227,14 +228,14 @@ const MultipleChoiceForm = ({
                   type='add-question'
                   onClick={addQuestion}
                   >
-                  Add Choice
+                  Add Choice 
                 </Button>
               )}
             </div>
           </Form.Group>
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
-            {editQuestion ? <>Save Question</> : <>Update Question</>}
+            <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>
+            {editQuestion ? <>Save Question </> : <>Update Question</>}
             </Button>
           </span>
         </Form>
@@ -269,6 +270,7 @@ export default function MultipleChoice({
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
@@ -315,6 +317,8 @@ export default function MultipleChoice({
   }
   const submitQuestion = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     console.log({ selectedQuestion });
     setLoading(true);
     const data = {
@@ -515,6 +519,7 @@ export default function MultipleChoice({
         setChoices={setChoices}
         onSubmit={submitQuestion}
         editQuestion={editQuestion}
+        isButtonDisabled={isButtonDisabled}
       />
     </div>
   );

@@ -24,7 +24,8 @@ const EnumerationForm = ({
   choices,
   setChoices,
   selectedQuestion,
-  editQuestion
+  editQuestion,
+  isButtonDisabled
 }) => {
   const addAnswer = () => {
     setChoices([...choices, { testChoices: "", choicesImage: "" }]);
@@ -181,7 +182,7 @@ const EnumerationForm = ({
             </div>
           </Form.Group>
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
+            <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>
               {editQuestion ? <>Save Question</> : <>Update Question</>}
             </Button>
           </span>
@@ -217,6 +218,7 @@ export default function Enumeration({
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
@@ -246,6 +248,8 @@ export default function Enumeration({
 
   const submitQuestion = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     console.log({ selectedQuestion });
     const data = {
       question: {
@@ -446,6 +450,7 @@ export default function Enumeration({
         onSubmit={submitQuestion}
         selectedQuestion={selectedQuestion}
         editQuestion={editQuestion}
+        isButtonDisabled={isButtonDisabled}
       />
     </div>
   );
