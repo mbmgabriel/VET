@@ -88,7 +88,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
       setTestReport(response.data)
       setExamReport(response.data[0].studentTests)
     }else{
-      alert(response.data.errorMessage)
+      alert('response.data.errorMessage')
     }
   }
 

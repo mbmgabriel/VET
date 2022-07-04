@@ -186,6 +186,12 @@ export default function Routes() {
             <PrivateRoute path='/school_classes/:id/classList' exact component={AdminClassList} />
             <PrivateRoute path='/school_classes/:id/files' exact component={AdminClassFiles} />
 
+            <PrivateRoute path='/reports/exam' exact component={Reports} />
+            <PrivateRoute path='/reports/assignment' component={Reports} />
+            <PrivateRoute path='/reports/task' exact component={Reports} />
+            <PrivateRoute path='/reports/interactive' exact component={Reports} />
+
+
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
             <PublicRoute path='/calendar' exact component={CalendarPage}/>

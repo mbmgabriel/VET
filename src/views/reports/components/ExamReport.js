@@ -3,7 +3,7 @@ import {Accordion, Row, Col} from 'react-bootstrap'
 import ExamReportContent from '../contents/ExamReportContent'
 import ClassesAPI from './../../../api/ClassesAPI'
 
-function ExamReport({filter, setfilter, classesModules, setClassesModules, selectedClassId, viewTestReport, setViewTestReport, showReportHeader, setShowReportHeader}) {
+function ExamReport({filter, setfilter, classesModules, setClassesModules, getTestReport, selectedClassId, viewTestReport, setViewTestReport, showReportHeader, setShowReportHeader}) {
 
   const [testPerModule, setTestPerModule] = useState([])
   const [testReport, setTestReport] = useState([])
@@ -59,21 +59,21 @@ console.log(uniq); // [ 'Nancy' ]
 // console.log('notSubmitted:', )
 
 
-  const getTestReport = async(e, testid, testname, classid) => {
-    setLoading(true)
-    sessionStorage.setItem('testName',testname)
-    sessionStorage.setItem('testid',testid)
-    let sessionClass = sessionStorage.getItem("classId")
-    setViewTestReport(false)
-    let response = await new ClassesAPI().getTestReport(sessionClass, testid)
-    setLoading(false)
-    if(response.ok){
-      setTestReport(response.data) 
-      // setStartDate(response.studentTests.classTest.startDate)
-    }else{
-      alert(response.data.errorMessage)
-    }
-  }
+  // const getTestReport = async(e, testid, testname, classid) => {
+  //   setLoading(true)
+  //   sessionStorage.setItem('testName',testname)
+  //   sessionStorage.setItem('testid',testid)
+  //   let sessionClass = sessionStorage.getItem("classId")
+  //   setViewTestReport(false)
+  //   let response = await new ClassesAPI().getTestReport(sessionClass, testid)
+  //   setLoading(false)
+  //   if(response.ok){
+  //     setTestReport(response.data) 
+  //     // setStartDate(response.studentTests.classTest.startDate)
+  //   }else{
+  //     alert(response.data.errorMessage)
+  //   }
+  // }
 
   if(viewTestReport === true){
   return (
