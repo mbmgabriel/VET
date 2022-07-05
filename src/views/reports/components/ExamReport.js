@@ -3,7 +3,7 @@ import {Accordion, Row, Col} from 'react-bootstrap'
 import ExamReportContent from '../contents/ExamReportContent'
 import ClassesAPI from './../../../api/ClassesAPI'
 
-function ExamReport({filter, setfilter, classesModules, setClassesModules, getTestReport, selectedClassId, viewTestReport, setViewTestReport, showReportHeader, setShowReportHeader}) {
+function ExamReport({filter, classesModules, getTestReport, selectedClassId}) {
 
   const [testPerModule, setTestPerModule] = useState([])
   const [testReport, setTestReport] = useState([])
@@ -54,28 +54,6 @@ const notSubmitted = testReport.map(item =>{
   )
 })
 
-console.log(uniq); // [ 'Nancy' ]
-// console.log('111:', testReport)
-// console.log('notSubmitted:', )
-
-
-  // const getTestReport = async(e, testid, testname, classid) => {
-  //   setLoading(true)
-  //   sessionStorage.setItem('testName',testname)
-  //   sessionStorage.setItem('testid',testid)
-  //   let sessionClass = sessionStorage.getItem("classId")
-  //   setViewTestReport(false)
-  //   let response = await new ClassesAPI().getTestReport(sessionClass, testid)
-  //   setLoading(false)
-  //   if(response.ok){
-  //     setTestReport(response.data) 
-  //     // setStartDate(response.studentTests.classTest.startDate)
-  //   }else{
-  //     alert(response.data.errorMessage)
-  //   }
-  // }
-
-  if(viewTestReport === true){
   return (
     <div>
       <Accordion>
@@ -92,7 +70,7 @@ console.log(uniq); // [ 'Nancy' ]
                 item.classTest !== null &&
                 <Row>
                   <Col sm={8}>
-                    <div className='title-exam' onClick={(e) => getTestReport(e, item.test.id, item.test.testName, item.test.classId)}>
+                    <div className='title-exam' onClick={(e) => getTestReport(item)}>
                       {item.test.testName}
                     </div>
                     {/* <div className='code-exam'>
@@ -120,10 +98,5 @@ console.log(uniq); // [ 'Nancy' ]
       </Accordion>
     </div>
   )
-  }else if(viewTestReport === false){
-    return(
-      <ExamReportContent showReportHeader={showReportHeader} setShowReportHeader={setShowReportHeader} setTestReport={setTestReport} testReport={testReport}/>
-    )
-  }
 }
 export default ExamReport

@@ -14,22 +14,22 @@ function ReportHeader({classesModules, setClassesModules, selectedClassId, viewT
   }
 	let testname = sessionStorage.getItem("testName")
 
-  const getTestReport = async(e, testid, testname, classid) => {
-    setDisplay('testReport')
-    // setLoading(true)
-    sessionStorage.setItem('testName',testname)
-    sessionStorage.setItem('testid',testid)
-    let sessionClass = sessionStorage.getItem("classId")
-    // setViewTestReport(false)
-    let response = await new ClassesAPI().getTestReport(sessionClass, testid)
-    // setLoading(false)
-    if(response.ok){
-      setTestReport(response.data) 
-      // setStartDate(response.studentTests.classTest.startDate)
-    }else{
-      alert(response.data.errorMessage)
-    }
-  }
+//   const getTestReport = async(e, testid, testname, classid) => {
+//     setDisplay('testReport')
+//     // setLoading(true)
+//     sessionStorage.setItem('testName',testname)
+//     sessionStorage.setItem('testid',testid)
+//     let sessionClass = sessionStorage.getItem("classId")
+//     // setViewTestReport(false)
+//     let response = await new ClassesAPI().getTestReport(sessionClass, testid)
+//     // setLoading(false)
+//     if(response.ok){
+//       setTestReport(response.data) 
+//       // setStartDate(response.studentTests.classTest.startDate)
+//     }else{
+//       alert(response.data.errorMessage)
+//     }
+//   }
 
 	return (
 		<ReportContainer>
@@ -50,8 +50,8 @@ function ReportHeader({classesModules, setClassesModules, selectedClassId, viewT
 		:
 			<div className="col-md-4 pages-header"><h1>{testname}</h1></div>
 		}
-		<ExamReport filter={filter} getTestReport={getTestReport} setFilter={setFilter} showReportHeader={showReportHeader} setShowReportHeader={setShowReportHeader} classesModules={classesModules} setClassesModules={setClassesModules} selectedClassId={selectedClassId} viewTestReport={viewTestReport} setViewTestReport={setViewTestReport}/>
-    {display == 'testReport' && <ExamReportContent/>}
+		<ExamReport filter={filter} setFilter={setFilter} showReportHeader={showReportHeader} setShowReportHeader={setShowReportHeader} classesModules={classesModules} setClassesModules={setClassesModules} selectedClassId={selectedClassId} viewTestReport={viewTestReport} setViewTestReport={setViewTestReport}/>
+    	{/* {display == 'testReport' && <ExamReportContent/>} */}
   </ReportContainer>
 	)
 }

@@ -65,6 +65,9 @@ export default function Reports({children}) {
     newURL.searchParams.set('classId', id);
     window.history.pushState(null, '', newURL.toString());
     setClassId(id);
+    if(window.location.pathname !== '/reports'){
+      window.location.reload();
+    }
   }
 
   return (
