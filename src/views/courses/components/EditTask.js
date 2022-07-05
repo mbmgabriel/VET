@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
+import CourseFileLibrary from './CourseFileLibrary';
 
 export default function EditTask({setTaskName,setInstructions, taskId, instructions, taskName, openEditTaskModal, setOpenEditTaskModal, selectedTask, setTaskInfo}){
 
@@ -122,62 +123,38 @@ export default function EditTask({setTaskName,setInstructions, taskId, instructi
 				Edit Task
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
-						<Form onSubmit={saveEditTask}>
+          <Form onSubmit={saveEditTask}>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
-                <FileHeader type='Course' id={sessionCourse}  subFolder={''} doneUpload={()=> handleGetCourseFiles()} />
-                {/* {
-                 (displayFiles || []).map( (item,ind) => {
-                    return(
-                      <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-                    )
-                  })
-                } */}
-                {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
-              </div>
-								<Form.Group className="m-b-20">
-										<Form.Label for="courseName">
-												Task Name
-										</Form.Label>
-										<Form.Control 
-                      defaultValue={taskName}
-                      className="custom-input" 
-                      size="lg" 
-                      type="text" 
-                      placeholder="Edit Task Name"
-                      onChange={(e) => setTaskName(e.target.value)}
-                    />
-								</Form.Group>
-                <div>
-                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-                </div>
-								<Form.Group className="m-b-20">
-										<Form.Label for="description">
-												Instructions
-										</Form.Label>
-                    <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
-								</Form.Group>
-								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
-												Update Task
-										</Button>
-								</span>
-						</Form>
+              <CourseFileLibrary />
+            </div>
+            <Form.Group className="m-b-20">
+                <Form.Label for="courseName">
+                    Task Name
+                </Form.Label>
+                <Form.Control 
+                  defaultValue={taskName}
+                  className="custom-input" 
+                  size="lg" 
+                  type="text" 
+                  placeholder="Edit Task Name"
+                  onChange={(e) => setTaskName(e.target.value)}
+                />
+            </Form.Group>
+            <div>
+              <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+            </div>
+            <Form.Group className="m-b-20">
+                <Form.Label for="description">
+                    Instructions
+                </Form.Label>
+                <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
+            </Form.Group>
+            <span style={{float:"right"}}>
+                <Button className="tficolorbg-button" type="submit">
+                    Update Task
+                </Button>
+            </span>
+          </Form>
 				</Modal.Body>
 			</Modal>
 		</div>
