@@ -220,32 +220,32 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     <ToastContainer />
 		<Row>
       <Col md={6}>
-        <span className='font-exam-analysis-header'>{examAnalysis.student?.lname},  {examAnalysis.student?.fname}</span>
+        <span className='font-exam-analysis-header'>{examAnalysis?.student?.lname},  {examAnalysis?.student?.fname}</span>
       </Col>
       <Col md={6}>
-        <span className='font-exam-analysis-header float-right'>{examAnalysis.score} / {examAnalysis.assignedRawScore}</span>
+        <span className='font-exam-analysis-header float-right'>{examAnalysis?.score} / {examAnalysis?.assignedRawScore}</span>
       </Col>
       <Col md={6}>
         <p className='font-exam-analysis-content-24-tfi'>{testname} </p>
       </Col>
       <Col md={6}>
-        <p className='font-exam-analysis-content-24-tfi float-right'>{moment(examAnalysis.classTest?.startDate).format("LL")} </p>
+        <p className='font-exam-analysis-content-24-tfi float-right'>{moment(examAnalysis?.classTest?.startDate).format("LL")} </p>
       </Col>
     </Row>
-      {examAnalysis.testPartAnswers?.map((item, index) => {
+      {examAnalysis?.testPartAnswers?.map((item, index) => {
         return(
             <div>
             <div className='inline-flex'>
               <p className='font-exam-analysis-content-24-tfi'>PART {index + 1}</p> <p style={{marginLeft:5}} className='font-exam-analysis-content-24' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
             </div>
-              {item.questionDetails.map((qd, index) => {
+              {item?.questionDetails?.map((qd, index) => {
                 return(
-                qd.answerDetails.map((ad, index) => {
+                qd?.answerDetails?.map((ad, index) => {
                   return(
                     <>
                     <br></br>
                     <div className='inline-flex'>
-                      <span className='font-exam-analysis-content-24' style={{marginBottom:"100px !important"}}></span> <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span>
+                      <span className='font-exam-analysis-content-24' style={{marginBottom:"100px !important"}}></span> <span className='font-exam-analysis-content-24'><ContentViewer>{ad?.assignedQuestion}</ContentViewer></span>
                     </div>
                     <Row style={{textAlign:'center', padding:10}}>
                       <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
@@ -256,7 +256,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                           <span style={{marginRight:10}}>{ad.studentScore == 0 && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
 
                             Student Answer :</span><span className='font-exam-analysis-content-24'>
-                            <ContentViewer>{ad.studentAnswer}</ContentViewer>
+                            {ad?.studentAnswer}
                           </span>
                           
                         </div>
@@ -264,12 +264,12 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                       <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
                       <div>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Correct Answer :</span>
-                        <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad.assignedAnswer}</ContentViewer></span>
+                        <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad?.assignedAnswer}</ContentViewer></span>
                         </div>
 
                        
 
-                            {ad.studentScore === 0 && ad.isConsider === false ?(
+                            {ad?.studentScore === 0 && ad?.isConsider === false ?(
                             <>
                               <Form>
                                 <div style={{display:'inline-flex'}}>
@@ -288,7 +288,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                               ):
                               <></>
                               }
-                          {ad.studentScore >= 0 && ad.isConsider === true ?(
+                          {ad?.studentScore >= 0 && ad.isConsider === true ?(
                             <>
                               <Form>
                                 <div style={{display:'inline-flex'}}>

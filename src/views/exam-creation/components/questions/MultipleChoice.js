@@ -143,6 +143,7 @@ const MultipleChoiceForm = ({
             <Form.Label for='question'>Question</Form.Label>
             <ContentField
               value={question}
+              placeholder='Enter exam question'
               onChange={(value) => setQuestion(value)}
             />
           </Form.Group>
@@ -210,6 +211,7 @@ const MultipleChoiceForm = ({
                     <ContentField
                       className='flex-1'
                       value={choice.testChoices}
+                      placeholder='Enter exam choices'
                       onChange={(value) => onChoiceTextChange(index, value)}
                     />
                     {selectedQuestion == null && (
