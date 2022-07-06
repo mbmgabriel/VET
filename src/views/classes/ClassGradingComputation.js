@@ -13,6 +13,8 @@ import ClassTermAPI from "../../api/ClassTermAPI";
 import { Link, useHistory, useParams } from "react-router-dom";
 import GradingActivityForm from "./components/grading/GradingActivityForm";
 import GradingActivityComputation from "./components/grading/GradingActivityComputation";
+import ClassSideNavigation from './components/ClassSideNavigation';
+import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 
 const getPercentageByDescription = (description, template) => {
   return template.templateTypes.reduce((total, item) => {
@@ -90,11 +92,10 @@ export default function ClassGradingComputation() {
 
   if (user.isTeacher) {
     return (
-      <MainContainer title='Grading System' fluid activeHeader={"grading"}>
-        {loading && <FullScreenLoader />}
+      <ClassSideNavigation>
+        <ClassBreadcrumbs title='Grading Component' secondItem={'Coputation'} clickedSecond={()=> history.push(`/classes/${id}/class_grading/${term_id}`)} clicked={() => history.push(`/classes/${id}/class_grading`)} />
         <div className='rounded-white-container container-fluid mt-4'>
-          <h2 className='primary-color '>Grading Component</h2>
-
+          <h2 className='primary-color '>Grading Component --</h2>
           <table className='grading-table'>
             <thead>
               <tr>
@@ -134,7 +135,7 @@ export default function ClassGradingComputation() {
             </tbody>
           </table>
         </div>
-      </MainContainer>
+      </ClassSideNavigation>
     );
   }
 
