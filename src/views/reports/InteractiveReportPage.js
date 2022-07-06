@@ -36,7 +36,7 @@ function InteractiveReportPage() {
       setClassesModules(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses --")
+      toast.error("Something went wrong while fetching all class modules.")
     }
   }
 
@@ -49,7 +49,7 @@ function InteractiveReportPage() {
       setInteractiveReport(response.data)
       console.log(response.data)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data?.errorMessage)
     }
   }
 
@@ -75,7 +75,7 @@ function InteractiveReportPage() {
         console.log(response.data)
         
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage)
       }
     }
 

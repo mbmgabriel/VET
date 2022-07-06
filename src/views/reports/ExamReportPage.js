@@ -37,7 +37,7 @@ function ReportHeader() {
       setClassesModules(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      toast.error("Something went wrong while fetching class modules.")
     }
   }
 
@@ -53,7 +53,7 @@ function ReportHeader() {
       setTestReport(response.data) 
       // setStartDate(response.studentTests.classTest.startDate)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data?.ErrorMessage)
     }
   }
 

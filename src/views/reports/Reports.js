@@ -85,16 +85,16 @@ export default function Reports({children}) {
             </Form.Select>
           </ListGroup.Item>
           <ListGroup style={{paddingLeft:'15px'}}>
-            <Link className={currentLoc.includes('reports/exam') ? "active-nav-item" : 'nav-item'} to={`/reports/exam?classId=${classId}`}>
+            <Link className={currentLoc.includes('reports/exam') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/exam?classId=${classId}` : '/reports'}>
               Exam
             </Link>
-            <Link className={currentLoc.includes('reports/assignment') ? "active-nav-item" : 'nav-item'} to={`/reports/assignment?classId=${classId}`}>
+            <Link className={currentLoc.includes('reports/assignment') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/assignment?classId=${classId}` : '/reports'}>
               Assignment
             </Link>
-            <Link className={currentLoc.includes('reports/task') ? "active-nav-item" : 'nav-item'} to={`/reports/task?classId=${classId}`}>
+            <Link className={currentLoc.includes('reports/task') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/task?classId=${classId}` : '/reports'}>
               Task
             </Link>
-            <Link className={currentLoc.includes('reports/interactive') ? "active-nav-item" : 'nav-item'} to={`/reports/interactive?classId=${classId}`}>
+            <Link className={currentLoc.includes('reports/interactive') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/interactive?classId=${classId}` : '/reports'}>
               Interactive
             </Link>
           </ListGroup>

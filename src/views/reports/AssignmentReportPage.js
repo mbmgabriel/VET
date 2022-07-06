@@ -37,7 +37,7 @@ function AssignmentReportPage() {
       setClassesModules(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      toast.error("Something went wrong while fetching all class modules.")
     }
   }
 
@@ -51,7 +51,7 @@ function AssignmentReportPage() {
       setAssignmentReport(response.data)
       console.log(response.data)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage)
     }
   }
 
@@ -78,7 +78,7 @@ function AssignmentReportPage() {
         console.log(response.data)
         
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage)
       }
     }
 
