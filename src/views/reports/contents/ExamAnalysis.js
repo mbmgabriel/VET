@@ -256,7 +256,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                           <span style={{marginRight:10}}>{ad.studentScore == 0 && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
 
                             Student Answer :</span><span className='font-exam-analysis-content-24'>
-                            {ad?.studentAnswer}
+                            {ad?.studentAnswer === null ? <span style={{color:'red'}}>Stundent has no answer</span>:<><ContentViewer>{ad?.studentAnswer}</ContentViewer></> }
                           </span>
                           
                         </div>
