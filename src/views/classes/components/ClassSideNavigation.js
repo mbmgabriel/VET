@@ -76,7 +76,7 @@ export default function ClassSideNavigation({children}) {
   )
   const renderTooltipLink = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Other Links
+      Links
     </Tooltip>
   )
   const renderTooltipClassList = (props) => (
@@ -157,7 +157,7 @@ export default function ClassSideNavigation({children}) {
               </Link>
             }
             <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
-              Other Links
+              Links
             </Link>
             <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/discussion`}>
               Discussion

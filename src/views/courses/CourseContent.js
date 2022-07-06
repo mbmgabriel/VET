@@ -104,7 +104,7 @@ export default function CourseContent({children}) {
   )
   const renderTooltipLink = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-     Other Links
+      Links
     </Tooltip>
   )
   const renderTooltipFiles = (props) => (
@@ -167,7 +167,7 @@ export default function CourseContent({children}) {
                   Files
                 </Link>
                 <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
-                  Other Links
+                  Links
                 </Link>
                 {
                   courseInfo.isTechfactors && 
