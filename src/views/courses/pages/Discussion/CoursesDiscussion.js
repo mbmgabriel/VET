@@ -11,9 +11,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import CourseContent from "../../CourseContent";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
+import {useParams} from 'react-router';
 
 export default function CoursesDiscussion() {
-
+  const {id} = useParams();
   const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState("")
   const [openCreateDiscussionModal, setOpenCreateDiscussionModal] = useState(false)
@@ -34,6 +35,17 @@ export default function CoursesDiscussion() {
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+  const [isContributor, setIsContributor] = useState(true);
+
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
 
   const getCourseInformation = async() => {
     setLoading(true)
@@ -47,6 +59,7 @@ export default function CoursesDiscussion() {
   }
 
   useEffect(() => {
+    getContributor();
     if(courseid != null){
       getCourseInformation();
     }
@@ -191,9 +204,10 @@ export default function CoursesDiscussion() {
                 <Accordion.Item eventKey={item.id}> 
                   <Accordion.Header onClick={(e) => {getDiscussionInfo(e, item.id)}}>
                     <span className="unit-title">{item.moduleName}
-                    {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                    {
+                      isContributor && 
                       <Button className="btn-create-class" variant="link" onClick={handleopenCreateDiscussionModal}><i className="fa fa-plus"></i> Add Discussion</Button>
-                    </>)}
+                    }
                     </span>
                   </Accordion.Header>
                   <Accordion.Body>
@@ -205,7 +219,7 @@ export default function CoursesDiscussion() {
                         <Col className="lesson-header" md={9}>
                         <span onClick={(e) => {viewDis(di)}}>{di?.discussion.discussionName}</span>
                         </Col>
-                        {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                        {isContributor && 
                           <Col className="align-right-content" md={3}>
                         <OverlayTrigger
                           placement="bottom"
@@ -222,7 +236,7 @@ export default function CoursesDiscussion() {
                           {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditDiscussionModal(e, di)}><i className="fa fa-edit"></i></Button>
                           <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => {setSweetError(true); setDiscussionId(di.discussion.id)}}><i className="fa fa-trash"></i></Button> */}
                         </Col>
-                        </>)}
+                      }
                       </Row>
                     ))}
                     <SweetAlert

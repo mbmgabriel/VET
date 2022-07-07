@@ -169,7 +169,17 @@ export default function Identification({
   const {user} = userContext.data
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
+  const [isContributor, setIsContributor] = useState(true);
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
@@ -178,6 +188,7 @@ export default function Identification({
   }
 
   useEffect(() => {
+    getContributor();
     getCourseInformation();
     handleGetItems()
   }, [])
@@ -323,7 +334,7 @@ export default function Identification({
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
 
-          {editable && (
+          {editable && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -338,8 +349,7 @@ export default function Identification({
           )}
         </div>
       ))}
-      {courseInfos?.isTechfactors? (<></>):(<>
-        {editable && (
+      {isContributor && editable && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'
@@ -356,7 +366,6 @@ export default function Identification({
           Add question
         </Button>
       )}
-      </>)}
       <IdentificationForm
         showModal={showModal}
         setShowModal={setShowModal}

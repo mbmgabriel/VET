@@ -29,6 +29,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
 
   const handleShowAnalysis = () => {
     setShowAnalysis(true)
+    getFrequencyReport()
   }
 
   const handleHideAnalysis =() => {
@@ -94,7 +95,6 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   useEffect(() => {
     if(sessionTestId != null){
       getTestReport(null, sessionClass, sessionTestId)
-      getFrequencyReport()
     }
   }, [])
 

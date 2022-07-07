@@ -50,7 +50,7 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
   }
 
   useEffect(() => {
-    if(assignmentAnalysis?.assignment){
+    if(assignmentAnalysis?.studentAssignment != null){
       getAssignmentAnswer(studentidsession, classid, assignmentAnalysis?.assignment?.id)
     }
   }, [assignmentAnalysis])
@@ -63,6 +63,7 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
       setAssignmentAnswer(response.data)
     }else{
       alert(response.data.errorMessage)
+      alert('error')
     }
   }
 

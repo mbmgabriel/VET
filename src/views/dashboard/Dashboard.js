@@ -1,15 +1,61 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useContext } from 'react';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import { UserContext } from '../../context/UserContext';
 import MainContainer from '../../components/layouts/MainContainer'
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, ListGroup, Form, Input, Button, Table } from 'react-bootstrap';
 import {  Doughnut, Line } from 'react-chartjs-2';
+import SchoolAPI from '../../api/SchoolAPI';
+import { getDataDetail } from '@microsoft/signalr/dist/esm/Utils';
+import moment from 'moment'
 
 export default function Dashboard() {
 
   const userContext = useContext(UserContext)
-  const {user} = userContext.data  
+  const {user} = userContext.data
+  const [schoolCode, setSchoolCode] = useState([])
+  const [schoolInfo, setSchoolInfo] = useState([])
+  const [schoolData, setSchoolData] = useState([])
+  const [dateTo, setDateTo] = useState("")
+  const [dateFrom, setDateFrom] = useState("")
+
+  useEffect(() => {
+    if (user.isStudent) return (window.location.href = "/404");
+  }, [])
+
+  useEffect(() => {
+    getSchoolCode()
+  }, [])
+
+  const getSchoolCode = async() => {
+    // setLoading(true)
+    let response = await new SchoolAPI().getSchoolList()
+    if(response.ok){
+      setSchoolCode(response.data)
+      console.log(response.data)
+    }else{
+      alert("Something went wrong while fetching all courses")
+    }
+    // setLoading(false)
+  }
+
+  const getSchoolData = async(sc, df, dt) => {
+    // setLoading(true)
+    let response = await new SchoolAPI().getSchoolInfo(sc, df, dt)
+    if(response.ok){
+      setSchoolData(response.data)
+      console.log(response.data)
+    }else{
+      alert("Something went wrong while fetching all courses")
+    }
+    // setLoading(false)
+  }
+
+  const testSchool = async(aa) => {
+    // setLoading(true)
+    alert(aa)
+    // setLoading(false)
+  }
 
   if(user.isSchoolAdmin){
     return (
@@ -77,6 +123,59 @@ export default function Dashboard() {
                   hoverOffset: 4
                 }]}}
               />
+            </div>
+          </Col>
+
+          <Col className='px-4' sm={12}>
+            <h2 className="primary-color mt-5 mb-3">Login Trail</h2>
+            <div className='chart-container'>
+              <Form >  
+                <ListGroup.Item className="list-group-item-o">
+                  <Row>
+                    <Form.Select onChange={(e) => setSchoolInfo(e.target.value)}>
+                    <option value="">-- Select School Here --</option>
+                    {schoolCode.map(item =>{
+                      return (<option value={item?.code} > {item?.code}</option>)
+                    })}
+                    </Form.Select>
+                    <br></br>
+                    Date From: <Form.Control type="date" onChange={(e) => setDateFrom(e.target.value)}/>
+                    <br></br>
+                    Date To: <Form.Control type="date" onChange={(e) => setDateTo(e.target.value)}/> 
+                    {/* <Button className='tficolorbg-button' onClick={(e) => getSchoolData(schoolCode, dateFrom, dateTo)} >Generate</Button>      */}
+                    <Button className='tficolorbg-button' onClick={(e) => getSchoolData(schoolInfo, dateFrom, dateTo)} >Generate</Button>         
+                  </Row>
+                </ListGroup.Item>
+              </Form>
+            </div>
+          </Col>
+          <Col className='px-4' sm={12}>
+            <h2 className="primary-color mt-5 mb-3">Login Trail</h2>
+            <div className='chart-container'>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Role Name</th>
+                  <th>Name</th>
+                  <th>No. Of Login</th>
+                  <th>Last Login</th>
+                </tr>
+              </thead>
+              <tbody>
+              {schoolData.map(item =>{
+                return(
+                  <tr>
+                    <td>{item.id}</td>
+                    <td>{item.roleName}</td>
+                    <td>{item?.teacherFullName}{item?.studentFullName}</td>
+                    <td>{item.numberofLogin}</td>
+                    <td>{moment(item.loginDate).format("LL")}</td>
+                  </tr>
+                )
+              })}
+              </tbody>
+            </Table>
             </div>
           </Col>
 

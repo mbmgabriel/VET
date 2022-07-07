@@ -26,6 +26,14 @@ export default class GradeAPI extends Base {
     });
   };
 
+  updateTeacherResource = async (id, type, data) => {
+    return this.sendRequest({
+      path: `/api/${type}/${id}/resource/v3/update`,
+      method: 'PUT',
+      data
+    })
+  }
+
   getCourseFiles = async (id, data) => {
     return this.sendRequest({
       path: `/api/Course/${id}/files/v3`,
