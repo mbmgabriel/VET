@@ -95,7 +95,7 @@ function ClassLearn() {
     if(response.ok){
       setTMiranda(response.data)
     }else{
-      alert("Teacher Miranda Error")
+      // alert("Teacher Miranda Error")
     }
   }
 
@@ -104,7 +104,7 @@ function ClassLearn() {
     if(response.ok){
       setSMiranda(response.data)
     }else{
-      alert("Student Miranda Error")
+      // alert("Student Miranda Error")
     }
   }
 
@@ -125,6 +125,8 @@ function ClassLearn() {
         <Row>
           <Col className='scrollable vh-80 pb-5' style={{marginLeft:'15px'}} >
             <ClassLearnHeader content={content}  classInfo={classInfo}/> 
+          </Col>
+          <Col className='scrollable vh-80 pb-5' style={{marginLeft:'15px'}} >
             {cName === 'Innovators 1 (Second Edition)' && pageName === 'Lesson 3- Introduction to Miranda Simulator' &&
             <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
               {user?.teacher ?
@@ -138,7 +140,6 @@ function ClassLearn() {
               }
             </Card>
             }
-
             {cName === 'Creators 1 (Second Edition)' && pageName === 'Lesson 10' &&
             <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
               {user?.teacher ?
@@ -155,7 +156,6 @@ function ClassLearn() {
           </Col>
           <Col md='3'>
             <Card className='calendar kb-0px'style={{backgroundColor:'white'}}>
-              
               <Card.Header className='calendar-header' style={{backgroundColor:'white'}}>
                 <div className="row calendar-title">
                   <div>
