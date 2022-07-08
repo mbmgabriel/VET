@@ -88,7 +88,7 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
         <Accordion.Item eventKey="0">
         <Accordion.Header>
           <div className='unit-exam' style={{fontSize:'25px'}}>
-            Links 
+           Other Links 
           </div>
         </Accordion.Header>
         <Accordion.Body>
