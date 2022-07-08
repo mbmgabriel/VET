@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment'
 import ContentViewer from '../../../components/content_field/ContentViewer';
 
-function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examAnalysis, setExamAnalysis, testPartAnswers, showReportHeader, setShowReportHeader}) {
+function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examAnalysis, setExamAnalysis, getExamAnalysis}) {
   
   const [showExamAnalysis, setShowExamAnalysis] = useState([])
   const [considerAnswer, setConsiderAnswer] = useState("")
@@ -27,7 +27,8 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
   const dateTimeNow = dateCompareNow + ' ' + '00:00:00';
 
   let testname = sessionStorage.getItem('testName')
-  let classid = sessionStorage.getItem('classId')
+  const pageURL = new URL(window.location.href);
+  let classid = pageURL.searchParams.get("classId");
   let studentidsession = sessionStorage.getItem('studentid')
   let testidsession = sessionStorage.getItem('testid')
 
@@ -40,27 +41,6 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     setSelectedAnswerId(answerid)
     setSelectedQuestionId(questionid)
 }
-
-  const getExamAnalysis = async(e, studentid, classid, testid) => {
-    e.preventDefault()
-    setShowExamAnalysis(true)
-    let response = await new ClassesAPI().getExamAnalysis(studentid, classid, testid)
-    if(response.ok){
-      setExamAnalysis(response.data)
-      
-    }else{
-      toast.error(response.data.errorMessage, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-    }
-  
 
   const considerAnswerExamT = async(e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
@@ -81,10 +61,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
         progress: undefined,
       });
     }
-    }
-  
-
-
+  }
 
   const considerAnswerExamF = async(e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
@@ -95,7 +72,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     )
     if(response.ok){
       notifyUnconsidered()
-      getExamAnalysis(e, studentidsession, classid, testidsession)
+      getExamAnalysis(studentidsession, classid, testidsession, examAnalysis.student?.lname,  examAnalysis.student?.fname)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -118,11 +95,10 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       selectedStudentId, classid, selectedTestId, selectedAnswerId, {isConsider, studentScore}
     )
     if(response.ok){
-      // setSweetError(true);
       setShow(true);
       setOpenModal(false)
       notifyConsidered()
-      getExamAnalysis(e, selectedStudentId, classid, selectedTestId)
+      getExamAnalysis(selectedStudentId, classid, selectedTestId, examAnalysis.student?.lname,  examAnalysis.student?.fname)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -144,10 +120,9 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       selectedStudentId, classid, selectedTestId, selectedAnswerId, {isConsider, studentScore}
     )
     if(response.ok){
-      // setSweetError(true);
       setShow(true);
       setOpenModal(false)
-      getExamAnalysis(e, selectedStudentId, classid, selectedTestId)
+      getExamAnalysis(selectedStudentId, classid, selectedTestId, examAnalysis.student?.lname,  examAnalysis.student?.fname)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -187,7 +162,6 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
 
   useEffect(() => {
     setSweetError(false)
-    setShowReportHeader(true)
     if(studentScore !== null) {
 			setStudentScore(studentScore)
 		}

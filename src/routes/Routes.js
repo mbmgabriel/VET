@@ -96,7 +96,10 @@ import ParentProfile from "../views/parent/profile/ParentProfile";
 import SystemAdminDashboard from "../views/system-admin/dashboard/SystemAdminDashboard";
 import SystemAdminProfile from "../views/system-admin/profile/SystemAdminProfile";
 
-
+import ExamReportPage from '../views/reports/ExamReportPage';
+import TaskReportPage from '../views/reports/TaskReportPage';
+import AssignmentReportPage from '../views/reports/AssignmentReportPage';
+import InteractiveReportPage from '../views/reports/InteractiveReportPage';
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -189,6 +192,12 @@ export default function Routes() {
             <PrivateRoute path='/school_classes/:id/links' exact component={AdminClassLinks} />
             <PrivateRoute path='/school_classes/:id/classList' exact component={AdminClassList} />
             <PrivateRoute path='/school_classes/:id/files' exact component={AdminClassFiles} />
+
+            <PrivateRoute path='/reports/exam' exact component={ExamReportPage} />
+            <PrivateRoute path='/reports/assignment' component={AssignmentReportPage} />
+            <PrivateRoute path='/reports/task' exact component={TaskReportPage} />
+            <PrivateRoute path='/reports/interactive' exact component={InteractiveReportPage} />
+
 
             {/* Parent routes */}
             <PrivateRoute path='/parent/dashboard' exact component={ParentDashboard} />

@@ -5,7 +5,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function TaskAnalysis({selectedClassId, taskAnalysis, setTaskAnalysis,  showTaskHeader, setShowTaskHeader}) {
+function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
   
   const [showTaskAnalysis, setShowTaskAnalysis] = useState([])
   const [loading, setLoading] = useState(false)
@@ -15,10 +15,12 @@ function TaskAnalysis({selectedClassId, taskAnalysis, setTaskAnalysis,  showTask
   const [taskGrade, setTaskGrade] = useState("")
   const [feedback, setFeedback] = useState("")
   const [selectedStudentId, setSelectedStudentId] = useState("")
-  const [sClassId, setSClassId] = useState("")
   const [selectedTaskId, setSelectedTaskId] = useState("")
   const [selectedAnswerId, setSelectedAnswerId] = useState("")
   const [taskAnswer, setTaskAnswer] = useState({});
+
+  const pageURL = new URL(window.location.href);
+  const paramsId = pageURL.searchParams.get("classId");
 
   let testname = sessionStorage.getItem('testName')
   let classid = sessionStorage.getItem('classId')
@@ -29,26 +31,25 @@ function TaskAnalysis({selectedClassId, taskAnalysis, setTaskAnalysis,  showTask
     e.preventDefault()
     setOpenModal(true)
     setSelectedStudentId(studentid)
-    setSClassId(classid)
     setSelectedTaskId(assignmentid)
     setSelectedAnswerId(answerid)
     setTaskGrade(score)
     setFeedback(afeedback)
 }
 
-const updateScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
+const updateScoreTask = async(e, studentid, id, assignmentid, answerid) => {
   e.preventDefault()
   let isConsider = true
   let response = await new ClassesAPI().updateTaskPoints
   (
-    selectedStudentId, sClassId, selectedTaskId, selectedAnswerId, {taskGrade, feedback}
+    selectedStudentId, paramsId, selectedTaskId, selectedAnswerId, {taskGrade, feedback}
   )
   if(response.ok){
     // setSweetError(true);
     setShow(true);
     setOpenModal(false)
     notifyUpdateTaskScore()
-    getTaskAnalysis(e, selectedStudentId, sClassId, selectedTaskId)
+    getTaskAnalysis(e, selectedStudentId, paramsId, selectedTaskId)
   }else{
     alert(response.data.errorMessage)
   }
@@ -59,14 +60,14 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
   let isConsider = true
   let response = await new ClassesAPI().updateTaskPoints
   (
-    selectedStudentId, sClassId, selectedTaskId, selectedAnswerId, {taskGrade, feedback}
+    selectedStudentId, paramsId, selectedTaskId, selectedAnswerId, {taskGrade, feedback}
   )
   if(response.ok){
     // setSweetError(true);
     setShow(true);
     setOpenModal(false)
     notifyAddTaskScore()
-    getTaskAnalysis(e, selectedStudentId, sClassId, selectedTaskId)
+    getTaskAnalysis(e, selectedStudentId, paramsId, selectedTaskId)
   }else{
     alert(response.data.errorMessage)
   }
@@ -98,14 +99,9 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
 
   useEffect(() => {
     if(taskAnalysis?.studentTask != null){
-      getTaskAnswer(studentidsession, classid, taskAnalysis?.task?.id)
+      getTaskAnswer(studentidsession, paramsId, taskAnalysis?.task?.id)
     }
   }, [taskAnalysis])
-
-  useEffect(() => {
-    setSweetError(false)
-    setShowTaskHeader(true)
-  }, [])
 
   const notifyUpdateTaskScore = () => 
   toast.success('Successfully Updated Points', {
@@ -160,14 +156,14 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
             <Col md={12}>{taskAnalysis.studentTask?.taskGrade}
             {taskAnalysis.studentTask?.taskGrade === null ? 
                           <Button variant="outline-warning" className='mb-2 mx-3' size="sm"
-                          onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, classid, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
+                          onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, paramsId, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
                         >
                           <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>
                           Add Points
                         </Button>
                         :
                         <Button variant="outline-warning" className='mb-2 mx-3' size="sm"
-                        onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, classid, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
+                        onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, paramsId, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
                       >
                         <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>
                         Update Points
@@ -197,7 +193,7 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
                 }
               </Row>
             </Col>
-              {/* <Button variant="outline-warning" size="sm" onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, classid, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}>
+              {/* <Button variant="outline-warning" size="sm" onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, paramsId, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}>
                 <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Score
               </Button> */}
             <hr></hr>

@@ -5,12 +5,14 @@ import AssignmentReportContent from '../contents/AssignmentReportContent'
 import ClassesAPI from './../../../api/ClassesAPI'
 import { toast } from 'react-toastify';
 
-function AssignmentReport({filter, setFilter, classesModules, setClassesModules, selectedClassId, viewAssignmentReport, setViewAssignmentReport, showAssignmentHeader, setShowAssignmentHeader}) {
+function AssignmentReport({filter, setFilter, classesModules, getAssignmentReport, selectedClassId, viewAssignmentReport, setViewAssignmentReport, showAssignmentHeader}) {
 
 const [assignmentPerModule, setAssignmentPerModule] = useState([])
 const [assignmentReport, setAssignmentReport] = useState([])
 const [open, setOpen] = useState(false)
 const [loading, setLoading] = useState(false)
+const pageURL = new URL(window.location.href);
+const paramsId = pageURL.searchParams.get("classId");
 
 const handleOpen = e =>{
     e.preventDefault()
@@ -18,10 +20,10 @@ const handleOpen = e =>{
 }
 
 const getClassAssignmentModules = async(e, moduleId) => {
-  console.log(selectedClassId)
+  console.log(paramsId)
   sessionStorage.setItem('assignmentModuleId', moduleId)
   let sessionModuleId = sessionStorage.getItem('assignmentModuleId')
-  let response = await new ClassesAPI().getClassAssignmentModules(selectedClassId, sessionModuleId)
+  let response = await new ClassesAPI().getClassAssignmentModules(paramsId, sessionModuleId)
   if(response.ok){
     setAssignmentPerModule(response.data)
     console.log(response.data)
@@ -37,22 +39,8 @@ const assignmentColumns = () => {
   return []
 }
 
-const getAssignmentReport = async(e, assignmentid, assignmentname) => {
-  setLoading(true)
-  sessionStorage.setItem('assignmentName',assignmentname)
-  sessionStorage.setItem('assignmentId',assignmentid)
-  setViewAssignmentReport(false)
-  console.log(viewAssignmentReport)
-  let response = await new ClassesAPI().getAssignmentReport(selectedClassId, assignmentid)
-  setLoading(false)
-  if(response.ok){
-    setAssignmentReport(response.data)
-    console.log(response.data)
-  }else{
-    alert(response.data.errorMessage)
-  }
-}
-if(viewAssignmentReport === true){
+
+// if(viewAssignmentReport === true){
   return (
     <div> 
         <Accordion>
@@ -95,11 +83,12 @@ if(viewAssignmentReport === true){
           }
           </Accordion>    
     </div>
-  )}else{
-    return(
-      <AssignmentReportContent getAssignmentReport={getAssignmentReport} showAssignmentHeader={showAssignmentHeader} setShowAssignmentHeader={setShowAssignmentHeader} assignmentColumns={assignmentColumns()} setAssignmentReport={setAssignmentReport} assignmentReport={assignmentReport}/>
-    )
-  }
+  )
+  // )}else{
+  //   return(
+  //     <AssignmentReportContent getAssignmentReport={getAssignmentReport} showAssignmentHeader={showAssignmentHeader} setShowAssignmentHeader={setShowAssignmentHeader} assignmentColumns={assignmentColumns()} setAssignmentReport={setAssignmentReport} assignmentReport={assignmentReport}/>
+  //   )
+  // }
   
 }
 export default AssignmentReport
