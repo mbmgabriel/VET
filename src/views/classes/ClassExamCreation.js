@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import ExamCreation from '../exam-creation/ExamCreation';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 
 export default function CourseExamCreation() {
   const {id} = useParams();
   const subsType = localStorage.getItem('subsType');
+  const history = useHistory();
 
   useEffect(() => {
     if(subsType != 'LMS'){
@@ -15,7 +16,7 @@ export default function CourseExamCreation() {
   }, [])
   return (
     <ClassSideNavigation>
-      <ClassBreadcrumbs title='Exam Information' clicked={() => window.location.replace(`/classes/${id}/exam`)}/>
+      <ClassBreadcrumbs title='Exam Information' clicked={() => history.push(`/classes/${id}/exam`)}/>
       <ExamCreation />
     </ClassSideNavigation>
   )

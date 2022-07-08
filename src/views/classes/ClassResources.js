@@ -5,6 +5,7 @@ import FileHeader from '../../views/resources/FileHeader'
 import FilesAPI from '../../api/FilesApi';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import {useParams} from 'react-router';
+import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 
 function ClassResources() {
   const [filesToDisplay, setFilesToDisplay] = useState([]);
@@ -70,6 +71,7 @@ function ClassResources() {
 
   return (
     <ClassSideNavigation>
+      <ClassBreadcrumbs title='' clicked={() => console.log('')} />
       <div className="row m-b-20 file-content">
         <FileHeader type='Class'  title='Teacher Resources' id={id} subFolder={subFolderDirectory.join('')}  doneUpload={()=> handleRefetch()}/>
         <div className="row m-b-20">

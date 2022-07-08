@@ -93,11 +93,17 @@ import ZoomClient from "../views/zoom-test/ZoomClient";
 import ClassMeeting from "../views/classes/ClassMeeting";
 import ParentDashboard from "../views/parent/dashboard/ParentDashboard";
 import ParentProfile from "../views/parent/profile/ParentProfile";
+
 import SystemAdminDashboard from "../views/system-admin/dashboard/SystemAdminDashboard";
 import SystemAdminProfile from "../views/system-admin/profile/SystemAdminProfile";
 import SystemAdminTeachers from '../views/system-admin/school/Teachers';
 import SystemAdminStudent from '../views/system-admin/school/Students';
 import SystemAdminSchool from '../views/system-admin/school/SchoolProfileSystemAdmin';
+
+import ExamReportPage from '../views/reports/ExamReportPage';
+import TaskReportPage from '../views/reports/TaskReportPage';
+import AssignmentReportPage from '../views/reports/AssignmentReportPage';
+import InteractiveReportPage from '../views/reports/InteractiveReportPage';
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -191,11 +197,10 @@ export default function Routes() {
             <PrivateRoute path='/school_classes/:id/classList' exact component={AdminClassList} />
             <PrivateRoute path='/school_classes/:id/files' exact component={AdminClassFiles} />
 
-            <PrivateRoute path='/reports/exam' exact component={Reports} />
-            <PrivateRoute path='/reports/assignment' component={Reports} />
-            <PrivateRoute path='/reports/task' exact component={Reports} />
-            <PrivateRoute path='/reports/interactive' exact component={Reports} />
-
+            <PrivateRoute path='/reports/exam' exact component={ExamReportPage} />
+            <PrivateRoute path='/reports/assignment' component={AssignmentReportPage} />
+            <PrivateRoute path='/reports/task' exact component={TaskReportPage} />
+            <PrivateRoute path='/reports/interactive' exact component={InteractiveReportPage} />
 
             {/* Parent routes */}
             <PrivateRoute path='/parent/dashboard' exact component={ParentDashboard} />

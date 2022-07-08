@@ -46,8 +46,10 @@ export default function ExamCreationDetails({
   }
 
   useEffect(() => {
-    getContributor();
-    getCourseInformation();
+    if(window.location.pathname.includes('course')){
+      getContributor();
+      getCourseInformation();
+    }
   }, [])
   // console.log(!(courseInfos?.isTechfactors), user,  '-----------------------------');
 
