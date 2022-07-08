@@ -55,7 +55,7 @@ const TrueOrFalseForm = ({
         </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question1</Form.Label>
-            <ContentField value={question} onChange={value => setQuestion(value)} />
+            <ContentField placeholder='Enter exam question' value={question} onChange={value => setQuestion(value)} />
           </Form.Group>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Points</Form.Label>
