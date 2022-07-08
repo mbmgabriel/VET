@@ -91,8 +91,13 @@ import SchoolAnouncementContent from "../views/school-profile/components/SchoolA
 import SchoolAnnouncement from "../views/school-profile/SchoolAnnouncement";
 import ZoomClient from "../views/zoom-test/ZoomClient";
 import ClassMeeting from "../views/classes/ClassMeeting";
-
-
+import ParentDashboard from "../views/parent/dashboard/ParentDashboard";
+import ParentProfile from "../views/parent/profile/ParentProfile";
+import SystemAdminDashboard from "../views/system-admin/dashboard/SystemAdminDashboard";
+import SystemAdminProfile from "../views/system-admin/profile/SystemAdminProfile";
+import SystemAdminTeachers from '../views/system-admin/school/Teachers';
+import SystemAdminStudent from '../views/system-admin/school/Students';
+import SystemAdminSchool from '../views/system-admin/school/SchoolProfileSystemAdmin';
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -192,6 +197,19 @@ export default function Routes() {
             <PrivateRoute path='/reports/interactive' exact component={Reports} />
 
 
+            {/* Parent routes */}
+            <PrivateRoute path='/parent/dashboard' exact component={ParentDashboard} />
+            <PrivateRoute path='/parent/profile' exact component={ParentProfile} />
+            {/* Parent routes end */}
+
+            {/* System admin routes */}
+            <PrivateRoute path='/system-admin/dashboard' exact component={SystemAdminDashboard} />
+            <PrivateRoute path='/system-admin/profile' exact component={SystemAdminProfile} />
+            <PrivateRoute path='/system-admin/teachers' exact component={SystemAdminTeachers} />
+            <PrivateRoute path='/system-admin/students' exact component={SystemAdminStudent} />
+            <PrivateRoute path='/system-admin/school-profile' exact component={SystemAdminSchool} />
+            {/* System admin routes end */}
+            
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
             <PublicRoute path='/calendar' exact component={CalendarPage}/>
