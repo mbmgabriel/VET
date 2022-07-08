@@ -3,6 +3,7 @@ import { Modal, Card, Form, InputGroup, FormControl, Button } from 'react-bootst
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
+import ContentRichText from '../../../../components/content_field/ContentRichText';
 
 function EditAnnouncement({getFeedClass, editAnnouncementItem, editAnnouncementModal, openEditAnnouncementToggle}) {
   console.log('this is announcement:', editAnnouncementItem)
@@ -73,6 +74,7 @@ function EditAnnouncement({getFeedClass, editAnnouncementItem, editAnnouncementM
         <InputGroup.Text id="basic-addon2" className="feed-button"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
           <FormControl onChange={(e) => setContent(e.target.value)} defaultValue={editAnnouncementItem?.description} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type Announcement for the class here" type="text"/> 
       </InputGroup>
+      {/* <ContentRichText value={content}  placeholder='Enter Announcement here'  onChange={value => setContent(value)} /> */}
       <div style={{textAlign:'right', paddingTop:'15px'}}>
       <Button className='tficolorbg-button' type='submit' >Update Announcement</Button>
       </div>

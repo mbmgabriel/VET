@@ -17,6 +17,7 @@ import ContentField from '../../components/content_field/ContentField';
 import FilesAPI from '../../api/FilesApi';
 import FileHeader from '../classes/components/Task/TaskFileHeader';
 import ContentViewer from '../../components/content_field/ContentViewer';
+import ContentRichText from '../../components/content_field/ContentRichText';
 
 function ClassFeed() {
   const [content, setContent] = useState('')
@@ -421,7 +422,7 @@ const getComment = (item, item1, item3) => {
                   <Form.Label className="feed-button" ><i class="fas fa-user-circle fas-1x" ></i></Form.Label>
                     <ContentField value={content}  placeholder='Enter instruction here'  onChange={value => setContent(value)} />
                   </Form.Group> */}
-                  <ContentField value={content}  placeholder='Enter Announcement here'  onChange={value => setContent(value)} />
+                  <ContentRichText value={content}  placeholder='Enter Announcement here'  onChange={value => setContent(value)} />
               <div style={{textAlign:'right', paddingTop:'15px'}}>
               <Button onClick={()=> setShowFiles(!showFiles)}>File Library</Button>&nbsp;
               <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >POST</Button>
@@ -706,7 +707,7 @@ const getComment = (item, item1, item3) => {
           title="Done!" 
           onConfirm={closeNotify}>
         </SweetAlert>
-        <EditAnnouncement getFeedClass={getFeedClass} editAnnouncementItem={editAnnouncementItem} editAnnouncementModal={editAnnouncementModal} openEditAnnouncementToggle={openEditAnnouncementToggle} />
+        <EditAnnouncement content={content} setContent={setContent} getFeedClass={getFeedClass} editAnnouncementItem={editAnnouncementItem} editAnnouncementModal={editAnnouncementModal} openEditAnnouncementToggle={openEditAnnouncementToggle} />
         <ShowLike feedItemLike={feedItemLike} showLike={showLike} setShowLike={setShowLike} /> 
     </div>
     </ClassSideNavigation>
