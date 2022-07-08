@@ -19,7 +19,8 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
-  const {id} = useParams();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const {id} = useParams()
 
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
@@ -33,6 +34,8 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
 
 	const saveTask = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true)
     let isShared = false
     let response = await new CoursesAPI().createTask(
@@ -91,7 +94,6 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
     draggable: true,
     progress: undefined,
   });
-
   useEffect(() => {
     handleGetCourseFiles()
   }, [])
@@ -141,12 +143,12 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
                     <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
               </Form.Group>
 
-              <span style={{float:"right"}}>
-                  <Button className="tficolorbg-button" type="submit">
-                      Save Task
-                  </Button>
-              </span>
-          </Form>
+								<span style={{float:"right"}}>
+										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
+												Save Task
+										</Button>
+								</span>
+						</Form>
 				</Modal.Body>
 			</Modal>
 		</div>
