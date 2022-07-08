@@ -39,10 +39,70 @@ export default class SchoolAPI extends Base {
     })
   }
 
+  getTeachersList = async () => {
+    return this.sendRequest({
+      path:`/api/Teacher`,
+      method: 'GET'
+    })
+  }
+
+  deleteTeacher = async (id) => {
+    return this.sendRequest({
+      path: `/api/Teacher/${id}`,
+      method: 'DELETE'
+    })
+  }
+
+  uploadTeacherList = async (data) => {
+    return this.sendRequest({
+      path: `/api/Teacher/Register/Excel`,
+      method: 'POST',
+      data
+    })
+  }
+
+  updateTeacherInfo = async (id, data)  => {
+    return this.sendRequest({
+      path: `/api/Teacher/${id}`,
+      method: 'PUT',
+      data
+    })
+  }
+
   getAllStudents = async() => {
     return this.sendRequest({
       path: `/api/Account?userroleid=4`,
       method: 'GET'
+    })
+  }
+
+  getStudentsList = async () => {
+    return this.sendRequest({
+      path:`/api/Student`,
+      method: 'GET'
+    })
+  }
+
+  deleteStudent = async (id) => {
+    return this.sendRequest({
+      path: `/api/Student/${id}`,
+      method: 'DELETE'
+    })
+  }
+
+  uploadStudentList = async (data) => {
+    return this.sendRequest({
+      path: `/api/Student/Register/Excel`,
+      method: 'POST',
+      data
+    })
+  }
+
+  updateStudentInfo = async (id, data)  => {
+    return this.sendRequest({
+      path: `/api/Student/${id}`,
+      method: 'PUT',
+      data
     })
   }
   

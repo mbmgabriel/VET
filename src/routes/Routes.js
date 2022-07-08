@@ -93,8 +93,12 @@ import ZoomClient from "../views/zoom-test/ZoomClient";
 import ClassMeeting from "../views/classes/ClassMeeting";
 import ParentDashboard from "../views/parent/dashboard/ParentDashboard";
 import ParentProfile from "../views/parent/profile/ParentProfile";
+
 import SystemAdminDashboard from "../views/system-admin/dashboard/SystemAdminDashboard";
 import SystemAdminProfile from "../views/system-admin/profile/SystemAdminProfile";
+import SystemAdminTeachers from '../views/system-admin/school/Teachers';
+import SystemAdminStudent from '../views/system-admin/school/Students';
+import SystemAdminSchool from '../views/system-admin/school/SchoolProfileSystemAdmin';
 
 import ExamReportPage from '../views/reports/ExamReportPage';
 import TaskReportPage from '../views/reports/TaskReportPage';
@@ -206,6 +210,9 @@ export default function Routes() {
             {/* System admin routes */}
             <PrivateRoute path='/system-admin/dashboard' exact component={SystemAdminDashboard} />
             <PrivateRoute path='/system-admin/profile' exact component={SystemAdminProfile} />
+            <PrivateRoute path='/system-admin/teachers' exact component={SystemAdminTeachers} />
+            <PrivateRoute path='/system-admin/students' exact component={SystemAdminStudent} />
+            <PrivateRoute path='/system-admin/school-profile' exact component={SystemAdminSchool} />
             {/* System admin routes end */}
             
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
