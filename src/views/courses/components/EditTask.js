@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
+import { useParams } from "react-router";
 import CourseFileLibrary from './CourseFileLibrary';
 
 export default function EditTask({setTaskName,setInstructions, taskId, instructions, taskName, openEditTaskModal, setOpenEditTaskModal, selectedTask, setTaskInfo}){
@@ -17,6 +18,7 @@ export default function EditTask({setTaskName,setInstructions, taskId, instructi
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
+  const {id} = useParams()
   
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
@@ -105,14 +107,14 @@ export default function EditTask({setTaskName,setInstructions, taskId, instructi
 
   const handleGetCourseFiles = async() => {
     // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(sessionCourse)
+    let response = await new FilesAPI().getCourseFiles(id)
     // setLoading(false)
     if(response.ok){
       console.log(response, '-----------------------')
       setDisplayFiles(response.data.files)
       setDisplayFolder(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files.")
+      alert("Something went wrong while fetching class files1111111111111.")
     }
   } 
 

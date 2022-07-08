@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
+import { useParams } from "react-router-dom";
 import CourseFileLibrary from './CourseFileLibrary';
 
 export default function EditDiscussion({setInstructions, setDiscussionName, discussionId, instructions, discussionName, setDiscussionInfo, openEditDiscussionModal, setOpenEditDiscussionModal, selectedDiscussion}){
@@ -19,6 +20,7 @@ export default function EditDiscussion({setInstructions, setDiscussionName, disc
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
+  const {id} = useParams()
 
 	const handleCloseModal = e => {
     e.preventDefault()
@@ -88,14 +90,14 @@ export default function EditDiscussion({setInstructions, setDiscussionName, disc
 
   const handleGetCourseFiles = async() => {
     // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(sessionCourse)
+    let response = await new FilesAPI().getCourseFiles(id)
     // setLoading(false)
     if(response.ok){
       console.log(response, '-----------------------')
       setDisplayFiles(response.data.files)
       setDisplayFolder(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files.")
+      alert("Something went wrong while fetching class files1111111.")
     }
   } 
 
