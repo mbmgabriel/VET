@@ -5,6 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
+import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
 function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscussionUnit}) {
   const [moduleId, setModuleId] = useState('')
@@ -12,6 +13,7 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
   const [instructions, setInstructions] = useState('')
   const [addNotify, setAddNotity] = useState(false)
   const courseId = classInfo?.classInformation?.courseId
+  const [showFiles, setShowFiles] = useState(false);
   const allowLate = true
   const {id} = useParams();
 
@@ -82,7 +84,13 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form onSubmit={saveDiscussion} >  
+        <Form onSubmit={saveDiscussion} >
+          <div className={showFiles ? 'mb-3' : 'd-none'}>
+            <ClassCourseFileLibrary />
+          </div>
+          <div className='text-align-right'>
+            <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          </div>
           <Form.Group className="mb-3">
           <Form.Label>Unit</Form.Label>
             <Form.Select onChange={(e) => setModuleId(e.target.value)}>
