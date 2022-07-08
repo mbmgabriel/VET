@@ -54,7 +54,7 @@ function Profile() {
   const getImage = async() =>{
     let response = await new ProfileInfoAPI().getProfileImage(id)
     if(response.ok){
-      setprofileImage(`${response.data}`)
+      setprofileImage(response.data)
     }else{
       toast.error('Something went wrong while getting profile image.')
     }
@@ -125,8 +125,9 @@ function Profile() {
               <i className="font-size-35 fas fa-upload"></i>
               <p className='font-15'>Change Picture</p>
             </div>
-          </div>
-            <Button onClick={() => handleSaveProfile()} className="m-r-5 color-white tficolorbg-button float-right" size="sm">SAVE</Button>
+          </div> 
+            <Button onClick={() => handleSaveProfile()} className="m-r-5 color-white tficolorbg-button float-right" size="sm">Save Picture</Button>
+            <Button onClick={() => setUploadModal(false)} className="m-r-5 btn bg-danger float-right" size="sm">Cancel</Button>
 					</Modal.Body>
 			</Modal>
       )
@@ -136,12 +137,12 @@ function Profile() {
     <MainContainer>
       <div className='page-container'>
       <div className='containerpages'>
-      <div className='profile-container profileImage' style={{width: 150, height: 150, borderRadius: 70}}>
+      <div className='profile-container profileImage' style={{width: 150, height: 150, borderRadius: 70, backgroundColor: '#7D7D7D'}}>
         {
           profileImage ?
-          <img className='profileImage' alt='Image unavailable' style={{width: 150, height: 150, borderRadius: 80, backgroundColor: '#7D7D7D'}} src={profileImage} /> 
+          <Image className='profileImage' style={{width: 150, height: 150, borderRadius: 80}} src={`${profileImage}?${new Date().getTime()}`} /> 
           :
-          <i class="profile-container fas fa-user-circle fas-1x" style={{fontSize:'150px'}}></i>
+          <i className=" fas fa-user-circle fas-1x" style={{fontSize:'150px'}}></i>
         }
           <div style={{width: 150, height: 150, borderRadius: 70}} className="middle text" onClick={() => { document.getElementById('inputFile').click()}}>
             <i className="font-size-35 fas fa-upload"></i>
