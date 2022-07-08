@@ -11,10 +11,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import CourseContent from "../../CourseContent";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
-import {useParams} from 'react-router';
+import { useParams } from "react-router-dom";
 
 export default function CoursesDiscussion() {
-  const {id} = useParams();
   const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState("")
   const [openCreateDiscussionModal, setOpenCreateDiscussionModal] = useState(false)
@@ -32,6 +31,7 @@ export default function CoursesDiscussion() {
   const {user} = userContext.data;
   const [discussionName, setDiscussionName] = useState('')
   const [instructions, setInstructions] = useState('')
+  const {id} = useParams()
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
@@ -54,7 +54,7 @@ export default function CoursesDiscussion() {
     if(response.ok){
       setCourseInfo(response.data)
     }else{
-      alert("Something went wrong while fetching course information")
+      alert("Something went wrong while fetching course information 111111111111")
     }
   }
 
@@ -93,13 +93,13 @@ export default function CoursesDiscussion() {
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
-    let response = await new CoursesAPI().getCourseUnit(courseid)
+    let response = await new CoursesAPI().getCourseUnit(id)
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching course unit")
+      alert("Something went wrong while fetching course unit11111111111")
     }
   }
 

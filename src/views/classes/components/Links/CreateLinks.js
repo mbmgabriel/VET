@@ -9,10 +9,13 @@ import { toast } from 'react-toastify'
 
 function CreateLinks({setUrl, typeId, setTypeId, url, modal, setDescription, description, toggle, getConfe, getVideos, getLinks}) {
   const {id} = useParams();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   
   const addLinks = async (e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     if(typeId === ''){
       toast.error('Please Select Type', {
         position: "top-right",
@@ -94,11 +97,11 @@ function CreateLinks({setUrl, typeId, setTypeId, url, modal, setDescription, des
                 <option>-- Select Links Type Here --</option>
                 <option value='1'>Conferences</option>
                 <option value='2'>Videos</option>
-                <option value='3'>Links</option>
+                <option value='3'>Other Links</option>
               </Form.Select>
             </Form.Group>
 			      <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save Links</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Save Links</Button>
             </Form.Group>
           </Form>
         </Modal.Body>

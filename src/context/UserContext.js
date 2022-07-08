@@ -35,7 +35,8 @@ export class UserContextProvider extends Component {
     let response = await new Auth().profile()
     if(response.ok) {
       let user = response.data
-      user.role = user.role.roleName
+      
+      user.role = user.role.roleName || user.role
       switch (user.role) {
         case "Student":
           user.name = `${user.student?.fname} ${user.student?.lname}`
@@ -45,14 +46,25 @@ export class UserContextProvider extends Component {
           user.name = `${user.teacher?.fname} ${user.teacher?.lname}`
           user.isTeacher = true
           break;
-        case "School Admin":
-          user.name = `School Admin`
-          user.isSchoolAdmin = true
-          break;
+          case "School Admin":
+            user.name = `School Admin`
+            user.isSchoolAdmin = true
+            break;
+          case "Parent":
+            user.name = `Parent`
+            user.isParent = true
+            break;
+          case "System Admin":
+            user.name = `System Admin`
+            user.isSystemAdmin = true
+            break;
         default:
           user.name = 'No name'
           break;
       }
+      
+
+
       let themeResponse = await new Auth().theme()
       console.log({themeResponse})
       if(themeResponse.ok) {

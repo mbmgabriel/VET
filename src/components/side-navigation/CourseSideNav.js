@@ -6,8 +6,8 @@ import CoursesAPI from "../../api/CoursesAPI";
 
 function CourseSideNav({active, courseInfos}) {
   const {id} = useParams()
-  alert('here')
-  console.log('sample', courseInfos)
+  // alert('here')
+  // console.log('sample', courseInfos)
 
   useEffect( async() => {
     let response = await new CoursesAPI().getContributor(id)

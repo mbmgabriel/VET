@@ -56,7 +56,6 @@ export default function Dashboard() {
     alert(aa)
     // setLoading(false)
   }
-  
 
   if(user.isSchoolAdmin){
     return (
@@ -171,7 +170,7 @@ export default function Dashboard() {
                     <td>{item.roleName}</td>
                     <td>{item?.teacherFullName}{item?.studentFullName}</td>
                     <td>{item.numberofLogin}</td>
-                    <td>{moment(item.loginDate).format("LL")}</td>
+                    <td>{moment(item.loginDate).format("LLL")}</td>
                   </tr>
                 )
               })}
