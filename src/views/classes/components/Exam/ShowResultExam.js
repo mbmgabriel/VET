@@ -23,7 +23,7 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
         <span className='font-view-analysis-header-exam'>{examAnalysis.student?.lname},  {examAnalysis.student?.fname}</span>
       </Col>
       <Col md={6}>
-        <span className='font-view-analysis-header-exam float-right'>{examAnalysis.score} / {examAnalysis.rawScore}</span>
+        <span className='font-view-analysis-header-exam float-right'>{examAnalysis.score} / {examAnalysis.assignedRawScore}</span>
       </Col>
       <Col md={6}>
         <p className='font-view-analysis-header-exam'>{examAnalysis?.test?.testName} </p>
@@ -47,12 +47,13 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
                       <span className='font-exam-analysis-content-24-tfi' >{index + 1}.&nbsp;  <span className='font-question-analysis' style={{color:'#707070'}}><ContentViewer>{ad.assignedQuestion}</ContentViewer></span></span>
                       <div className='inline-flex'>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Student Answer :</span>
-                        <span className='font-exam-analysis-content-24'><ContentViewer>{ad.studentAnswer}</ContentViewer>
-                        </span>
-                          {ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
+                        <span className='font-exam-analysis-content-24'>{ad.studentAnswer === null ? <>Student has no answer</>:<ContentViewer>{ad.studentAnswer}</ContentViewer>}
+                        </span> 
+                          {/* {ad.studentAnswer?.toLowerCase() == ad.assignedAnswer.toLowerCase() && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
                           {ad.isConsider == true && <i className="fa fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}
-                          {ad.studentAnswer?.toLowerCase() != ad.assignedAnswer.toLowerCase() && ad.isConsider == false && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}  
-                          
+                          {ad.studentAnswer?.toLowerCase() != ad.assignedAnswer.toLowerCase() && ad.isConsider == false && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}   */}
+                          <span style={{marginRight:10}}>{ad.studentScore >= 1 && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
+                          <span style={{marginRight:10}}>{ad.studentScore == 0 && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
                       </div>
                       <br />
                       <div className='inline-flex' >
