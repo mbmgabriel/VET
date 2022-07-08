@@ -12,6 +12,7 @@ import CourseContent from "../../CourseContent";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
 import { set } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
 export default function CoursesAssignment() {
 
@@ -36,6 +37,7 @@ export default function CoursesAssignment() {
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
   const subsType = localStorage.getItem('subsType');
+  const {id} = useParams()
   const [isContributor, setIsContributor] = useState(true);
 
   const getContributor = async() => {
@@ -49,12 +51,12 @@ export default function CoursesAssignment() {
   }
   const getCourseInformation = async() => {
     setLoading(true)
-    let response = await new CoursesAPI().getCourseInformation(courseid)
+    let response = await new CoursesAPI().getCourseInformation(id)
     setLoading(false)
     if(response.ok){
       setCourseInfo(response.data)
     }else{
-      alert("Something went wrong while fetching course information")
+      alert("Something went wrong while fetching course information11111111111")
     }
   }
 
@@ -109,13 +111,13 @@ export default function CoursesAssignment() {
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
-    let response = await new CoursesAPI().getCourseUnit(courseid)
+    let response = await new CoursesAPI().getCourseUnit(id)
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching course unit")
+      alert("Something went wrong while fetching course unit1111111111")
     }
   }
 

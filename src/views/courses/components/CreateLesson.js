@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from "../../../api/FilesApi"
+import { useParams } from "react-router";
 
 export default function CreateLesson({openCreateLessonModal, setCreateLessonModal, setLessonInfo}){
 
@@ -19,9 +20,12 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
   const [displayFolder, setDisplayFolder] = useState([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
+  const {id} = useParams()
+
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
+  console.log('courseId:', id)
 
 	const handleCloseModal = e => {
     setCreateLessonModal(false)
@@ -98,15 +102,22 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
     // console.log(module, '-----------')
   }, [])
 
+  // useEffect(() =>{
+  //   if(sessionCourse != null){
+  //     handleGetClassFiles()
+  //   }
+
+  // }, [])
+
   const handleGetClassFiles = async() => {
     // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(sessionCourse)
+    let response = await new FilesAPI().getCourseFiles(id)
     // setLoading(false)
     if(response.ok){
       setDisplayFiles(response.data.files)
       setDisplayFolder(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files ;;.")
+      alert("Something went wrong while fetching class files111111111111 ;;.")
     }
   } 
 

@@ -13,6 +13,7 @@ function CreateLinks({modal, setModal, getConfe, getVideos, getLinks}) {
   const [description, setDescription] = useState('')
   const [url, setUrl] = useState('')
   const [createNotify, setCreateNotify] = useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const closeNotify = () => {
     setCreateNotify(false)
@@ -27,6 +28,8 @@ function CreateLinks({modal, setModal, getConfe, getVideos, getLinks}) {
   
   const addLinks = async (e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     let cid = sessionStorage.getItem('courseid')
     let courseId = JSON.parse(cid);
     if(type === '' || description == '' || url == ''){
@@ -101,11 +104,11 @@ function CreateLinks({modal, setModal, getConfe, getVideos, getLinks}) {
                 <option value=''>-- Select Unit Here --</option>
                 <option value='1'>Conferences</option>
                 <option value='2'>Videos</option>
-                <option value='3'>Links</option>
+                <option value='3'>Other Links</option>
               </Form.Select>
             </Form.Group>
 			      <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save Links</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Save Links</Button>
             </Form.Group>
           </Form>
         </Modal.Body>
