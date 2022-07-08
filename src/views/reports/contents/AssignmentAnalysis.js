@@ -5,11 +5,10 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentAnalysis,  showAssignmentHeader, setShowAssignmentHeader}) {
+function AssignmentAnalysis({assignmentAnalysis, setAssignmentAnalysis}) {
   
   const [showAssignmentAnalysis, setShowAssignmentAnalysis] = useState([])
   const [loading, setLoading] = useState(false)
-  const [sweetError, setSweetError] = useState(false)
   const [show, setShow] = useState(false);
   const [openModal, setOpenModal] = useState(false)
 
@@ -20,17 +19,15 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
   const [selectedAssignmentId, setSelectedAssignmentId] = useState("")
   const [selectedAnswerId, setSelectedAnswerId] = useState("")
   const [assignmentAnswer, setAssignmentAnswer] = useState({})
-
-  let testname = sessionStorage.getItem('testName')
-  let classid = sessionStorage.getItem('classId')
+  const pageURL = new URL(window.location.href);
+  const paramsId = pageURL.searchParams.get("classId");
   let studentidsession = sessionStorage.getItem('studentid')
-  let testidsession = sessionStorage.getItem('testid')
 
-  const handleOpenModal = (e, studentid, classid, assignmentid, answerid, score, afeedback) => {
+  const handleOpenModal = (e, studentid, assignmentid, answerid, score, afeedback) => {
     e.preventDefault()
     setOpenModal(true)
     setSelectedStudentId(studentid)
-    setSClassId(classid)
+    setSClassId(paramsId)
     setSelectedAssignmentId(assignmentid)
     setSelectedAnswerId(answerid)
     setAssignmentGrade(score)
@@ -45,25 +42,22 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
     if(response.ok){
       setAssignmentAnalysis(response.data)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.ErrorMessage)
     }
   }
 
   useEffect(() => {
+    console.log(assignmentAnalysis?.studentAssignment)
     if(assignmentAnalysis?.studentAssignment != null){
-      getAssignmentAnswer(studentidsession, classid, assignmentAnalysis?.assignment?.id)
+      getAssignmentAnswer(studentidsession, paramsId, assignmentAnalysis?.assignment?.id)
     }
-  }, [assignmentAnalysis])
+  }, [])
 
   const getAssignmentAnswer = async(studentid, classid, assignmentid) => {
-    // e.preventDefault()
-    let response = await new ClassesAPI().getStudentAssignmentAnswer(studentid, classid, assignmentid)
+    let response = await new ClassesAPI().getStudentAssignmentAnswer(studentid, paramsId, assignmentid)
     if(response.ok){
       console.log(response)
       setAssignmentAnswer(response.data)
-    }else{
-      alert(response.data.errorMessage)
-      alert('error')
     }
   }
 
@@ -93,24 +87,14 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
       selectedStudentId, sClassId, selectedAssignmentId, selectedAnswerId, {assignmentGrade, feedback}
     )
     if(response.ok){
-      // setSweetError(true);
       setShow(true);
       setOpenModal(false)
       notifyUpdateAssignmentScore()
-      getAssignmentAnalysis(e, selectedStudentId, sClassId, selectedAssignmentId)
+      getAssignmentAnalysis(e, selectedStudentId, paramsId, selectedAssignmentId)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.ErrorMessage)
     }
   }
-
-  const cancelSweetError = () => {
-    setSweetError(false)
-  }
-
-  useEffect(() => {
-    setSweetError(false)
-    setShowAssignmentHeader(true)
-  }, [])
 
   const notifyUpdateAssignmentScore = () => 
   toast.success('Successfully Updated Points', {
@@ -167,11 +151,11 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
               {assignmentAnalysis.studentAssignment?.assignmentGrade}
               {console.log('assignmentAnalysis.studentAssignment?.assignmentGrade:', assignmentAnalysis.studentAssignment?.assignmentGrade)}
               {assignmentAnalysis.studentAssignment?.assignmentGrade === null ?
-                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, classid, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
+                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, paramsId, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
                   <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Add Points
                 </Button>
                          :
-                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, classid, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
+                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, paramsId, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
                  <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Points
                 </Button>
             }
