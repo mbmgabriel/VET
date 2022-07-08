@@ -10,6 +10,8 @@ import GradingField from "./components/GradingField";
 import FullScreenLoader from "../../components/loaders/FullScreenLoader";
 import ClassTermAPI from "../../api/ClassTermAPI";
 import { useHistory, useParams } from "react-router-dom";
+import ClassSideNavigation from "./components/ClassSideNavigation";
+import ClassBreadcrumbs from "./components/ClassBreedCrumbs";
 
 const getPercentageByDescription = (description, template) => {
   return template.templateTypes.reduce((total, item) => {
@@ -169,8 +171,9 @@ export default function NewClassGrading() {
 
   if (user.isTeacher) {
     return (
-      <MainContainer title='Grading System' activeHeader={"grading"}>
-        {loading && <FullScreenLoader />}
+      <ClassSideNavigation title='Grading System' activeHeader={"grading"}>
+        <ClassBreadcrumbs title='New Class Grading' clicked={() => history.push(`/classes/${id}/class_grading`)} />
+        {/* {loading && <FullScreenLoader />} */}
         <div className='rounded-white-container mt-4'>
           <h2 className='primary-color '>Create New Grading Component</h2>
           <Row className='mt-4'>
@@ -278,7 +281,7 @@ export default function NewClassGrading() {
             </button>
           </div>
         </div>
-      </MainContainer>
+      </ClassSideNavigation>
     );
   }
 

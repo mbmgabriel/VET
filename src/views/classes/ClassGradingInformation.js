@@ -11,6 +11,8 @@ import FullScreenLoader from "../../components/loaders/FullScreenLoader";
 import ClassTermAPI from "../../api/ClassTermAPI";
 import { Link, useHistory, useParams } from "react-router-dom";
 import GradingActivityForm from "./components/grading/GradingActivityForm";
+import ClassSideNavigation from "./components/ClassSideNavigation";
+import ClassBreadcrumbs from "./components/ClassBreedCrumbs";
 
 const getPercentageByDescription = (description, template) => {
   return template.templateTypes.reduce((total, item) => {
@@ -73,8 +75,8 @@ export default function ClassGradingInformation() {
 
   if (user.isTeacher) {
     return (
-      <MainContainer title='Grading System' fluid activeHeader={"grading"}>
-        {loading && <FullScreenLoader />}
+      <ClassSideNavigation title='Grading System' fluid activeHeader={"classes"}>
+        <ClassBreadcrumbs title='Grading Component' clicked={() => history.push(`/classes/${id}/class_grading`)} />
         <div className='rounded-white-container container-fluid mt-4'>
           <h2 className='primary-color '>Grading Component</h2>
 
@@ -108,7 +110,7 @@ export default function ClassGradingInformation() {
           </table>
           <Link to={`/classes/${id}/class_grading/${term_id}/computation`} className='btn btn-primary rounded-pill'>COMPUTE</Link>
         </div>
-      </MainContainer>
+      </ClassSideNavigation>
     );
   }
 

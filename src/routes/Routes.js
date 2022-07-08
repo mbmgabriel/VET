@@ -198,7 +198,6 @@ export default function Routes() {
             <PrivateRoute path='/reports/task' exact component={TaskReportPage} />
             <PrivateRoute path='/reports/interactive' exact component={InteractiveReportPage} />
 
-
             {/* Parent routes */}
             <PrivateRoute path='/parent/dashboard' exact component={ParentDashboard} />
             <PrivateRoute path='/parent/profile' exact component={ParentProfile} />
