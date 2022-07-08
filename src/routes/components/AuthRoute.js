@@ -9,6 +9,8 @@ export default function AuthRoute(props) {
   useEffect(() => {
     if(user != null){
       if(user.isSchoolAdmin) return window.location.href = "/dashboard"
+      if(user.isParent) return window.location.href = "/parent/dashboard"
+      if(user.isSystemAdmin) return window.location.href = "/system-admin/dashboard"
       window.location.href = '/teacherdashboard'
     }
   }, [user])
