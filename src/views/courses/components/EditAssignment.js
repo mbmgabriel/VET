@@ -7,6 +7,7 @@ import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "./AssignmentFileHeader";
 import FilesAPI from '../../../api/FilesApi'
 import { useParams } from "react-router-dom";
+import CourseFileLibrary from './CourseFileLibrary';
 
 export default function EditAssignment({setInstructions, setAssignmentName, assignmentId, instructions, assignmentName, openEditAssignmentModal, setOpenEditAssignmentModal, selectedAssignment, setAssignmentInfo}){
 
@@ -121,62 +122,38 @@ export default function EditAssignment({setInstructions, setAssignmentName, assi
 				Edit Assignment
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
-						<Form onSubmit={saveEditAssignment}>
+          <Form onSubmit={saveEditAssignment}>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
-              <FileHeader type={'Course'} title='Files' id={sessionCourse} subFolder={''} doneUpload={()=> handleGetCourseFiles()}/>
-              {/* {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    <img key={ind+item.filename} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-                  )
-                })
-              } */}
-              {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.filename} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
+              <CourseFileLibrary />
             </div>
-								<Form.Group className="m-b-20">
-										<Form.Label for="courseName">
-												Assignment Name
-										</Form.Label>
-										<Form.Control 
-                      defaultValue={assignmentName}
-                      className="custom-input" 
-                      size="lg" 
-                      type="text" 
-                      placeholder="Edit Assignment Name"
-                      onChange={(e) => setAssignmentName(e.target.value)}
-                    />
-								</Form.Group>
-                <div>
-                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-                </div>
-								<Form.Group className="m-b-20">
-										<Form.Label for="description">
-												Instructions
-										</Form.Label>
-                    <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
-								</Form.Group>
-								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
-												Update Assignment
-										</Button>
-								</span>
-						</Form>
+            <Form.Group className="m-b-20">
+                <Form.Label for="courseName">
+                    Assignment Name
+                </Form.Label>
+                <Form.Control 
+                  defaultValue={assignmentName}
+                  className="custom-input" 
+                  size="lg" 
+                  type="text" 
+                  placeholder="Edit Assignment Name"
+                  onChange={(e) => setAssignmentName(e.target.value)}
+                />
+            </Form.Group>
+            <div>
+              <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+            </div>
+            <Form.Group className="m-b-20">
+                <Form.Label for="description">
+                    Instructions
+                </Form.Label>
+                <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
+            </Form.Group>
+            <span style={{float:"right"}}>
+                <Button className="tficolorbg-button" type="submit">
+                    Update Assignment
+                </Button>
+            </span>
+          </Form>
 				</Modal.Body>
 			</Modal>
 		</div>
