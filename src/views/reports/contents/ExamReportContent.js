@@ -10,7 +10,7 @@ import FrequencyError from './FrequencyError';
 import FrequencyOferror from './FrequencyOferror';
 
 
-function ExamReportContent({ selectedClassId, testReport, setTestReport, showReportHeader, setShowReportHeader}) {
+function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHeader, getExamAnalysis}) {
   
   const [examAnalysis, setExamAnalysis] = useState([])
   const [showExamAnalysis, setShowExamAnalysis] = useState(false)
@@ -23,8 +23,10 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
   const [frequencyModal, setFrequencyModal] = useState(false)
   const [showAnalysis, setShowAnalysis] = useState(false)
   const userContext = useContext(UserContext)
+  const [testReport, setTestReport] = useState([])
   const {user} = userContext.data
-  let sessionClass = sessionStorage.getItem("classId")
+  const pageURL = new URL(window.location.href);
+  let sessionClass = pageURL.searchParams.get("classId")
   let sessionTestId = sessionStorage.getItem("testid")
 
   const handleShowAnalysis = () => {
@@ -32,22 +34,24 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     getFrequencyReport()
   }
 
+  console.log(testReport, '--------testReport--------')
+
   const handleHideAnalysis =() => {
     setShowAnalysis(false)
   }
 
-  const getExamAnalysis = async(e, studentid, classid, testid) => {
-    sessionStorage.setItem('analysis','true')
-    sessionStorage.setItem('studentid',studentid)
-    sessionStorage.setItem('testid',testid)
-    setShowExamAnalysis(true)
-    let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
-    if(response.ok){
-      setExamAnalysis(response.data)
-    }else{
-      alert("Something went wrong while fetching all courses")
-    }
-  }
+  // const getExamAnalysis = async(e, studentid, classid, testid) => {
+  //   sessionStorage.setItem('analysis','true')
+  //   sessionStorage.setItem('studentid',studentid)
+  //   sessionStorage.setItem('testid',testid)
+  //   setShowExamAnalysis(true)
+  //   let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
+  //   if(response.ok){
+  //     setExamAnalysis(response.data)
+  //   }else{
+  //     alert("Something went wrong while fetching all courses")
+  //   }
+  // }
 
   const getFrequencyReport = async () =>{
     let response = await new ClassesAPI().getFrequencyReport(sessionClass, sessionTestId)
@@ -88,7 +92,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
       setTestReport(response.data)
       setExamReport(response.data[0].studentTests)
     }else{
-      alert(response.data.errorMessage)
+      alert('response.data.errorMessage')
     }
   }
 
@@ -117,12 +121,6 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     draggable: true,
     progress: undefined,
   })
-
-  useEffect(() => {
-    setShowReportHeader(true)
-  }, [])
-
-
 
   const updateExamAnalysisTrue = async ( startDate, startTime, endDate, endTime, timeLimit) => {
     let showAnalysis = true
@@ -180,7 +178,7 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
     progress: undefined,
   });
 
-  if(showExamAnalysis === false){
+  // if(showExamAnalysis === false){
   return(
     <>
     {user.student === null ?
@@ -257,27 +255,25 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         </tr>
       </thead>
       <tbody>
-        {testReport.map(item =>{
+        {testReport?.map(item =>{
           return (
             item.studentTests.map(st =>{
               return (  
                 <tr>
                   <td >
                     <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
-                      <span style={{cursor:'pointer'}} onClick={(e) => getExamAnalysis(e, item.student.id, st.test.classId, st.test.id)} >
+                      <span style={{cursor:'pointer'}} onClick={(e) => getExamAnalysis(item.student.id, st.test.classId, st.test.id, item.student.lname, item.student.fname)} >
                       { item.student.lname} { item.student.fname}
                       {st.isSubmitted == true }
                       </span> 
                   </td>
                   <td>{st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>: <>{st.score}/{st.rawScore}</>}</td>
-                  {/* <td>{st.score}</td> */}
                   <td>
                     {st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>:<>{st.rawScore/2 <= st.score && <><Badge bg="success">PASSED</Badge></>}
                     {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }</>}
                   
                   </td>
                   <td>
-                    {/* <Button variant="outline-warning" size="sm" onClick={(e) => retakeExam(e, st.test.classId, st.test.id, item.student.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button> */}
                     {st.isSubmitted === false ? <spam></spam>: 
                     <Button style={{color:"white"}} variant="warning" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
                     }
@@ -307,27 +303,22 @@ function ExamReportContent({ selectedClassId, testReport, setTestReport, showRep
         }
       </tbody>
     </Table>
-
-        
       </>):<FrequencyOferror frequencyItem={frequencyItem} />}
-
-
-
-      
     </>
     :
-    <div onClick={(e) => getExamAnalysis(e, user.student.id, sessionClass, sessionTestId)}>{user.student.lname}</div>
+    <div onClick={(e) => getExamAnalysis(user.student.id, sessionClass, sessionTestId, user.student.lname, user.student.fname)}>{user.student.lname}</div>
     }
     <FrequencyError frequencyItem={frequencyItem} setFrequencyModal={setFrequencyModal} frequencyModal={frequencyModal} />
     
     </>
-  )}else{
-    return(
-      <>
-        <ExamAnalysis showReportHeader={showReportHeader} setShowReportHeader={setShowReportHeader} examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} testReport={testReport}/>
-      </>
-    )
-  }
+  )
+// }else{
+//     return(
+//       <>
+//         <ExamAnalysis examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} testReport={testReport}/>
+//       </>
+//     )
+//   }
 
 }
 export default ExamReportContent

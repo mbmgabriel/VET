@@ -5,7 +5,7 @@ import ClassesAPI from './../../../api/ClassesAPI'
 import AssignmentAnalysis from './AssignmentAnalysis'
 import { toast } from 'react-toastify';
 
-function AssignmentReportContent({getAssignmentReport, showAssignmentHeader, setShowAssignmentHeader, selectedClassId, viewAssignmentReport, setViewAssignmentReport, assignmentReport, setAssignmentReport, assignmentColumns = ["header 1", "header 2"]}) {
+function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, setShowAssignmentHeader, selectedClassId, viewAssignmentReport, setViewAssignmentReport, assignmentReport, setAssignmentReport, assignmentColumns = ["header 1", "header 2"]}) {
   
   const userContext = useContext(UserContext)
   const {user} = userContext.data
@@ -15,21 +15,21 @@ function AssignmentReportContent({getAssignmentReport, showAssignmentHeader, set
   let sessionClass = sessionStorage.getItem("classId")
   let sessionAssignmentId = sessionStorage.getItem("assignmentId")
 
-  const getAssignmentAnalysis = async(e, studentid, classid, assignmentid) => {
-    console.log(selectedClassId)
-    sessionStorage.setItem('analysis','true')
-    sessionStorage.setItem('studentid',studentid)
-    setShowAssignmentAnalysis(true)
-    console.log(showAssignmentAnalysis)
-    let response = await new ClassesAPI().getAssignmentAnalysis(studentid, sessionClass, assignmentid)
-    if(response.ok){
-      setAssignmentAnalysis(response.data)
-      console.log(response.data)
+  // const getAssignmentAnalysis = async(e, studentid, classid, assignmentid) => {
+  //   console.log(selectedClassId)
+  //   sessionStorage.setItem('analysis','true')
+  //   sessionStorage.setItem('studentid',studentid)
+  //   setShowAssignmentAnalysis(true)
+  //   console.log(showAssignmentAnalysis)
+  //   let response = await new ClassesAPI().getAssignmentAnalysis(studentid, sessionClass, assignmentid)
+  //   if(response.ok){
+  //     setAssignmentAnalysis(response.data)
+  //     console.log(response.data)
       
-    }else{
-      alert(response.data.errorMessage)
-    }
-  }
+  //   }else{
+  //     alert(response.data.errorMessage)
+  //   }
+  // }
 
   const reTakeAssigment = async(e, assignmentId, studentId) => {
     let response = await new ClassesAPI().reTakeAssigment(sessionClass, assignmentId, studentId)
@@ -54,11 +54,7 @@ function AssignmentReportContent({getAssignmentReport, showAssignmentHeader, set
 
   console.log('assignmentReport:', assignmentReport)
 
-  useEffect(() => {
-    setShowAssignmentHeader(true)
-  }, [])
-
-  if(showAssignmentAnalysis === false){
+  // if(showAssignmentAnalysis === false){
   return(
     <>
     {user.student === null ?
@@ -94,7 +90,7 @@ function AssignmentReportContent({getAssignmentReport, showAssignmentHeader, set
               return (
                 <>
                 <td><i class="fas fa-user-circle td-icon-report-person"></i> 
-                  <span style={{cursor:'pointer'}} onClick={(e) => getAssignmentAnalysis(e, item.student.id, sessionClass, sessionAssignmentId)}>{item.student.lname}, {item.student.fname}</span>
+                  <span style={{cursor:'pointer'}} onClick={(e) => getAssignmentAnalysis(e, item.student.id, sessionClass, sessionAssignmentId, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
                 </td>
                 <td>{st.score}</td>
                 <td>         
@@ -116,13 +112,14 @@ function AssignmentReportContent({getAssignmentReport, showAssignmentHeader, set
       </tbody>
     </Table>
     :
-    <div onClick={(e) => getAssignmentAnalysis(e, user.student.id, sessionClass, sessionAssignmentId)}>{user.student.lname}</div>
+    <div onClick={(e) => getAssignmentAnalysis(e, user.student.id, sessionClass, sessionAssignmentId, user.student.lname, user.student.fname)}>{user.student.lname}</div>
     }
     </>
-  )}else{
-    return(
-    <AssignmentAnalysis showAssignmentHeader={showAssignmentHeader} setShowAssignmentHeader={setShowAssignmentHeader} assignmentAnalysis={assignmentAnalysis} setAssignmentAnalysis={setAssignmentAnalysis}/>
-    )
-  }
+  )
+  // )}else{
+  //   return(
+  //   <AssignmentAnalysis showAssignmentHeader={showAssignmentHeader} setShowAssignmentHeader={setShowAssignmentHeader} assignmentAnalysis={assignmentAnalysis} setAssignmentAnalysis={setAssignmentAnalysis}/>
+  //   )
+  // }
 }
 export default AssignmentReportContent

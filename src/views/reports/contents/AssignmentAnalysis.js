@@ -5,11 +5,10 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentAnalysis,  showAssignmentHeader, setShowAssignmentHeader}) {
+function AssignmentAnalysis({assignmentAnalysis, setAssignmentAnalysis}) {
   
   const [showAssignmentAnalysis, setShowAssignmentAnalysis] = useState([])
   const [loading, setLoading] = useState(false)
-  const [sweetError, setSweetError] = useState(false)
   const [show, setShow] = useState(false);
   const [openModal, setOpenModal] = useState(false)
 
@@ -20,17 +19,15 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
   const [selectedAssignmentId, setSelectedAssignmentId] = useState("")
   const [selectedAnswerId, setSelectedAnswerId] = useState("")
   const [assignmentAnswer, setAssignmentAnswer] = useState({})
-
-  let testname = sessionStorage.getItem('testName')
-  let classid = sessionStorage.getItem('classId')
+  const pageURL = new URL(window.location.href);
+  const paramsId = pageURL.searchParams.get("classId");
   let studentidsession = sessionStorage.getItem('studentid')
-  let testidsession = sessionStorage.getItem('testid')
 
-  const handleOpenModal = (e, studentid, classid, assignmentid, answerid, score, afeedback) => {
+  const handleOpenModal = (e, studentid, assignmentid, answerid, score, afeedback) => {
     e.preventDefault()
     setOpenModal(true)
     setSelectedStudentId(studentid)
-    setSClassId(classid)
+    setSClassId(paramsId)
     setSelectedAssignmentId(assignmentid)
     setSelectedAnswerId(answerid)
     setAssignmentGrade(score)
@@ -45,25 +42,40 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
     if(response.ok){
       setAssignmentAnalysis(response.data)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.ErrorMessage)
     }
   }
 
   useEffect(() => {
+    console.log(assignmentAnalysis?.studentAssignment)
     if(assignmentAnalysis?.studentAssignment != null){
-      getAssignmentAnswer(studentidsession, classid, assignmentAnalysis?.assignment?.id)
+      getAssignmentAnswer(studentidsession, paramsId, assignmentAnalysis?.assignment?.id)
     }
-  }, [assignmentAnalysis])
+  }, [])
 
   const getAssignmentAnswer = async(studentid, classid, assignmentid) => {
-    // e.preventDefault()
-    let response = await new ClassesAPI().getStudentAssignmentAnswer(studentid, classid, assignmentid)
+    let response = await new ClassesAPI().getStudentAssignmentAnswer(studentid, paramsId, assignmentid)
     if(response.ok){
       console.log(response)
       setAssignmentAnswer(response.data)
+    }
+  }
+
+  const addScoreAssignment = async(e, studentid, classid, assignmentid, answerid) => {
+    e.preventDefault()
+    let isConsider = true
+    let response = await new ClassesAPI().updateAssignmentPoints
+    (
+      selectedStudentId, sClassId, selectedAssignmentId, selectedAnswerId, {assignmentGrade, feedback}
+    )
+    if(response.ok){
+      // setSweetError(true);
+      setShow(true);
+      setOpenModal(false)
+      notifySaveAssignmentScore()
+      getAssignmentAnalysis(e, selectedStudentId, sClassId, selectedAssignmentId)
     }else{
       alert(response.data.errorMessage)
-      alert('error')
     }
   }
 
@@ -75,27 +87,28 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
       selectedStudentId, sClassId, selectedAssignmentId, selectedAnswerId, {assignmentGrade, feedback}
     )
     if(response.ok){
-      // setSweetError(true);
       setShow(true);
       setOpenModal(false)
       notifyUpdateAssignmentScore()
-      getAssignmentAnalysis(e, selectedStudentId, sClassId, selectedAssignmentId)
+      getAssignmentAnalysis(e, selectedStudentId, paramsId, selectedAssignmentId)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.ErrorMessage)
     }
   }
 
-  const cancelSweetError = () => {
-    setSweetError(false)
-  }
-
-  useEffect(() => {
-    setSweetError(false)
-    setShowAssignmentHeader(true)
-  }, [])
-
   const notifyUpdateAssignmentScore = () => 
-  toast.success('Score Saved', {
+  toast.success('Successfully Updated Points', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+
+  const notifySaveAssignmentScore = () => 
+  toast.success('Successfully Saved Points', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -129,17 +142,24 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
         <Col md={12}>No Answer Yet</Col>
         :
           <>
-            <Col md={12}>Assignment Name : {assignmentAnalysis.assignment?.assignmentName}</Col>
+            <Col md={12}>Assignment Name: {assignmentAnalysis.assignment?.assignmentName}</Col>
             <hr></hr>
             <Col md={12}>{assignmentAnalysis.studentAssignment?.assignmentAnswer}</Col>
             <hr></hr>
             
-            <Col md={12}>{assignmentAnalysis.studentAssignment?.assignmentGrade}
-              <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, classid, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
-                <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Score
-              </Button>
+            <Col md={12}>
+              {assignmentAnalysis.studentAssignment?.assignmentGrade}
+              {console.log('assignmentAnalysis.studentAssignment?.assignmentGrade:', assignmentAnalysis.studentAssignment?.assignmentGrade)}
+              {assignmentAnalysis.studentAssignment?.assignmentGrade === null ?
+                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, paramsId, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
+                  <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Add Points
+                </Button>
+                         :
+                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, paramsId, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
+                 <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Points
+                </Button>
+            }
             </Col>
-            <hr />
             <Col className='mb-3'>
               <Row>
                 {
@@ -168,10 +188,10 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
       </Row>
       <Modal size="lg" className="modal-all" show={openModal} onHide={()=> setOpenModal(!openModal)} backdrop="static">
         <Modal.Header className="modal-header" closeButton>
-        Update Points
+          {assignmentAnalysis.studentAssignment?.assignmentGrade === null ? <>Add Points</>:<>Update Points</>}
         </Modal.Header>
         <Modal.Body className="modal-label b-0px">
-          <Form onSubmit={updateScoreAssignment}>
+          <Form onSubmit={assignmentAnalysis.studentAssignment?.assignmentGrade === null ? addScoreAssignment: updateScoreAssignment}>
               <Form.Group className="m-b-20">
                   <Form.Label for="courseName">
                       Rate / Points
@@ -196,9 +216,15 @@ function AssignmentAnalysis({selectedClassId, assignmentAnalysis, setAssignmentA
                 />
               </Form.Group>
               <span style={{float:"right"}}>
-                <Button className="tficolorbg-button" type="submit">
-                  Save
-                </Button>
+              {assignmentAnalysis.studentAssignment?.assignmentGrade === null ? 
+              <Button className="tficolorbg-button" type="submit">
+                Save Points
+              </Button>
+              :
+              <Button className="tficolorbg-button" type="submit">
+                Update Points
+               </Button>
+              }
               </span>
           </Form>
         </Modal.Body>
