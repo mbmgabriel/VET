@@ -31,4 +31,19 @@ export default class ProfileInfoAPI extends Base {
     })
   }
 
+  uploadProfile = async (id, data) => {
+    return this.sendRequest({
+      path:`/api/Upload/user/${id}/profile`,
+      method: 'POST',
+      data
+    })
+  }
+
+  getProfileImage = async(id) => {
+    return this.sendRequest({
+      path: `/api/Account/${id}/Image`,
+      method: 'GET',
+    })
+  }
+
 }
