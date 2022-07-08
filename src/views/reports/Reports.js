@@ -71,7 +71,7 @@ export default function Reports({children}) {
   }
 
   return (
-    <MainContainer activeHeader={'reports'} fluid style='not-scrollable'> 
+    <MainContainer activeHeader={'reports'} fluid style=''> 
       {/* <SideReport/> */}
       <Col style={{height: 100}} />
       <Row>
@@ -99,7 +99,7 @@ export default function Reports({children}) {
             </Link>
           </ListGroup>
         </Col>
-        <Col sm={9}>
+        <Col sm={9} className='scrollable vh-90 pb-5 pl-20'>
           {children}
         </Col>
       </Row>

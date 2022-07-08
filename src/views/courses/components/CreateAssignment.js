@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './AssignmentFileHeader';
 import { useParams } from 'react-router'
 import ContentField from "../../../components/content_field/ContentField";
+import CourseFileLibrary from "./CourseFileLibrary";
 
 export default function CreateAssignment({openCreateAssignmentModal, setOpenCreateAssignmentModal, setAssignmentInfo}){
 
@@ -19,8 +20,11 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
   let sessionModule = sessionStorage.getItem('moduleid')
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const {id} = useParams();
   const [displayFolder, setDisplayFolder] = useState([])
+  const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
+  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
 
 	const handleCloseModal = e => {
     setAssignmentName('')
@@ -42,6 +46,8 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
 
 	const saveAssignmennt = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true)
     let response = await new CoursesAPI().createAssignment(
       sessionModule,
@@ -88,26 +94,6 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
     progress: undefined,
   });
 
-	useEffect(() => {
-    handleGetCourseFiles()
-  }, [])
-
-  const handleGetCourseFiles = async() => {
-    // setLoading(true)
-    let data = {
-      "subFolderLocation": ''
-    }
-    let response = await new FilesAPI().getCourseFiles(id, data)
-    // setLoading(false)
-    if(response.ok){
-      console.log(response, '-----------------------')
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
-    }else{
-      alert("Something went wrong while fetching class files ,,,.")
-    }
-  } 
-
 	return (
 		<div>
 			<Modal size="lg" className="modal-all" show={openCreateAssignmentModal} onHide={()=> handleCloseModal()} >
@@ -116,32 +102,8 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
           <div className={showFiles ? 'mb-3' : 'd-none'}>
-              <FileHeader type={'Course'} title='Files' id={id} subFolder={''} doneUpload={()=> handleGetCourseFiles()}/>
-              {/* {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    <img key={ind+item.filename} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-                  )
-                })
-              } */}
-              {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.filename} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
-            </div>
+            <CourseFileLibrary />
+          </div>
 						<Form onSubmit={saveAssignmennt}>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
@@ -165,7 +127,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
 								</Form.Group>
 								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
+										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
 												Save Assignment
 										</Button>
 								</span>

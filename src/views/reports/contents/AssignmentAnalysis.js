@@ -61,6 +61,24 @@ function AssignmentAnalysis({assignmentAnalysis, setAssignmentAnalysis}) {
     }
   }
 
+  const addScoreAssignment = async(e, studentid, classid, assignmentid, answerid) => {
+    e.preventDefault()
+    let isConsider = true
+    let response = await new ClassesAPI().updateAssignmentPoints
+    (
+      selectedStudentId, sClassId, selectedAssignmentId, selectedAnswerId, {assignmentGrade, feedback}
+    )
+    if(response.ok){
+      // setSweetError(true);
+      setShow(true);
+      setOpenModal(false)
+      notifySaveAssignmentScore()
+      getAssignmentAnalysis(e, selectedStudentId, sClassId, selectedAssignmentId)
+    }else{
+      alert(response.data.errorMessage)
+    }
+  }
+
   const updateScoreAssignment = async(e, studentid, classid, assignmentid, answerid) => {
     e.preventDefault()
     let isConsider = true
@@ -79,7 +97,18 @@ function AssignmentAnalysis({assignmentAnalysis, setAssignmentAnalysis}) {
   }
 
   const notifyUpdateAssignmentScore = () => 
-  toast.success('Score Saved', {
+  toast.success('Successfully Updated Points', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+
+  const notifySaveAssignmentScore = () => 
+  toast.success('Successfully Saved Points', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -113,17 +142,24 @@ function AssignmentAnalysis({assignmentAnalysis, setAssignmentAnalysis}) {
         <Col md={12}>No Answer Yet</Col>
         :
           <>
-            <Col md={12}>Assignment Name : {assignmentAnalysis.assignment?.assignmentName}</Col>
+            <Col md={12}>Assignment Name: {assignmentAnalysis.assignment?.assignmentName}</Col>
             <hr></hr>
             <Col md={12}>{assignmentAnalysis.studentAssignment?.assignmentAnswer}</Col>
             <hr></hr>
             
-            <Col md={12}>{assignmentAnalysis.studentAssignment?.assignmentGrade}
-              <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, paramsId, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
-                <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Score
-              </Button>
+            <Col md={12}>
+              {assignmentAnalysis.studentAssignment?.assignmentGrade}
+              {console.log('assignmentAnalysis.studentAssignment?.assignmentGrade:', assignmentAnalysis.studentAssignment?.assignmentGrade)}
+              {assignmentAnalysis.studentAssignment?.assignmentGrade === null ?
+                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, paramsId, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
+                  <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Add Points
+                </Button>
+                         :
+                <Button variant="outline-warning" size="sm" className='mx-3 mb-2' onClick={(e) => handleOpenModal(e, assignmentAnalysis.student.id, paramsId, assignmentAnalysis.assignment.id, assignmentAnalysis.studentAssignment.id, assignmentAnalysis.studentAssignment.assignmentGrade, assignmentAnalysis.studentAssignment.feedback )}>
+                 <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Update Points
+                </Button>
+            }
             </Col>
-            <hr />
             <Col className='mb-3'>
               <Row>
                 {
@@ -152,10 +188,10 @@ function AssignmentAnalysis({assignmentAnalysis, setAssignmentAnalysis}) {
       </Row>
       <Modal size="lg" className="modal-all" show={openModal} onHide={()=> setOpenModal(!openModal)} backdrop="static">
         <Modal.Header className="modal-header" closeButton>
-        Update Points
+          {assignmentAnalysis.studentAssignment?.assignmentGrade === null ? <>Add Points</>:<>Update Points</>}
         </Modal.Header>
         <Modal.Body className="modal-label b-0px">
-          <Form onSubmit={updateScoreAssignment}>
+          <Form onSubmit={assignmentAnalysis.studentAssignment?.assignmentGrade === null ? addScoreAssignment: updateScoreAssignment}>
               <Form.Group className="m-b-20">
                   <Form.Label for="courseName">
                       Rate / Points
@@ -180,9 +216,15 @@ function AssignmentAnalysis({assignmentAnalysis, setAssignmentAnalysis}) {
                 />
               </Form.Group>
               <span style={{float:"right"}}>
-                <Button className="tficolorbg-button" type="submit">
-                  Save
-                </Button>
+              {assignmentAnalysis.studentAssignment?.assignmentGrade === null ? 
+              <Button className="tficolorbg-button" type="submit">
+                Save Points
+              </Button>
+              :
+              <Button className="tficolorbg-button" type="submit">
+                Update Points
+               </Button>
+              }
               </span>
           </Form>
         </Modal.Body>

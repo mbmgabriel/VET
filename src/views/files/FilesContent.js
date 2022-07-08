@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal'
 import { UserContext } from '../../context/UserContext';
 import moment from 'moment';
 import CoursesAPI from '../../api/CoursesAPI';
+import { useParams } from "react-router-dom";
 
 function FilesContent(props) {
 
@@ -24,13 +25,15 @@ function FilesContent(props) {
   const [editFolderModal, setEditFolderModal] = useState(false);
   const [displayButtons, setDisplayButtons] = useState(true);
 
+  const {id} = useParams()
+
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
   const displayHeader = window.location.pathname.includes(props.type.toLowerCase()) ||  window.location.pathname.includes('files'); //if file header is called from files
   const courseid = sessionStorage.getItem('courseid')
 
   const getCourseInformation = async() => {
-    let response = await new CoursesAPI().getCourseInformation(courseid)
+    let response = await new CoursesAPI().getCourseInformation(id)
     if(response.ok){
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
@@ -38,7 +41,7 @@ function FilesContent(props) {
       //  setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
       }
     }else{
-      alert("Something went wrong while fetching course information")
+      alert("Something went wrong while fetching course information11111111111")
     }
   }
 

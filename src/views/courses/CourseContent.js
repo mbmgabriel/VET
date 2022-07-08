@@ -104,7 +104,7 @@ export default function CourseContent({children}) {
   )
   const renderTooltipLink = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Link
+      Links
     </Tooltip>
   )
   const renderTooltipFiles = (props) => (

@@ -11,6 +11,7 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
   const [modulePages, setModulePages] = useState([])
 	const [testName, setTestName] = useState('')
 	const [testInstructions, setTestInstructions] = useState('')
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
@@ -22,6 +23,8 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 
 	const saveExam = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true)
     let response = await new CoursesAPI().createExam(
       sessionModule,
@@ -111,7 +114,7 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 								</Form.Group>
 
 								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
+										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
 												Save Exam
 										</Button>
 								</span>
