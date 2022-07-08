@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './AssignmentFileHeader';
 import { useParams } from "react-router";
 import ContentField from "../../../components/content_field/ContentField";
+import CourseFileLibrary from "./CourseFileLibrary";
 
 export default function CreateTask({openCreateTaskModal, setCreateTaskModal, setTaskInfo}){
 
@@ -20,6 +21,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
   const [displayFolder, setDisplayFolder] = useState([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const {id} = useParams()
+
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
@@ -105,7 +107,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
       setDisplayFiles(response.data.files)
       setDisplayFolder(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files.")
+      alert("Something went wrong while fetching class files111111111111111.")
     }
   } 
 	return (
@@ -117,53 +119,29 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveTask}>
               <div className={showFiles ? 'mb-3' : 'd-none'}>
-                <FileHeader type='Course' id={id}  subFolder={''} doneUpload={()=> handleGetCourseFiles()} />
-                {/* {
-                 (displayFiles || []).map( (item,ind) => {
-                    return(
-                      <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-                    )
-                  })
-                } */}
-                {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
+                <CourseFileLibrary />
               </div>
-								<Form.Group className="m-b-20">
-										<Form.Label for="courseName">
-												Task Name
-										</Form.Label>
-										<Form.Control 
-                      className="custom-input" 
-                      size="lg" 
-                      type="text" 
-                      placeholder="Enter Task Name"
-                      onChange={(e) => setTaskName(e.target.value)}
-                    />
-								</Form.Group>
-                <div>
-                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-                </div>
-								<Form.Group className="m-b-20">
-										<Form.Label for="description">
-												Instructions
-										</Form.Label>
-                     <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
-								</Form.Group>
+              <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Task Name
+                  </Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="lg" 
+                    type="text" 
+                    placeholder="Enter Task Name"
+                    onChange={(e) => setTaskName(e.target.value)}
+                  />
+              </Form.Group>
+              <div>
+                <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+              </div>
+              <Form.Group className="m-b-20">
+                  <Form.Label for="description">
+                      Instructions
+                  </Form.Label>
+                    <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
+              </Form.Group>
 
 								<span style={{float:"right"}}>
 										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">

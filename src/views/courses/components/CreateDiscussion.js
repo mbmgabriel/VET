@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "./AssignmentFileHeader";
 import FilesAPI from '../../../api/FilesApi'
+import { useParams } from "react-router-dom";
+import CourseFileLibrary from "./CourseFileLibrary";
 
 export default function CreateDiscussion({openCreateDiscussionModal, setOpenCreateDiscussionModal, setDiscussionInfo}){
 
@@ -20,6 +22,7 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
+  const {id} = useParams()
 
 	const handleCloseModal = () => {
     setDiscussionName('')
@@ -94,14 +97,14 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
 
   const handleGetCourseFiles = async() => {
     // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(sessionCourse)
+    let response = await new FilesAPI().getCourseFiles(id)
     // setLoading(false)
     if(response.ok){
       console.log(response, '-----------------------')
       setDisplayFiles(response.data.files)
       setDisplayFolder(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files.")
+      alert("Something went wrong while fetching class files111111111112222.")
     }
   } 
 
@@ -113,32 +116,8 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveDiscussion}>
-            <div className={showFiles ? 'mb-3' : 'd-none'}>
-                <FileHeader type='Course' id={sessionCourse}  subFolder={''} doneUpload={()=> handleGetCourseFiles()} />
-                {/* {
-                 (displayFiles || []).map( (item,ind) => {
-                    return(
-                      <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-                    )
-                  })
-                } */}
-                {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
+              <div className={showFiles ? 'mb-3' : 'd-none'}>
+                <CourseFileLibrary />
               </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">

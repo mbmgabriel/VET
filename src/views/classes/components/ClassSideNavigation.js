@@ -76,7 +76,7 @@ export default function ClassSideNavigation({children}) {
   )
   const renderTooltipLink = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Link
+      Links
     </Tooltip>
   )
   const renderTooltipClassList = (props) => (
