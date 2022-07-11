@@ -1,5 +1,8 @@
 import React, {useState} from "react";
 import { Button, Form, Modal } from "react-bootstrap";
+import ContentField from "../../../components/content_field/ContentField";
+import ClassCourseFileLibrary from "../../classes/components/ClassCourseFileLibrary";
+import CourseFileLibrary from "../../courses/components/CourseFileLibrary";
 
 export default function AddPartModal({
   setShowModal,
@@ -13,7 +16,7 @@ export default function AddPartModal({
   setFilesToUpload,
   isButtonDisabled
 }) {
-
+  const [showFiles, setShowFiles] = useState(false);
   console.log('selectedPart:', selectedPart)
 
   const handleGetUploadedFile = (file) => {
@@ -51,6 +54,9 @@ export default function AddPartModal({
       </Modal.Header>
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={addPart}>
+        <div className={showFiles ? 'mb-3' : 'd-none'}>
+                <ClassCourseFileLibrary />
+              </div>
           {selectedPart == null && <Form.Group className='m-b-20'>
             <Form.Label for='courseName'>Type of Test</Form.Label>
             <Form.Select
@@ -64,9 +70,12 @@ export default function AddPartModal({
               <option value='5' selected={ '5' === typeId?.toString()}>Enumeration</option>
             </Form.Select>
           </Form.Group>}
+          <div>
+                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+                </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='description'>Exam Instructions</Form.Label>
-            <Form.Control
+            {/* <Form.Control
               defaultValue={""}
               className='custom-input'
               size='lg'
@@ -74,7 +83,8 @@ export default function AddPartModal({
               value={instructions}
               placeholder='Enter exam instructions'
               onChange={(e) => setInstructions(e.target.value)}
-            />
+            /> */}
+            <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
           </Form.Group>
           {selectedPart == null &&<Form.Group className="mb-3">
             <Form.Label for='description'>Upload Excel File</Form.Label>

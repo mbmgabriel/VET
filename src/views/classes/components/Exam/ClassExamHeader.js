@@ -3,7 +3,9 @@ import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { toast } from 'react-toastify';
 import ExamAPI from "../../../../api/ExamAPI";
+import ContentField from "../../../../components/content_field/ContentField";
 import { UserContext } from "../../../../context/UserContext";
+import ClassCourseFileLibrary from "../ClassCourseFileLibrary";
 
 function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
   const {id} = useParams();
@@ -14,6 +16,7 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
   const [testInstructions, setTestInstructions] = useState("");
   const [module, setModule] = useState(modules[0]?.id)
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const [showFiles, setShowFiles] = useState(false);
 
   useEffect(() => {
     setModule(modules[0]?.id)
@@ -93,6 +96,12 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
         </Modal.Header>
         <Modal.Body className="modal-label b-0px">
           <Form onSubmit={submitForm}>
+          <div className={showFiles ? 'mb-3' : 'd-none'}>
+            <ClassCourseFileLibrary />
+          </div>
+          <div className='text-align-right'>
+            <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          </div>
             <Form.Group className="m-b-20">
               <Form.Label for="courseName">Module</Form.Label>
               <Form.Select aria-label="Default select example" onChange={(e) => setModule(e.target.value)}>
@@ -116,14 +125,15 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
 
             <Form.Group className="m-b-20">
               <Form.Label for="description">Exam Instructions</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 defaultValue={""}
                 className="custom-input"
                 size="lg"
                 type="text"
                 placeholder="Enter exam instructions"
                 onChange={(e) => setTestInstructions(e.target.value)}
-              />
+              /> */}
+              <ContentField value={testInstructions}  placeholder='Enter instruction here'  onChange={value => setTestInstructions(value)} />
             </Form.Group>
 
             <span style={{ float: "right" }}>
