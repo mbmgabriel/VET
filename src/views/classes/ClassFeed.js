@@ -62,9 +62,10 @@ function ClassFeed() {
     setFeedItemLike(feedItem)
   }
 
-  const openEditAnnouncementToggle = (item) =>{
+  const openEditAnnouncementToggle = (item, item2) =>{
     setEditAssignAssignmentItem(item)
-    setEditAnnouncementModal(!editAnnouncementModal)
+    setContent(item2)
+    setEditAnnouncementModal(true)
   }
   
   const createAnnouncementClass = async (e) => {
@@ -482,7 +483,7 @@ const getComment = (item, item1, item3) => {
                   {(user?.teacher === null)?(<></>):(<>
                     <div className='inline-flex' style={{paddingTop:'20px', paddingTop:'6px', float:'right', }}>
                         <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>
-                          <Button onClick={() => openEditAnnouncementToggle(feedItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; </Button>
+                          <Button onClick={() => openEditAnnouncementToggle(feedItem, feedItem.description)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; </Button>
                           </div>
                           <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
                           <Button onClick={() => handleDeleteNotify(feedItem?.referenceId)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; </Button>
@@ -707,7 +708,7 @@ const getComment = (item, item1, item3) => {
           title="Done!" 
           onConfirm={closeNotify}>
         </SweetAlert>
-        <EditAnnouncement content={content} setContent={setContent} getFeedClass={getFeedClass} editAnnouncementItem={editAnnouncementItem} editAnnouncementModal={editAnnouncementModal} openEditAnnouncementToggle={openEditAnnouncementToggle} />
+        <EditAnnouncement setEditAnnouncementModal={setEditAnnouncementModal} content={content} setContent={setContent} getFeedClass={getFeedClass} editAnnouncementItem={editAnnouncementItem} editAnnouncementModal={editAnnouncementModal} openEditAnnouncementToggle={openEditAnnouncementToggle} />
         <ShowLike feedItemLike={feedItemLike} showLike={showLike} setShowLike={setShowLike} /> 
     </div>
     </ClassSideNavigation>
