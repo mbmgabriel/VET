@@ -12,6 +12,8 @@ import FilesAPI from '../../../../api/FilesApi'
 import {writeFileXLSX, utils} from "xlsx";
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
 import { UserContext } from '../../../../context/UserContext';
+import CourseFileLibrary from "../../../courses/components/CourseFileLibrary";
+import ClassCourseFileLibrary from '../../../classes/components/ClassCourseFileLibrary';
 
 const TrueOrFalseForm = ({
   showModal,
@@ -23,43 +25,15 @@ const TrueOrFalseForm = ({
   setRate,
   answer,
   setAnswer,
-  editQuestion
+  editQuestion,
+  isButtonDisabled
 }) => {
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
   const courseid = sessionStorage.getItem('courseid')
   const { id } = useParams();
-
-  const handleGetFiles = async() => {
-    if(window.location.pathname.includes('course')){
-      let response = await new FilesAPI().getCourseFiles(id)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        alert("Something went wrong while fetching course files.")
-      }
-    }
-    if(window.location.pathname.includes('class')){
-      let response = await new FilesAPI().getClassFiles(id)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        alert("Something went wrong while fetching class files.")
-      }
-    }
-    // setLoading(true)
-  }
-
-  useEffect(() => {
-    handleGetFiles()
-  }, [])
+  const tabType = window.location.pathname.includes("class") ? true : false; // if class or course
 
   return (
     <Modal
@@ -74,38 +48,14 @@ const TrueOrFalseForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={id}  subFolder={''} doneUpload={()=> handleGetFiles()} />
-          {/* {
-            (displayFiles || []).map( (item,ind) => {
-              return(
-                <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-              )
-            })
-          } */}
-          {
-          (displayFiles || []).map( (item,ind) => {
-            return(
-              item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-              <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-              :
-              <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-            )
-          })
-          }
-          {
-            (displayFolder || []).map((itm) => {
-              return(
-                <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-              )
-            })
-          }
+          {tabType ? <ClassCourseFileLibrary /> : <CourseFileLibrary />}
         </div>
         <div>
           <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
         </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question1</Form.Label>
-            <ContentField value={question} onChange={value => setQuestion(value)} />
+            <ContentField placeholder='Enter exam question' value={question} onChange={value => setQuestion(value)} />
           </Form.Group>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Points</Form.Label>
@@ -141,7 +91,7 @@ const TrueOrFalseForm = ({
             </Form.Select>
           </Form.Group>
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
+            <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>
               {editQuestion ? <>Save Question</> : <>Update Question</>}
             </Button>
           </span>
@@ -175,7 +125,18 @@ export default function TrueOrFalse({
   const {user} = userContext.data
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
+  const [isContributor, setIsContributor] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
@@ -184,6 +145,7 @@ export default function TrueOrFalse({
   }
 
   useEffect(() => {
+    getContributor();
     handleGetItems()
     getCourseInformation();
   }, [])
@@ -195,6 +157,8 @@ export default function TrueOrFalse({
   console.log(part, '..................');
   const submitQuestion = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     console.log({ selectedQuestion });
     setLoading(true);
     const data = {
@@ -327,7 +291,7 @@ export default function TrueOrFalse({
             <p className='' title="">Answer: {question.answer}</p>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable && !shared && (
+          {editable && !shared && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -343,8 +307,7 @@ export default function TrueOrFalse({
           
         </div>
       ))}
-      {courseInfos?.isTechfactors? (<></>):(<>
-        {editable && !shared && (
+      {editable && !shared && isContributor && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'
@@ -361,7 +324,6 @@ export default function TrueOrFalse({
           Add question
         </Button>
       )}
-      </>)}
       <TrueOrFalseForm
         showModal={showModal}
         setShowModal={setShowModal}
@@ -373,6 +335,7 @@ export default function TrueOrFalse({
         setAnswer={setAnswer}
         onSubmit={submitQuestion}
         editQuestion={editQuestion}
+        isButtonDisabled={isButtonDisabled}
       />
     </div>
   );

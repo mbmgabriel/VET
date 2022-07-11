@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { toast } from "react-toastify";
 import CoursesAPI from "../../../../api/CoursesAPI";
@@ -12,6 +12,8 @@ import FileHeader from "../../../courses/components/AssignmentFileHeader";
 import {writeFileXLSX, utils} from "xlsx";
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
 import { UserContext } from '../../../../context/UserContext';
+import CourseFileLibrary from "../../../courses/components/CourseFileLibrary";
+import ClassCourseFileLibrary from '../../../classes/components/ClassCourseFileLibrary';
 
 const EssayForm = ({
   showModal,
@@ -21,7 +23,8 @@ const EssayForm = ({
   setQuestion,
   rate,
   setRate,
-  editQuestion
+  editQuestion,
+  isButtonDisabled
 }) => {
 
   const [displayFiles, setDisplayFiles] = useState([]);
@@ -29,36 +32,7 @@ const EssayForm = ({
   const [displayFolder, setDisplayFolder] = useState([]);
   const courseid = sessionStorage.getItem('courseid')
   const { id } = useParams();
-
-  const handleGetFiles = async() => {
-    if(window.location.pathname.includes('course')){
-      let response = await new FilesAPI().getCourseFiles(id)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        alert("Something went wrong while fetching course files.")
-      }
-    }
-    if(window.location.pathname.includes('class')){
-      let response = await new FilesAPI().getClassFiles(id)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        alert("Something went wrong while fetching class files.")
-      }
-    }
-    // setLoading(true)
-  }
-
-  useEffect(() => {
-    handleGetFiles()
-  }, [])
+  const tabType = window.location.pathname.includes("class") ? true : false; // if class or course
 
   return (
     <Modal
@@ -73,31 +47,7 @@ const EssayForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={id}  subFolder={''} doneUpload={()=> handleGetFiles()} />
-          {/* {
-            (displayFiles || []).map( (item,ind) => {
-              return(
-                <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-              )
-            })
-          } */}
-          {
-          (displayFiles || []).map( (item,ind) => {
-            return(
-              item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-              <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-              :
-              <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-            )
-          })
-          }
-          {
-            (displayFolder || []).map((itm) => {
-              return(
-                <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-              )
-            })
-          }
+          {tabType ? <ClassCourseFileLibrary /> : <CourseFileLibrary />}
         </div>
         <div>
           <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
@@ -105,7 +55,6 @@ const EssayForm = ({
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>
             <ContentField value={question} placeholder="Enter exam question" onChange={value => setQuestion(value)} />
-
           </Form.Group>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Points</Form.Label>
@@ -121,7 +70,7 @@ const EssayForm = ({
           </Form.Group>
 
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
+            <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>
               {editQuestion ? <>Save Question</> : <>Update Question</>}
             </Button>
           </span>
@@ -154,7 +103,18 @@ export default function Essay({
   const {user} = userContext.data
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
+  const [isContributor, setIsContributor] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
     if(response.ok){
@@ -163,6 +123,7 @@ export default function Essay({
   }
 
   useEffect(() => {
+    getContributor()
     handleGetItems();
     getCourseInformation();
   }, [])
@@ -173,6 +134,8 @@ export default function Essay({
 
   const submitQuestion = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true);
     const data = {
       questionTypeId,
@@ -265,7 +228,7 @@ export default function Essay({
             </p>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable && !shared && (
+          {editable && !shared && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -279,8 +242,7 @@ export default function Essay({
           )}
         </div>
       ))}
-      {courseInfos?.isTechfactors? (<></>):(<>
-        {editable && !shared && (
+      {editable && !shared && isContributor && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'
@@ -295,7 +257,6 @@ export default function Essay({
           Add question
         </Button> 
       )}
-      </>)}
       <EssayForm
         showModal={showModal}
         setShowModal={setShowModal}
@@ -305,6 +266,7 @@ export default function Essay({
         setRate={setRate}
         onSubmit={submitQuestion}
         editQuestion={editQuestion}
+        isButtonDisabled={isButtonDisabled}
       />
     </div>
   );

@@ -25,7 +25,7 @@ export default function CourseCreateUnit({moduleInfo, setModuleInfo, openCreateU
       setModuleInfo(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching course unit")
+      alert("Something went wrong while fetching course unit111111")
     }
   }
 
@@ -44,7 +44,15 @@ export default function CourseCreateUnit({moduleInfo, setModuleInfo, openCreateU
 			}
     )
     if(response.ok){
-      alert("Saved")
+			toast.success('Successfully Added Module!', {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				});
 			handleCloseModal(e)
 			getCourseUnitInformation()
     }else{
@@ -61,9 +69,7 @@ export default function CourseCreateUnit({moduleInfo, setModuleInfo, openCreateU
     setLoading(false)
   }
 
-	useEffect(() => {
-   
-  }, [])
+	
 	
 	return (
 		<div>

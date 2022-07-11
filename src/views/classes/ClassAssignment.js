@@ -216,7 +216,7 @@ function ClassAssignment() {
         <Accordion.Body>
           {(user?.isStudent)?(
           <>
-            <StudentAssignment searchTerm={searchTerm} assignment={assignment} />
+            <StudentAssignment searchTerm={searchTerm} assignment={assignment} getAssignmentList={getAssignmentList} moduleId={moduleId}  />
           </>
           ):
           (

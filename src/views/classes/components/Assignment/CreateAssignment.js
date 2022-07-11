@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Modal from 'react-bootstrap/Modal'
-import { Form, Button,  Tooltip, OverlayTrigger} from 'react-bootstrap'
+import { Form, Button,  Tooltip, OverlayTrigger, Table} from 'react-bootstrap'
 import { useParams } from 'react-router'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
@@ -8,6 +8,7 @@ import FilesAPI from '../../../../api/FilesApi';
 import FileHeader from '../Task/TaskFileHeader';
 import ContentField from '../../../../components/content_field/ContentField'
 import { toast } from 'react-toastify';
+import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
 function CreateAssignment({modal, toggle, module, getAssignmentList, question, setQuestion}) {
   const [moduleId, setModuleId] = useState('')
@@ -17,6 +18,12 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([])
+  const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
+  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const [displayType, setDisplayType] = useState('');
+  const [showFilesFolders, setShowFilesFolders] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const [courseId, setCourseId] = useState(null)
   const {id} = useParams();
 
   const closeNotify = () =>{
@@ -24,6 +31,8 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   }
   const createAssignment = async (e) =>{
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     if(moduleId == ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
@@ -72,11 +81,6 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
       });
   }
 
-
-  useEffect(() => {
-    handleGetClassFiles()
-  }, [])
-
   const renderTooltipSave = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Save
@@ -89,21 +93,6 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
     </Tooltip>
   )
 
-  const handleGetClassFiles = async() => {
-    // setLoading(true)
-    let data = {
-      "subFolderLocation": ''
-    }
-    let response = await new FilesAPI().getClassFiles(id, data)
-    // setLoading(false)
-    if(response.ok){
-      console.log(response, 'heeeeeeeere----------------')
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
-    }else{
-      alert("Something went wrong while fetching class files.")
-    }
-  } 
 
 	return (
     <div>
@@ -114,29 +103,12 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <div className={showFiles ? 'mb-3' : 'd-none'}>
-              <FileHeader type={'Class'}  title='Files' id={id} subFolder={''} doneUpload={()=> handleGetClassFiles()}/>
-              {
-                (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.filename} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
-            </div>
-            <div className='text-align-right'>
-                   <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-            </div>
+          <div className={showFiles ? 'mb-3' : 'd-none'}>
+            <ClassCourseFileLibrary />
+          </div>
+          <div className='text-align-right'>
+            <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          </div>
           <Form onSubmit={createAssignment} > 
             <Form.Group className="mb-3">
               <Form.Label>Unit</Form.Label>
@@ -156,7 +128,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
                   <ContentField  value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
               </Form.Group>  
               <Form.Group className='right-btn'>
-                  <Button className='tficolorbg-button' type='submit' >Save Assignment</Button>
+                  <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Save Assignment</Button>
               </Form.Group>
           </Form> 
         </Modal.Body>

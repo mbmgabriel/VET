@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion, Tooltip, OverlayTrigger, Dropdown } from 'react-bootstrap';
 import CoursesAPI from "../../../../api/CoursesAPI";
 import CourseCreateUnit from "./../../components/CourseCreateUnit";
 import CreateLesson from "./../../components/CreateLesson";
@@ -13,6 +13,8 @@ import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
 
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import EditModule from "../../components/EditModule";
 
 export default function CourseLearn() {
 
@@ -27,6 +29,7 @@ export default function CourseLearn() {
   const [lessonInfo, setLessonInfo] = useState([])
   const [lessonContent, setLessonContent] = useState([])
   const [sweetError, setSweetError] = useState(false)
+  const [sweetErrorModule, setSweetErrorModule] = useState(false)
   const [filter, setFilter] = useState("");
   const [courseInfo, setCourseInfo] = useState("")
   const [viewLesson, setViewLesson] = useState(false)
@@ -39,11 +42,51 @@ export default function CourseLearn() {
   const [pageName, setPageName] = useState('')
   const [sequenceNo, setSequenceNo] = useState(null)
   const [lessonId, setLessonId] = useState('')
+  const [editModuleModal, setEditModuleModal] = useState(false)
+
+  const [moduleName, setModuleName] = useState('')
+	const [moduleDescription, setModuleDescription] = useState('')
+  const [moduleId, setModuleId] = useState('')
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+  const [isContributor, setIsContributor] = useState(true);
 
-  console.log('courseInfo:', courseInfo)
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
+  console.log('moduleInfo:', moduleInfo)
+
+  const toggleModelEditModule = (moduleId, sequenceNoEdit, moduleDescription, moduleName) =>{
+    setModuleName(moduleName)
+    setModuleDescription(moduleDescription)
+    setSequenceNo(sequenceNoEdit)
+    setModuleId(moduleId)
+    setEditModuleModal(true)
+  }
+
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Edit
+    </Tooltip>
+  );
+
+  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (  
+    <span 
+      href=""
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >{children}</span> 
+  ));
 
   const handleOpenCreateUnitModal = () =>{
     setOpenCreateUnitModal(!openCreateUnitModal)
@@ -66,12 +109,20 @@ export default function CourseLearn() {
     setSweetError(false)
   }
 
-
-
   const confirmSweetError = (id) => {
     setItemId(id)
     setSweetError(true)
+  }
+
+  const confirmSweetErrorModule = (id) => {
+    setItemId(id)
+    setSweetErrorModule(true)
   } 
+  
+  
+  const cancelSweetErrorModule = () => {
+    setSweetErrorModule(false)
+  }
 
   const getCourseLessons = async(e, data, modulename) => {
     setLoading(true)
@@ -123,6 +174,17 @@ export default function CourseLearn() {
     }
   }
 
+  const deleteModule = async (id) => {
+    let response = await new CoursesAPI().deleteModule(id)
+      if(response.ok){
+        notifyDeleteModule()
+        setSweetErrorModule(false)
+        getCourseUnitInformation()
+      }else{
+        alert(response.date.errorMessage)
+      }
+  }
+
   const getModuleContent = async(e, data, pagesid, pageName) => {
     setClickedModule(pageName)
     setLoading(true)
@@ -142,12 +204,24 @@ export default function CourseLearn() {
   }
 
   useEffect(() => {
+    getContributor();
     getCourseUnitInformation();
     getCourseInformation();
   }, [])
 
-  const notifyDeleteLesson= () => 
-  toast.error('Lesson Deleted!', {
+  const notifyDeleteLesson = () => 
+  toast.error('Successfully Deleted Lesson!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+
+  const notifyDeleteModule = () => 
+  toast.error('Successfully Deleted Module!', {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -182,9 +256,10 @@ export default function CourseLearn() {
         <React.Fragment>
           <span className="content-pane-title">
             Learn 
-              {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+              {
+                isContributor && 
                 <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus"></i> Add Module</Button>
-              </>)}
+              }
              
             <CourseCreateUnit moduleInfo={moduleInfo} setModuleInfo={setModuleInfo} openCreateUnitModal={openCreateUnitModal} setOpenCreateUnitModal={setOpenCreateUnitModal}/>
           </span>
@@ -218,10 +293,15 @@ export default function CourseLearn() {
                   <Accordion.Item eventKey={item.id}> 
                     <Accordion.Header onClick={(e) => {getCourseLessons(e, item.id, item.moduleName)}}>
                       <span className="unit-title">{item.moduleName}
-                      {courseInfo?.isTechfactors && user?.teacher.positionID != 7? (<></>):(<>
+                      {isContributor &&
+                      <>
                         <Button className="btn-create-class" variant="link"  onClick={handleOpenCreateLessonModal}><i className="fa fa-plus"></i> Add Lesson</Button>
-                      </>)}
-                       
+                        <div>
+                        <span  className='dash-read-more' ><Link to={'#'} onClick={() => toggleModelEditModule(item?.id, item?.sequenceNo, item?.moduleDescription, item?.moduleName)}> Edit </Link></span> |
+                          <span  className='dash-read-more' ><Link to={'#'} onClick={() => confirmSweetErrorModule(item.id)} > Delete </Link></span> 
+                        </div>
+                      </>
+                      }
                       </span>
                     </Accordion.Header>
                     <Accordion.Body>                         
@@ -233,22 +313,22 @@ export default function CourseLearn() {
                             <Col className="lesson-header" md={9} onClick={(e) => getModuleContent(e, moduleid, li.id, li?.pageName)}>
                              <p className="lessonName">{li?.pageName}</p>
                             </Col>
-                            {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                            {isContributor &&
                               <Col className="align-right-content" md={3}>
-                              <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 1, hide: 0 }}
-                                overlay={renderTooltipEdit}>
-                                  <Button key={li.id} className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditLessonModal(e, li?.content, li?.pageName, li?.sequenceNo, li?.id )}><i className="fa fa-edit"></i></Button>
-                              </OverlayTrigger>
-                              <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 1, hide: 0 }}
-                                overlay={renderTooltipDelete}>
-                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => confirmSweetError(li.id)} ><i className="fa fa-trash"></i></Button>
-                              </OverlayTrigger>
-                            </Col>
-                            </>)}
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 1, hide: 0 }}
+                                  overlay={renderTooltipEdit}>
+                                    <Button key={li.id} className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditLessonModal(e, li?.content, li?.pageName, li?.sequenceNo, li?.id )}><i className="fa fa-edit"></i></Button>
+                                </OverlayTrigger>
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 1, hide: 0 }}
+                                  overlay={renderTooltipDelete}>
+                                    <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => confirmSweetError(li.id)} ><i className="fa fa-trash"></i></Button>
+                                </OverlayTrigger>
+                              </Col>
+                            }
                           </Row>
                         )
                       })}
@@ -270,7 +350,33 @@ export default function CourseLearn() {
           >
             You will not be able to recover this Lesson!
         </SweetAlert>
+        <SweetAlert
+            warning
+            showCancel
+            show={sweetErrorModule}
+            confirmBtnText="Yes, delete it!"  
+            confirmBtnBsStyle="danger"
+            title="Are you sure?"
+            onConfirm={() => deleteModule(itemId)}
+            onCancel={cancelSweetErrorModule}
+            focusCancelBtn
+          >
+            You will not be able to recover this Module!
+        </SweetAlert>
           </Accordion>
+          <EditModule
+            moduleName={moduleName}
+            moduleDescription={moduleDescription}
+            sequenceNo={sequenceNo}
+            moduleId={moduleId}
+            setModuleName={setModuleName}
+            setModuleDescription={setModuleDescription} 
+            setEditModuleModal={setEditModuleModal}
+            setSequenceNo={setSequenceNo} 
+            editModuleModal={editModuleModal}
+            setModuleId={setModuleId}
+            getCourseUnitInformation={getCourseUnitInformation}
+            toggleModelEditModule={toggleModelEditModule} />
         </React.Fragment>}
     </CourseContent>
   )

@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import Modal from 'react-bootstrap/Modal'
-import { Form, Button, } from 'react-bootstrap'
+import { Form, Button, Table, Tooltip, OverlayTrigger} from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import ContentField from '../../../../components/content_field/ContentField';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import FileHeader from './TaskFileHeader';
 import FilesAPI from '../../../../api/FilesApi';
 import { useParams } from 'react-router'
+import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
 function EditTask({moduleName, setTaskName, taskName, setInstructions, instructions, taskId, modal, toggle, module, editTask, getTaskModule, moduleId, setModal}){
   const isShared = null
@@ -15,6 +16,11 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
   const [displayFiles, setDisplayFiles] = useState([]);
+  const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
+  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const [displayType, setDisplayType] = useState('');
+  const [showFilesFolders, setShowFilesFolders] = useState(false);
+  const [courseId, setCourseId] = useState(null)
   const {id} = useParams();
 
   const closeNotify = () =>{
@@ -57,10 +63,10 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
     }
   }
 
-  const handleGetClassFiles = async() => {
+  const handleGetClassFiles = async(name) => {
     // setLoading(true)
     let data = {
-      "subFolderLocation": ''
+      "subFolderLocation": name
     }
     let response = await new FilesAPI().getClassFiles(id, data)
     // setLoading(false)
@@ -85,6 +91,87 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
       });
   }
 
+  useEffect(() => {
+    getClassInfo()
+  }, [])
+
+  const getClassInfo = async() => {
+    let response = await new ClassesAPI().getClassInformation(id)
+    if(response.ok){
+      setCourseId(response?.data?.courseId)
+    }
+  }
+
+  const handleClickedFolder = (name, type) =>{
+    if(type == 'Class'){
+      let temp = {
+        naame: name,
+        value: name
+      }
+      breedCrumbsItemClass.push(temp)
+      setBreedCrumbsItemClass(breedCrumbsItemClass);
+      handleGetClassFiles(`${subFolderDirectory.join('')}/${name}`);
+    }else{
+      let temp = {
+        naame: name,
+        value: name
+      }
+      breedCrumbsItemClass.push(temp)
+      setBreedCrumbsItemClass(breedCrumbsItemClass);
+      handleGetCourseFiles(`${subFolderDirectory.join('')}/${name}`);
+    }
+  }
+
+  const handleGetCourseFiles = async(name) => {
+    // setLoading(true)
+    let data = {
+      "subFolderLocation": name
+    }
+    let response = await new FilesAPI().getCourseFiles(courseId, data)
+    // setLoading(false)
+    if(response.ok){
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
+    }else{
+      alert("Something went wrong while fetching Course files.")
+    }
+  }
+
+  const handleClickType = (type) => {
+    setDisplayType(type);
+    setShowFilesFolders(!showFilesFolders)
+    setBreedCrumbsItemClass([]);
+    if(type == 'Class'){
+      handleGetClassFiles('')
+    }
+    if(type == 'Course'){
+      handleGetCourseFiles('')
+    }
+  }
+
+  const clickFile = (link) => {
+    navigator.clipboard.writeText(link)
+    toast.success('File link copied to clipboard.')
+  }
+
+  const handleFileBreed = () => {
+    setBreedCrumbsItemClass([]);
+    if(displayType == 'Class'){
+      handleGetClassFiles('')
+    }
+    if(displayType == 'Course'){
+      handleGetCourseFiles('')
+    }
+  }
+
+  const handleClickedBreadcrumbsItem = (value, index, type) => {
+    if(type == 'Class'){
+      subFolderDirectory.length = index+1;
+      breedCrumbsItemClass.length = index+1;
+      handleGetClassFiles(subFolderDirectory.join(''));
+    }
+  }
+
   return (
     <div>
         <Modal  size="lg" show={modal} onHide={() => setModal(false)} aria-labelledby="example-modal-sizes-title-lg">
@@ -95,33 +182,12 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
         </Modal.Header>
         <Modal.Body>
         <Form onSubmit={updateTask}> 
-        <div className={showFiles ? 'mb-3' : 'd-none'}>
-            <FileHeader type='Class' id={id}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
-            {/* {
-             (displayFiles || []).map( (item,ind) => {
-                return(
-                  <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-                )
-              })
-            } */}
-             {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
-          </div> 
+          <div className={showFiles ? 'mb-3' : 'd-none'}>
+            <ClassCourseFileLibrary />
+          </div>
+          <div className='text-align-right'>
+            <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+          </div>
           <Form.Group className="mb-3">
           <Form.Label>Unit</Form.Label>
             <Form.Select disabled>
@@ -130,9 +196,6 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
                   return(<option value={moduleName}>{moduleName} {item.id}</option>)
                 })} 
             </Form.Select>
-            <div>
-              <Button className='float-right my-2 tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-            </div>
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Task Name</Form.Label>

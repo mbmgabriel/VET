@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom"
 import SweetAlert from 'react-bootstrap-sweetalert'
 import { toast } from 'react-toastify';
 
-const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStudentInfo}) => {
+const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStudentInfo, setUserInfoModal}) => {
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
   const [permanentAddress, setPermanentAddress] = useState('')
@@ -33,12 +33,36 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
         getStudentInfo()
         openUserInfoToggle(e)
         successUpdate()
+        setFname('')
+        setLname('')
+        setPermanentAddress('')
+        setContactNo('')
+        setBday('')
+        setSex('')
+        setemailAdd('')
       }else{
-        closeWarningModal()
-        setErrorMessag(response.data.errorMessag)
+        toast.error('Please insert all the required fields.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
   }
 
+  const closeUserInfoToggle = () =>{
+    setUserInfoModal(false)
+    setFname('')
+    setLname('')
+    setPermanentAddress('')
+    setContactNo('')
+    setBday('')
+    setSex('')
+    setemailAdd('')
+  }
 
   useEffect(() => {
     if(userInfo !== null) {
@@ -96,7 +120,7 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
 
 
   return (
-    <div><Modal  size="lg" show={openUserInfoModal} onHide={openUserInfoToggle} aria-labelledby="example-modal-sizes-title-lg">
+    <div><Modal  size="lg" show={openUserInfoModal} onHide={closeUserInfoToggle} aria-labelledby="example-modal-sizes-title-lg">
     <Modal.Header className='class-modal-header' closeButton>
       <Modal.Title id="example-modal-sizes-title-lg" >
         Edit Personal Information
@@ -149,7 +173,8 @@ const ProfileEdit = ({openUserInfoModal, openUserInfoToggle, userInfo, getStuden
           <div style={{fontSize:'24px', color:'#BCBCBC'}}>
             <Form.Group className="mb-4">
             <Form.Label>Gender</Form.Label>
-            <Form.Select defaultValue={userInfo?.sex} onChange={(e) => setSex(e.target.value)}>
+            <Form.Select defaultValue={userInfo?.sex} required onChange={(e) => setSex(e.target.value)}>
+                <option value=''>Gender</option>
                 <option value='Male'>Male</option>
                 <option value='Female'>Female</option>
               </Form.Select>

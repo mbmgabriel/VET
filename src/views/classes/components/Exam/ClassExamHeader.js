@@ -13,6 +13,7 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
   const [testName, setTestName] = useState("");
   const [testInstructions, setTestInstructions] = useState("");
   const [module, setModule] = useState(modules[0]?.id)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   useEffect(() => {
     setModule(modules[0]?.id)
@@ -20,6 +21,8 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
 
   const submitForm = async(e)  => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 2000)
     const data = {
       "test": {
         "moduleItemId": module,
@@ -124,7 +127,7 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
             </Form.Group>
 
             <span style={{ float: "right" }}>
-              <Button className="tficolorbg-button" type="submit">
+              <Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
                 Save Exam
               </Button>
             </span>

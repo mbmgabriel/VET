@@ -48,9 +48,10 @@ export default function CoursesVideos() {
 
   const getVideoInfo = async(e, data) => {
     setLoading(true)
-    setLocalModuleId(data)
-    sessionStorage.setItem("moduleid", data)
-    let response = await new CoursesAPI().getVideoInformation(courseid, moduleid)
+    // setLocalModuleId(data)
+    // sessionStorage.setItem("moduleid", data)
+    let moduleId = data
+    let response = await new CoursesAPI().getVideoInformation(courseid, moduleId)
     setLoading(false)
     if(response.ok){
       setVideoInfo(response.data)
@@ -59,11 +60,11 @@ export default function CoursesVideos() {
     }
   }
 
-  useEffect(() => {
-    if(localModuleId !== ''){
-      getVideoInfo(courseid, moduleid)
-    }
-  }, [localModuleId])
+  // useEffect(() => {
+  //   if(localModuleId !== ''){
+  //     getVideoInfo(courseid, moduleid)
+  //   }
+  // }, [localModuleId])
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)

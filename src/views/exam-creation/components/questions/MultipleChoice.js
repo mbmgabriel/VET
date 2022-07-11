@@ -13,6 +13,8 @@ import FilesAPI from '../../../../api/FilesApi'
 import { displayQuestionType } from "../../../../utils/displayQuestionType";
 import {writeFileXLSX, utils} from "xlsx";
 import { UserContext } from '../../../../context/UserContext';
+import CourseFileLibrary from "../../../courses/components/CourseFileLibrary";
+import ClassCourseFileLibrary from '../../../classes/components/ClassCourseFileLibrary';
 
 const MultipleChoiceForm = ({
   selectedQuestion,
@@ -26,12 +28,16 @@ const MultipleChoiceForm = ({
   choices,
   setChoices,
   editQuestion,
+  isButtonDisabled
 }) => {
+  const userContext = useContext(UserContext);
+  const { user } = userContext.data;
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
   const courseid = sessionStorage.getItem('courseid')
   const { id } = useParams();
+  const tabType = window.location.pathname.includes("class") ? true : false; // if class or course
 
   console.log(editQuestion)
   
@@ -65,35 +71,6 @@ const MultipleChoiceForm = ({
     setChoices([...tempChoices])
   };
 
-  const handleGetFiles = async() => {
-    if(window.location.pathname.includes('course')){
-      let response = await new FilesAPI().getCourseFiles(id)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        alert("Something went wrong while fetching course files.")
-      }
-    }
-    if(window.location.pathname.includes('class')){
-      let response = await new FilesAPI().getClassFiles(id)
-      // setLoading(false)
-      if(response.ok){
-        console.log(response, '-----------------------')
-        setDisplayFiles(response.data.files)
-        setDisplayFolder(response.data.folders)
-      }else{
-        alert("Something went wrong while fetching class files.")
-      }
-    }
-    // setLoading(true)
-  }
-
-  useEffect(() => {
-    handleGetFiles()
-  }, [])
 
   return (
     <Modal
@@ -108,31 +85,7 @@ const MultipleChoiceForm = ({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={onSubmit}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-          <FileHeader type={window.location.pathname.includes('class') ? 'Class' : 'Course'} id={id}  subFolder={''} doneUpload={()=> handleGetFiles()} />
-          {/* {
-            (displayFiles || []).map( (item,ind) => {
-              return(
-                <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-              )
-            })
-          } */}
-          {
-          (displayFiles || []).map( (item,ind) => {
-            return(
-              item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-              <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-              :
-              <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-            )
-          })
-          }
-          {
-            (displayFolder || []).map((itm) => {
-              return(
-                <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-              )
-            })
-          }
+          {tabType ? <ClassCourseFileLibrary /> : <CourseFileLibrary />}
         </div>
         <div>
           <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
@@ -141,6 +94,7 @@ const MultipleChoiceForm = ({
             <Form.Label for='question'>Question</Form.Label>
             <ContentField
               value={question}
+              placeholder='Enter exam question'
               onChange={(value) => setQuestion(value)}
             />
           </Form.Group>
@@ -208,6 +162,7 @@ const MultipleChoiceForm = ({
                     <ContentField
                       className='flex-1'
                       value={choice.testChoices}
+                      placeholder='Enter exam choices'
                       onChange={(value) => onChoiceTextChange(index, value)}
                     />
                     {selectedQuestion == null && (
@@ -225,14 +180,14 @@ const MultipleChoiceForm = ({
                   type='add-question'
                   onClick={addQuestion}
                   >
-                  Add Choice
+                  Add Choice 
                 </Button>
               )}
             </div>
           </Form.Group>
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
-            {editQuestion ? <>Save Question</> : <>Update Question</>}
+            <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>
+            {editQuestion ? <>Save Question </> : <>Update Question</>}
             </Button>
           </span>
         </Form>
@@ -267,6 +222,18 @@ export default function MultipleChoice({
   const {user} = userContext.data
   const contentCreator = user?.teacher?.positionID == 7;
   const isCourse = window.location.pathname.includes('course');
+  const [isContributor, setIsContributor] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -276,6 +243,7 @@ export default function MultipleChoice({
   }
 
   useEffect(() => {
+    getContributor();
     getCourseInformation();
     handleGetItems()
   }, [])
@@ -302,6 +270,8 @@ export default function MultipleChoice({
   }
   const submitQuestion = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     console.log({ selectedQuestion });
     setLoading(true);
     const data = {
@@ -454,7 +424,7 @@ export default function MultipleChoice({
             </h5>
             <p title="" className=''>Point(s): {question.question.rate}</p>
           </div>
-          {editable && !shared && (
+          {editable && !shared && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -471,8 +441,7 @@ export default function MultipleChoice({
           )}
         </div>
       ))}
-      {courseInfos?.isTechfactors? (<></>):(<>
-        {editable && !shared && (
+      {editable && !shared && isContributor && (
         <Button
           className='tficolorbg-button m-r-5'
           type='submit'
@@ -490,7 +459,6 @@ export default function MultipleChoice({
           Add question
         </Button>
       )}
-      </>)}
       <MultipleChoiceForm
         selectedQuestion={selectedQuestion}
         showModal={showModal}
@@ -503,6 +471,7 @@ export default function MultipleChoice({
         setChoices={setChoices}
         onSubmit={submitQuestion}
         editQuestion={editQuestion}
+        isButtonDisabled={isButtonDisabled}
       />
     </div>
   );

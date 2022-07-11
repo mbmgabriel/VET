@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment'
 import ContentViewer from '../../../components/content_field/ContentViewer';
 
-function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examAnalysis, setExamAnalysis, testPartAnswers, showReportHeader, setShowReportHeader}) {
+function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examAnalysis, setExamAnalysis, getExamAnalysis}) {
   
   const [showExamAnalysis, setShowExamAnalysis] = useState([])
   const [considerAnswer, setConsiderAnswer] = useState("")
@@ -27,7 +27,8 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
   const dateTimeNow = dateCompareNow + ' ' + '00:00:00';
 
   let testname = sessionStorage.getItem('testName')
-  let classid = sessionStorage.getItem('classId')
+  const pageURL = new URL(window.location.href);
+  let classid = pageURL.searchParams.get("classId");
   let studentidsession = sessionStorage.getItem('studentid')
   let testidsession = sessionStorage.getItem('testid')
 
@@ -40,27 +41,6 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     setSelectedAnswerId(answerid)
     setSelectedQuestionId(questionid)
 }
-
-  const getExamAnalysis = async(e, studentid, classid, testid) => {
-    e.preventDefault()
-    setShowExamAnalysis(true)
-    let response = await new ClassesAPI().getExamAnalysis(studentid, classid, testid)
-    if(response.ok){
-      setExamAnalysis(response.data)
-      
-    }else{
-      toast.error(response.data.errorMessage, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-    }
-  
 
   const considerAnswerExamT = async(e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
@@ -81,10 +61,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
         progress: undefined,
       });
     }
-    }
-  
-
-
+  }
 
   const considerAnswerExamF = async(e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
@@ -95,7 +72,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     )
     if(response.ok){
       notifyUnconsidered()
-      getExamAnalysis(e, studentidsession, classid, testidsession)
+      getExamAnalysis(studentidsession, classid, testidsession, examAnalysis.student?.lname,  examAnalysis.student?.fname)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -118,11 +95,10 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       selectedStudentId, classid, selectedTestId, selectedAnswerId, {isConsider, studentScore}
     )
     if(response.ok){
-      // setSweetError(true);
       setShow(true);
       setOpenModal(false)
       notifyConsidered()
-      getExamAnalysis(e, selectedStudentId, classid, selectedTestId)
+      getExamAnalysis(selectedStudentId, classid, selectedTestId, examAnalysis.student?.lname,  examAnalysis.student?.fname)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -144,10 +120,9 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
       selectedStudentId, classid, selectedTestId, selectedAnswerId, {isConsider, studentScore}
     )
     if(response.ok){
-      // setSweetError(true);
       setShow(true);
       setOpenModal(false)
-      getExamAnalysis(e, selectedStudentId, classid, selectedTestId)
+      getExamAnalysis(selectedStudentId, classid, selectedTestId, examAnalysis.student?.lname,  examAnalysis.student?.fname)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -187,7 +162,6 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
 
   useEffect(() => {
     setSweetError(false)
-    setShowReportHeader(true)
     if(studentScore !== null) {
 			setStudentScore(studentScore)
 		}
@@ -220,41 +194,43 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
     <ToastContainer />
 		<Row>
       <Col md={6}>
-        <span className='font-exam-analysis-header'>{examAnalysis.student?.lname},  {examAnalysis.student?.fname}</span>
+        <span className='font-exam-analysis-header'>{examAnalysis?.student?.lname},  {examAnalysis?.student?.fname}</span>
       </Col>
       <Col md={6}>
-        <span className='font-exam-analysis-header float-right'>{examAnalysis.score} / {examAnalysis.assignedRawScore}</span>
+        <span className='font-exam-analysis-header float-right'>{examAnalysis?.score} / {examAnalysis?.assignedRawScore}</span>
       </Col>
       <Col md={6}>
         <p className='font-exam-analysis-content-24-tfi'>{testname} </p>
       </Col>
       <Col md={6}>
-        <p className='font-exam-analysis-content-24-tfi float-right'>{moment(examAnalysis.classTest?.startDate).format("LL")} </p>
+        <p className='font-exam-analysis-content-24-tfi float-right'>{moment(examAnalysis?.classTest?.startDate).format("LL")} </p>
       </Col>
     </Row>
-      {examAnalysis.testPartAnswers?.map((item, index) => {
+      {examAnalysis?.testPartAnswers?.map((item, index) => {
         return(
             <div>
             <div className='inline-flex'>
               <p className='font-exam-analysis-content-24-tfi'>PART {index + 1}</p> <p style={{marginLeft:5}} className='font-exam-analysis-content-24' dangerouslySetInnerHTML={{__html:item.testPart.instructions }}/>
             </div>
-              {item.questionDetails.map((qd, index) => {
+              {item?.questionDetails?.map((qd, index) => {
                 return(
-                qd.answerDetails.map((ad, index) => {
+                qd?.answerDetails?.map((ad, index) => {
                   return(
                     <>
                     <br></br>
                     <div className='inline-flex'>
-                      <span className='font-exam-analysis-content-24' style={{marginBottom:"100px !important"}}></span> <span className='font-exam-analysis-content-24'><ContentViewer>{ad.assignedQuestion}</ContentViewer></span>
+                      <span className='font-exam-analysis-content-24' style={{marginBottom:"100px !important"}}></span> <span className='font-exam-analysis-content-24'><ContentViewer>{ad?.assignedQuestion}</ContentViewer></span>
                     </div>
                     <Row style={{textAlign:'center', padding:10}}>
                       <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
                         <div>
                           <span className='font-exam-analysis-content-24' style={{marginRight:10}}> 
+
                           <span style={{marginRight:10}}>{ad.studentScore >= 1 && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}</span>
                           <span style={{marginRight:10}}>{ad.studentScore == 0 && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
+
                             Student Answer :</span><span className='font-exam-analysis-content-24'>
-                            <ContentViewer>{ad.studentAnswer}</ContentViewer>
+                            {ad?.studentAnswer === null ? <span style={{color:'red'}}>Student has no answer</span>:<><ContentViewer>{ad?.studentAnswer}</ContentViewer></> }
                           </span>
                           
                         </div>
@@ -262,9 +238,12 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                       <Col sm={6} style={{border:"1px solid gray", paddingTop:10, borderRadius:5}}>
                       <div>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Correct Answer :</span>
-                        <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad.assignedAnswer}</ContentViewer></span>
+                        <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad?.assignedAnswer}</ContentViewer></span>
                         </div>
-                            {ad.studentScore === 0 && ad.isConsider === false ?(
+
+                       
+
+                            {ad?.studentScore === 0 && ad?.isConsider === false ?(
                             <>
                               <Form>
                                 <div style={{display:'inline-flex'}}>
@@ -283,7 +262,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                               ):
                               <></>
                               }
-                          {ad.studentScore >= 0 && ad.isConsider === true ?(
+                          {ad?.studentScore >= 0 && ad.isConsider === true ?(
                             <>
                               <Form>
                                 <div style={{display:'inline-flex'}}>
@@ -302,6 +281,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                               ):
                               <></>
                               }
+
                       </Col>
                     </Row>
                     <hr></hr>

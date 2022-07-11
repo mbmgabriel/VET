@@ -13,10 +13,14 @@ const AnnouncementComment = ({refId, typeId, getFeedClass, commentInfo}) => {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [loading, setLoading] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
 
   const commentAnnouncement = async (e) => {
     e.preventDefault()
+    console.log(isButtonDisabled)
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false),  1000)
     if(comment === ''){
       toast.warning("Please fill out this Field")
     }else{
@@ -110,7 +114,8 @@ const AnnouncementComment = ({refId, typeId, getFeedClass, commentInfo}) => {
       <Form onSubmit={(e) => commentAnnouncement(e)} >  
         <InputGroup size="xs" style={{padding:20}}>
           <FormControl value={comment} onChange={(e) => setComment(e.target.value)} aria-label="Large" aria-describedby="inputGroup-sizing-xs" placeholder="Write your comment here..." style={{borderRadius:10}}/>
-          <InputGroup.Text style={{borderRadius:"0px 10px 10px 0px"}} type='submit'  onClick={(e) => commentAnnouncement(e)} id="basic-addon2" className="comment-btn"><i className="fas fa-paper-plane"></i></InputGroup.Text>
+          <Button onClick={(e) => commentAnnouncement(e)} disabled={isButtonDisabled} className='btn-like' size="sm" Button variant="link"><i className="fas fa-paper-plane"></i></Button>
+          {/* <InputGroup.Text style={{borderRadius:"0px 10px 10px 0px"}} type='submit' disabled={isButtonDisabled}  onClick={(e) => commentAnnouncement(e)} id="basic-addon2" className="comment-btn"><i className="fas fa-paper-plane"></i></InputGroup.Text> */}
         </InputGroup><br />
       </Form> 
     </div>

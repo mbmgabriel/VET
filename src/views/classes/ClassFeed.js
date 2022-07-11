@@ -36,6 +36,7 @@ function ClassFeed() {
   const subsType = localStorage.getItem('subsType');
   const [showLike, setShowLike] = useState(false)
   const [feedItemLike, setFeedItemLike] = useState([])
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -53,6 +54,8 @@ function ClassFeed() {
   
   const createAnnouncementClass = async (e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     let typeId = 3
     let useraccountId = 0
     let status = true
@@ -227,7 +230,7 @@ const getComment = (item, item1, item3) => {
                   <FormControl onChange={(e) => setContent(e.target.value)} value={content} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type an Announcement for the class here" type="text"/> 
               </InputGroup>
               <div style={{textAlign:'right', paddingTop:'15px'}}>
-              <Button className='tficolorbg-button' type='submit' >POST</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >POST</Button>
               </div>
             </Form>
           </Card.Body>

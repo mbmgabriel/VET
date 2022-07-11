@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import Modal from 'react-bootstrap/Modal'
-import { Form, Button, Tooltip, OverlayTrigger} from 'react-bootstrap'
+import { Form, Button, Tooltip, OverlayTrigger, Table} from 'react-bootstrap'
 import ClassesAPI from '../../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import ContentField from '../../../../components/content_field/ContentField';
@@ -9,6 +9,7 @@ import FilesAPI from '../../../../api/FilesApi';
 import FileHeader from '../Task/TaskFileHeader';
 import { useParams } from 'react-router'
 import { toast } from 'react-toastify';
+import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
 function EditAssignment({setModal, modal, editAssignment, getAssignmentList, moduleId, instructions, setInstructions, setAssignmentName, assignmentName, unit, assignmentId}) {
   const [editNotufy, setEditNotify] = useState(false)
@@ -17,6 +18,11 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([])
+  const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
+  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const [displayType, setDisplayType] = useState('');
+  const [showFilesFolders, setShowFilesFolders] = useState(false);
+  const [courseId, setCourseId] = useState(null)
   const {id} = useParams();
   let mId = moduleId
 
@@ -65,10 +71,10 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
 	// 	}
   // }, [assignmentName])
 
-  const handleGetClassFiles = async() => {
+  const handleGetClassFiles = async(name) => {
     // setLoading(true)
     let data = {
-      "subFolderLocation": ''
+      "subFolderLocation": name
     }
     let response = await new FilesAPI().getClassFiles(id, data)
     // setLoading(false)
@@ -77,7 +83,7 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
       setDisplayFiles(response.data.files)
       setDisplayFolder(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files.")
+      toast.error("Something went wrong while fetching class files.")
     }
   }
 
@@ -105,6 +111,88 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
       });
   }
 
+
+  useEffect(() => {
+    getClassInfo()
+  }, [])
+
+  const getClassInfo = async() => {
+    let response = await new ClassesAPI().getClassInformation(id)
+    if(response.ok){
+      setCourseId(response?.data?.courseId)
+    }
+  }
+
+  const handleClickedFolder = (name, type) =>{
+    if(type == 'Class'){
+      let temp = {
+        naame: name,
+        value: name
+      }
+      breedCrumbsItemClass.push(temp)
+      setBreedCrumbsItemClass(breedCrumbsItemClass);
+      handleGetClassFiles(`${subFolderDirectory.join('')}/${name}`);
+    }else{
+      let temp = {
+        naame: name,
+        value: name
+      }
+      breedCrumbsItemClass.push(temp)
+      setBreedCrumbsItemClass(breedCrumbsItemClass);
+      handleGetCourseFiles(`${subFolderDirectory.join('')}/${name}`);
+    }
+  }
+
+  const handleGetCourseFiles = async(name) => {
+    // setLoading(true)
+    let data = {
+      "subFolderLocation": name
+    }
+    let response = await new FilesAPI().getCourseFiles(courseId, data)
+    // setLoading(false)
+    if(response.ok){
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
+    }else{
+      toast.error("Something went wrong while fetching Course files.")
+    }
+  }
+
+  const handleClickType = (type) => {
+    setDisplayType(type);
+    setShowFilesFolders(!showFilesFolders)
+    setBreedCrumbsItemClass([]);
+    if(type == 'Class'){
+      handleGetClassFiles('')
+    }
+    if(type == 'Course'){
+      handleGetCourseFiles('')
+    }
+  }
+
+  const clickFile = (link) => {
+    navigator.clipboard.writeText(link)
+    toast.success('File link copied to clipboard.')
+  }
+
+  const handleFileBreed = () => {
+    setBreedCrumbsItemClass([]);
+    if(displayType == 'Class'){
+      handleGetClassFiles('')
+    }
+    if(displayType == 'Course'){
+      handleGetCourseFiles('')
+    }
+  }
+
+  const handleClickedBreadcrumbsItem = (value, index, type) => {
+    if(type == 'Class'){
+      subFolderDirectory.length = index+1;
+      breedCrumbsItemClass.length = index+1;
+      handleGetClassFiles(subFolderDirectory.join(''));
+    }
+  }
+
   return (
     <div>
         <Modal  size="lg" show={modal} onHide={() => setModal(false)} aria-labelledby="example-modal-sizes-title-lg">
@@ -114,25 +202,8 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <div className={showFiles ? 'mb-3' : 'd-none'}>
-              <FileHeader type={'Class'}  title='Files' id={id} subFolder={''} doneUpload={()=> handleGetClassFiles()}/>
-              {
-                (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.filename} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
+            <div className={showFiles ? 'mb-3' : 'd-none'}>
+              <ClassCourseFileLibrary />
             </div>
             <div className='text-align-right'>
                    <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>

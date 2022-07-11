@@ -3,17 +3,18 @@ import {Accordion, Row, Col} from 'react-bootstrap'
 import InteractiveReportContent from '../contents/InteractiveReportContent'
 import ClassesAPI from './../../../api/ClassesAPI'
 
-function InteractiveReport({filter, setFilter, classesModules, setClassesModules, selectedClassId, viewInteractiveReport, setViewInteractiveReport, setShowInteractiveHeader, showInteractiveHeader}) {
+function InteractiveReport({filter, setFilter, classesModules, getInteractiveReport, selectedClassId, viewInteractiveReport, setViewInteractiveReport, setShowInteractiveHeader, showInteractiveHeader}) {
 
   const [interactivePerModule, setInteractivePerModule] = useState([])
   const [interactiveReport, setInteractiveReport] = useState([])
   const [loading, setLoading] = useState(false)
+  const pageURL = new URL(window.location.href);
+  const paramsId = pageURL.searchParams.get("classId");
 
   const getClassInteractiveModules = async(e, moduleId) => {
-    console.log(selectedClassId)
     sessionStorage.setItem('interactiveModuleId', moduleId)
     let sessionModuleId = sessionStorage.getItem('interactiveModuleId')
-    let response = await new ClassesAPI().getClassInteractiveModules(selectedClassId, sessionModuleId)
+    let response = await new ClassesAPI().getClassInteractiveModules(paramsId, sessionModuleId)
     if(response.ok){
       setInteractivePerModule(response.data)
       console.log(response.data)
@@ -22,21 +23,23 @@ function InteractiveReport({filter, setFilter, classesModules, setClassesModules
     }
   }
 
-  const getInteractiveReport = async(e, interactiveid, interactivename) => {
-    setLoading(true)
-    setViewInteractiveReport(false)
-    sessionStorage.setItem('interactiveName',interactivename)
-    let response = await new ClassesAPI().getInteractiveReport(selectedClassId, interactiveid, interactivename)
-    setLoading(false)
-    if(response.ok){
-      setInteractiveReport(response.data)
-      console.log(response.data)
-    }else{
-      alert(response.data.errorMessage)
-    }
-  }
+  // const getInteractiveReport = async(e, interactiveid, interactivename) => {
+  //   setLoading(true)
+  //   setViewInteractiveReport(false)
+  //   sessionStorage.setItem('interactiveName',interactivename)
+  //   let response = await new ClassesAPI().getInteractiveReport(paramsId, interactiveid, interactivename)
+  //   setLoading(false)
+  //   if(response.ok){
+  //     setInteractiveReport(response.data)
+  //     console.log(response.data)
+  //   }else{
+  //     alert(response.data.errorMessage)
+  //   }
+  // }
 
-  if(viewInteractiveReport === true){
+  console.log('interactivePerModule:', interactivePerModule)
+
+  // if(viewInteractiveReport === true){
   return (
     <div>
       <Accordion>
@@ -55,19 +58,19 @@ function InteractiveReport({filter, setFilter, classesModules, setClassesModules
                     <div className='title-exam' onClick={(e) => getInteractiveReport(e, item.interactive?.id, item.interactive?.interactiveName)}>
                       {item.interactive?.interactiveName}
                     </div>
-                    <div className='code-exam'>
+                    {/* <div className='code-exam'>
                       EQF1
-                    </div>
+                    </div> */}
                   </Col>
                   <Col sm={9} className='instruction-exam' >
                     {/* <p>{item.task.instructions}</p> */}
                     {/* <div dangerouslySetInnerHTML={{ __html: item.task.instructions }} /> */}
                   </Col>
-                  <Col sm={3} className='icon-exam'>
+                  {/* <Col sm={3} className='icon-exam'>
                     <i class="fas fa-eye" style={{paddingRight:'10px'}} ></i>{' '}
                     <i class="fas fa-edit"style={{paddingRight:'10px'}}></i>
                     <i class="fas fa-trash-alt" style={{paddingRight:'10px'}}></i>
-                  </Col>
+                  </Col> */}
                   <hr></hr>
                 </Row>
                 )
@@ -81,10 +84,10 @@ function InteractiveReport({filter, setFilter, classesModules, setClassesModules
       </Accordion>
     </div>
   )
-  }else{
-    return(
-      <InteractiveReportContent showInteractiveHeader={showInteractiveHeader} setShowInteractiveHeader={setShowInteractiveHeader} setInteractiveReport={setInteractiveReport} interactiveReport={interactiveReport}/>
-    )
-  }
+  // }else{
+  //   return(
+  //     <InteractiveReportContent showInteractiveHeader={showInteractiveHeader} setShowInteractiveHeader={setShowInteractiveHeader} setInteractiveReport={setInteractiveReport} interactiveReport={interactiveReport}/>
+  //   )
+  // }
 }
 export default InteractiveReport

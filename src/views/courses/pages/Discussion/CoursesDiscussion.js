@@ -11,9 +11,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import CourseContent from "../../CourseContent";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
+import { useParams } from "react-router-dom";
 
 export default function CoursesDiscussion() {
-
   const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState("")
   const [openCreateDiscussionModal, setOpenCreateDiscussionModal] = useState(false)
@@ -31,9 +31,21 @@ export default function CoursesDiscussion() {
   const {user} = userContext.data;
   const [discussionName, setDiscussionName] = useState('')
   const [instructions, setInstructions] = useState('')
+  const {id} = useParams()
 
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
+  const [isContributor, setIsContributor] = useState(true);
+
+  const getContributor = async() => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      let temp = response.data;
+      let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
+      console.log(ifContri, user.userId)
+      setIsContributor(ifContri ? true : false);
+    }
+  }
 
   const getCourseInformation = async() => {
     setLoading(true)
@@ -42,11 +54,12 @@ export default function CoursesDiscussion() {
     if(response.ok){
       setCourseInfo(response.data)
     }else{
-      alert("Something went wrong while fetching course information")
+      alert("Something went wrong while fetching course information 111111111111")
     }
   }
 
   useEffect(() => {
+    getContributor();
     if(courseid != null){
       getCourseInformation();
     }
@@ -80,13 +93,13 @@ export default function CoursesDiscussion() {
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
-    let response = await new CoursesAPI().getCourseUnit(courseid)
+    let response = await new CoursesAPI().getCourseUnit(id)
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching course unit")
+      alert("Something went wrong while fetching course unit11111111111")
     }
   }
 
@@ -191,9 +204,10 @@ export default function CoursesDiscussion() {
                 <Accordion.Item eventKey={item.id}> 
                   <Accordion.Header onClick={(e) => {getDiscussionInfo(e, item.id)}}>
                     <span className="unit-title">{item.moduleName}
-                    {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                    {
+                      isContributor && 
                       <Button className="btn-create-class" variant="link" onClick={handleopenCreateDiscussionModal}><i className="fa fa-plus"></i> Add Discussion</Button>
-                    </>)}
+                    }
                     </span>
                   </Accordion.Header>
                   <Accordion.Body>
@@ -205,7 +219,7 @@ export default function CoursesDiscussion() {
                         <Col className="lesson-header" md={9}>
                         <span onClick={(e) => {viewDis(di)}}>{di?.discussion.discussionName}</span>
                         </Col>
-                        {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+                        {isContributor && 
                           <Col className="align-right-content" md={3}>
                         <OverlayTrigger
                           placement="bottom"
@@ -222,7 +236,7 @@ export default function CoursesDiscussion() {
                           {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditDiscussionModal(e, di)}><i className="fa fa-edit"></i></Button>
                           <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => {setSweetError(true); setDiscussionId(di.discussion.id)}}><i className="fa fa-trash"></i></Button> */}
                         </Col>
-                        </>)}
+                      }
                       </Row>
                     ))}
                     <SweetAlert
