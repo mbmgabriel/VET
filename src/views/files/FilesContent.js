@@ -33,7 +33,7 @@ function FilesContent(props) {
   const courseid = sessionStorage.getItem('courseid')
 
   const getCourseInformation = async() => {
-    let response = await new CoursesAPI().getCourseInformation(id)
+    let response = await new CoursesAPI().getCourseInformation(props.id)
     if(response.ok){
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
@@ -41,7 +41,7 @@ function FilesContent(props) {
       //  setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
       }
     }else{
-      alert("Something went wrong while fetching course information11111111111")
+      toast.error("Something went wrong while fetching course information.")
     }
   }
 

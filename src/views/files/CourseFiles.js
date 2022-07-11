@@ -160,7 +160,9 @@ export default function FilesCourse() {
               {
                 allCourse.filter(item =>
                   item.courseName.toLowerCase().includes(courseFilter.toLowerCase())).map((item, index) => {
+                    console.log(item);
                   return(
+                   item.status && 
                     <div className="colored-class">
                       <div className='inline-flex'>
                         <div style={{paddingLeft:'20px'}}>

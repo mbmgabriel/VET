@@ -56,7 +56,7 @@ export default function CoursesAssignment() {
     if(response.ok){
       setCourseInfo(response.data)
     }else{
-      alert("Something went wrong while fetching course information11111111111")
+      toast.error("Something went wrong while fetching course information.");
     }
   }
 

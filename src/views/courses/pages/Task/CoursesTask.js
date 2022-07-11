@@ -53,7 +53,7 @@ export default function CoursesTask() {
     if(response.ok){
       setCourseInfo(response.data)
     }else{
-      alert("Something went wrong while fetching course information 1111111111111111")
+      toast.error('Something went wrong while fetching course information.')
     }
   }
 
