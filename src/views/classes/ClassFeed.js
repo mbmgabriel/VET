@@ -337,8 +337,10 @@ const getComment = (item, item1, item3) => {
         <></>
         ):(
         <>
+        
           <Card className='calendar-card'>
             <Card.Body>
+            <Card.Title><div className="col-md-10 pages-header"><p className='title-header'>Announcement </p></div></Card.Title>
             <Form onSubmit={createAnnouncementClass}>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
             {displayType == 'Class' ?
@@ -423,6 +425,7 @@ const getComment = (item, item1, item3) => {
                   <Form.Label className="feed-button" ><i class="fas fa-user-circle fas-1x" ></i></Form.Label>
                     <ContentField value={content}  placeholder='Enter instruction here'  onChange={value => setContent(value)} />
                   </Form.Group> */}
+                  
                   <ContentRichText value={content}  placeholder='Enter Announcement here'  onChange={value => setContent(value)} />
               <div style={{textAlign:'right', paddingTop:'15px'}}>
               <Button onClick={()=> setShowFiles(!showFiles)}>File Library</Button>&nbsp;

@@ -271,12 +271,6 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
               </Table>
             }
           </div>  
-          <div className={showFiles ? 'mb-3' : 'd-none'}>
-            <ClassCourseFileLibrary />
-          </div>
-          <div className='text-align-right'>
-            <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-          </div>
           <Form.Group className="mb-3">
           <Form.Label>Unit</Form.Label>
             <Form.Select onChange={(e) => setModuleId(e.target.value)}>
