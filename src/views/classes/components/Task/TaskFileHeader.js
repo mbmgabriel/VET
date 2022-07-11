@@ -259,6 +259,7 @@ function FileHeader(props) {
               <Col className='d-flex align-items-center'>
                 <p>Maximum file size: 25 MB.</p>
               </Col>
+              <p className='font-13 mb-0'>.pptx, .docx, .xlsx, .ppt, .doc, .xls, .pdf, .jpeg, .jpg, .png</p>
           </Row>
           <Table responsive="sm">
             <thead>
