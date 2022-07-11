@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import ExamAPI from "../../../../api/ExamAPI";
 import { UserContext } from "../../../../context/UserContext";
 
-function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
+function ClassExamHeader({ onSearch, modules = [],fetchExams, onRefresh}, ) {
   const {id} = useParams();
   const { data } = useContext(UserContext);
   const { user } = data;
@@ -46,25 +46,25 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
   return (
     <div>
       <div className="row m-b-20">
-        <div className="col-md-10 pages-header">
-          <h1 className="exam-title">Exam </h1>
-          {user.isTeacher && 
-            <>
-              <Button
-                className="btn-create-exam"
-                Button
-                variant="link"
-                onClick={() => setShowModal(true)}
-              >
-                <i className="fa fa-plus"></i> Create Exam
-              </Button>
-              {/* <h4 className="exam-or">OR</h4>
-              <Button className="btn-create-exam" Button variant="link" onClick={() => toast.error("Feature under development")}>
-                <i className="fa fa-plus"></i> Import Exam --
-              </Button> */}
-            </>
+        <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Exam </p>
+          <div>
+            <Button onClick={() => onRefresh()} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
+          {
+            user.isTeacher && 
+              <p className='title-header m-0-dashboard'>
+                <Button 
+                  className='btn-create-task' 
+                  Button variant="link" 
+                  onClick={() => setShowModal(true) }
+                >
+                  <i className="fa fa-plus" /> Create Exam</Button>
+              </p>
           }
-        </div>
+        </div> 
+
       </div>
       <div className="row m-b-20">
         <div className="col-md-12">

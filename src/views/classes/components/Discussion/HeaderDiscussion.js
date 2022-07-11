@@ -3,7 +3,7 @@ import { Button, InputGroup, FormControl } from 'react-bootstrap';
 import CreateDiscussion from './CreateDiscussion';
 import { UserContext } from '../../../../context/UserContext'
 
-function HeaderDiscussion({module, getDiscussionUnit, onSearch}) {
+function HeaderDiscussion({module, getDiscussionUnit, onSearch,onRefresh}) {
 const [modal, setModal] = useState(false)
 const userContext = useContext(UserContext)
 const {user} = userContext.data
@@ -14,11 +14,18 @@ const toggle = () =>{
 	return (
 		<div>
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
-				<div className="col-md-10 pages-header"><p className='title-header'>Discussion </p>
-          {
-            user.isTeacher &&
-              <p><Button style={{paddingTop:'17px'}} className='btn-create-discussion' variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Discussion  </Button></p>
-          }
+				<div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Discussion </p>
+				<div>
+					<Button onClick={() => onRefresh()} className='ml-3'>
+						<i className="fa fa-sync"></i>
+					</Button>
+				</div>
+					{
+						user.isTeacher && 
+							<p className='title-header m-0-dashboard'>
+								<Button className='btn-create-task' Button variant="link" onClick={() => setModal(true) }><i className="fa fa-plus" /> Create Discussion</Button>
+							</p>
+					}
 				</div>
 			</div>
 			<div className="row m-b-20">
@@ -33,5 +40,5 @@ const toggle = () =>{
 		</div>
 	)
 }
-export default HeaderDiscussion
 
+export default HeaderDiscussion;

@@ -179,7 +179,7 @@ function ClassDiscussion() {
   return (
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={()=> console.log('')} />
-      <HeaderDiscussion onSearch={onSearch} getDiscussionUnit={getDiscussionUnit} module={module} />
+      <HeaderDiscussion onSearch={onSearch} getDiscussionUnit={getDiscussionUnit} module={module} onRefresh={() => getClassInfo()}/>
         <Accordion>
         <SweetAlert
             warning

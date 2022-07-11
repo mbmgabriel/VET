@@ -39,13 +39,19 @@ const [isContributor, setIsContributor] = useState(false)
 
 	return (
 		<div>
-			<div className="row m-b-20" style={{paddingTop:'15px'}}>
-				<div className="col-md-10 pages-header"><p className='title-header' >Links </p>
+			<div className="row m-b-20 fd-row" style={{paddingTop:'15px'}}>
+				<div className="content-pane-title col-md-10 pages-header fd-row">
+					Links 
+				<div>
+					<Button onClick={() => getCourseInformation()} className='ml-3'>
+						<i className="fa fa-sync"></i>
+					</Button>
+				</div>
 			{(user?.teacher === null)?(
 			<></>
 			):(
 			<>
-				<p className='title-header'>
+				<p className='title-header m-0'>
           {isContributor && <Button className='btn-create-link' variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Links  </Button>}
         </p>
 			</>

@@ -167,8 +167,13 @@ export default function CoursesExam() {
     <CourseContent>
       <CourseBreadcrumbs title={examName} clicked={() => clickTab()}/>
         <React.Fragment>
-          <span className="content-pane-title">
+        <span className="content-pane-title col-md-10 pages-header fd-row">
             Exam 
+          <div>
+            <Button onClick={() => getCourseUnitInformation()} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
           </span>
           <div className="row m-b-20 m-t-30" onSearch={onSearch}>
             <div className="col-md-12">
