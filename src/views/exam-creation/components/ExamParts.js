@@ -101,11 +101,10 @@ export default function ExamParts({
               </div>
             </div>
             {/* {courseInfo?.isTechfactors? (<></>):(<>
-
             </>)} */}
             {isContributor &&
             <>  
-              {editable & !shared && (
+              {(editable && !shared) && (
                 <div className='exam-actions' >
                   <OverlayTrigger
                     placement="right"
