@@ -178,8 +178,13 @@ export default function CoursesDiscussion() {
           <ViewDiscussion selectedDiscussion={selectedDiscussion} setShowDiscussion={setShowDiscussion} />
         :
         <>
-          <span className="content-pane-title">
+          <span className="content-pane-title col-md-10 pages-header fd-row">
             Discussion 
+          <div>
+            <Button onClick={() => getCourseUnitInformation()} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
           </span>
           <div className="row m-b-20 m-t-30">
             <div className="col-md-12">

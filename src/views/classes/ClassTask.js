@@ -179,7 +179,7 @@ function ClassTask() {
   return (
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={()=> console.log('')} />
-      <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} />
+      <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} onRefresh={() => getClassInfo()}/>
         <Accordion>
           <SweetAlert
             warning

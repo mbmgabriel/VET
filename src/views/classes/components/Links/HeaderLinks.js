@@ -3,7 +3,7 @@ import { Button, InputGroup, FormControl } from 'react-bootstrap';
 import CreateLinks from './CreateLinks';
 import { UserContext } from '../../../../context/UserContext'
 
-function HeaderLinks({getConfe, getVideos, getLinks, onSearch}) {
+function HeaderLinks({getConfe, getVideos, getLinks, onSearch,onRefresh}) {
 const [modal, setModal] = useState(false)
 const userContext = useContext(UserContext)
 const [typeId, setTypeId] = useState('')
@@ -20,7 +20,13 @@ const toggle = () =>{
 	return (
 		<div>
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
-				<div className="col-md-10 pages-header"><p className='title-header' >Links </p>
+				<div className="content-pane-title col-md-10 pages-header">
+					Links 
+					<div>
+						<Button onClick={() => onRefresh()} className='ml-3'>
+							<i className="fa fa-sync"></i>
+						</Button>
+					</div>
 			{(user?.teacher === null)?(
 			<></>
 			):(

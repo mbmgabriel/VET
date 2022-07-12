@@ -192,7 +192,7 @@ function ClassAssignment() {
   return (
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={()=> console.log('')}/>
-      <AssignmentHeader onSearch={onSearch} module={module} getAssignmentList={getAssignmentList} />
+      <AssignmentHeader onSearch={onSearch} module={module} onRefresh={()=> getClassInfo()} getAssignmentList={getAssignmentList} />
       <Accordion>
         <SweetAlert
           warning

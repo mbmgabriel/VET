@@ -194,8 +194,14 @@ export default function CoursesAssignment() {
           <ViewAssignment setShowAssignment={setShowAssignment} selectedAssignment={selectedAssignment} assignmentInfo={assignmentInfo} setAssignmentInfo={setAssignmentInfo}/>
         :
         <React.Fragment>
-        <span className="content-pane-title">
+        <span className="content-pane-title col-md-10 pages-header fd-row">
           Assignment 
+          <div>
+            <Button onClick={() => getCourseUnitInformation()} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
+
           <CourseCreateUnit moduleInfo={moduleInfo} setModuleInfo={setModuleInfo} openCreateUnitModal={openCreateUnitModal} setOpenCreateUnitModal={setOpenCreateUnitModal}/>
         </span>
         <div className="row m-b-20 m-t-30" onSearch={onSearch}>
