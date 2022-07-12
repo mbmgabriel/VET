@@ -37,12 +37,12 @@ export default function CourseExamCreation() {
     <>
     {user.isSchoolAdmin && 
     <>
-      <MainContainer title="Exam" activeHeader={"exam"}>
-        <Row className="mt-4">
+      <MainContainer title="Exam" style='not-scrollable' activeHeader={"exam"}>
+        <Row className="mt-4 not-scrollable">
           <Col sm={3}>
             <CourseSideNav courseInfos={courseInfos} active="Exam" />
           </Col>
-          <Col sm={9}>
+          <Col sm={9} className='scrollable vh-85'>
             <ExamCreation />
           </Col>
         </Row>
