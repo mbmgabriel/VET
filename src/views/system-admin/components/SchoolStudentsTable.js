@@ -62,7 +62,6 @@ export default function StudentsList() {
     setDeleteNotify(false);
   }
 
-
   const handleGetAllStudents = async () => {
     let response = await new SchoolAPI().getStudentsList();
     if (response.ok) {
@@ -247,7 +246,7 @@ export default function StudentsList() {
                   Student Number
                 </Form.Label>
                 <InputGroup className="mb-4">
-                  <Form.Control type="number" value={studentNo}  onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
+                  <Form.Control type="number" value={studentNo} onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
                 </InputGroup>
               </Form.Group>
             </div>
@@ -620,9 +619,11 @@ export default function StudentsList() {
 
   return (
     <>
-      <span className='m-t-5'>Students List</span> |  <button onClick={() => { setShowEditModal('Register'); setFormType('Register') }} className="tficolorbg-button btn btn-info btn-sm m-r-5">Register Students  <i class="fas fa-plus"></i></button>  | <button onClick={() => setShowUploadModal(true)} className="tficolorbg-button btn btn-info btn-sm m-r-5">Upload Students  <i class="fas fa-plus"></i></button>
+      <span className='m-t-5'>Students List</span> |{' '}
+      <button onClick={() => { setShowEditModal('Register'); setFormType('Register') }} className="tficolorbg-button btn btn-info btn-sm m-r-5">Register Students{' '}<i class="fas fa-plus"></i></button>|{' '}
+      <button onClick={() => setShowUploadModal(true)} className="tficolorbg-button btn btn-info btn-sm m-r-5">Upload Students{' '}<i class="fas fa-plus"></i></button>
       <ReactTable pageCount={100}
-        list={Students}
+        list={Students} 
         filterable
         data={Students}
         columns={[{

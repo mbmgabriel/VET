@@ -52,10 +52,17 @@ export default class SchoolAPI extends Base {
       method: 'DELETE'
     })
   }
-
   uploadTeacherList = async (data) => {
     return this.sendRequest({
       path: `/api/Teacher/Register/Excel`,
+      method: 'POST',
+      data
+    })
+  }
+
+  registerTeacher = async (data) => {
+    return this.sendRequest({
+      path: `/api/Teacher/Register`,
       method: 'POST',
       data
     })
