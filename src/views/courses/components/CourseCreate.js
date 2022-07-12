@@ -15,11 +15,13 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 	const [status, setStatus] = useState('')
 	const [locked, setLockStatus]= useState(false)
 	const userContext = useContext(UserContext)
+	const [validated, setValidated] = useState(false);
   const {user} = userContext.data
 
 	const handleCloseModal = e => {
     e.preventDefault()
     setOpenModal(false)
+		setValidated(false)
   }
 
 	const viewSubjectArea = async() => {
@@ -46,7 +48,14 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
   // }
 
 	const saveCourse = async(e) => {
-    e.preventDefault()
+		e.preventDefault();
+		const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setValidated(true);
+
 		if(description === ''){
 			toast.error('Please insert all the required fields', {
 				position: "top-right",
@@ -104,16 +113,21 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 
 	}
 
+	const closeModal = () => {
+		setOpenModal(false)
+		setValidated(false)
+	}
+
 	return (
 		<div>
 			
-			<Modal size="lg" className="modal-all" show={openModal} onHide={()=> setOpenModal(!openModal)} >
+			<Modal size="lg" className="modal-all" show={openModal} onHide={()=> closeModal()} >
 				<Modal.Header className="modal-header" closeButton>
 				Create Course 
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
-						<Form onSubmit={saveCourse}>
-						<Form.Group className="m-b-20">
+						<Form noValidate validated={validated} onSubmit={saveCourse}>
+						<Form.Group controlId="validationCustom01" className="m-b-20">
 										<Form.Label for="subjectArea">
 												Subject Area
 										</Form.Label>
