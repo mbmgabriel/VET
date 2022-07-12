@@ -24,6 +24,7 @@ function ClassDiscussion() {
   const [editDiscussionItem, setEditDiscussionItem] = useState()
   const [moduleId, setModuleId] = useState(null)
   const [deleteNotify, setDeleteNotify] = useState(false)
+  const [instructions, setInstructions] = useState('')
   const {id} = useParams();
   // const courseId = classInfo?.classInformation?.courseId
   const [itemId, setItemId] = useState('')
@@ -89,8 +90,10 @@ function ClassDiscussion() {
     setEditAssignModal(!editAssignModal)
   }
 
-  const toggle = (e, item) =>{
+  const toggle = (e, item, item2) =>{
     setEditDiscussionItem(item)
+    setInstructions(item2)
+    console.log('item:', item)
     setModal(!modal)
   }
 
@@ -236,7 +239,7 @@ function ClassDiscussion() {
                           placement="bottom"
                           delay={{ show: 1, hide: 1 }}
                           overlay={renderTooltipEdit}>
-                          <Button onClick={(e)=> toggle(e, moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
+                          <Button onClick={(e)=> toggle(e, moduleitem, moduleitem?.discussion?.instructions)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
                         </OverlayTrigger>
                         {moduleitem.discussionAssignment?.startDate?(
                           <>
@@ -386,7 +389,7 @@ function ClassDiscussion() {
           })}
           </Accordion>
           <DiscussionComments getDiscussionComments={getDiscussionComments} getComments={getComments} endTime={endTime} endDate={endDate} startTime={startTime} startDate={startDate} getDiscussionUnit={getDiscussionUnit} moduleId={moduleId} discussionId={discussionId} comments={comments} discussionCommentToggle={discussionCommentToggle} discussionCommentModal={discussionCommentModal} />
-          <EditDiscussion editDiscussionItem={editDiscussionItem} toggle={toggle} modal={modal} getDiscussionUnit={getDiscussionUnit} /> 
+          <EditDiscussion setModal={setModal} setInstructions={setInstructions} instructions={instructions} editDiscussionItem={editDiscussionItem} toggle={toggle} modal={modal} getDiscussionUnit={getDiscussionUnit} /> 
           <AssignedDiscussion selectedDiscussionName={selectedDiscussionName} moduleId={moduleId} getDiscussionUnit={getDiscussionUnit} discussionId={discussionId} assignToggle={assignToggle} assignModal={assignModal} />
           <EditAssignDiscussion selectedDiscussionName={selectedDiscussionName} getDiscussionUnit={getDiscussionUnit} editAssignDiscussionItem={editAssignDiscussionItem} editAssignToggle={editAssignToggle} editAssignModal={editAssignModal} />
        </ClassSideNavigation>

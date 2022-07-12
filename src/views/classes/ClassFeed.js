@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import {Card, InputGroup, FormControl, Row, Col,Button, Form, Tooltip, OverlayTrigger, Fade} from 'react-bootstrap'
+import {Card, InputGroup, FormControl, Row, Col,Button, Form, Tooltip, OverlayTrigger, Fade, Table} from 'react-bootstrap'
 import ClassesAPI from '../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import EditAnnouncement from './components/Feed/EditAnnouncement';
@@ -13,6 +13,11 @@ import AnnouncementComment from './components/Feed/AnnouncementComment';
 import DiscussionAPI from '../../api/DiscussionAPI';
 import {Link} from 'react-router-dom'
 import ShowLike from './components/Feed/ShowLike';
+import ContentField from '../../components/content_field/ContentField';
+import FilesAPI from '../../api/FilesApi';
+import FileHeader from '../classes/components/Task/TaskFileHeader';
+import ContentViewer from '../../components/content_field/ContentViewer';
+import ContentRichText from '../../components/content_field/ContentRichText';
 
 function ClassFeed() {
   const [content, setContent] = useState('')
@@ -38,6 +43,16 @@ function ClassFeed() {
   const [feedItemLike, setFeedItemLike] = useState([])
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
+  const [displayFiles, setDisplayFiles] = useState([]);
+  const [showFilesFolders, setShowFilesFolders] = useState(false);
+  const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
+  const [showFiles, setShowFiles] = useState(false);
+  const [displayType, setDisplayType] = useState('');
+  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const [displayFolder, setDisplayFolder] = useState([]);
+  const [courseId, setCourseId] = useState(null)
+  const classId = id
+
   const closeNotify = () =>{
     setAddNotity(false)
   }
@@ -47,9 +62,10 @@ function ClassFeed() {
     setFeedItemLike(feedItem)
   }
 
-  const openEditAnnouncementToggle = (item) =>{
+  const openEditAnnouncementToggle = (item, item2) =>{
     setEditAssignAssignmentItem(item)
-    setEditAnnouncementModal(!editAnnouncementModal)
+    setContent(item2)
+    setEditAnnouncementModal(true)
   }
   
   const createAnnouncementClass = async (e) => {
@@ -80,7 +96,6 @@ function ClassFeed() {
   }
 
   const getClassInfo = async() => {
-  
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       setClassInfo(response.data)
@@ -89,6 +104,20 @@ function ClassFeed() {
     }
   
   }
+
+  const getClassInformation = async() => {
+    // setLoading(true)
+    let response = await new ClassesAPI().getClassInformation(id)
+    if(response.ok){
+      setCourseId(response?.data?.courseId)
+      console.log({response})
+    }
+    // setLoading(false)
+  }
+
+  useEffect(() => {
+    getClassInformation();
+  }, [])
 
   useEffect(() => {
     getClassInfo();
@@ -178,6 +207,92 @@ const getComment = (item, item1, item3) => {
       }
   }
 
+  const clickFile = (link) => {
+    navigator.clipboard.writeText(link)
+    toast.success('File link copied to clipboard.')
+  }
+
+  const handleClickedBreadcrumbsItem = (value, index, type) => {
+    if(type == 'Class'){
+      subFolderDirectory.length = index+1;
+      breedCrumbsItemClass.length = index+1;
+      handleGetClassFiles(subFolderDirectory.join(''));
+    }
+  }
+
+  const handleClickType = (type) => {
+    setDisplayType(type);
+    setShowFilesFolders(!showFilesFolders)
+    setBreedCrumbsItemClass([]);
+    if(type == 'Class'){
+      handleGetClassFiles('')
+    }
+    if(type == 'Course'){
+      handleGetCourseFiles('')
+    }
+  }
+
+  const handleGetClassFiles = async(name) => {
+    // setLoading(true)
+    let data = {
+      "subFolderLocation": name
+    }
+    let response = await new FilesAPI().getClassFiles(classId, data)
+    // setLoading(false)
+    if(response.ok){
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
+    }else{
+      alert("Something went wrong while fetching class files ;;.")
+    }
+  }
+
+  const handleGetCourseFiles = async(name) => {
+    // setLoading(true)
+    let data = {
+      "subFolderLocation": name
+    }
+    let response = await new FilesAPI().getCourseFiles(courseId, data)
+    // setLoading(false)
+    if(response.ok){
+      setDisplayFiles(response.data.files)
+      setDisplayFolder(response.data.folders)
+    }else{
+      alert(courseId)
+      alert("Something went wrong while fetching Course files.111111111111111")
+    }
+  }
+
+  const handleFileBreed = () => {
+    setBreedCrumbsItemClass([]);
+    if(displayType == 'Class'){
+      handleGetClassFiles('')
+    }
+    if(displayType == 'Course'){
+      handleGetCourseFiles('')
+    }
+  }
+
+  const handleClickedFolder = (name, type) =>{
+    if(type == 'Class'){
+      let temp = {
+        naame: name,
+        value: name
+      }
+      breedCrumbsItemClass.push(temp)
+      setBreedCrumbsItemClass(breedCrumbsItemClass);
+      handleGetClassFiles(`${subFolderDirectory.join('')}/${name}`);
+    }else{
+      let temp = {
+        naame: name,
+        value: name
+      }
+      breedCrumbsItemClass.push(temp)
+      setBreedCrumbsItemClass(breedCrumbsItemClass);
+      handleGetCourseFiles(`${subFolderDirectory.join('')}/${name}`);
+    }
+  }
+
   const renderTooltipLike= (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Like
@@ -222,14 +337,98 @@ const getComment = (item, item1, item3) => {
         <></>
         ):(
         <>
+        
           <Card className='calendar-card'>
             <Card.Body>
+            <Card.Title><div className="col-md-10 pages-header"><p className='title-header'>Announcement </p></div></Card.Title>
             <Form onSubmit={createAnnouncementClass}>
-              <InputGroup  size="lg">
+            <div className={showFiles ? 'mb-3' : 'd-none'}>
+            {displayType == 'Class' ?
+              <FileHeader type='Class' id={classId}  subFolder={`${subFolderDirectory.join('')}`}  doneUpload={()=> handleGetClassFiles(subFolderDirectory.join(''))} />
+              :
+              <div>
+                <p className='title-header'>Files</p>
+              </div>
+            }
+            <div>
+              <span onClick={()=> handleClickType('')} className={displayType ? 'colored-class-task' : 'fix-color-bread'}>Files</span>
+              {displayType && <span onClick={()=> handleFileBreed()} className={breedCrumbsItemClass.length == 0 ? 'fix-color-bread' : 'colored-class-task'}> <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {displayType} Files</span>}
+              {
+                breedCrumbsItemClass.map((item, index) => {
+                  return <span onClick={() => handleClickedBreadcrumbsItem(item.value, index, 'Class')} className={breedCrumbsItemClass.length == (index+1) ? 'fix-color-bread' : 'colored-class-task'}>  <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {item.naame}</span>
+                })
+              }
+            </div>
+            { showFilesFolders ?
+              <>
+              {
+                displayFiles.map( (item,ind) => {
+                  console.log(item)
+                    return(
+                      <OverlayTrigger
+                        placement="bottom"
+                        delay={{ show: 1, hide: 0 }}
+                        overlay={(props) => 
+                          <Tooltip id="button-tooltip" {...props}>
+                            {item.name}
+                          </Tooltip>}
+                      >
+                     {item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
+                        <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} onClick={() => clickFile(item.pathBase)} className='p-1' alt={item.name} height={30} width={30}/>
+                        :
+                        <i className="fas fa-sticky-note" onClick={() => clickFile(item.pathBase)} style={{paddingRight: 5}}/>
+                      }
+                      </OverlayTrigger>
+                    )
+                  })
+                }
+                {
+                  displayFolder.map((itm) => {
+                    return(
+                      <OverlayTrigger
+                        placement="bottom"
+                        delay={{ show: 1, hide: 0 }}
+                        overlay={(props) => 
+                          <Tooltip id="button-tooltip" {...props}>
+                            {itm.name}
+                          </Tooltip>}
+                      >
+                        <i className='fas fa-folder-open' onClick={()=> handleClickedFolder(itm.name, displayType)} title='' style={{height: 30, width: 30}}/>
+                      </OverlayTrigger>
+                    )
+                  })
+                }
+              </>
+              :
+              <Table responsive="sm">
+                <thead>
+                  <tr>
+                    <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colSpan={3} onClick={() => handleClickType('Class')} className='ellipsis w-25 task-folder'><i className="fas fa-folder" /><span> Class Files</span></td>
+                  </tr>
+                  <tr>
+                    <td colSpan={3} onClick={() => handleClickType('Course')} className='ellipsis w-25 task-folder'><i className="fas fa-folder" /><span> Course Files</span></td>
+                  </tr>
+                </tbody>
+              </Table>
+            }
+          </div> 
+              {/* <InputGroup  size="lg">
                 <InputGroup.Text id="basic-addon2" className="feed-button"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
                   <FormControl onChange={(e) => setContent(e.target.value)} value={content} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type an Announcement for the class here" type="text"/> 
-              </InputGroup>
+              </InputGroup> */}
+                {/* <Form.Group  style={{display:'inline-flex'}} >
+                  <Form.Label className="feed-button" ><i class="fas fa-user-circle fas-1x" ></i></Form.Label>
+                    <ContentField value={content}  placeholder='Enter instruction here'  onChange={value => setContent(value)} />
+                  </Form.Group> */}
+                  
+                  <ContentRichText value={content}  placeholder='Enter Announcement here'  onChange={value => setContent(value)} />
               <div style={{textAlign:'right', paddingTop:'15px'}}>
+              <Button onClick={()=> setShowFiles(!showFiles)}>File Library</Button>&nbsp;
               <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >POST</Button>
               </div>
             </Form>
@@ -287,7 +486,7 @@ const getComment = (item, item1, item3) => {
                   {(user?.teacher === null)?(<></>):(<>
                     <div className='inline-flex' style={{paddingTop:'20px', paddingTop:'6px', float:'right', }}>
                         <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>
-                          <Button onClick={() => openEditAnnouncementToggle(feedItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; </Button>
+                          <Button onClick={() => openEditAnnouncementToggle(feedItem, feedItem.description)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; </Button>
                           </div>
                           <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
                           <Button onClick={() => handleDeleteNotify(feedItem?.referenceId)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; </Button>
@@ -302,7 +501,9 @@ const getComment = (item, item1, item3) => {
                   {/* <i class="fas fa-file-alt" style={{color:'#EE9337', fontSize:'30px',}}></i> */}
                 </Col>
                 <Col sm={11} style={{fontSize:'16px', color:'#707070', textAlign: 'justify'}}>
-                 <p className='font-color'>{feedItem.description}</p>
+                 <div className='font-color' >
+                   <ContentViewer>{feedItem.description}</ContentViewer>
+                 </div>
                 </Col>
               </Row>
               <Row>
@@ -510,7 +711,7 @@ const getComment = (item, item1, item3) => {
           title="Done!" 
           onConfirm={closeNotify}>
         </SweetAlert>
-        <EditAnnouncement getFeedClass={getFeedClass} editAnnouncementItem={editAnnouncementItem} editAnnouncementModal={editAnnouncementModal} openEditAnnouncementToggle={openEditAnnouncementToggle} />
+        <EditAnnouncement setEditAnnouncementModal={setEditAnnouncementModal} content={content} setContent={setContent} getFeedClass={getFeedClass} editAnnouncementItem={editAnnouncementItem} editAnnouncementModal={editAnnouncementModal} openEditAnnouncementToggle={openEditAnnouncementToggle} />
         <ShowLike feedItemLike={feedItemLike} showLike={showLike} setShowLike={setShowLike} /> 
     </div>
     </ClassSideNavigation>
