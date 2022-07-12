@@ -44,13 +44,13 @@ export default function ExamInformation() {
       console.log(duration)
       console.log({ examInfo });
       setAdditionalExamInfo(examInfo);
-      getExamStatus(duration, examInformation)
+      getExamStatus(duration, examInformation, examInfo)
     } else {
       alert("Something went wrong while fetching exams");
     }
   };
 
-  const getExamStatus = async(duration, exam) => {
+  const getExamStatus = async(duration, exam, examInfo) => {
     setLoading(true)
     Logger.info("Getting exam status");
     let response = await new ExamAPI().getExamStatus(user.student?.id, class_id, id);
@@ -62,8 +62,18 @@ export default function ExamInformation() {
       }else{
         Logger.info("Exam is ongoing")
         console.log({duration})
+
         const differenceInSeconds = getDifferenceOfTwoDatesInSeconds(new Date(), new Date(response?.data?.createdDate))
-        const remainingSeconds = duration - differenceInSeconds
+        let remainingSeconds = duration - differenceInSeconds
+
+        if(examInfo.classTest?.endTime && examInfo.classTest?.endDate){
+          const endTime = new Date(examInfo.classTest.endDate.replace("00:00", examInfo.classTest.endTime))
+          const differenceInSecondsEndTime = getDifferenceOfTwoDatesInSeconds(endTime, new Date())
+          if(remainingSeconds > differenceInSecondsEndTime){
+            remainingSeconds = differenceInSecondsEndTime
+          }
+        }
+
         console.log({differenceInSeconds, remainingSeconds, duration})
         if(remainingSeconds <= 0){
           endTest()
