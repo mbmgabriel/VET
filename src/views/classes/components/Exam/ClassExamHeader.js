@@ -99,9 +99,6 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
           <div className={showFiles ? 'mb-3' : 'd-none'}>
             <ClassCourseFileLibrary />
           </div>
-          <div className='text-align-right'>
-            <Button className='tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-          </div>
             <Form.Group className="m-b-20">
               <Form.Label for="courseName">Module</Form.Label>
               <Form.Select aria-label="Default select example" onChange={(e) => setModule(e.target.value)}>
@@ -122,7 +119,9 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
                 onChange={(e) => setTestName(e.target.value)}
               />
             </Form.Group>
-
+            <div>
+                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+                </div>
             <Form.Group className="m-b-20">
               <Form.Label for="description">Exam Instructions</Form.Label>
               {/* <Form.Control
