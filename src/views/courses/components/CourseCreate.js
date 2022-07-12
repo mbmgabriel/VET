@@ -117,8 +117,8 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 										<Form.Label for="subjectArea">
 												Subject Area
 										</Form.Label>
-										<Form.Select size="lg" onChange={(e) => setSubjectArea(e.target.value)}>
-											<option>
+										<Form.Select  required size="lg" onChange={(e) => setSubjectArea(e.target.value)}>
+											<option value={''}>
 											Select subject area...
 											</option>
 											{
@@ -139,6 +139,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 												Course Name
 										</Form.Label>
 										<Form.Control 
+											required
                       className="custom-input" 
                       size="lg" 
                       type="text" 
@@ -153,6 +154,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 										Course Description
 										</Form.Label>
 										<Form.Control 
+											required
                       className="custom-input" 
                       size="lg" 
                       type="text" 
@@ -166,8 +168,8 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 										<Form.Label for="status">
 												Status
 										</Form.Label>
-										<Form.Select size="lg" onChange={(e) => setStatus(e.target.value)}>
-											<option>
+										<Form.Select required size="lg" onChange={(e) => setStatus(e.target.value)}>
+											<option value={''}>
 												Select status here...
 											</option>
 											<option value={true}>
@@ -200,7 +202,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
-												Save
+												Save Course
 										</Button>
 								</span>
 						</Form>
