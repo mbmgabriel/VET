@@ -25,6 +25,7 @@ export default function ExamCreationDetails({
   const courseid = sessionStorage.getItem('courseid')
   const [courseInfos, setCourseInfos] = useState([])
   const [isContributor, setIsContributor] = useState(true);
+  const ifCoursetab = window.location.pathname.includes('course') ? true : !exam?.test?.isShared;
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(courseid)
@@ -51,7 +52,7 @@ export default function ExamCreationDetails({
       getCourseInformation();
     }
   }, [])
-  // console.log(!(courseInfos?.isTechfactors), user,  '-----------------------------');
+  console.log(exam,  '-----------------------------');
 
   return exam != null ? (
     <div className='exam-information-container' title="">
@@ -85,7 +86,7 @@ export default function ExamCreationDetails({
       <p className='secondary-title mt-4'>Exam Parts</p>
       {isContributor &&
         <>
-          {editable && !exam?.test?.isShared && (
+          {editable && ifCoursetab && (
           <Button
             className='btn btn-primary my-4'
             variant='primary'
