@@ -553,7 +553,7 @@ export default function StudentsList() {
       setShowEditModal(false);
     } else {
       // setLoading(false);
-      toast.error("Something went wrong while updating student information.")
+      toast.error(response?.data?.errorMessage);
     }
   }
 
@@ -584,7 +584,7 @@ export default function StudentsList() {
     let response = await new SchoolAPI().registerStudent(data);
     if (response.ok) {
       handleGetAllStudents()
-      toast.success("Successfully register the student.");
+      toast.success("Successfully registered the student.");
       clearState();
       setShowEditModal(false);
     } else {

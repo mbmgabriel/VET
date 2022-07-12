@@ -56,7 +56,6 @@ export default function TeachersList() {
     setDeleteNotify(false);
   }
 
-
   const handleGetAllTeachers = async () => {
     let response = await new SchoolAPI().getTeachersList();
     if (response.ok) {
@@ -152,7 +151,8 @@ export default function TeachersList() {
     if (response?.ok) {
       handleGetAllTeachers();
       clearState();
-      toast.success("Successfully register the teacher");
+      toast.success("Successfully registered the teacher");
+      setShowEditModal(false);
     } else {
       toast.error(response?.data?.errorMessage);
     }
@@ -534,7 +534,7 @@ export default function TeachersList() {
       setUserAccountID('');
     } else {
       // setLoading(false);
-      toast.error("Something went wrong while updating teacher information.")
+      toast.error(response?.data?.errorMessage);
     }
   }
 
@@ -577,6 +577,8 @@ export default function TeachersList() {
     setUserAccountID('');
     setPrefix('');
     setEmployeeNo('');
+    setUsername('');
+    setPassword('');
   };
 
   return (
