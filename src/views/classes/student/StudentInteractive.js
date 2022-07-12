@@ -422,12 +422,25 @@ const renderTooltipPlay1 = (props) => (
                     <>
                     <Col sm={3} className='icon-exam'>
                         {
-                          classInfo?.classInformation?.courseName === "God's Park" || classInfo?.classInformation?.courseName === "God's Park 1" || classInfo?.classInformation?.courseName === "God's Park 2" ||
-                          classInfo?.classInformation?.courseName === "God's Park 3" || classInfo?.classInformation?.courseName === "God's Park 4" ||
-                          classInfo?.classInformation?.courseName === "God's Park 5" || classInfo?.classInformation?.courseName === "God's Park 6" ?
-                          <Button onClick={(e) => goLinkGodsPark(item?.interactive?.path)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          item.module.courseId === 50005 ?
+                          <OverlayTrigger
+                          placement="right"
+                          delay={{ show: 10, hide: 25 }}
+                          overlay={renderTooltipPlay}>
+                          <button onClick={(e) => {
+                            goLinkGodsPark(item?.interactive?.path)
+                            }} className="btn btn-xs btn-green" >
+                                {item?.interactive?.interactiveName} Start
+                                {schoolCode.id}
+                          </button>
+                          </OverlayTrigger>
                           :
-                          <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          <OverlayTrigger
+                          placement="right"
+                          delay={{ show: 10, hide: 25 }}
+                          overlay={renderTooltipPlay}> 
+                            <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>  
+                            </OverlayTrigger>
                         }
                     </Col>
                     </>
@@ -442,13 +455,10 @@ const renderTooltipPlay1 = (props) => (
                         delay={{ show: 10, hide: 25 }}
                         overlay={renderTooltipPlay}> 
                           {
-                          item.module.courseId === 50005 ?
-                          <button onClick={(e) => {
-                            goLinkGodsPark(item?.interactive?.path)
-                            }} className="btn btn-xs btn-green" >
-                                {item?.interactive?.interactiveName} Start
-                                {schoolCode.id}
-                          </button>
+                          classInfo?.classInformation?.courseName === "God's Park" || classInfo?.classInformation?.courseName === "God's Park 1" || classInfo?.classInformation?.courseName === "God's Park 2" ||
+                          classInfo?.classInformation?.courseName === "God's Park 3" || classInfo?.classInformation?.courseName === "God's Park 4" ||
+                          classInfo?.classInformation?.courseName === "God's Park 5" || classInfo?.classInformation?.courseName === "God's Park 6" ?
+                          <Button onClick={(e) => goLinkGodsPark(item?.interactive?.path)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
                           :
                           <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
                         }
@@ -458,18 +468,11 @@ const renderTooltipPlay1 = (props) => (
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classInteractiveAssignment?.endDate + ' ' + item?.classInteractiveAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <Col sm={3} className='icon-exam'>
-                                              <OverlayTrigger
+                      <OverlayTrigger
                         placement="right"
                         delay={{ show: 10, hide: 25 }}
                         overlay={renderTooltipPlay}> 
                           {
-                          // item.module.courseId === 50005 ?
-                          // <button onClick={(e) => {
-                          //   goLinkGodsPark(item?.interactive?.path)
-                          //   }} className="btn btn-xs btn-green" >
-                          //       {item?.interactive?.interactiveName} Start
-                          //       {schoolCode.id}
-                          // </button>
                           classInfo?.classInformation?.courseName === "God's Park" || classInfo?.classInformation?.courseName === "God's Park 1" || classInfo?.classInformation?.courseName === "God's Park 2" ||
                           classInfo?.classInformation?.courseName === "God's Park 3" || classInfo?.classInformation?.courseName === "God's Park 4" ||
                           classInfo?.classInformation?.courseName === "God's Park 5" || classInfo?.classInformation?.courseName === "God's Park 6" ?
