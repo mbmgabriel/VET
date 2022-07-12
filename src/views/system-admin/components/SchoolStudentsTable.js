@@ -247,7 +247,7 @@ export default function StudentsList() {
                   Student Number
                 </Form.Label>
                 <InputGroup className="mb-4">
-                  <Form.Control type="text" value={studentNo} onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
+                  <Form.Control type="number" value={studentNo}  onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
                 </InputGroup>
               </Form.Group>
             </div>
@@ -417,7 +417,7 @@ export default function StudentsList() {
                     Student Number
                   </Form.Label>
                   <InputGroup className="mb-4">
-                    <Form.Control type="text" value={studentNo} onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
+                    <Form.Control type="number" min={1} max={12} value={studentNo} onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
                   </InputGroup>
                 </Form.Group>
               </div>
@@ -427,7 +427,7 @@ export default function StudentsList() {
                     Username
                   </Form.Label>
                   <InputGroup className="mb-4">
-                    <Form.Control type="text" value={username} onChange={(e) => setStudentNo(e.target.value)} placeholder="Username" />
+                    <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
                   </InputGroup>
                 </Form.Group>
               </div>
@@ -437,7 +437,7 @@ export default function StudentsList() {
                     Password
                   </Form.Label>
                   <InputGroup className="mb-4">
-                    <Form.Control type="text" value={password} onChange={(e) => setStudentNo(e.target.value)} placeholder="Password" />
+                    <Form.Control type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                   </InputGroup>
                 </Form.Group>
               </div>
@@ -483,7 +483,7 @@ export default function StudentsList() {
                     Email Address
                   </Form.Label>
                   <InputGroup className="mb-4">
-                    <Form.Control type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
+                    <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
                   </InputGroup>
                 </Form.Group>
               </div>
@@ -589,7 +589,7 @@ export default function StudentsList() {
       clearState();
       setShowEditModal(false);
     } else {
-      toast.error("Something went wrong while registering student.")
+      toast.error(response.data.errorMessage)
     }
   }
 
