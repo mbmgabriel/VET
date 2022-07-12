@@ -39,7 +39,7 @@ function SchoolDiscussion() {
         <CourseSideNav courseInfos={courseInfos} active="Discussion" />
       </Col>
       <Col sm={9}>
-        <SchoolCoursesDiscussionContent setLoading={setLoading} />
+        <SchoolCoursesDiscussionContent setLoading={setLoading} onRefresh={() => getCourseInformation()}/>
       </Col>
     </Row>
   </MainContainer>

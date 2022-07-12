@@ -4,7 +4,7 @@ import CoursesAPI from '../../../api/CoursesAPI'
 import { useParams } from "react-router";
 import CourseBreadcrumbs from '../../courses/components/CourseBreadcrumbs';
 
-function SchoolCourseTask() {
+function SchoolCourseTask({onRefresh}) {
   const [modules, setModules] = useState([])
   const [moduleId, setModuleId] = useState(null)
   const [task, setTask] = useState([])
@@ -62,8 +62,14 @@ function SchoolCourseTask() {
       </>:
       <>
       <div className='rounded-white-container'>
-      <div className="col-md-10 pages-header"><p className='title-header'>Task </p>
-			</div>
+      <div className="col-md-10 pages-header fd-row">
+        <p className='title-header'>Task </p>
+        <div className='mb-3'>
+          <Button onClick={() => onRefresh()} className='ml-3'>
+            <i className="fa fa-sync"></i>
+          </Button>
+        </div>
+       </div>
       <Accordion>
         {modules.map((item, index) => {
           return(

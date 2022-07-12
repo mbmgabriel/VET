@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import SchoolCourseExamItem from './SchoolCourseExamItem';
 import ExamCreation from '../../exam-creation/ExamCreation';
 
-function SchoolCourseExam({setLoading}) {
+function SchoolCourseExam({setLoading, onRefresh}) {
   const [modules, setModules] = useState([])
   const [moduleId, setModuleId] = useState(null)
   const [examInfo, setExamInfo] = useState([])
@@ -61,8 +61,13 @@ function SchoolCourseExam({setLoading}) {
     :
     <>
     <div className='rounded-white-container'>
-      <div className="col-md-10 pages-header"><p className='title-header'>Exam </p>
-			</div>
+      <div className="col-md-10 pages-header fd-row"><p className='title-header'>Exam </p>
+        <div className='mb-3'>
+          <Button onClick={() => onRefresh()} className='ml-3'>
+            <i className="fa fa-sync"></i>
+          </Button>
+        </div>
+      </div>
       <Accordion>
         {modules.map((item, index) => {
           return(

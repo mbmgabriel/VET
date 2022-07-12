@@ -4,7 +4,7 @@ import CoursesAPI from '../../../api/CoursesAPI'
 import { useParams } from "react-router";
 import CourseBreadcrumbs from '../../courses/components/CourseBreadcrumbs';
 
-function SchoolCourseAssignment({setLoading}) {
+function SchoolCourseAssignment({setLoading,onRefresh}) {
   const [modules, setModules] = useState([])
   const [moduleId, setModuleId] = useState(null)
   const [assignment, setAssignment] = useState([])
@@ -65,9 +65,15 @@ function SchoolCourseAssignment({setLoading}) {
       <div style={{position:"relative"}} dangerouslySetInnerHTML={{__html: assignmentIntruction}} /><br />
       </>:
       <>
-      <div className='rounded-white-container'>
-      <div className="col-md-10 pages-header"><p className='title-header'>Assignment </p>
-			</div>
+        <div className='rounded-white-container'>
+        <div className="col-md-10 pages-header fd-row"><p className='title-header'>Assignment </p>
+          <div className='mb-3'>
+            <Button onClick={() => onRefresh()} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
+        </div>
+
       <Accordion>
         {modules.map((item, index) => {
           return(

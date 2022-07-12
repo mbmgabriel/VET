@@ -78,7 +78,7 @@ export default function SchoolAdminLinks() {
           <ClassAdminSideNavigation active="links"/>
         </Col>
         <Col sm={9} className='scrollable vh-85'>
-          <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  />
+          <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  onRefresh={() => getConfe()}/>
           <div style={{paddingBottom:'10px'}}>
             <AccordionConference  searchTerm={searchTerm} getConfe={getConfe} conference={conference} setOpenEditModal={setOpenEditModal}  setEditLinks={setEditLinks} />
           </div>

@@ -41,7 +41,7 @@ function SchoolExam() {
         <CourseSideNav courseInfos={courseInfos} active="Exam" />
       </Col>
       <Col sm={9}>
-       <SchoolCourseExam setLoading={setLoading} />
+       <SchoolCourseExam setLoading={setLoading} onRefresh={() => getCourseInformation()}/>
       </Col>
     </Row>
   </MainContainer>

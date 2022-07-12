@@ -40,7 +40,7 @@ function SchoolAssignment() {
         <CourseSideNav courseInfos={courseInfos} active="Assignment" />
       </Col>
       <Col sm={9}>
-        <SchoolCourseAssignment setLoading={setLoading} />
+        <SchoolCourseAssignment setLoading={setLoading} onRefresh={() => getCourseInformation()}/>
       </Col>
     </Row>
   </MainContainer>
