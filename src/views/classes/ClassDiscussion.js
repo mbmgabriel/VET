@@ -14,6 +14,7 @@ import StudentDiscussion from './student/StudentDiscussion'
 import DiscussionComments from './components/Discussion/DiscussionComments'
 import ClassBreadcrumbs from './components/ClassBreedCrumbs'
 import ClassSideNavigation from './components/ClassSideNavigation'
+import { toast } from 'react-toastify'
 
 function ClassDiscussion() {
   const [discussionCommentModal, setDiscussionCommentModal] = useState(false)
@@ -150,7 +151,7 @@ function ClassDiscussion() {
   const deleteDiscussion = async(e, item) => {
     let response = await new ClassesAPI().deleteDiscussion(item)
     if(response.ok){
-      // alert('delete discussion')
+      toast.success("Successfully deleted discussion!")
       getDiscussionUnit(null, moduleId)
       setDeleteNotify(false)
     }else{
