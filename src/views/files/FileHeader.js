@@ -22,10 +22,12 @@ function FileHeader(props) {
   const {user} = userContext.data
   const courseid = sessionStorage.getItem('courseid')
 
-  const {id} = useParams()
+  const {id} = useParams();
+  console.log(props.id, '=====---');
 
   const getCourseInformation = async() => {
-    let response = await new CoursesAPI().getCourseInformation(id)
+    console.log(props.id, '=====---');
+    let response = await new CoursesAPI().getCourseInformation(props.id);
     if(response.ok){
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
@@ -34,7 +36,7 @@ function FileHeader(props) {
       }
       console.log(response.data, 'heheheheheh')
     }else{
-      alert("Something went wrong while fetching course information 1111111111111111")
+      toast.error("Something went wrong while fetching course information.")
     }
   }
 
