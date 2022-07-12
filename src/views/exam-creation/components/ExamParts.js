@@ -96,47 +96,44 @@ export default function ExamParts({
             <div className='accordion-block-header'>
               <div className='header-content'>
                 <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} title='' />
-                <p title=''>{displayQuestionType(part.questionPart.questionTypeId)} </p>
+                <p>{displayQuestionType(part.questionPart.questionTypeId)}</p>
                 <span title=''>{`${part.questionDtos.length} Question(s)`}</span>
               </div>
             </div>
             {/* {courseInfo?.isTechfactors? (<></>):(<>
 
             </>)} */}
-            {isContributor &&
-            <>  
-              {editable & !shared && (
-                <div className='exam-actions' >
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 0, hide: 0 }}
-                    overlay={renderTooltipEdit}>
-                  <a
-                    href='#edit-part'
-                    onClick={(e) => {
-                      setShowModal(true);
-                      setSelectedPart(part);
-                    }}
-                  >
-                    <i class='fas fa-edit' title=""></i>
-                  </a>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 0, hide: 0 }}
-                    overlay={renderTooltipDelete}>
-                  <a href='#delete-part' onClick={(e) => {
-                    setShowWarning(true)
-                    setSelectedId(part)
-                  }}>
-                    <i class='fas fa-trash-alt' title=""></i>
-                  </a>
-                  </OverlayTrigger>
-                </div>
-              )}
-            </>
+            {isContributor && editable & !shared ?
+              <div className='exam-actions' >
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 0, hide: 0 }}
+                  overlay={renderTooltipEdit}>
+                <a
+                  href='#edit-part'
+                  onClick={(e) => {
+                    setShowModal(true);
+                    setSelectedPart(part);
+                  }}
+                >
+                  <i class='fas fa-edit' title=""></i>
+                </a>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 0, hide: 0 }}
+                  overlay={renderTooltipDelete}>
+                <a href='#delete-part' onClick={(e) => {
+                  setShowWarning(true)
+                  setSelectedId(part)
+                }}>
+                  <i class='fas fa-trash-alt' title=""></i>
+                </a>
+                </OverlayTrigger>
+              </div>
+              :
+              null
             }
-           
          
           </Accordion.Header>
           <Accordion.Body>

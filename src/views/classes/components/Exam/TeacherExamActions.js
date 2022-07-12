@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { UserContext } from "../../../../context/UserContext";
 
 export default function TeacherExamActions({
   exam,
@@ -10,6 +11,11 @@ export default function TeacherExamActions({
   getInformationExam
 }) {
 
+  const { data } = useContext(UserContext);
+  const { user } = data;
+  let ifUserCreatedExam = exam.test.createdBy == user.userId;
+
+console.log(exam.test.createdBy, user.userId, '-=-=-=-')
   const renderTooltipEdit = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Edit
@@ -70,7 +76,7 @@ export default function TeacherExamActions({
           ></i>
         </a>
       </OverlayTrigger>
-      {exam.test.classId && (
+      {exam.test.classId && ifUserCreatedExam && (
       <OverlayTrigger
         placement="bottom"
         delay={{ show: 1, hide: 0 }}
