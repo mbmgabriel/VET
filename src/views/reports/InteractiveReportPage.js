@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {InputGroup, FormControl } from 'react-bootstrap';
+import {InputGroup, FormControl, Button } from 'react-bootstrap';
 import InteractiveReport from './components/InteractiveReport';
 import ClassesAPI from '../../api/ClassesAPI';
 import { toast } from 'react-toastify'
@@ -83,8 +83,14 @@ function InteractiveReportPage() {
 		<ReportContainer>
       <ReportBreedCrumbs title={interactiveName ? interactiveName : ''} secondItem={studentName ? studentName : ''} clicked={()=> handleClickBreedFirstItem()} clickedSecondItem={()=>handleClickSecondItem()}/>
 		  {display == 'accordion' ? <div>
-        <div className="row m-b-20">
-          <div className="col-md-8 pages-header"><h1>Grade Report - Interactive</h1></div>
+        <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Interactive </p>
+          <div>
+            <Button onClick={() => {
+              getClassModules(paramsId);
+            }} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
         </div>
         <div className="row m-b-20 m-t-30" onSearch={onSearch}>
           <div className="col-md-12">
@@ -96,7 +102,8 @@ function InteractiveReportPage() {
         </div>
       </div>
       :
-      <div className="col-md-4 pages-header"><h1>{interactiveName}</h1></div>
+      <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>{interactiveName}</p>
+    </div>
       }
       {display == 'accordion' && <InteractiveReport filter={filter} setFilter={setFilter} getInteractiveReport={getInteractiveReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
       {display == 'interactiveReport' && <InteractiveReportContent getTaskAnalysis={handleGetTaskAnalysis} interactiveReport={interactiveReport}/>}

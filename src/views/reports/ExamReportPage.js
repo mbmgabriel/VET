@@ -1,15 +1,15 @@
-import React, {useState, useEffect, useContext} from 'react'
-import {InputGroup, FormControl } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from 'react'
+import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import ExamReport from './components/ExamReport';
 import ReportContainer from './Reports';
 import ClassesAPI from '../../api/ClassesAPI';
 import ExamReportContent from './contents/ExamReportContent';
 import ExamAnalysis from './contents/ExamAnalysis';
 import ReportBreedCrumbs from './components/ReportsBreadCrumbs'
-import {toast} from  'react-toastify';
+import { toast } from 'react-toastify';
 function ReportHeader() {
-	const [filter, setFilter] = useState("")
-	const [testReport, setTestReport] = useState({});
+  const [filter, setFilter] = useState("")
+  const [testReport, setTestReport] = useState({});
   const [display, setDisplay] = useState('accordion')
   const [classesModules, setClassesModules] = useState([])
   const [currentClassId, setCurrentClassId] = useState()
@@ -17,10 +17,10 @@ function ReportHeader() {
   const [examAnalysis, setExamAnalysis] = useState([])
   const [studentName, setStudentName] = useState('')
 
-	const onSearch = (text) => {
+  const onSearch = (text) => {
     setFilter(text)
   }
-	let testname = sessionStorage.getItem("testName")
+  let testname = sessionStorage.getItem("testName")
   const pageURL = new URL(window.location.href);
   const paramsId = pageURL.searchParams.get("classId");
 
@@ -30,82 +30,90 @@ function ReportHeader() {
     // if (user.isStudent) return (window.location.href = "/404");
   }, []);
 
-  const getClassModules = async(selectedClassId) => {
+  const getClassModules = async (selectedClassId) => {
     console.log(selectedClassId)
     let response = await new ClassesAPI().getClassModules(selectedClassId)
-    if(response.ok){
+    if (response.ok) {
       setClassesModules(response.data)
       console.log(response.data)
-    }else{
+    } else {
       toast.error("Something went wrong while fetching class modules.")
     }
   }
 
-  const getTestReport = async( testid, testname, classid) => {
+  const getTestReport = async (testid, testname, classid) => {
     setDisplay('testReport')
     // setLoading(true)
-    sessionStorage.setItem('testName',testname)
-    sessionStorage.setItem('testid',testid)
+    sessionStorage.setItem('testName', testname)
+    sessionStorage.setItem('testid', testid)
     // setViewTestReport(false)
     let response = await new ClassesAPI().getTestReport(currentClassId, testid)
     // setLoading(false)
-    if(response.ok){
-      setTestReport(response.data) 
+    if (response.ok) {
+      setTestReport(response.data)
       // setStartDate(response.studentTests.classTest.startDate)
-    }else{
+    } else {
       toast.error(response.data?.ErrorMessage)
     }
   }
 
-    const handlegetTestReport = (item) => {
-      console.log(item, '--------')
-      setTestName(item.test.testName)
-      getTestReport(item.test.id, item.test.testName, item.test.classId)
-    }
+  const handlegetTestReport = (item) => {
+    console.log(item, '--------')
+    setTestName(item.test.testName)
+    getTestReport(item.test.id, item.test.testName, item.test.classId)
+  }
 
-  const handleGetExamAnalysis = async(studentid, sessionClass, testid, lname, fname) => {
+  const handleGetExamAnalysis = async (studentid, sessionClass, testid, lname, fname) => {
     // console.log(item)
     // const getExamAnalysis = async(e, studentid, classid, testid) => {
-      setDisplay('analysis')
-      // setShowExamAnalysis(true)
-      setStudentName(`${lname}, ${fname}`)
-      let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
-      if(response.ok){
-        setExamAnalysis(response.data)
-        
-      }else{
-        // toast.error(response.data.errorMessage, {
-        //   position: "top-right",
-        //   autoClose: 5000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
-      }
-    }
+    setDisplay('analysis')
+    // setShowExamAnalysis(true)
+    setStudentName(`${lname}, ${fname}`)
+    let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
+    if (response.ok) {
+      setExamAnalysis(response.data)
 
-    const handleClickBreedFirstItem = () => {
-      setDisplay('accordion');
-      setStudentName('')
-      setTestName('');
+    } else {
+      // toast.error(response.data.errorMessage, {
+      //   position: "top-right",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
     }
+  }
 
-    const handleClickSecondItem = () => {
-      setDisplay('testReport');
-      setStudentName('')
-    }
-  
-	return (
-		<ReportContainer>
-      <ReportBreedCrumbs title={testName ? testName : ''} secondItem={studentName ? studentName : ''} clicked={()=> handleClickBreedFirstItem()} clickedSecondItem={()=>handleClickSecondItem()}/>
-			<div>
-				<div className="row m-b-20">
+  const handleClickBreedFirstItem = () => {
+    setDisplay('accordion');
+    setStudentName('')
+    setTestName('');
+  }
+
+  const handleClickSecondItem = () => {
+    setDisplay('testReport');
+    setStudentName('')
+  }
+
+  return (
+    <ReportContainer>
+      <ReportBreedCrumbs title={testName ? testName : ''} secondItem={studentName ? studentName : ''} clicked={() => handleClickBreedFirstItem()} clickedSecondItem={() => handleClickSecondItem()} />
+      <div>
+        <div className="row m-b-20">
           {
-            display == 'accordion' ? 
+            display == 'accordion' ?
               <>
-                <div className="col-md-10 pages-header"><h1>Grade Report - Exam</h1></div>
+                <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Exam </p>
+                  <div>
+                    <Button onClick={() => {
+                      getClassModules(paramsId);
+                    }} className='ml-3'>
+                      <i className="fa fa-sync"></i>
+                    </Button>
+                  </div>
+                </div>
                 <div className="row m-b-20 m-t-30" onSearch={onSearch}>
                   <div className="col-md-12">
                     <InputGroup size="lg">
@@ -115,16 +123,31 @@ function ReportHeader() {
                   </div>
                 </div>
               </>
-            :
-            <div className="col-md-4 pages-header"><h1>{testname}</h1></div> 
+              :
+              <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>{testname}</p>
+                {
+                  display == 'testReport' && <div>
+                    <Button
+                      onClick={() => {
+                        let testID = sessionStorage.getItem('testid');
+                        let testName = sessionStorage.getItem('testName');
+                        display == 'testReport' && getTestReport(testID, testName, currentClassId);
+                      }}
+                      className='ml-3'
+                    >
+                      <i className="fa fa-sync"></i>
+                    </Button>
+                  </div>
+                }
+              </div>
           }
-				</div>
-			</div>
-		{display == 'accordion' && <ExamReport filter={filter} setFilter={setFilter} getTestReport={handlegetTestReport} classesModules={classesModules} selectedClassId={currentClassId}/>}
-    {display == 'testReport' && <ExamReportContent showReportHeader={true} getExamAnalysis={handleGetExamAnalysis} setShowReportHeader={()=> console.log('test')} setTestReport={()=> alert('setTestReport')} testReport={testReport}/>}
-    {display == 'analysis' && <ExamAnalysis examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} getExamAnalysis={handleGetExamAnalysis} />}
-  </ReportContainer>
-	)
+        </div>
+      </div>
+      {display == 'accordion' && <ExamReport filter={filter} setFilter={setFilter} getTestReport={handlegetTestReport} classesModules={classesModules} selectedClassId={currentClassId} />}
+      {display == 'testReport' && <ExamReportContent showReportHeader={true} getExamAnalysis={handleGetExamAnalysis} setShowReportHeader={() => console.log('test')} setTestReport={() => alert('setTestReport')} testReport={testReport} />}
+      {display == 'analysis' && <ExamAnalysis examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} getExamAnalysis={handleGetExamAnalysis} />}
+    </ReportContainer>
+  )
 }
 export default ReportHeader
 

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {InputGroup, FormControl } from 'react-bootstrap';
+import {InputGroup, FormControl, Button } from 'react-bootstrap';
 import TaskReport from './components/TaskReport';
 import ClassesAPI from '../../api/ClassesAPI';
 import { toast } from 'react-toastify'
@@ -90,8 +90,14 @@ function TaskReportPage() {
 		<ReportContainer>
       <ReportBreedCrumbs title={taskName ? taskName : ''} secondItem={studentName ? studentName : ''} clicked={()=> handleClickBreedFirstItem()} clickedSecondItem={()=>handleClickSecondItem()}/>
 		  {display == 'accordion' ? <div>
-        <div className="row m-b-20">
-          <div className="col-md-8 pages-header"><h1>Grade Report - Task</h1></div>
+        <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Task </p>
+          <div>
+            <Button onClick={() => {
+              getClassModules(paramsId);
+            }} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
         </div>
         <div className="row m-b-20 m-t-30" onSearch={onSearch}>
           <div className="col-md-12">
@@ -103,7 +109,22 @@ function TaskReportPage() {
         </div>
       </div>
       :
-      <div className="col-md-4 pages-header"><h1>{taskname}</h1></div>
+      <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>{taskname}</p>
+        {
+          display == 'taskReport' && <div>
+            <Button
+              onClick={(e) => {
+                let taskid = sessionStorage.getItem('taskId');
+                let taskname = sessionStorage.getItem('taskName');
+                display == 'taskReport' && getTaskReport(e, taskid, taskname);
+              }}
+              className='ml-3'
+            >
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
+        }
+      </div>
       }
       {display == 'accordion' && <TaskReport filter={filter} setFilter={setFilter} getTaskReport={getTaskReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
       {display == 'taskReport' && <TaskReportContent setTaskReport={setTaskReport} getTaskAnalysis={handleGetTaskAnalysis} taskReport={taskReport}/>}
