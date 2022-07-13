@@ -45,9 +45,9 @@ function TaskReportContent({getTaskReport, getTaskAnalysis, taskname, taskReport
       let name = `${ st.student.lname} ${ st.student.fname}`
       let score = st.studentTasks[0].score
       let status = st.studentTasks[0].studentAnswer == null ? 'Not Submitted' : 'Submitted'
-      temp.student = name;
-      temp.grade = score;
-      temp.status = status;
+      temp[`Student Name`] = name;
+      temp.Grade = score;
+      temp.Status = status;
       tempData.push(temp);
     })
     setDataDownload(tempData);

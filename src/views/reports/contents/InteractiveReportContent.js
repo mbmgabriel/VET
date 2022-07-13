@@ -17,8 +17,8 @@ function InteractiveReportContent({interactiveName, showInteractiveHeader, class
       let name = `${ st.student.lname} ${ st.student.fname}`
       let score = st.interactiveResults[0].grade
       let status = score == null ? 'Not Submitted' : score
-      temp.student = name;
-      temp.grade = status;
+      temp[`Student Name`] = name;
+      temp.Grade = status;
       
       tempData.push(temp);
     })

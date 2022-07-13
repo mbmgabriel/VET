@@ -10,7 +10,7 @@ import FrequencyError from './FrequencyError';
 import FrequencyOferror from './FrequencyOferror';
 
 
-function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHeader, getExamAnalysis, testname}) {
+function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHeader, getExamAnalysis, testName}) {
   
   const [examAnalysis, setExamAnalysis] = useState([])
   const [showExamAnalysis, setShowExamAnalysis] = useState(false)
@@ -74,11 +74,12 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
       let name = `${ st.student.lname} ${ st.student.fname}`
       let score = st.studentTests[0].score
       let status = st.studentTests[0].isSubmitted ? 'Submitted' : 'Not Submitted'
-      temp.student = name;
-      temp.grade = score;
-      temp.status = status;
+      temp[`Student Name`] = name;
+      temp.Grade = score;
+      temp.Status = status;
       tempData.push(temp);
     })
+    console.log(tempData, '-0-0-0-=0-0')
     setDataDownload(tempData);
   }
 
@@ -87,7 +88,7 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     const wb =utils.book_new();
     utils.book_append_sheet(wb, ws, "SheetJS");
     /* generate XLSX file and send to client */
-    writeFileXLSX(wb, `${testname}_exam_report.xlsx`);
+    writeFileXLSX(wb, `${testName}_exam_report.xlsx`);
   };
 
   const getTestReport = async(e, sessionClass,testid) => {
@@ -98,11 +99,14 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     if(response.ok){
       setTestReport(response.data)
       setExamReport(response.data[0].studentTests)
-      handleGetItems();
     }else{
       alert('response.data.errorMessage')
     }
   }
+
+  useEffect(() => {
+    handleGetItems();
+  },[testReport])
 
   useEffect(() => {
     if(sessionTestId != null){

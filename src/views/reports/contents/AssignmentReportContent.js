@@ -45,9 +45,9 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
       let name = `${ st.student.lname} ${ st.student.fname}`
       let score = st.studentAssignments[0].score
       let status = st.studentAssignments[0].studentAnswer == null ? 'Not Submitted' : 'Submitted'
-      temp.student = name;
-      temp.grade = score;
-      temp.status = status;
+      temp[`Student Name`] = name;
+      temp.Grade = score;
+      temp.Status = status;
       tempData.push(temp);
     })
     setDataDownload(tempData);
