@@ -7,6 +7,7 @@ import ExamReportContent from './contents/ExamReportContent';
 import ExamAnalysis from './contents/ExamAnalysis';
 import ReportBreedCrumbs from './components/ReportsBreadCrumbs'
 import { toast } from 'react-toastify';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 function ReportHeader() {
   const [filter, setFilter] = useState("")
   const [testReport, setTestReport] = useState({});
@@ -15,7 +16,8 @@ function ReportHeader() {
   const [currentClassId, setCurrentClassId] = useState()
   const [testName, setTestName] = useState('')
   const [examAnalysis, setExamAnalysis] = useState([])
-  const [studentName, setStudentName] = useState('')
+  const [studentName, setStudentName] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onSearch = (text) => {
     setFilter(text)
@@ -31,10 +33,12 @@ function ReportHeader() {
   }, []);
 
   const getClassModules = async (selectedClassId) => {
+    setLoading(true);
     console.log(selectedClassId)
     let response = await new ClassesAPI().getClassModules(selectedClassId)
     if (response.ok) {
       setClassesModules(response.data)
+      setLoading(false);
       console.log(response.data)
     } else {
       toast.error("Something went wrong while fetching class modules.")
@@ -43,17 +47,20 @@ function ReportHeader() {
 
   const getTestReport = async (testid, testname, classid) => {
     setDisplay('testReport')
-    // setLoading(true)
+    setLoading(true)
     sessionStorage.setItem('testName', testname)
     sessionStorage.setItem('testid', testid)
     // setViewTestReport(false)
     let response = await new ClassesAPI().getTestReport(currentClassId, testid)
-    // setLoading(false)
+    setLoading(false)
     if (response.ok) {
       setTestReport(response.data)
       // setStartDate(response.studentTests.classTest.startDate)
+    setLoading(false)
+
     } else {
-      toast.error(response.data?.ErrorMessage)
+    setLoading(false)
+    toast.error(response.data?.ErrorMessage)
     }
   }
 
@@ -99,6 +106,7 @@ function ReportHeader() {
 
   return (
     <ReportContainer>
+      {loading && <FullScreenLoader />}
       <ReportBreedCrumbs title={testName ? testName : ''} secondItem={studentName ? studentName : ''} clicked={() => handleClickBreedFirstItem()} clickedSecondItem={() => handleClickSecondItem()} />
       <div>
         <div className="row m-b-20">

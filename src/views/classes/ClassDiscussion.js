@@ -15,6 +15,7 @@ import DiscussionComments from './components/Discussion/DiscussionComments'
 import ClassBreadcrumbs from './components/ClassBreedCrumbs'
 import ClassSideNavigation from './components/ClassSideNavigation'
 import { toast } from 'react-toastify'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 function ClassDiscussion() {
   const [discussionCommentModal, setDiscussionCommentModal] = useState(false)
@@ -46,10 +47,11 @@ function ClassDiscussion() {
   const [searchTerm, setSearchTerm] = useState('')
   const [classInfo, setClassInfo] = useState({});
   const [selectedDiscussionName, setSelectedDiscussionName] = useState("")
+  const [loading, setLoading] = useState(false);
+
   const subsType = localStorage.getItem('subsType');
 
   const getClassInfo = async() => {
-    // setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       console.log({response})
@@ -59,9 +61,7 @@ function ClassDiscussion() {
     }else{
       alert("Something went wrong while fetching all courses")
     }
-    // setLoading(false)
   }
-
 
   useEffect(() => {
     getClassInfo()
@@ -76,7 +76,6 @@ function ClassDiscussion() {
 
   const discussionCommentToggle = (e) => {
     setDiscussionCommentModal(!discussionCommentModal)
-
   }
 
   const assignToggle = (e, item, name) =>{
@@ -182,6 +181,7 @@ function ClassDiscussion() {
 
   return (
     <ClassSideNavigation>
+      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title='' clicked={()=> console.log('')} />
       <HeaderDiscussion onSearch={onSearch} getDiscussionUnit={getDiscussionUnit} module={module} onRefresh={() => getClassInfo()}/>
         <Accordion>

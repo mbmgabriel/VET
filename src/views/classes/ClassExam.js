@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import ClassesAPI from "../../api/ClassesAPI";
 import ClassSideNavigation from "./components/ClassSideNavigation";
 import ClassBreadcrumbs from "./components/ClassBreedCrumbs";
+import FullScreenLoader from "../../components/loaders/FullScreenLoader";
 
 export const ClassExam = () => {
   const [loading, setLoading] = useState(true);
@@ -92,6 +93,7 @@ export const ClassExam = () => {
 
   return (
     <ClassSideNavigation>
+      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title={''} clicked={() => console.log('')}/>
       <div className="class-container position-relative">
         {/* {loading && <ActivityIndicator />} */}

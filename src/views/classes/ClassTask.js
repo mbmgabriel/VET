@@ -17,6 +17,7 @@ import ViewTask from './components/Task/ViewTask'
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ContentViewer from '../../components/content_field/ContentViewer'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 
 function ClassTask() {
   const [modal, setModal] = useState(false)
@@ -47,6 +48,8 @@ function ClassTask() {
   const [taskId, setTaskId] = useState('')
   const [moduleName, setModuleName] = useState('')
   const [selectedTaskName, setSelectedTaskName] = useState("")
+  const [loading, setLoading] = useState(false);
+
   const subsType = localStorage.getItem('subsType');
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -60,17 +63,19 @@ function ClassTask() {
     }, [])
 
   const getClassInfo = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       console.log({response})
       getModule(response.data.classInformation?.courseId)
       setClassInfo(response.data)
+      setLoading(false)
       console.log(response.data)
     }else{
       alert("Something went wrong while fetching all courses")
+      setLoading(false)
     }
-    // setLoading(false)
+      setLoading(false)
   }
   
   const viewTaskTaggle = (item, item1,) => {
@@ -178,6 +183,7 @@ function ClassTask() {
 
   return (
     <ClassSideNavigation>
+      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title='' clicked={()=> console.log('')} />
       <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} onRefresh={() => getClassInfo()}/>
         <Accordion>

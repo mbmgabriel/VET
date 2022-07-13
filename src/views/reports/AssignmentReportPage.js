@@ -7,6 +7,7 @@ import ReportContainer from './Reports';
 import AssignmentReportContent from './contents/AssignmentReportContent';
 import ReportBreedCrumbs from './components/ReportsBreadCrumbs';
 import AssignmentAnalysis from './contents/AssignmentAnalysis';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 
 function AssignmentReportPage() {
 
@@ -18,6 +19,7 @@ function AssignmentReportPage() {
   const [assignmentName, setAssignmentName] = useState('')
   const [assignmentAnalysis, setAssignmentAnalysis] = useState([])
   const [studentName, setStudentName] = useState('')
+  const [loading, setLoading] = useState(false);
 
   const onSearch = (text) => {
     setFilter(text)
@@ -32,16 +34,20 @@ function AssignmentReportPage() {
   }, []);
 
   const getClassModules = async (id) => {
+    setLoading(true);
     let response = await new ClassesAPI().getClassModules(id)
     if (response.ok) {
       setClassesModules(response.data)
+      setLoading(false);
       console.log(response.data)
     } else {
       toast.error("Something went wrong while fetching all class modules.")
+      setLoading(false);
     }
   }
 
   const getAssignmentReport = async (e, assignmentid, assignmentname) => {
+    setLoading(true);
     setDisplay('assignmentReport');
     setAssignmentName(assignmentname);
     sessionStorage.setItem('assignmentName', assignmentname)
@@ -49,9 +55,11 @@ function AssignmentReportPage() {
     let response = await new ClassesAPI().getAssignmentReport(paramsId, assignmentid)
     if (response.ok) {
       setAssignmentReport(response.data)
+      setLoading(false);
       console.log(response.data)
     } else {
       toast.error(response.data.errorMessage)
+      setLoading(false);
     }
   }
 
@@ -84,6 +92,7 @@ function AssignmentReportPage() {
 
   return (
     <ReportContainer>
+      {loading && <FullScreenLoader />}
       <ReportBreedCrumbs title={assignmentName ? assignmentName : ''} secondItem={studentName ? studentName : ''} clicked={() => handleClickBreedFirstItem()} clickedSecondItem={() => handleClickSecondItem()} />
       {display == 'accordion' ? <div>
         <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Assignment </p>

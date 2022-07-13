@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import ReportContainer from './Reports';
 import InteractiveReportContent from './contents/InteractiveReportContent';
 import ReportBreedCrumbs from './components/ReportsBreadCrumbs';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 // import InteractiveAnalysis from './contents/InteractiveAnalysis';
 
 function InteractiveReportPage() {
@@ -17,6 +18,7 @@ function InteractiveReportPage() {
   const [interactiveName, setInteractiveName] = useState('')
   const [taskAnalysis, setTaskAnalysis] = useState([])
   const [studentName, setStudentName] = useState('')
+  const [loading, setLoading] = useState(false);
 
 	const onSearch = (text) => {
     setFilter(text)
@@ -31,12 +33,15 @@ function InteractiveReportPage() {
   }, []);
 
   const getClassModules = async(id) => {
+    setLoading(true);
     let response = await new ClassesAPI().getClassModules(id)
     if(response.ok){
       setClassesModules(response.data)
+      setLoading(false);
       console.log(response.data)
     }else{
       toast.error("Something went wrong while fetching all class modules.")
+      setLoading(false);
     }
   }
 
@@ -81,6 +86,7 @@ function InteractiveReportPage() {
 
 	return (
 		<ReportContainer>
+      {loading && <FullScreenLoader />}
       <ReportBreedCrumbs title={interactiveName ? interactiveName : ''} secondItem={studentName ? studentName : ''} clicked={()=> handleClickBreedFirstItem()} clickedSecondItem={()=>handleClickSecondItem()}/>
 		  {display == 'accordion' ? <div>
         <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Interactive </p>

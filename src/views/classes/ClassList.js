@@ -39,12 +39,15 @@ function ClassList() {
   }
 
   const getStudentWaiting = async() =>{
+    setLoading(true);
     let isAccepted = false
     let response = await new ClassesAPI().getStudentList(id, isAccepted)
     if(response.ok){
       setWaitingStudent(response.data)
+      setLoading(true);
     }else{
       alert("Something went wrong while fetching all Waiting Student")
+      setLoading(true);
     }
     
   }
@@ -59,19 +62,20 @@ function ClassList() {
 
 
   const getStudentEnrolled = async() =>{
+    setLoading(true);
     let isAccepted = true
     let response = await new ClassesAPI().getStudentEnrolledList(id, isAccepted)
     if(response.ok){
       setEnrolledStudent(response.data)
+      setLoading(false);
     }else{
       alert("Something went wrong while fetching all Waiting Student")
+      setLoading(false);
     }
-    
   } 
 
   useEffect(() => {
     getStudentEnrolled()
-    
   }, [])
 
   const handleGetUploadedFile = (file) => {
