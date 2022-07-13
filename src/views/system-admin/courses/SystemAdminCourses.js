@@ -115,7 +115,7 @@ export default function SystemAdminCourses() {
 								</Form.Group>
 							  <span style={{float:"right"}}>
 								<Button className="tficolorbg-button" type="submit" >
-									Save
+									Update Course
 								</Button>
 							</span>
 						</Form>
@@ -129,7 +129,7 @@ export default function SystemAdminCourses() {
     setStatus(data.status);
     setCourseName(data.courseName);
     setDescription(data.description);
-    setSubjectArea(selectedCourse?.subjectAreaId)
+    setSubjectArea(data.subjectAreaId)
     setShowEditModal(true);
   }
 
@@ -169,8 +169,13 @@ export default function SystemAdminCourses() {
       }
       let response = await new CoursesAPI().editCourse(selectedCourse.id, data);
 			if(response.ok){
-				getCourses()
-				setShowEditModal(false)
+				getCourses();
+				setShowEditModal(false);
+        setSelectedCourse({});
+        setStatus('');
+        setCourseName('');
+        setDescription('');
+        setSubjectArea('')
 			}else{
 				toast.error(response.data.errorMessage, {
 					position: "top-right",
