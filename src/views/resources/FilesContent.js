@@ -265,7 +265,7 @@ function FilesContent(props) {
             <Form.Control defaultValue={newFileName} value={newFolderName} type="text" onChange={(e) => setNewFolderName(e.target.value.replace('.', ''))} />
           </InputGroup>
           <Form.Group className='right-btn'>
-            <Button className='tficolorbg-button' onClick={()=> saveNewFolderName()}>Save</Button>
+            <Button className='tficolorbg-button' onClick={()=> saveNewFolderName()}>Update Folder</Button>
           </Form.Group>
         </Form>
         </Modal.Body>
