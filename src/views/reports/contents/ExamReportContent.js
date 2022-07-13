@@ -132,11 +132,6 @@ const handleClickIcon = () =>{
     setLoading(false)
     if(response.ok){
       setTestReport(response.data)
-      // if(alphabetical === true){
-      //   arrageAlphabetical(response.data)
-      // }else{
-      //   arrageNoneAlphabetical(response.data)
-      // }
       setExamReport(response.data[0].studentTests)
     }else{
       alert('response.data.errorMessage')

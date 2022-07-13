@@ -11,6 +11,8 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, se
   const {user} = userContext.data
   const [assignmentAnalysis, setAssignmentAnalysis] = useState([])
   const [showAssignmentAnalysis, setShowAssignmentAnalysis] = useState(false)
+  const [sorted, setSorted] = useState([])
+  const [alphabetical, setAlphabetical] = useState(true);
 
   let sessionClass = sessionStorage.getItem("classId")
   let sessionAssignmentId = sessionStorage.getItem("assignmentId")
@@ -54,6 +56,46 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, se
 
   console.log('assignmentReport:', assignmentReport)
 
+  const handleClickIcon = () =>{
+    setAlphabetical(!alphabetical);
+    if(!alphabetical){
+      arrageAlphabetical(assignmentReport);
+    }
+    else{
+      arrageNoneAlphabetical(assignmentReport);
+    }
+  }
+
+  useEffect(()=>{
+    arrageNoneAlphabetical(assignmentReport);
+    arrageAlphabetical(assignmentReport);
+}, [assignmentReport])
+
+const arrageNoneAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA > nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '111111')
+  setSorted(temp)
+}
+
+const arrageAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    console.log(a, 'herererereherererereherererere TRUE')
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA < nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '2222')
+  setSorted(temp)
+}
+
   // if(showAssignmentAnalysis === false){
   return(
     <>
@@ -61,7 +103,7 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, se
     <Table hover size="lg" responsive>
       <thead>
         <tr>
-          <th>Student Name</th>
+        <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
           {/* {assignmentReport.map(item =>{
             return(
             item.columnAssignments.map(as =>{
@@ -82,7 +124,7 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, se
         </tr>
       </thead>
       <tbody>
-      {assignmentReport.map(item =>{
+      {sorted.map(item =>{
           return (
             <tr>
               {item.studentAssignments.map(st =>{
