@@ -246,7 +246,16 @@ export default function ExamInformation() {
     if (response.ok) {
       takeExam(window.location.pathname)
       setExamStarted(true);
-      setRemainingTime((additionalExamInfo.classTest?.timeLimit || 0) * 60);
+      let remainingSeconds = (additionalExamInfo.classTest?.timeLimit || 0) * 60
+      if(additionalExamInfo.classTest?.endTime && additionalExamInfo.classTest?.endDate){
+        const endTime = new Date(additionalExamInfo.classTest.endDate.replace("00:00", additionalExamInfo.classTest.endTime))
+        const differenceInSecondsEndTime = getDifferenceOfTwoDatesInSeconds(endTime, new Date())
+        if(remainingSeconds > differenceInSecondsEndTime){
+          remainingSeconds = differenceInSecondsEndTime
+        }
+      }
+      setRemainingTime(remainingSeconds);
+      
     } else {
       if (response.statusMessage === "Bad Request") {
         alert("This test has already been ended");
