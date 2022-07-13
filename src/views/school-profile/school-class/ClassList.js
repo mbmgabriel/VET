@@ -51,7 +51,6 @@ export default function SchoolAdminList() {
 
   useEffect(() => {
     getStudentWaiting()
-    
   }, [])
 
 
@@ -69,7 +68,6 @@ export default function SchoolAdminList() {
 
   useEffect(() => {
     getStudentEnrolled()
-    
   }, [])
 
   const handleGetUploadedFile = (file) => {
@@ -140,14 +138,21 @@ export default function SchoolAdminList() {
         </Col>
         <Col sm={9} className='scrollable vh-85'>
         <Row style={{paddingTop:'15px'}}>
-          <Col className='title-header' >
-          <p>Class List </p> 
-          </Col>
-          <Col style={{textAlign:'right'}}>
-            <Button className='btn-Enrolled' onClick={handleOpenClassEnrolled} size='lg' variant="outline-warning"><b>Enrolled</b></Button>
-            <Button className='btn-Enrolled' onClick={handleOpenClassWaiting} size='lg' variant="outline-warning"><b>Waiting List</b></Button>
-            <Button className='btn-Enrolled' onClick={() => setShowUploadModal(true)} size='lg' variant="outline-warning"><b>Upload List</b></Button>
-          </Col>
+          <div className="col-md-12 pages-header fd-row ai-c"><p className='title-header m-0'>Class List </p>
+            <div className='mb-0'>
+              <Button onClick={() => {
+                getStudentEnrolled();
+                getStudentWaiting();
+              }} className='ml-3'>
+                <i className="fa fa-sync"></i>
+              </Button>
+            </div>
+            <Col style={{textAlign:'right'}}>
+              <Button className='btn-Enrolled' onClick={handleOpenClassEnrolled} size='lg' variant="outline-warning"><b>Enrolled</b></Button>
+              <Button className='btn-Enrolled ph-3' onClick={handleOpenClassWaiting} size='lg' variant="outline-warning"><b>Waiting List</b></Button>
+              <Button className='btn-Enrolled' onClick={() => setShowUploadModal(true)} size='lg' variant="outline-warning"><b>Upload List</b></Button>
+            </Col>
+          </div>
         </Row>
         <div className="row m-b-20" style={{marginTop:'30px'}}>
             <div className="col-md-12">
