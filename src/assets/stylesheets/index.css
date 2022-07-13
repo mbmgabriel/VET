@@ -239,6 +239,7 @@ color:#BCBCBC !important;
 .file-library{
   background-color:var(--primary-color) !important;
   color: white !important;
+  font-size: 18px !important;
 }
 .file-sidenav{
   background-color: white !important;
