@@ -1,17 +1,47 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {Accordion, Row, Col, Table, Button, Badge} from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
+import {writeFileXLSX, utils} from "xlsx";
 
-function InteractiveReportContent({setShowInteractiveHeader, showInteractiveHeader, classesModules, setClassesModules, selectedClassId, viewInteractiveReport, interactiveReport, setinteractiveReport, showReportHeader, setShowReportHeader}) {
+function InteractiveReportContent({interactiveName, showInteractiveHeader, classesModules, setClassesModules, selectedClassId, viewInteractiveReport, interactiveReport, setinteractiveReport, showReportHeader, setShowReportHeader}) {
   
   const [loading, setLoading] = useState(false)
-  let sessionClass = sessionStorage.getItem("classId")
+  const [dataDownload, setDataDownload] = useState({});
+  let sessionClass = sessionStorage.getItem("classId");
+
+
+  const handleGetItems = () => {
+    let tempData =[]
+    interactiveReport.map((st, index) => {
+      let temp= {};
+      let name = `${ st.student.lname} ${ st.student.fname}`
+      let score = st.interactiveResults[0].grade
+      let status = score == null ? 'Not Submitted' : score
+      temp.student = name;
+      temp.grade = status;
+      
+      tempData.push(temp);
+    })
+    setDataDownload(tempData);
+  }
+
+  const downloadxls = () => {
+    const ws =utils.json_to_sheet(dataDownload);
+    const wb =utils.book_new();
+    utils.book_append_sheet(wb, ws, "SheetJS");
+    writeFileXLSX(wb, `${interactiveName}_interactive_report.xlsx`);
+  };
+
 
   useEffect(() => {
-  }, [])
-  
+    handleGetItems()
+  }, [interactiveReport])
+
   return(
     <>
+      <Col className='d-flex justify-content-end'>
+        <Button onClick={() => downloadxls()} className='btn-showResult m-b-20'  size='lg' variant="outline-warning"><b> Export </b></Button>
+      </Col>
     <Table striped bordered hover size="sm">
       <thead>
         <tr>
