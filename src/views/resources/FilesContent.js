@@ -214,7 +214,7 @@ function FilesContent(props) {
     let data = {
       "subFolderLocation": `${props.subFolder}/${folderToDelete}`
     }
-    let response = await new FilesAPI().deleteCourseTeacherResourceFile(props.id, data)
+    let response = await new FilesAPI().deleteCourseTeacherResourceFolder(props.id, data)
     if(response.ok){
       props.deleted();
       toast.success('Successfully deleted folder.')
