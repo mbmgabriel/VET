@@ -99,6 +99,7 @@ import SystemAdminProfile from "../views/system-admin/profile/SystemAdminProfile
 import SystemAdminTeachers from '../views/system-admin/school/Teachers';
 import SystemAdminStudent from '../views/system-admin/school/Students';
 import SystemAdminSchool from '../views/system-admin/school/SchoolProfileSystemAdmin';
+import SystemAdminCourses from '../views/system-admin/courses/SystemAdminCourses';
 
 import ExamReportPage from '../views/reports/ExamReportPage';
 import TaskReportPage from '../views/reports/TaskReportPage';
@@ -215,6 +216,8 @@ export default function Routes() {
             <PrivateRoute path='/system-admin/teachers' exact component={SystemAdminTeachers} />
             <PrivateRoute path='/system-admin/students' exact component={SystemAdminStudent} />
             <PrivateRoute path='/system-admin/school-profile' exact component={SystemAdminSchool} />
+            <PrivateRoute path='/system-admin/courses' exact component={SystemAdminCourses} />
+          
             {/* System admin routes end */}
 
             <PrivateRoute path='/notifications' exact component={NotificationsPage} />
