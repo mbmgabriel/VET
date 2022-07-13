@@ -219,7 +219,7 @@ export default function SystemAdminCourses() {
               },
               {
                 Header: 'Subject Area',
-                id: 'password',
+                id: 'subjectArea',
                 accessor: d => d.subjectArea?.subjectAreaName,
                 Cell: row => (
                   <div className="d-flex justify-content-center align-items-center">
@@ -229,8 +229,8 @@ export default function SystemAdminCourses() {
               },
               {
                 Header: 'Status',
-                id: 'password',
-                accessor: d => d.status,
+                id: 'toggle',
+                accessor: d => d.status ? 'Active' : 'Inactive',
                 Cell: row => (
                   <div className="d-flex justify-content-center align-items-center">
                     <Form>
