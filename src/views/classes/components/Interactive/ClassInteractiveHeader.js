@@ -1,11 +1,17 @@
 import React from 'react'
-import { InputGroup, FormControl } from 'react-bootstrap';
+import { InputGroup, FormControl, Button } from 'react-bootstrap';
 
-function ClassInteractiveHeader({onSearch}) {
+function ClassInteractiveHeader({onSearch,onRefresh}) {
   return (
 		<div>
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
-				<div className="col-md-10 pages-header"><p className='title-header' >Interactive Exercises</p></div>
+				<div className="col-md-10 pages-header fd-row"><p className='title-header'>Interactive Exercises </p>
+          <div className='mb-3'>
+            <Button onClick={() => onRefresh()} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
+        </div>
 			</div>
 			<div className="row m-b-20">
 				<div className="col-md-12">

@@ -448,27 +448,6 @@ const getComment = (item, item1, item3) => {
               <>
               <Card className='post-card'>
                 <Card.Body>
-                {/* <div className='inline-flex'>
-                  <div>
-                  <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
-                  </div>
-                  <div className='inline-flex' style={{paddingTop:'12px', fontSize:'18px', color: "#7D7D7D"}}>
-                  <b>{feedItem?.updatedBy}</b> &nbsp; has Post an <div style={{color:'#EE9337'}} > &nbsp; <b>Announcement </b> </div>
-                  </div>
-                  {(user?.teacher === null)?(
-                    <>
-                    </>):(
-                    <>
-                      <div className='inline-flex' style={{paddingTop:'20px', paddingTop:'6px', float:'right', paddingLeft:'685px'}}>
-                        <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>            
-                          <Button onClick={() => openEditAnnouncementToggle(feedItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; Edit Post</Button>
-                          </div>
-                          <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
-                          <Button onClick={() => handleDeleteNotify(feedItem?.referenceId)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; Remove Post</Button>
-                        </div> 
-                      </div>
-                    </>)}
-                </div> */}
                   <Row>  
                     <Col className='icon-post'>
                       <div className='inline-flex' >
@@ -490,10 +469,8 @@ const getComment = (item, item1, item3) => {
                       </div>
                     </Col>
                   </Row>
-                  {/* <hr /> */}
                   <Row>  
                     <Col className='icon-post' sm={1}>
-                      {/* <i class="fas fa-file-alt" style={{color:'#EE9337', fontSize:'30px',}}></i> */}
                     </Col>
                     <Col sm={11} style={{fontSize:'16px', color:'#707070', textAlign: 'justify'}}>
                     <div className='font-color' >
@@ -568,25 +545,10 @@ const getComment = (item, item1, item3) => {
                 </div>
                 <p style={{marginLeft:58}}><small><i className="fas fa-clock"></i> {moment(item?.dateUpdated).format('LL')}&nbsp;</small></p>
                   <Row>  
-                    <Col className='icon-post' sm={1}>
-                      {/* <i class="fas fa-file-alt" style={{color:'#EE9337', fontSize:'30px', paddingTop:'30px'}}></i> */}
-                      
-                    </Col>
+                    <Col className='icon-post' sm={1} />
                     <Col sm={11} style={{fontSize:'16px', color:'#EE9337', paddingTop:'30px'}}>
                       <p>{feedItem.title}</p>
-                      
                     </Col>
-                    
-                    {/* <Col >
-                    <div className='inline-flex' style={{paddingTop:'20px'}}>
-                    <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>            
-                    <Button onClick={() => openEditAnnouncementToggle(item)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; Edit Post</Button>
-                    </div>
-                      <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
-                  <Button onClick={() => handleDeleteNotify(item?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; Remove Post</Button>
-                    </div> 
-                  </div>
-                    </Col> */}
                   </Row>
                   <Row>
                     <Col sm={12} style={{fontSize:'14px', color:'#707070', textAlign:'justify', paddingLeft:55}} >

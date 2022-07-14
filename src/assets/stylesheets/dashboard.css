@@ -670,3 +670,16 @@ margin: 0 auto;
 .pt-10{
   padding-top: 10px !important;
 }
+
+.mb-3{
+  margin-bottom: 0px !important;
+}
+
+.ai-c{
+  align-items: center !important;
+}
+
+.ph-3{
+  margin-left: 5px !important;
+  margin-right:  5px !important;
+}

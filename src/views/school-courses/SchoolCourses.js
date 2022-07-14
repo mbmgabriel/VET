@@ -43,7 +43,7 @@ function SchoolCourses() {
         <CourseSideNav courseInfos={courseInfos} active="Learn" />
       </Col>
       <Col sm={9} className='scrollable vh-85'>
-        <SchoolCoursesContent courseInfos={courseInfos} loading={loading} setLoading={setLoading} />
+        <SchoolCoursesContent courseInfos={courseInfos} loading={loading} setLoading={setLoading} onRefresh={() => getCourseInformation()} />
       </Col>
     </Row>
   </MainContainer>

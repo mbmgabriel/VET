@@ -177,7 +177,7 @@ export default function SchoolAdminDiscussion() {
           <ClassAdminSideNavigation active="discussion"/>
         </Col>
         <Col sm={9} className='scrollable vh-85'>
-        <HeaderDiscussion onSearch={onSearch} getDiscussionUnit={getDiscussionUnit} module={module} />
+        <HeaderDiscussion onSearch={onSearch} getDiscussionUnit={getDiscussionUnit} module={module} onRefresh={() => getClassInfo()}/>
         <Accordion>
         <SweetAlert
             warning

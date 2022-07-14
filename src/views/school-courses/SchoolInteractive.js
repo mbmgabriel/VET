@@ -40,7 +40,7 @@ function SchoolInteractive() {
         <CourseSideNav courseInfos={courseInfos} active="Interactive" />
       </Col>
       <Col sm={9} className='scrollable vh-85'>
-        <SchoolCourseInteractive setLoading={setLoading} />
+        <SchoolCourseInteractive setLoading={setLoading} onRefresh={() => getCourseInformation()} />
       </Col>
     </Row>
   </MainContainer>

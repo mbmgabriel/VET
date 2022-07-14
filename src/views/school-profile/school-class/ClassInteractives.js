@@ -106,7 +106,7 @@ const getClassInfo = async() => {
           <ClassAdminSideNavigation active="interactives"/>
         </Col>
         <Col sm={9} className='scrollable vh-85'>
-          <ClassInteractiveHeader onSearch={onSearch} />
+          <ClassInteractiveHeader onSearch={onSearch} onRefresh={() => getClassInfo()}/>
           <Accordion>
             {module.map((item, index) => {
               return ( <Accordion.Item eventKey={index} onClick={(e) => getIndteractive(e, item?.id)} >

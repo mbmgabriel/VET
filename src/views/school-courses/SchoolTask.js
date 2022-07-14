@@ -40,7 +40,7 @@ function SchoolTask() {
         <CourseSideNav courseInfos={courseInfos} active="Task" />
       </Col>
       <Col sm={9} className='scrollable vh-85'>
-        <SchoolCourseTask />
+        <SchoolCourseTask onRefresh={() => getCourseInformation()} />
       </Col>
     </Row>
   </MainContainer>

@@ -92,7 +92,7 @@ function ClassAdminExam() {
         <Col sm={9} className='scrollable vh-85'>
         <div className="class-container position-relative">
         {loading && <ActivityIndicator />}
-        <ClassExamHeader onSearch={onSearch} modules={modules} fetchExams={fetchExams} />
+        <ClassExamHeader onSearch={onSearch} modules={modules} fetchExams={fetchExams} onRefresh={() => fetchExams()}/>
         <Accordion defaultActiveKey="0">
           {modules.map((module, index) => {
             if (

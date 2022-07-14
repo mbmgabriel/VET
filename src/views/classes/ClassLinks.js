@@ -8,6 +8,7 @@ import HeaderLinks from './components/Links/HeaderLinks'
 import AccordionEdit from './components/Links/AccordionEdit';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 function ClassLinks() {
   const [openEditModal, setOpenEditModal] = useState(false)
@@ -20,6 +21,8 @@ function ClassLinks() {
   const [confeDescriptionItem, setConfeDescriptoinItem] = useState('')
   const [confeUrlItem, setConfeUrlItem] = useState('')
   const [itemId, setItemId] = useState()
+  const [loading, setLoading] = useState(false);
+
   const subsType = localStorage.getItem('subsType');
   
   const onSearch = (text) => {
@@ -41,6 +44,8 @@ function ClassLinks() {
     if(subsType != 'LMS'){
       window.location.href = "/classes"
     }
+    getVideos()
+    getLinks()
   }, [])
 
   const getVideos = async() => {
@@ -52,11 +57,6 @@ function ClassLinks() {
       alert("Something went wrong while fetching all Conference")
     }
   }
-
-  useEffect(() => {
-    getVideos()
-  }, [])
-
   const getLinks = async() => {
     let typeId = '3'
     let response = await new ClassesAPI().getLink(id, typeId)
@@ -67,14 +67,11 @@ function ClassLinks() {
     }
   }
 
-  useEffect(() => {
-    getLinks()
-  }, [])
-
   return (
    <ClassSideNavigation>
+    {loading && <FullScreenLoader />}
      <ClassBreadcrumbs title='' clicked={()=> console.log('')} />
-      <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  onRefresh={() => getConfe()}/>
+      <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  onRefresh={() => getVideos()}/>
       <div style={{paddingBottom:'10px'}}>
         <AccordionConference  searchTerm={searchTerm} getConfe={getConfe} conference={conference} setOpenEditModal={setOpenEditModal}  setEditLinks={setEditLinks} />
       </div>
