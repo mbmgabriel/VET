@@ -26,8 +26,8 @@ export default function CourseFileLibrary(){
     let response = await new FilesAPI().getCourseFiles(id, data)
     // setLoading(false)
     if(response.ok){
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
+      setDisplayFiles(response?.data?.files)
+      setDisplayFolder(response?.data?.folders)
     }else{
       alert("Something went wrong while fetching Course files.")
     }
@@ -66,7 +66,7 @@ export default function CourseFileLibrary(){
         }
       </div>
       {
-      displayFiles.map( (item,ind) => {
+      displayFiles?.map( (item,ind) => {
         console.log(item)
           return(
             <OverlayTrigger
@@ -78,7 +78,7 @@ export default function CourseFileLibrary(){
                 </Tooltip>}
             >
             {item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-              <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} onClick={() => clickFile(item.pathBase)} className='p-1' alt={item.name} height={30} width={30}/>
+              <img key={ind+item?.name} src={item.pathBase.replace('http:', 'https:')} onClick={() => clickFile(item.pathBase)} className='p-1' alt={item.name} height={30} width={30}/>
               :
               <i className="fas fa-sticky-note" onClick={() => clickFile(item.pathBase)} style={{paddingRight: 5}}/>
             }
@@ -87,7 +87,7 @@ export default function CourseFileLibrary(){
         })
       }
       {
-        displayFolder.map((itm) => {
+        displayFolder?.map((itm) => {
           return(
             <OverlayTrigger
               placement="bottom"
