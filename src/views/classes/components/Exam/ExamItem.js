@@ -14,6 +14,7 @@ import TeacherExamActions from "./TeacherExamActions";
 import PreviewExam from "./PreviewExam";
 import ShowResultExam from "./ShowResultExam";
 import {Button} from 'react-bootstrap'
+import { toast } from "react-toastify";
 
 export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
   const userContext = useContext(UserContext);
@@ -24,7 +25,7 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
   const [showEditModal, setShowEditModal] = useState(false);
   const { startDate, endDate } = getStartAndEndDateFromClassTest(exam);
   const[examAnalysis, setExamAnalysis] = useState([])
-  const [viewAnalysis, setViewAnalysis] = useState(false)
+  const [viewAnalysis, setViewAnalysis] = useState(false);
 
   const openModalShowResutl = (testId) => {
     getExamAnalysis(testId)
@@ -57,8 +58,9 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
     });
     if (response.ok) {
       fetchExams()
+      toast.success(exam.test?.isShared ? 'Exam unshared successfully.' : 'Exam shared successfully.')
     } else {
-      alert(response.data.errorMessage);
+      toast.error(response.data.errorMessage);
     }
   };
   const [showPreviewExamModal, setShowPreviewExamModal] = useState(false)

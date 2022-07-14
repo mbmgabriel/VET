@@ -34,13 +34,13 @@ function SchoolInteractive() {
   }, []);
 
   return (
-  <MainContainer title="Interactive" activeHeader={"courses"} loading={loading}>
-    <Row className="mt-4">
+  <MainContainer title="Interactive" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+    <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Interactive" />
       </Col>
-      <Col sm={9}>
-        <SchoolCourseInteractive setLoading={setLoading} onRefresh={() => getCourseInformation()}/>
+      <Col sm={9} className='scrollable vh-85'>
+        <SchoolCourseInteractive setLoading={setLoading} onRefresh={() => getCourseInformation()} />
       </Col>
     </Row>
   </MainContainer>

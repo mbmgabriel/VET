@@ -5,13 +5,16 @@ import { Row, Col } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import SchoolAPI from '../../api/SchoolAPI'
 import { UserContext } from '../../context/UserContext'
-import ClassesAPI from '../../api/ClassesAPI'
+import ClassesAPI from '../../api/ClassesAPI';
+import AcademicTermAPI from '../../api/AcademicTermAPI';
 
 export default function ClassesDashboard({studentClasses}) {
 
   const userContext = useContext(UserContext)
   const [loading, setLoading] = useState(false)
   const [classes, setClasses] = useState([])
+  const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
+
   const {user} = userContext.data
   let studentId = user?.student?.id
 
@@ -27,7 +30,23 @@ export default function ClassesDashboard({studentClasses}) {
     setLoading(false)
   }
 
+  const getAcademicTerm = async () =>{
+    let response = await new AcademicTermAPI().fetchAcademicTerm()
+    if(response.ok){
+      let data = response.data;
+      let temp = localStorage.getItem('academicTerm')
+      let obj = data.find(o => o.isCurrentTerm === true);
+      if(temp === null) {
+        setCurrentAcademicTerm(temp ? temp : obj.academicTermName);
+        localStorage.setItem('academicTerm', obj.academicTermName);
+      }
+    }
+  }
+
   useEffect(() => {
+    let temp = localStorage.getItem('academicTerm')
+    setCurrentAcademicTerm(temp)
+    getAcademicTerm();
     if(user?.student === null)
       return(
         getClasses()
@@ -52,7 +71,7 @@ export default function ClassesDashboard({studentClasses}) {
         {classes.length?
           classes.slice(0, 8).map(item => {
             return(
-              <React.Fragment>
+              item.termName == currentAcademicTerm && <React.Fragment>
                 <div className='dash-content' >
                   <Link to={`/classescontent/${item.classId}/feed`}>{item?.className}</Link>
                 </div>

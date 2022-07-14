@@ -45,6 +45,7 @@ function ClassTask() {
   const [classInfo, setClassInfo] = useState({});
   const [taskName, setTaskName] = useState('')
   const [instructions, setInstructions] = useState('')
+  const [rate, setRate] = useState('')
   const [taskId, setTaskId] = useState('')
   const [moduleName, setModuleName] = useState('')
   const [selectedTaskName, setSelectedTaskName] = useState("")
@@ -84,11 +85,12 @@ function ClassTask() {
     setViewTaskModal(!viewTaskModal)
   }
 
-  const toggle = (e, item, item1, item2, item3) =>{
+  const toggle = (e, item, item1, item2, item3, item4) =>{
     setTaskName(item)
     setInstructions(item1)
     setTaskId(item2)
     setModuleName(item3)
+    setRate(item4)
     setModal(!modal)
   }
 
@@ -127,7 +129,8 @@ function ClassTask() {
   const getTaskModule = async(e, item) =>{
     let response = await new ClassesAPI().getTaskModule(id, item)
     if(response.ok){
-      setTaskModule(response.data)
+      setTaskModule(response?.data);
+      console.log(response.data, '-----');
       setModuleId(item)
     }else{
       alert("Something went wrong while Deleting Deleting a getTaskModule")
@@ -219,7 +222,7 @@ function ClassTask() {
                 return (
                   <Row style={{margin:'10px'}}>
                     <Col sm={8}>
-                      <div className='title-exam' >
+                      <div className='title-exam'>
                         {moduleitem?.task?.taskName}
                       </div>
                     </Col>
@@ -230,6 +233,16 @@ function ClassTask() {
                         </div>
                         <div className='text-color-707070' >
                         <ContentViewer>{moduleitem?.task?.instructions}</ContentViewer>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col sm={9} className='instruction-exam' >
+                      <div className='inline-flex'>
+                        <div className='text-color-bcbcbc' >
+                          Rate:&nbsp;
+                        </div>
+                        <div className='text-color-707070' >
+                          {moduleitem?.task?.rate === null ?<></>:<ContentViewer>{moduleitem?.task?.rate}</ContentViewer>}
                         </div>
                       </div>
                     </Col>
@@ -246,7 +259,7 @@ function ClassTask() {
                             placement="bottom"
                             delay={{ show: 1, hide: 0 }}
                             overlay={renderTooltipEdit}>
-                          <Button onClick={(e) => toggle(e, moduleitem?.task?.taskName,  moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.module?.moduleName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
+                          <Button onClick={(e) => toggle(e, moduleitem?.task?.taskName,  moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.module?.moduleName, moduleitem?.task?.rate)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
                         </OverlayTrigger>
                         {moduleitem?.taskAssignment?(
                           <>
@@ -391,7 +404,7 @@ function ClassTask() {
           })}
           </Accordion>
           <ViewTask setViewTaskModal={setViewTaskModal} viewTaskAssign={viewTaskAssign} viewTaskItem={viewTaskItem} viewTaskTaggle={viewTaskTaggle} viewTaskModal={viewTaskModal} />
-          <EditTask moduleName={moduleName} taskId={taskId} setTaskId={setTaskId} instructions={instructions} setInstructions={setInstructions} taskName={taskName} setTaskName={setTaskName} setModal={setModal} moduleId={moduleId} editTask={editTask} toggle={toggle} modal={modal} module={module} getTaskModule={getTaskModule} />
+          <EditTask setRate={setRate} rate={rate} moduleName={moduleName} taskId={taskId} setTaskId={setTaskId} instructions={instructions} setInstructions={setInstructions} taskName={taskName} setTaskName={setTaskName} setModal={setModal} moduleId={moduleId} editTask={editTask} toggle={toggle} modal={modal} module={module} getTaskModule={getTaskModule} />
           <AssignTask selectedTaskName={selectedTaskName} moduleId={moduleId} getTaskModule={getTaskModule} assingTaskId={assingTaskId} assignTaskModal={assignTaskModal} assignTaskToggle={assignTaskToggle} />
           <EditAssignTask getTaskModule={getTaskModule} editAssignTaskItem={editAssignTaskItem} editAssignTaskToggle={editAssignTaskToggle} editAssignTaskModal={editAssignTaskModal} />
       </ClassSideNavigation>

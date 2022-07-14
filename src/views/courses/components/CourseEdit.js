@@ -13,6 +13,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 	const [sarea, setSarea] = useState([])
 	const [status, setStatus] = useState('')
 	const [locked, setLockStatus]= useState(false)
+	const [validated, setValidated] = useState(false);
 
 	const handleCloseModal = e => {
     e.preventDefault()
@@ -43,7 +44,14 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
   // }
 
 	const saveEditCourse = async(e) => {
-    e.preventDefault()
+		e.preventDefault();
+		const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setValidated(true);
+
 		if(description === ''){
 			toast.error('Please insert all the required fields', {
 				position: "top-right",
@@ -67,6 +75,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 				successSave()
 				getCourses()
 				handleCloseModal(e)
+				setValidated(false)
 			}else{
 				toast.error(response.data.errorMessage, {
 					position: "top-right",
@@ -109,20 +118,25 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 			});
 
 	}
+
+	const closeModal = () => {
+		setOpenEditModal(false)
+		setValidated(false)
+	}
 	
 	return (
 		<div>
-			<Modal size="lg" className="modal-all" show={openEditModal} onHide={()=> setOpenEditModal(!openEditModal)} >
+			<Modal size="lg" className="modal-all" show={openEditModal} onHide={()=> closeModal()} >
 				<Modal.Header className="modal-header" closeButton>
 				Edit Course
 				</Modal.Header>
 					<Modal.Body className="modal-label b-0px">
-						<Form onSubmit={saveEditCourse}>
+						<Form noValidate validated={validated}  onSubmit={saveEditCourse}>
 							<Form.Group className="m-b-20">
 								<Form.Label for="courseName">
 									Course Name
 								</Form.Label>
-								<FormControl defaultValue={selectedCourse?.courseName} 
+								<FormControl required defaultValue={selectedCourse?.courseName} 
 									className="custom-input" 
 									size="lg" 
 									type="text"
@@ -135,7 +149,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 								<Form.Label for="description">
 									Description
 								</Form.Label>
-								<FormControl defaultValue={selectedCourse?.description} 
+								<FormControl required defaultValue={selectedCourse?.description} 
 									className="custom-input" 
 									size="lg" 
 									type="text"
@@ -148,7 +162,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 										<Form.Label for="subjectArea">
 												Subject Area
 										</Form.Label>
-										<Form.Select size="lg" onChange={(e) => setSubjectArea(e.target.value)}>
+										<Form.Select required size="lg" onChange={(e) => setSubjectArea(e.target.value)}>
 											{
 												sarea.map(item => {
 													return(
@@ -166,7 +180,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 										<Form.Label for="status">
 												Status
 										</Form.Label>
-										<Form.Select size="lg" onChange={(e) => setStatus(e.target.value)}>
+										<Form.Select required size="lg" onChange={(e) => setStatus(e.target.value)}>
 											<option value={true} selected={selectedCourse?.status === true}>
 												Active
 											</option>
@@ -194,7 +208,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 						
 							<span style={{float:"right"}}>
 								<Button className="tficolorbg-button" type="submit" >
-									Save
+									Update Course
 								</Button>
 							</span>
 						</Form>
