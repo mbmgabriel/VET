@@ -189,9 +189,9 @@ function CreateClassModal({setModal, modal, getClasses}) {
                 </datalist>
             </Form.Group>
             <Form.Group className="mb-4">
-            	<Form.Label>Academic Term</Form.Label>
+            	<Form.Label>School Year</Form.Label>
                 <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
-                  <option>-- Select Academic Term HERE --</option>
+                  <option>-- Select School Year HERE --</option>
                   {academicTerm.map(item =>{
                       return(<option value={item.id}>{item.academicTermName}</option>)
                       })

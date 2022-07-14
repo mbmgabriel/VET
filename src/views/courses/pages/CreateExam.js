@@ -4,6 +4,9 @@ import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ClassCourseFileLibrary from "../../classes/components/ClassCourseFileLibrary";
+import CourseFileLibrary from "../components/CourseFileLibrary";
+import ContentField from "../../../components/content_field/ContentField";
 
 export default function CreateExam({setCourse, openCreateExamModal, setOpenCreateExamModal, setExamInfo, examInfo}){
 
@@ -11,6 +14,8 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
   const [modulePages, setModulePages] = useState([])
 	const [testName, setTestName] = useState('')
 	const [testInstructions, setTestInstructions] = useState('')
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const [showFiles, setShowFiles] = useState(false);
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
@@ -22,6 +27,8 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 
 	const saveExam = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true)
     let response = await new CoursesAPI().createExam(
       sessionModule,
@@ -84,6 +91,9 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 				</Modal.Header>
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveExam}>
+            <div className={showFiles ? 'mb-3' : 'd-none'}>
+                <CourseFileLibrary />
+              </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
 												Exam Name
@@ -96,22 +106,25 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
                       onChange={(e) => setTestName(e.target.value)}
                     />
 								</Form.Group>
-
+                <div>
+                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+                </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="description">
 												Exam Instructions
 										</Form.Label>
-										<Form.Control 
+										{/* <Form.Control 
                       className="custom-input" 
                       size="lg" 
                       type="text" 
                       placeholder="Enter exam instructions"
                       onChange={(e) => setTestInstructions(e.target.value)}
-                    />
+                    /> */}
+                    <ContentField value={testInstructions}  placeholder='Enter instruction here'  onChange={value => setTestInstructions(value)} />
 								</Form.Group>
 
 								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
+										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
 												Save Exam
 										</Button>
 								</span>

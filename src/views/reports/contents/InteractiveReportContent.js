@@ -6,16 +6,58 @@ function InteractiveReportContent({setShowInteractiveHeader, showInteractiveHead
   
   const [loading, setLoading] = useState(false)
   let sessionClass = sessionStorage.getItem("classId")
+  const [sorted, setSorted] = useState([])
+  const [alphabetical, setAlphabetical] = useState(true);
 
   useEffect(() => {
   }, [])
+
+  const handleClickIcon = () =>{
+    setAlphabetical(!alphabetical);
+    if(!alphabetical){
+      arrageAlphabetical(interactiveReport);
+    }
+    else{
+      arrageNoneAlphabetical(interactiveReport);
+    }
+  }
+
+  useEffect(()=>{
+    arrageNoneAlphabetical(interactiveReport);
+    arrageAlphabetical(interactiveReport);
+}, [interactiveReport])
+
+const arrageNoneAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA > nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '111111')
+  setSorted(temp)
+}
+
+const arrageAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    console.log(a, 'herererereherererereherererere TRUE')
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA < nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '2222')
+  setSorted(temp)
+}
   
   return(
     <>
     <Table striped bordered hover size="sm">
       <thead>
         <tr>
-          <th>Student Name</th>
+        <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
           {/* <th>Easy Score</th> */}
           <th>Score</th>
           {/* <th>Challenging Score</th> */}
@@ -24,7 +66,7 @@ function InteractiveReportContent({setShowInteractiveHeader, showInteractiveHead
         </tr>
       </thead>
       <tbody>
-      {interactiveReport.map(item =>{
+      {sorted.map(item =>{
         return (
         item.interactiveResults.map(st =>{
           return (

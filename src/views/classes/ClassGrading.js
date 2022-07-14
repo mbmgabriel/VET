@@ -39,8 +39,6 @@ function ClassGrading() {
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={() => console.log('')} />
       <h1 class="exam-title">Terms</h1>
-      {loading && <FullScreenLoader />}
-      
       <ul class="list-group">
         {terms.map((term) => (
         <li class="list-group-item"><Link to={ `/classes/${id}/class_grading/${term.id}`}>{term.description}</Link></li>

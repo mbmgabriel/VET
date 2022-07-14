@@ -6,33 +6,35 @@ import TaskAnalysis from './TaskAnalysis'
 import { toast } from 'react-toastify';
 
 
-function TaskReportContent({getTaskReport, setShowTaskHeader, showTaskHeader, selectedClassId, viewTaskReport, setViewTaskReport, taskReport, setTaskReport, taskColumns = ["header 1", "header 2"]}) {
+function TaskReportContent({getTaskReport, getTaskAnalysis, showTaskHeader, taskReport, setTaskReport, taskColumns = ["header 1", "header 2"]}) {
   
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [taskAnalysis, setTaskAnalysis] = useState([])
   const [showTaskAnalysis, setShowTaskAnalysis] = useState(false)
+  const [sorted, setSorted] = useState([])
+  const [alphabetical, setAlphabetical] = useState(true);
 
   let sessionClass = sessionStorage.getItem("classId")
   let sessionTaskId = sessionStorage.getItem("taskId")
 
-  const getTaskAnalysis = async(e, studentid, classid, taskid) => {
-    console.log(selectedClassId)
+  // const getTaskAnalysis = async(e, studentid, classid, taskid) => {
+  //   console.log(selectedClassId)
     
-    sessionStorage.setItem('analysis','true')
-    sessionStorage.setItem('studentid',studentid)
+  //   sessionStorage.setItem('analysis','true')
+  //   sessionStorage.setItem('studentid',studentid)
 
-    setShowTaskAnalysis(true)
-    console.log(showTaskAnalysis)
-    let response = await new ClassesAPI().getTaskAnalysis(studentid, sessionClass, taskid)
-    if(response.ok){
-      setTaskAnalysis(response.data)
-      console.log(response.data)
+  //   setShowTaskAnalysis(true)
+  //   console.log(showTaskAnalysis)
+  //   let response = await new ClassesAPI().getTaskAnalysis(studentid, sessionClass, taskid)
+  //   if(response.ok){
+  //     setTaskAnalysis(response.data)
+  //     console.log(response.data)
       
-    }else{
-      alert(response.data.errorMessage)
-    }
-  }
+  //   }else{
+  //     alert(response.data.errorMessage)
+  //   }
+  // }
 
   const reTakeTask = async (e, taskId, studentId) => {
     let response = await new ClassesAPI().reTakeTask(sessionClass, taskId, studentId)
@@ -56,8 +58,48 @@ function TaskReportContent({getTaskReport, setShowTaskHeader, showTaskHeader, se
   })
 
   useEffect(() => {
-    setShowTaskHeader(true)
+    // setShowTaskHeader(true)
   }, [])
+
+  const handleClickIcon = () =>{
+    setAlphabetical(!alphabetical);
+    if(!alphabetical){
+      arrageAlphabetical(taskReport);
+    }
+    else{
+      arrageNoneAlphabetical(taskReport);
+    }
+  }
+
+  useEffect(()=>{
+    arrageNoneAlphabetical(taskReport);
+    arrageAlphabetical(taskReport);
+}, [taskReport])
+
+const arrageNoneAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA > nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '111111')
+  setSorted(temp)
+}
+
+const arrageAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    console.log(a, 'herererereherererereherererere TRUE')
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA < nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '2222')
+  setSorted(temp)
+}
   
   if(showTaskAnalysis === false){
   return(
@@ -66,7 +108,7 @@ function TaskReportContent({getTaskReport, setShowTaskHeader, showTaskHeader, se
     <Table hover size="lg" responsive>
       <thead>
         <tr>
-          <th>Student Name</th>
+        <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
           {/* {assignmentReport.map(item =>{
             return(
             item.columnAssignments.map(as =>{
@@ -87,7 +129,7 @@ function TaskReportContent({getTaskReport, setShowTaskHeader, showTaskHeader, se
         </tr>
       </thead>
       <tbody>
-      {taskReport.map(item =>{
+      {sorted.map(item =>{
           return (
             <tr>
               
@@ -96,7 +138,7 @@ function TaskReportContent({getTaskReport, setShowTaskHeader, showTaskHeader, se
                 return (
                 <>
                   <td><i class="fas fa-user-circle td-icon-report-person"></i> 
-                    <span onClick={(e) => getTaskAnalysis(e, item.student.id, st.task.classId, st.task.id)}>{item.student.lname}, {item.student.fname}</span>
+                    <span onClick={(e) => getTaskAnalysis(e, item.student.id, st.task.classId, st.task.id, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
                   </td>
                   <td>{st.score} </td>
                   <td>         
@@ -118,12 +160,13 @@ function TaskReportContent({getTaskReport, setShowTaskHeader, showTaskHeader, se
       </tbody>
     </Table>
     :
-    <div onClick={(e) => getTaskAnalysis(e, user.student.id, sessionClass, sessionTaskId)}>{user.student.lname}</div>
+    <div onClick={(e) => getTaskAnalysis(e, user.student.id, sessionClass, sessionTaskId, user.student.lname, user.student.fname)}>{user.student.lname}</div>
     }
     </>
   )}else{
     return(
-    <TaskAnalysis showTaskHeader={showTaskHeader} setShowTaskHeader={setShowTaskHeader} taskAnalysis={taskAnalysis} setTaskAnalysis={setTaskAnalysis}/>
+      null
+    // <TaskAnalysis showTaskHeader={showTaskHeader} setShowTaskHeader={''} taskAnalysis={taskAnalysis} setTaskAnalysis={setTaskAnalysis}/>
     )
   }
 }

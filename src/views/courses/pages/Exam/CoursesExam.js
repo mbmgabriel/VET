@@ -16,6 +16,7 @@ import ExamCreation from "../../../exam-creation/ExamCreation";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
 
+
 export default function CoursesExam() {
   const {id} = useParams();
   const [loading, setLoading] = useState(false)
@@ -78,12 +79,12 @@ export default function CoursesExam() {
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
-    let response = await new CoursesAPI().getCourseUnit(courseid)
+    let response = await new CoursesAPI().getCourseUnit(id)
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
     }else{
-      alert("Something went wrong while fetching all exam")
+      alert("Something went wrong while fetching all exam!!!!!!!!!!")
     }
   }
 
@@ -136,6 +137,7 @@ export default function CoursesExam() {
   });
 
   useEffect(() => {
+    
     getCourseUnitInformation()
   }, [])
 
@@ -165,8 +167,13 @@ export default function CoursesExam() {
     <CourseContent>
       <CourseBreadcrumbs title={examName} clicked={() => clickTab()}/>
         <React.Fragment>
-          <span className="content-pane-title">
+        <span className="content-pane-title col-md-10 pages-header fd-row">
             Exam 
+          <div>
+            <Button onClick={() => getCourseUnitInformation()} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
           </span>
           <div className="row m-b-20 m-t-30" onSearch={onSearch}>
             <div className="col-md-12">

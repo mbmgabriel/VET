@@ -74,7 +74,7 @@ function ClassLinks() {
   return (
    <ClassSideNavigation>
      <ClassBreadcrumbs title='' clicked={()=> console.log('')} />
-      <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  />
+      <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  onRefresh={() => getConfe()}/>
       <div style={{paddingBottom:'10px'}}>
         <AccordionConference  searchTerm={searchTerm} getConfe={getConfe} conference={conference} setOpenEditModal={setOpenEditModal}  setEditLinks={setEditLinks} />
       </div>

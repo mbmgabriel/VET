@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import FilesAPI from '../../api/FilesApi';
 import { UserContext } from '../../context/UserContext';
 import CoursesAPI from '../../api/CoursesAPI'
+import { useParams } from "react-router";
 
 function FileHeader(props) {
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -21,8 +22,12 @@ function FileHeader(props) {
   const {user} = userContext.data
   const courseid = sessionStorage.getItem('courseid')
 
+  const {id} = useParams();
+  console.log(props.id, '=====---');
+
   const getCourseInformation = async() => {
-    let response = await new CoursesAPI().getCourseInformation(courseid)
+    console.log(props.id, '=====---');
+    let response = await new CoursesAPI().getCourseInformation(props.id);
     if(response.ok){
       setCourseInfo(response.data)
       let temp = response.data.isTechfactors
@@ -31,7 +36,7 @@ function FileHeader(props) {
       }
       console.log(response.data, 'heheheheheh')
     }else{
-      alert("Something went wrong while fetching course information")
+      toast.error("Something went wrong while fetching course information.")
     }
   }
 

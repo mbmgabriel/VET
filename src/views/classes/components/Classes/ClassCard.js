@@ -101,7 +101,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                       Edit 
                     </Dropdown.Item>
                     <Dropdown.Item onClick={(e) => handleDeleteNotify(e, item.classId)}>
-                      Delete 
+                      Archive 
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

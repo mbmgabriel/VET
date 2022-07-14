@@ -1,22 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {ListGroup, Tab, Row, Col, Tooltip, OverlayTrigger} from 'react-bootstrap'
-import ClassAssignment from '../ClassAssignment'
-import ClassDiscussion from '../ClassDiscussion'
-import ClassExam from '../ClassExam'
-import ClassFeed from '../ClassFeed'
-import ClassLearn from '../ClassLearn'
-import ClassLinks from '../ClassLinks'
-import ClassTask from '../ClassTask'
-import ClassInteractive from '../ClassInteractive'
-import ClassList from '../ClassList'
-import ClassFiles from '../ClassFiles'
 import DiscussionAPI from '../../../api/DiscussionAPI'
 import { useParams } from 'react-router'
 import { UserContext } from '../../../context/UserContext'
-import { HashRouter, Link } from 'react-router-dom';
-import PrivateRoute from "../../../routes/components/PrivateRoute";
+import { Link } from 'react-router-dom';
 import MainContainer from '../../../components/layouts/MainContainer'
-import ExamCreation from "../../../views/exam-creation/ExamCreation";
 
 export default function ClassSideNavigation({children}) {
   const userContext = useContext(UserContext)
@@ -28,10 +16,12 @@ export default function ClassSideNavigation({children}) {
   const [loading, setLoading] = useState(false);
   const [showTab, setShowTab] = useState(true)
   const subsType = localStorage.getItem('subsType');
+
   const getClassInfo = async() => {
     setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
+      console.log(response.data, '--------------------------------')
       setClassInfo(response.data)
     }else{
       alert("Something went wrong while fetching all courses")
@@ -76,7 +66,7 @@ export default function ClassSideNavigation({children}) {
   )
   const renderTooltipLink = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Link
+      Links
     </Tooltip>
   )
   const renderTooltipClassList = (props) => (
@@ -124,10 +114,11 @@ export default function ClassSideNavigation({children}) {
           <ListGroup.Item className="list-group-item-o">
             <Row>
               <Col className="" sm={9} >
-                <div className="class-subtitle-code" > {classInfo?.classInformation?.classCode}</div>
                 <div className="class-subtitle-section">{classInfo?.classInformation?.className}</div>
+                <div className="class-subtitle-code" > {classInfo?.classInformation?.classCode}</div>
+                <div className="class-subtitle-section">{classInfo?.classInformation?.teacherName}</div>
                 <div className="class-subtitle-subject">{classInfo?.classInformation?.gradeName}</div>
-                <div className="class-subtitle-name">{classInfo?.classInformation?.teacherName}</div>
+                <div className="class-subtitle-name">{classInfo?.classInformation?.courseName}</div>
               </Col>
               <Col className="ellipsis-top-right" sm={3}>
                 <i className="fas fa-chevron-left cursor-pointer color-black" onClick={()=> handleClicked(false)}/>

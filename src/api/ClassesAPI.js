@@ -673,4 +673,18 @@ creatTask = async (mId, cId,  data) => {
     })
   }
 
+  teacherMiranda = async () => {
+    return this.sendRequest({
+      path: `/api/Miranda/loggeduser`,
+      method:'GET'
+    })
+  }
+
+  studentMiranda = async () => {
+    return this.sendRequest({
+      path: `/api/Miranda/loggeduser`,
+      method:'GET'
+    })
+  }
+
 }

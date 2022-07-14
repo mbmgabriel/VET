@@ -3,9 +3,11 @@ import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { toast } from 'react-toastify';
 import ExamAPI from "../../../../api/ExamAPI";
+import ContentField from "../../../../components/content_field/ContentField";
 import { UserContext } from "../../../../context/UserContext";
+import ClassCourseFileLibrary from "../ClassCourseFileLibrary";
 
-function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
+function ClassExamHeader({ onSearch, modules = [],fetchExams, onRefresh}, ) {
   const {id} = useParams();
   const { data } = useContext(UserContext);
   const { user } = data;
@@ -13,6 +15,8 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
   const [testName, setTestName] = useState("");
   const [testInstructions, setTestInstructions] = useState("");
   const [module, setModule] = useState(modules[0]?.id)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const [showFiles, setShowFiles] = useState(false);
 
   useEffect(() => {
     setModule(modules[0]?.id)
@@ -20,6 +24,8 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
 
   const submitForm = async(e)  => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 2000)
     const data = {
       "test": {
         "moduleItemId": module,
@@ -43,25 +49,30 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
   return (
     <div>
       <div className="row m-b-20">
-        <div className="col-md-10 pages-header">
-          <h1 className="exam-title">Exam </h1>
-          {user.isTeacher && 
-            <>
-              <Button
-                className="btn-create-exam"
-                Button
-                variant="link"
-                onClick={() => setShowModal(true)}
-              >
-                <i className="fa fa-plus"></i> Create Exam
-              </Button>
-              {/* <h4 className="exam-or">OR</h4>
-              <Button className="btn-create-exam" Button variant="link" onClick={() => toast.error("Feature under development")}>
-                <i className="fa fa-plus"></i> Import Exam --
-              </Button> */}
-            </>
+        <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Exam </p>
+        {
+          window.location.pathname.includes('/school_classes') ?
+					  null
+						:
+					 <div>
+						<Button onClick={() => onRefresh} className='ml-3'>
+							<i className="fa fa-sync"></i>
+						</Button>
+					</div>
           }
-        </div>
+          {
+            user.isTeacher && 
+              <p className='title-header m-0-dashboard'>
+                <Button 
+                  className='btn-create-task' 
+                  Button variant="link" 
+                  onClick={() => setShowModal(true) }
+                >
+                  <i className="fa fa-plus" /> Create Exam</Button>
+              </p>
+          }
+        </div> 
+
       </div>
       <div className="row m-b-20">
         <div className="col-md-12">
@@ -90,6 +101,9 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
         </Modal.Header>
         <Modal.Body className="modal-label b-0px">
           <Form onSubmit={submitForm}>
+          <div className={showFiles ? 'mb-3' : 'd-none'}>
+            <ClassCourseFileLibrary />
+          </div>
             <Form.Group className="m-b-20">
               <Form.Label for="courseName">Module</Form.Label>
               <Form.Select aria-label="Default select example" onChange={(e) => setModule(e.target.value)}>
@@ -110,21 +124,24 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams}, ) {
                 onChange={(e) => setTestName(e.target.value)}
               />
             </Form.Group>
-
+            <div>
+                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
+                </div>
             <Form.Group className="m-b-20">
               <Form.Label for="description">Exam Instructions</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 defaultValue={""}
                 className="custom-input"
                 size="lg"
                 type="text"
                 placeholder="Enter exam instructions"
                 onChange={(e) => setTestInstructions(e.target.value)}
-              />
+              /> */}
+              <ContentField value={testInstructions}  placeholder='Enter instruction here'  onChange={value => setTestInstructions(value)} />
             </Form.Group>
 
             <span style={{ float: "right" }}>
-              <Button className="tficolorbg-button" type="submit">
+              <Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
                 Save Exam
               </Button>
             </span>

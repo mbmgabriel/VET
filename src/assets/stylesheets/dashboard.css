@@ -1,7 +1,14 @@
+
+*:not(.fas, .far, .fa) {
+  font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
+    "Helvetica Neue", Arial, sans-serif !important;
+} 
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 
 .content{
   height: 100vh;
@@ -394,6 +401,10 @@ code {
   font-size: 13px !important;
 }
 
+.font-15{
+  font-size: 15px !important;
+}
+
 .font-size-35{
   font-size: 35px !important;
 }
@@ -601,4 +612,61 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 
 .br-3{
   border-radius: 3px;
+}
+
+/* .image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+} */
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: relative;
+  width: 100px;
+  top: -75px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.profileImage:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  padding-top: 50px;
+  background-color: #7d7d7d74;
+  color: white;
+}
+
+.profile-container{
+margin: 0 auto;
+}
+
+.fd-row{
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.m-0-dashboard{
+  margin: 0%;
+  margin-bottom: .5rem !important;
+}
+
+.ml-3{
+  margin-left: 10px !important;
+}
+
+.pt-10{
+  padding-top: 10px !important;
 }

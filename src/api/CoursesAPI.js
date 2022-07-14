@@ -23,6 +23,13 @@ export default class CoursesAPI extends Base {
     });
   };
 
+  deleteCourse = async (id) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}`,
+      method: 'DELETE',
+    });
+  };
+
   getCourseInformation = async (id) => {
     return this.sendRequest({
       path: `/api/Course/${id}`,

@@ -91,8 +91,23 @@ import SchoolAnouncementContent from "../views/school-profile/components/SchoolA
 import SchoolAnnouncement from "../views/school-profile/SchoolAnnouncement";
 import ZoomClient from "../views/zoom-test/ZoomClient";
 import ClassMeeting from "../views/classes/ClassMeeting";
+import ParentDashboard from "../views/parent/dashboard/ParentDashboard";
+import ParentProfile from "../views/parent/profile/ParentProfile";
 
+import SystemAdminDashboard from "../views/system-admin/dashboard/SystemAdminDashboard";
+import SystemAdminProfile from "../views/system-admin/profile/SystemAdminProfile";
+import SystemAdminTeachers from '../views/system-admin/school/Teachers';
+import SystemAdminStudent from '../views/system-admin/school/Students';
+import SystemAdminSchool from '../views/system-admin/school/SchoolProfileSystemAdmin';
+import SystemAdminCourses from '../views/system-admin/courses/SystemAdminCourses';
 
+import ExamReportPage from '../views/reports/ExamReportPage';
+import TaskReportPage from '../views/reports/TaskReportPage';
+import AssignmentReportPage from '../views/reports/AssignmentReportPage';
+import InteractiveReportPage from '../views/reports/InteractiveReportPage';
+
+import NotificationsPage from '../views/notification/Notifications';
+import SchoolAcademicTerms from "../views/school-profile/SchoolAcademicTerm";
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -185,6 +200,29 @@ export default function Routes() {
             <PrivateRoute path='/school_classes/:id/links' exact component={AdminClassLinks} />
             <PrivateRoute path='/school_classes/:id/classList' exact component={AdminClassList} />
             <PrivateRoute path='/school_classes/:id/files' exact component={AdminClassFiles} />
+
+            <PrivateRoute path='/reports/exam' exact component={ExamReportPage} />
+            <PrivateRoute path='/reports/assignment' component={AssignmentReportPage} />
+            <PrivateRoute path='/reports/task' exact component={TaskReportPage} />
+            <PrivateRoute path='/reports/interactive' exact component={InteractiveReportPage} />
+
+            {/* Parent routes */}
+            <PrivateRoute path='/parent/dashboard' exact component={ParentDashboard} />
+            <PrivateRoute path='/parent/profile' exact component={ParentProfile} />
+            {/* Parent routes end */}
+
+            {/* System admin routes */}
+            <PrivateRoute path='/system-admin/dashboard' exact component={SystemAdminDashboard} />
+            <PrivateRoute path='/system-admin/profile' exact component={SystemAdminProfile} />
+            <PrivateRoute path='/system-admin/teachers' exact component={SystemAdminTeachers} />
+            <PrivateRoute path='/system-admin/students' exact component={SystemAdminStudent} />
+            <PrivateRoute path='/system-admin/school-profile' exact component={SystemAdminSchool} />
+            <PrivateRoute path='/system-admin/courses' exact component={SystemAdminCourses} />
+          
+            {/* System admin routes end */}
+
+            <PrivateRoute path='/notifications' exact component={NotificationsPage} />
+            <PrivateRoute path='/academicTerm' exact component={SchoolAcademicTerms} />
 
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />

@@ -3,39 +3,40 @@ import {Accordion, Row, Col} from 'react-bootstrap'
 import TaskReportContent from '../contents/TaskReportContent'
 import ClassesAPI from './../../../api/ClassesAPI'
 
-function TaskReport({filter, setFilter, classesModules, setClassesModules, selectedClassId, viewTaskReport, setViewTaskReport, showTaskHeader, setShowTaskHeader}) {
+function TaskReport({filter, classesModules, selectedClassId, getTaskReport}) {
 
   const [taskPerModule, setTaskPerModule] = useState([])
   const [taskReport, setTaskReport] = useState([])
   const [loading, setLoading] = useState(false)
+  const pageURL = new URL(window.location.href);
+  const paramsId = pageURL.searchParams.get("classId");
 
   const getClassTaskModules = async(e, moduleId) => {
-    console.log(selectedClassId)
     sessionStorage.setItem('testModuleId', moduleId)
     let sessionModuleId = sessionStorage.getItem('testModuleId')
-    let response = await new ClassesAPI().getClassTaskModules(selectedClassId, sessionModuleId)
+    let response = await new ClassesAPI().getClassTaskModules(paramsId, sessionModuleId)
     if(response.ok){
       setTaskPerModule(response.data)
       console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      alert("Something went wrong while fetching all courses --")
     }
   }
 
-  const getTaskReport = async(e, taskid, taskname) => {
-    setLoading(true)
-    setViewTaskReport(false)
-    sessionStorage.setItem('taskName',taskname)
-    sessionStorage.setItem('taskId',taskid)
-    let response = await new ClassesAPI().getTaskReport(selectedClassId, taskid, taskname)
-    setLoading(false)
-    if(response.ok){
-      setTaskReport(response.data)
-      console.log(response.data)
-    }else{
-      alert(response.data.errorMessage)
-    }
-  }
+  // const getTaskReport = async(e, taskid, taskname) => {
+  //   setLoading(true)
+  //   setViewTaskReport(false)
+  //   sessionStorage.setItem('taskName',taskname)
+  //   sessionStorage.setItem('taskId',taskid)
+  //   let response = await new ClassesAPI().getTaskReport(selectedClassId, taskid, taskname)
+  //   setLoading(false)
+  //   if(response.ok){
+  //     setTaskReport(response.data)
+  //     console.log(response.data)
+  //   }else{
+  //     alert(response.data.errorMessage)
+  //   }
+  // }
 
   const taskColumns = () => {
     if(taskReport.length > 0){ 
@@ -44,16 +45,16 @@ function TaskReport({filter, setFilter, classesModules, setClassesModules, selec
     return []
   }
 
-  if(viewTaskReport === true){
+  // if(viewTaskReport === true){
   return (
     <div>
       <Accordion>
-      {classesModules.map(item => {
+      {classesModules?.map(item => {
         return(
           <Accordion.Item eventKey={item.id}>
           <Accordion.Header onClick={(e) => getClassTaskModules(e, item.id)}><div className='unit-exam'>{item.moduleName} </div></Accordion.Header>
             <Accordion.Body>
-              {taskPerModule.filter(item =>
+              {taskPerModule?.filter(item =>
                 item.task.taskName.toLowerCase().includes(filter.toLowerCase())).map
                 ((item, index) => {
               return(
@@ -89,10 +90,10 @@ function TaskReport({filter, setFilter, classesModules, setClassesModules, selec
       </Accordion>
     </div>
   )
-  }else{
-    return(
-      <TaskReportContent getTaskReport={getTaskReport} showTaskHeader={showTaskHeader} setShowTaskHeader={setShowTaskHeader} setTaskReport={setTaskReport} taskReport={taskReport} taskColumns={taskColumns()}/>
-    )
-  }
+  // }else{
+  //   return(
+  //     <TaskReportContent getTaskReport={getTaskReport} showTaskHeader={showTaskHeader} setShowTaskHeader={setShowTaskHeader} setTaskReport={setTaskReport} taskReport={taskReport} taskColumns={taskColumns()}/>
+  //   )
+  // }
 }
 export default TaskReport
