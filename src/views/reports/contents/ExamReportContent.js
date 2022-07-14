@@ -72,10 +72,12 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     testReport.map((st, index) => {
       let temp= {};
       let name = `${ st.student.lname} ${ st.student.fname}`
-      let score = st.studentTests[0].score
-      let status = st.studentTests[0].isSubmitted ? 'Submitted' : 'Not Submitted'
+      let score = `${st.studentTests[0].score}/${st.studentTests[0].rawScore}`
+      let isSubmitted = st.studentTests[0].isSubmitted;
+      let ifPassed = st.studentTests[0].rawScore/2 <= st.studentTests[0].score ? 'Passed': 'Failed';
+      let status = isSubmitted ? ifPassed : 'Not Submitted'
       temp[`Student Name`] = name;
-      temp.Grade = score;
+      temp.Grade = isSubmitted ? score : 'Not Submitted';
       temp.Status = status;
       tempData.push(temp);
     })
