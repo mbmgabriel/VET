@@ -26,6 +26,7 @@ export default function FilesCourse() {
   const [courseFilter, setCourseFilter] = useState("");
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
   subFolderDirectory.shift();
+  const [isContributor, setIsContributor] = useState(true);
 
   const getCourses = async() => {
     setLoading(true)
@@ -40,6 +41,7 @@ export default function FilesCourse() {
   }
 
   const handleGetCourseFiles = async(id, name) => {
+    getCourseInformation(id)
     setSelectedName(name)
     // setLoading(true)
     let data = {
@@ -52,6 +54,21 @@ export default function FilesCourse() {
       setFolderToDisplay(response.data.folders);
     }else{
       alert("Something went wrong while fetching Course files.")
+    }
+  }
+
+  const getCourseInformation = async(cId) => {
+    let response = await new CoursesAPI().getCourseInformation(cId);
+    if(response.ok){
+      let TFICourse = response.data.isTechfactors;
+      console.log(response.data, 'infoooooooooooooooooo', TFICourse)
+      if(TFICourse){
+        let contriList = await new CoursesAPI().getContributor(cId)
+        console.log(contriList, "--------------------------------");
+        let ifContri = contriList.data.find(i => i.userInformation?.userId == user.userId);
+        console.log(ifContri, user.userId, '-=-=-=')
+        setIsContributor(ifContri ? true : false);
+      }
     }
   }
 
@@ -137,7 +154,12 @@ export default function FilesCourse() {
                     })
                   }
                 </p>
+                {
+                isContributor ? 
                 <FilesContent filter={filter} data={filesToDisplay} folders={foldersToDisplay} subFolder={subFolderDirectory.join('')} clickedFolder={(data) => handleClickedFolder(selectedId ,data.name, 'Course')}  type={'Course'} id={selectedId} deleted={()=> handleRefetch('Course') }/>
+                :
+                <p>No files to display.</p>
+              }
             </>
             :
             <>

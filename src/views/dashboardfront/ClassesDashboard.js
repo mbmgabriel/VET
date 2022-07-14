@@ -8,7 +8,7 @@ import { UserContext } from '../../context/UserContext'
 import ClassesAPI from '../../api/ClassesAPI';
 import AcademicTermAPI from '../../api/AcademicTermAPI';
 
-export default function ClassesDashboard({studentClasses}) {
+export default function ClassesDashboard({studentClasses, teacherClasses}) {
 
   const userContext = useContext(UserContext)
   const [loading, setLoading] = useState(false)
@@ -68,8 +68,8 @@ export default function ClassesDashboard({studentClasses}) {
       </Row>
       {user?.isTeacher &&
       <>
-        {classes.length?
-          classes.slice(0, 8).map(item => {
+        {teacherClasses.length?
+          teacherClasses.slice(0, 8).map(item => {
             return(
               item.termName == currentAcademicTerm && <React.Fragment>
                 <div className='dash-content' >

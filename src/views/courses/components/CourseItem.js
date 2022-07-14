@@ -261,10 +261,10 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
               setSelectedCourse={setSelectedCourse}
               getCourses={getCourses}
               uploadModalTrigger={handleClickedUploadModal}
+              handleClickContributor={handleClickContributor}
             />
             </Link>
           </>):(<></>)}
-
           </>
         )
         })  

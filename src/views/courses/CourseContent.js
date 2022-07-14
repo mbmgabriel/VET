@@ -19,6 +19,7 @@ export default function CourseContent({children}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const subsType = localStorage.getItem('subsType');
+  const [isContributor, setIsContributor] = useState(true);
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
@@ -38,15 +39,22 @@ export default function CourseContent({children}) {
     setLoading(false)
     if(response.ok){
       setCourseInfo(response.data)
-      console.log(response.data, 'infoooooooooooooooooo')
+      let TFICourse = response.data.isTechfactors;
+      console.log(response.data, 'infoooooooooooooooooo', TFICourse)
+      if(TFICourse){
+        let contriList = await new CoursesAPI().getContributor(id)
+        console.log(contriList, "--------------------------------");
+        let ifContri = contriList.data.find(i => i.userInformation?.userId == user.userId);
+        console.log(ifContri, user.userId, '-=-=-=')
+        setIsContributor(ifContri ? true : false);
+      }
     }else{
       toast.error("Something went wrong while fetching course information.")
     }
   }
 
   useEffect( async() => {
-    let response = await new CoursesAPI().getContributor(id)
-    console.log(response, "--------------------------------");
+    
   },[])
 
   useEffect(() => {
@@ -163,9 +171,12 @@ export default function CourseContent({children}) {
                 <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
                   Assignment
                 </Link>
-                <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
-                  Files
-                </Link>
+                {
+                  isContributor && 
+                  <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
+                    Files
+                  </Link>
+                }
                 <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
                   Links
                 </Link>

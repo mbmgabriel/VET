@@ -7,7 +7,7 @@ import { UserContext } from './../../../context/UserContext'
 import CoursesAPI from "../../../api/CoursesAPI";
 import { ToastContainer, toast } from 'react-toastify';
 
-export default function CoursesItemCard({courseCover, courseId, courseName, subjectAreaName, description, authorName, courseInfo, setOpenEditModal, setSelectedCourse, getCourses, uploadModalTrigger}) {
+export default function CoursesItemCard({courseCover, courseId, courseName, subjectAreaName, description, authorName, courseInfo, setOpenEditModal, setSelectedCourse, getCourses, uploadModalTrigger, handleClickContributor}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [openDropdown, setOpenDropdown] = useState(false)
@@ -85,6 +85,9 @@ export default function CoursesItemCard({courseCover, courseId, courseName, subj
                             <Dropdown.Item onClick={(e) =>uploadModalTrigger(courseInfo)}>
                             Upload Cover
                             </Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => handleClickContributor(courseInfo.id)}>
+                              Contributor
+                            </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
                           </OverlayTrigger>
@@ -107,6 +110,9 @@ export default function CoursesItemCard({courseCover, courseId, courseName, subj
                             </Dropdown.Item>
                             <Dropdown.Item onClick={(e) => uploadModalTrigger(courseInfo)}>
                             Upload Cover
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => handleClickContributor(courseInfo.id)}>
+                              Contributor
                             </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
