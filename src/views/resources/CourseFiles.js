@@ -17,7 +17,7 @@ export default function FilesCourse() {
   const [allCourse, setAllCourse] = useState([])
   const [openIndexCourse, setOpenIndexCourse] = useState(false)
   // const {id} = useParams();
-  const [selectedId, setSelectedId] = useState('')
+  const [selectedId, setSelectedId] = useState('');
   const [filesToDisplay, setFilesToDisplay] = useState([]);
   const [foldersToDisplay, setFolderToDisplay] = useState([]);
   const [selectedName, setSelectedName] = useState('');

@@ -22,11 +22,16 @@ const toggle = () =>{
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
 				<div className="content-pane-title col-md-10 pages-header">
 					Links 
-					<div>
-						<Button onClick={() => onRefresh()} className='ml-3'>
+					{
+            window.location.pathname.includes('/school_classes') ?
+					  null
+						:
+					 <div>
+						<Button onClick={() => onRefresh} className='ml-3'>
 							<i className="fa fa-sync"></i>
 						</Button>
 					</div>
+          }
 			{(user?.teacher === null)?(
 			<></>
 			):(

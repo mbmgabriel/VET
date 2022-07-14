@@ -99,6 +99,7 @@ import SystemAdminProfile from "../views/system-admin/profile/SystemAdminProfile
 import SystemAdminTeachers from '../views/system-admin/school/Teachers';
 import SystemAdminStudent from '../views/system-admin/school/Students';
 import SystemAdminSchool from '../views/system-admin/school/SchoolProfileSystemAdmin';
+import SystemAdminCourses from '../views/system-admin/courses/SystemAdminCourses';
 
 import ExamReportPage from '../views/reports/ExamReportPage';
 import TaskReportPage from '../views/reports/TaskReportPage';
@@ -106,6 +107,7 @@ import AssignmentReportPage from '../views/reports/AssignmentReportPage';
 import InteractiveReportPage from '../views/reports/InteractiveReportPage';
 
 import NotificationsPage from '../views/notification/Notifications';
+import SchoolAcademicTerms from "../views/school-profile/SchoolAcademicTerm";
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -215,10 +217,13 @@ export default function Routes() {
             <PrivateRoute path='/system-admin/teachers' exact component={SystemAdminTeachers} />
             <PrivateRoute path='/system-admin/students' exact component={SystemAdminStudent} />
             <PrivateRoute path='/system-admin/school-profile' exact component={SystemAdminSchool} />
+            <PrivateRoute path='/system-admin/courses' exact component={SystemAdminCourses} />
+          
             {/* System admin routes end */}
 
             <PrivateRoute path='/notifications' exact component={NotificationsPage} />
-            
+            <PrivateRoute path='/academicTerm' exact component={SchoolAcademicTerms} />
+
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
             <PublicRoute path='/calendar' exact component={CalendarPage}/>
