@@ -75,7 +75,7 @@ const MultipleChoiceForm = ({
   return (
     <Modal
       size='lg'
-      className='modal-all'
+      className='modal-all modal-adjust'
       show={showModal}
       onHide={() => setShowModal(false)}
     >
