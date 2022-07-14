@@ -37,12 +37,12 @@ function SchoolCourses() {
 
 
   return (
-    <MainContainer title="Courses" activeHeader={"courses"} loading={loading}>
-    <Row className="mt-4">
+    <MainContainer title="Courses" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+    <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Learn" />
       </Col>
-      <Col sm={9}>
+      <Col sm={9} className='scrollable vh-85'>
         <SchoolCoursesContent courseInfos={courseInfos} loading={loading} setLoading={setLoading} />
       </Col>
     </Row>

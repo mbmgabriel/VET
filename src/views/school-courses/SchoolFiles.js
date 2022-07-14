@@ -36,12 +36,12 @@ function SchoolFiles() {
   console.log('courseInfoscourseInfoscourseInfos:', courseInfos)
 
   return (
-  <MainContainer title="Files" activeHeader={"courses"} loading={loading}>
-    <Row className="mt-4">
+  <MainContainer title="Files" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+    <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Files" />
       </Col>
-      <Col sm={9}>
+      <Col sm={9} className='scrollable vh-85'>
         <SchoolCourseFiles setLoading={setLoading} />
       </Col>
     </Row>
