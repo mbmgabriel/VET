@@ -157,11 +157,18 @@ const getComment = (item, item1, item3) => {
               You will not be able to recover this imaginary file!
             </SweetAlert>
               <>
+                <div className="col-md-10 pages-header fd-row mb-3">
+                  <p className='title-header m-0'>Announcement </p>
+                  <Button onClick={() => getFeedClass()} className='ml-3'>
+                    <i className="fa fa-sync"></i>
+                  </Button>
+                </div>
                 <Card className='calendar-card'>
                   <Card.Body>
                   <Form onSubmit={createAnnouncementClass}>
                   <InputGroup  size="lg">
                     <InputGroup.Text id="basic-addon2" className="feed-button"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
+                    
                       <FormControl onChange={(e) => setContent(e.target.value)} value={content} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type an Announcement for the class here" type="text"/> 
                   </InputGroup>
                   <div style={{textAlign:'right', paddingTop:'15px'}}>
