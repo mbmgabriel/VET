@@ -5,7 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 
-function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedClass, getClasses}) {
+function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedClass, getClasses, setClassIdCoverPhoto}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
   const [itemId, setItemId] = useState('')
@@ -23,8 +23,9 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
     setItemId(item)
   }
 
-  const handleCoverPhotoModal =() => {
+  const handleCoverPhotoModal =(e, item) => {
     setOpenCoverPhotoModal(true)
+    setClassIdCoverPhoto(item)
   }
 
   const handleOpeEditModal = (e, item) => {
@@ -69,6 +70,8 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
     localStorage.setItem('typeresource', 'class')
   });
 
+  console.log('item:', item.classCover)
+
   return (
     <div>
         <SweetAlert
@@ -85,11 +88,11 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
             You will not be able to recover this imaginary file!
       </SweetAlert>
       <Card className='class-card' >
-        <Link to={ subsType == "LMS" ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` } onClick={() => setCourseID(item.courseId) }>
-          <Card.Header className='class-header-card' >
+        <Link to={ subsType == "LMS" ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` } onClick={() => setCourseID(item.courseId)}>
+          <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
               <Col sm={10}>
-               {item.classCode}
+               {/* {item.classCode} */}
               </Col>
               <Col sm={2} style={{textAlign:'right'}}>
               <OverlayTrigger
@@ -104,7 +107,7 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
                     <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>
                       Edit 
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={(e) => handleCoverPhotoModal()}>
+                    <Dropdown.Item onClick={(e) => handleCoverPhotoModal(e, item.classId)}>
                       Upload Photo 
                     </Dropdown.Item>
                     <Dropdown.Item onClick={(e) => handleDeleteNotify(e, item.classId)}>
@@ -114,9 +117,9 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
                 </Dropdown>
                 </OverlayTrigger>
               </Col>
-              <Col sm={10}>
+              {/* <Col sm={10}>
                 <b>{item.gradeName} -  {item.className} </b>
-              </Col>
+              </Col> */}
               {/* <Col sm={8}>
                {item.courseName}
               </Col>
@@ -129,13 +132,19 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
             <Card.Title>
             </Card.Title>
             <Card.Subtitle>
+              <Col sm={10}>
+               {item.classCode}
+              </Col>
               {item.courseName} 
+              <Col sm={10}>
+                <b>{item.gradeName} -  {item.className.substring(0, 10)}... </b>
+              </Col>
             </Card.Subtitle>
             <Card.Text style={{color:'#EE9337'}}>
             <Row>
             <Col sm={8}>
             <br />
-               Student Enrolled
+               Student
               </Col>
               <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
               <br />

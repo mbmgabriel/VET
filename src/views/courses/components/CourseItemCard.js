@@ -55,6 +55,8 @@ export default function CoursesItemCard({courseCover, courseId, courseName, subj
     >{children}</span>
   ))
 
+  console.log('qweqwe:', courseCover)
+
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Edit

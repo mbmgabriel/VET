@@ -22,6 +22,7 @@ export default function Classes() {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [joinClassestModal, setJoinClassesModal] = useState(false)
   const [openCoverPhotoModal, setOpenCoverPhotoModal] = useState(false)
+  const [classIdCoverPhoto, setClassIdCoverPhoto] = useState(null)
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   let studentId = user?.student?.id
@@ -132,7 +133,7 @@ export default function Classes() {
                   return item
                 }
               }).map(item => {
-                return(<ClassCard openCoverPhotoModal={openCoverPhotoModal} setOpenCoverPhotoModal={setOpenCoverPhotoModal} getClasses={getClasses}  item={item} setOpenEditModal={setOpenEditModal} setSeletedClass={setSeletedClass} />)
+                return(<ClassCard classIdCoverPhoto={classIdCoverPhoto} setClassIdCoverPhoto={setClassIdCoverPhoto} openCoverPhotoModal={openCoverPhotoModal} setOpenCoverPhotoModal={setOpenCoverPhotoModal} getClasses={getClasses}  item={item} setOpenEditModal={setOpenEditModal} setSeletedClass={setSeletedClass} />)
                   }):<span></span>
                 }
           </CardGroup>
@@ -141,7 +142,7 @@ export default function Classes() {
         </div>
       </div>
       <EditClassModal getClasses={getClasses} seletedClass={seletedClass} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} />
-      <ClassCoverPhoto openCoverPhotoModal={openCoverPhotoModal} setOpenCoverPhotoModal={setOpenCoverPhotoModal} />
+      <ClassCoverPhoto getClasses={getClasses} classIdCoverPhoto={classIdCoverPhoto} setClassIdCoverPhoto={setClassIdCoverPhoto} openCoverPhotoModal={openCoverPhotoModal} setOpenCoverPhotoModal={setOpenCoverPhotoModal} />
     </MainContainer>
   )
 }
