@@ -106,6 +106,7 @@ import AssignmentReportPage from '../views/reports/AssignmentReportPage';
 import InteractiveReportPage from '../views/reports/InteractiveReportPage';
 
 import NotificationsPage from '../views/notification/Notifications';
+import SchoolAcademicTerms from "../views/school-profile/SchoolAcademicTerm";
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -218,7 +219,8 @@ export default function Routes() {
             {/* System admin routes end */}
 
             <PrivateRoute path='/notifications' exact component={NotificationsPage} />
-            
+            <PrivateRoute path='/academicTerm' exact component={SchoolAcademicTerms} />
+
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
             <PublicRoute path='/calendar' exact component={CalendarPage}/>
