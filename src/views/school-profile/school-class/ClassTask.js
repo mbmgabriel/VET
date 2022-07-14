@@ -175,7 +175,7 @@ export default function SchoolAdminTask() {
           <ClassAdminSideNavigation active="task"/>
         </Col>
         <Col sm={9} className='scrollable vh-85'>
-        <HeaderTask onSearch={onSearch} onRefresh={''} module={module} getTaskModule={getTaskModule} />
+        <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} />
         <Accordion>
           <SweetAlert
             warning
