@@ -10,7 +10,7 @@ import FilesAPI from '../../../../api/FilesApi';
 import { useParams } from 'react-router'
 import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
-function EditTask({moduleName, setTaskName, taskName, setInstructions, instructions, taskId, modal, toggle, module, editTask, getTaskModule, moduleId, setModal}){
+function EditTask({setRate, rate, moduleName, setTaskName, taskName, setInstructions, instructions, taskId, modal, toggle, module, editTask, getTaskModule, moduleId, setModal}){
   const isShared = null
   const [editNotufy, setEditNotify] = useState(false)
   const [showFiles, setShowFiles] = useState(false);
@@ -27,9 +27,11 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
     setEditNotify(false)
   }
 
+  console.log('rate:', rate)
+
   const updateTask = async (e) =>{
     e.preventDefault()
-    if(instructions === '' || instructions === '{{type=equation}}'){
+    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || taskName === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -41,7 +43,7 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
         });
     }else{
       let id = taskId
-      let response = await new ClassesAPI().updateTask(id, {taskName, instructions, isShared})
+      let response = await new ClassesAPI().updateTask(id, {taskName, instructions, rate, isShared})
         if(response.ok){
           // alert('Task Updated')
           // setEditNotify(true)
@@ -200,6 +202,10 @@ function EditTask({moduleName, setTaskName, taskName, setInstructions, instructi
               <Form.Group className="mb-4">
                 <Form.Label>Task Name</Form.Label>
               <Form.Control placeholder='Enter Task name here' onChange={(e) => setTaskName(e.target.value)}  type="text" defaultValue={taskName}/>
+                </Form.Group>
+                <Form.Group className="mb-4">
+                <Form.Label>Rate</Form.Label>
+                  <Form.Control  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here' defaultValue={rate}/>
                 </Form.Group>
                 <Form.Group className="mb-4">
                   <Form.Label >Instruction</Form.Label>

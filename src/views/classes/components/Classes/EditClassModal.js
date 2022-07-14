@@ -165,7 +165,7 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
             </Form.Group>
 
             <Form.Group className="mb-4">
-            	<Form.Label>Academic Term</Form.Label>
+            	<Form.Label>School Year</Form.Label>
                 <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
                 <option value={seletedClass?.academicTermId}>{seletedClass?.termName}</option>
                   {academicTerm.map(item =>{
