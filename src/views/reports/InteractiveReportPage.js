@@ -112,7 +112,7 @@ function InteractiveReportPage() {
     </div>
       }
       {display == 'accordion' && <InteractiveReport filter={filter} setFilter={setFilter} getInteractiveReport={getInteractiveReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
-      {display == 'interactiveReport' && <InteractiveReportContent getTaskAnalysis={handleGetTaskAnalysis} interactiveReport={interactiveReport}/>}
+      {display == 'interactiveReport' && <InteractiveReportContent interactiveName={interactiveName} getTaskAnalysis={handleGetTaskAnalysis} interactiveReport={interactiveReport}/>}
 
 	  </ReportContainer>
 	)

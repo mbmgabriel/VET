@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {Badge, Table, Button, Form, Card, Row, Col} from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
-import ExamAnalysis from './ExamAnalysis'
+import {writeFileXLSX, utils} from "xlsx";
 import { toast } from 'react-toastify';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { UserContext } from './../../../context/UserContext'
@@ -10,7 +10,7 @@ import FrequencyError from './FrequencyError';
 import FrequencyOferror from './FrequencyOferror';
 
 
-function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHeader, getExamAnalysis}) {
+function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHeader, getExamAnalysis, testName}) {
   
   const [examAnalysis, setExamAnalysis] = useState([])
   const [showExamAnalysis, setShowExamAnalysis] = useState(false)
@@ -27,6 +27,7 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
   const [sorted, setSorted] = useState([])
   const [alphabetical, setAlphabetical] = useState(true);
   const {user} = userContext.data
+  const [dataDownload, setDataDownload] = useState({});
   const pageURL = new URL(window.location.href);
   let sessionClass = pageURL.searchParams.get("classId")
   let sessionTestId = sessionStorage.getItem("testid")
@@ -36,24 +37,9 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     getFrequencyReport()
   }
 
-  console.log(testReport, '--------testReport--------')
-
   const handleHideAnalysis =() => {
     setShowAnalysis(false)
   }
-
-  // const getExamAnalysis = async(e, studentid, classid, testid) => {
-  //   sessionStorage.setItem('analysis','true')
-  //   sessionStorage.setItem('studentid',studentid)
-  //   sessionStorage.setItem('testid',testid)
-  //   setShowExamAnalysis(true)
-  //   let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
-  //   if(response.ok){
-  //     setExamAnalysis(response.data)
-  //   }else{
-  //     alert("Something went wrong while fetching all courses")
-  //   }
-  // }
 
   const getFrequencyReport = async () =>{
     let response = await new ClassesAPI().getFrequencyReport(sessionClass, sessionTestId)
@@ -69,8 +55,6 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     getFrequencyReport()
   }
 
-  console.log('frequencyItem:', frequencyItem)
-
   const retakeExam = async(classid, testid, studentid) => {
     let isConsider = true
     let response = await new ClassesAPI().retakeExam
@@ -85,6 +69,32 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     }
   }
 
+  const handleGetItems = () => {
+    let tempData =[]
+    testReport.map((st, index) => {
+      let temp= {};
+      let name = `${ st.student.lname} ${ st.student.fname}`
+      let score = `${st.studentTests[0].score}/${st.studentTests[0].rawScore}`
+      let isSubmitted = st.studentTests[0].isSubmitted;
+      let ifPassed = st.studentTests[0].rawScore/2 <= st.studentTests[0].score ? 'Passed': 'Failed';
+      let status = isSubmitted ? ifPassed : 'Not Submitted'
+      temp[`Student Name`] = name;
+      temp.Grade = isSubmitted ? score : 'Not Submitted';
+      temp.Status = status;
+      tempData.push(temp);
+    })
+    console.log(tempData, '-0-0-0-=0-0')
+    setDataDownload(tempData);
+  }
+
+  const downloadxls = () => {
+    const ws =utils.json_to_sheet(dataDownload);
+    const wb =utils.book_new();
+    utils.book_append_sheet(wb, ws, "SheetJS");
+    /* generate XLSX file and send to client */
+    writeFileXLSX(wb, `${testName}_exam_report.xlsx`);
+  };
+  
   const arrageAlphabetical = (data) => {
     let temp = data?.sort(function(a, b){
       console.log(a, 'herererereherererereherererere TRUE')
@@ -139,6 +149,10 @@ const handleClickIcon = () =>{
   }
 
   useEffect(() => {
+    handleGetItems();
+  },[testReport])
+
+  useEffect(() => {
     if(sessionTestId != null){
       getTestReport(null, sessionClass, sessionTestId)
     }
@@ -168,10 +182,9 @@ const handleClickIcon = () =>{
     let showAnalysis = true
     let response = await new ExamAPI().updateExamAnalysis(sessionClass, sessionTestId, {showAnalysis, startDate, startTime, endDate, endTime, timeLimit})
       if(response?.ok){
-        alert('SSSSSSSSSSS')
+        getTestReport(null, sessionClass, sessionTestId)
       }else{
         getTestReport(null, sessionClass, sessionTestId)
-        
       }
   }
 
@@ -179,7 +192,7 @@ const handleClickIcon = () =>{
     let showAnalysis = false
     let response = await new ExamAPI().updateExamAnalysis(sessionClass, sessionTestId, {showAnalysis, startDate, startTime, endDate, endTime, timeLimit})
       if(response?.ok){
-        alert('AAAAAAAAAAAAAAA')
+        getTestReport(null, sessionClass, sessionTestId)
       }else{
         getTestReport(null, sessionClass, sessionTestId)
       }
@@ -266,6 +279,7 @@ const handleClickIcon = () =>{
           {/* <Button onClick={() => handleFrequencyModal()}  style={{marginTop:'15px'}} className='btn-showResult'  size='sm' variant="outline-warning"><b> Frequency of error </b></Button> */}
         <Button onClick={() => handleHideAnalysis()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Score </b></Button>
         <Button onClick={() => handleShowAnalysis()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Analysis </b></Button>
+        <Button onClick={() => downloadxls()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Export </b></Button>
       </div>
         {showAnalysis === false? (<>
           <div style={{display:'flex', paddingRight:'20px'}}>

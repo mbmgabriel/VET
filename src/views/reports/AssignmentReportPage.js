@@ -39,7 +39,6 @@ function AssignmentReportPage() {
     if (response.ok) {
       setClassesModules(response.data)
       setLoading(false);
-      console.log(response.data)
     } else {
       toast.error("Something went wrong while fetching all class modules.")
       setLoading(false);
@@ -56,7 +55,6 @@ function AssignmentReportPage() {
     if (response.ok) {
       setAssignmentReport(response.data)
       setLoading(false);
-      console.log(response.data)
     } else {
       toast.error(response.data.errorMessage)
       setLoading(false);
@@ -75,7 +73,6 @@ function AssignmentReportPage() {
   }
 
   const handleGetAssignmentAnalysis = async (e, studentid, classid, assignmentId, lname, fname) => {
-    // console.log(selectedClassId)
     setDisplay('analysis');
     sessionStorage.setItem('analysis', 'true')
     sessionStorage.setItem('studentid', studentid)
@@ -83,8 +80,6 @@ function AssignmentReportPage() {
     let response = await new ClassesAPI().getAssignmentAnalysis(studentid, paramsId, assignmentId)
     if (response.ok) {
       setAssignmentAnalysis(response.data)
-      console.log(response.data)
-
     } else {
       toast.error(response.data.errorMessage)
     }
@@ -132,8 +127,8 @@ function AssignmentReportPage() {
         </div>
       }
       {display == 'accordion' && <AssignmentReport filter={filter} setFilter={setFilter} getAssignmentReport={getAssignmentReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
-      {display == 'assignmentReport' && <AssignmentReportContent setAssignmentRepor={setAssignmentReport} getAssignmentAnalysis={handleGetAssignmentAnalysis} assignmentReport={assignmentReport} />}
-      {display == 'analysis' && <AssignmentAnalysis assignmentAnalysis={assignmentAnalysis} setAssignmentAnalysis={setAssignmentAnalysis} />}
+      {display == 'assignmentReport' && <AssignmentReportContent assignmentName={assignmentName} setAssignmentReport={setAssignmentReport} getAssignmentAnalysis={handleGetAssignmentAnalysis} assignmentReport={assignmentReport}/>}
+      {display == 'analysis' && <AssignmentAnalysis assignmentAnalysis={assignmentAnalysis} setAssignmentAnalysis={setAssignmentAnalysis}/>}
 
     </ReportContainer>
   )

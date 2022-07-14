@@ -29,7 +29,6 @@ function ReportHeader() {
   useEffect(() => {
     getClassModules(paramsId)
     setCurrentClassId(paramsId)
-    // if (user.isStudent) return (window.location.href = "/404");
   }, []);
 
   const getClassModules = async (selectedClassId) => {
@@ -39,7 +38,6 @@ function ReportHeader() {
     if (response.ok) {
       setClassesModules(response.data)
       setLoading(false);
-      console.log(response.data)
     } else {
       toast.error("Something went wrong while fetching class modules.")
     }
@@ -50,17 +48,14 @@ function ReportHeader() {
     setLoading(true)
     sessionStorage.setItem('testName', testname)
     sessionStorage.setItem('testid', testid)
-    // setViewTestReport(false)
     let response = await new ClassesAPI().getTestReport(currentClassId, testid)
     setLoading(false)
     if (response.ok) {
       setTestReport(response.data)
-      // setStartDate(response.studentTests.classTest.startDate)
-    setLoading(false)
-
+      setLoading(false)
     } else {
-    setLoading(false)
-    toast.error(response.data?.ErrorMessage)
+      setLoading(false)
+      toast.error(response.data?.ErrorMessage)
     }
   }
 
@@ -149,13 +144,13 @@ function ReportHeader() {
                 }
               </div>
           }
-        </div>
-      </div>
-      {display == 'accordion' && <ExamReport filter={filter} setFilter={setFilter} getTestReport={handlegetTestReport} classesModules={classesModules} selectedClassId={currentClassId} />}
-      {display == 'testReport' && <ExamReportContent showReportHeader={true} getExamAnalysis={handleGetExamAnalysis} setShowReportHeader={() => console.log('test')} setTestReport={() => alert('setTestReport')} testReport={testReport} />}
-      {display == 'analysis' && <ExamAnalysis examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} getExamAnalysis={handleGetExamAnalysis} />}
-    </ReportContainer>
-  )
+				</div>
+			</div>
+		{display == 'accordion' && <ExamReport filter={filter} setFilter={setFilter} getTestReport={handlegetTestReport} classesModules={classesModules} selectedClassId={currentClassId}/>}
+    {display == 'testReport' && <ExamReportContent testName={testname} showReportHeader={true} getExamAnalysis={handleGetExamAnalysis} setShowReportHeader={()=> console.log('')} setTestReport={()=> alert('setTestReport')} testReport={testReport}/>}
+    {display == 'analysis' && <ExamAnalysis examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} getExamAnalysis={handleGetExamAnalysis} />}
+  </ReportContainer>
+	)
 }
 export default ReportHeader
 
