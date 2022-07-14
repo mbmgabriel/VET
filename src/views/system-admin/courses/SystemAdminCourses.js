@@ -25,10 +25,17 @@ export default function SystemAdminCourses() {
 	const [sarea, setSarea] = useState([])
 	const [locked, setLockStatus]= useState(false);
   const [selectedCourse, setSelectedCourse] = useState({});
+  const [contributorModal, setContributorModal] = useState(false);
+  const [teachersList, setTeachersList] = useState([]);
+  const [contributorsList, setContributorsList] = useState([]);
+  const [courseID, setCourseID] = useState('');
+  const [courseInfo, setCourseInfo] = useState({});
+  const [authorId, setAuthorId] = useState('');
   
 	useEffect(() => {
     viewSubjectArea()
     getCourses()
+    getTeacherList()
   }, [])
 
   const handleDeleteTeacher = async() => {
@@ -201,6 +208,124 @@ export default function SystemAdminCourses() {
     }
   }
 
+  const addContributor = async(item) => {
+    console.log(item)
+    let data = {
+      "courseId": courseID,
+      "userAccountId": item.userAccountID,
+    }
+    let response = await new CoursesAPI().addDistributor(courseID, data)
+    if(response.ok){
+      toast.success('Contributor added successfully');
+      handleGetContributors(courseID);
+    }else{
+      toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+    }
+  }
+
+  const handleRemoveContributor = async(data) => {
+    console.log(data)
+    if(data.distributorInformation.userAccountId == authorId){
+      toast.error("You can't remove the author of this course.")
+    }else{
+      let response = await new CoursesAPI().removeContributor(courseID, data.distributorInformation.id)
+      if(response.ok){
+        toast.success('Contributor removed successfully');
+        handleGetContributors(courseID);
+      }else{
+        toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+      }
+    }
+  }
+
+  const handleGetContributors = async(id) => {
+    let response = await new CoursesAPI().getContributor(id)
+    if(response.ok){
+      setContributorsList([...response.data])
+    }else{
+      toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+    }
+  }
+
+  const getCourseInfo = async(id) => {
+    let response = await new CoursesAPI().getCourseInformation(id)
+    if(response.ok){
+      setCourseInfo(response.data)
+      setAuthorId(response.data.createdBy)
+      console.log(response, '-=-=-')
+    }else{
+      alert("Something went wrong while fetching course information")
+    }
+  }
+
+  const getTeacherList = async() => {
+    let response = await new SchoolAPI().getTeachers()
+    if(response.ok){
+      setTeachersList(response.data)
+    }else{
+      toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
+    }
+  }
+
+  const handleClickContributor = (id) => {
+    setContributorModal(!contributorModal)
+    handleGetContributors(id)
+    setCourseID(id)
+    getCourseInfo(id)
+  }
+
+  const handleDisplayContributorMOdal = () => {
+    return(
+      <Modal size="lg" className="modal-all" show={contributorModal} onHide={()=> setContributorModal(false)} >
+				<Modal.Header className="modal-header" closeButton>
+          Contributor
+				</Modal.Header>
+					<Modal.Body className="modal-label b-0px">
+           <Row>
+              <Col md={6}>
+                <div className='contributors-container'>
+                  <p className="font-20">Contributor/s</p>
+                  {
+                    contributorsList.map((contributor, key) => {
+                      return (
+                        <Row className="mb-3">
+                          <Col md={8}>
+                            <span>{contributor.userInformation.firstname} {contributor.userInformation.lastname} </span>
+                          </Col>
+                          <Col>
+                            <span><i onClick={() => handleRemoveContributor(contributor)} className="fa fa-minus bg-danger color-white d-flex justify-content-center align-items-center br-3" style={{width: 23, height: 23}}/></span>
+                          </Col>
+                        </Row>
+                      )
+                    })
+                  }
+                </div>
+              </Col>
+              <Col md={6}>
+                <div className='contributors-container'>
+                <p className="font-20">Teacher/s</p>
+                {
+                  teachersList.map((teacher, key) => {
+                    return (
+                    <Row className="mb-3">
+                      <Col md={8}>
+                        <span className="w-75">{teacher.fname} {teacher.lname}</span>
+                      </Col>
+                      <Col>
+                        <span><i onClick={() => addContributor(teacher)} className="fa fa-plus tficolorbg-button color-white d-flex justify-content-center align-items-center br-3" style={{width: 23, height: 23}}/></span>
+                      </Col>
+                    </Row>
+                      )
+                  })
+                }
+                </div>
+              </Col>
+           </Row>
+					</Modal.Body>
+			</Modal>
+    )
+  }
+
   return (
     <MainContainer title="Dashboard" activeHeader={"courses"} loading={loading}>
         <h3 className='m-b-20 m-t-20'>Course List</h3> 
@@ -260,6 +385,9 @@ export default function SystemAdminCourses() {
                     <button onClick={() => handleClickEdit(row.original)} className="btn btn-info btn-sm m-r-5" >
                       <i class="fas fa-edit"/>
                     </button>
+                    <button onClick={() => handleClickContributor(row.original.id)} className="btn tficolorbg-button btn-sm m-r-5" >
+                      CONTRIBUTOR
+                    </button>
                     {/* <button onClick={() => handleClickDelete(row.original.id)} className="btn btn-danger btn-sm m-r-5">
                       <i class="fas fa-trash" />
                     </button> */}
@@ -283,6 +411,7 @@ export default function SystemAdminCourses() {
           You will not be able to recover this data!
         </SweetAlert>
         {handleEditModal()}
+        {handleDisplayContributorMOdal()}
     </MainContainer>
   )
 }

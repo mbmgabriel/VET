@@ -18,7 +18,7 @@ export default function FloatingOptions() {
     if(response.ok){
       setprofileImage(response.data)
     }else{
-      toast.error('Something went wrong while getting profile image.')
+      // toast.error('Something went wrong while getting profile image.')
     }
   }
 
