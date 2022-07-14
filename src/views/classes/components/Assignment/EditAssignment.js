@@ -11,7 +11,7 @@ import { useParams } from 'react-router'
 import { toast } from 'react-toastify';
 import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
-function EditAssignment({setModal, modal, editAssignment, getAssignmentList, moduleId, instructions, setInstructions, setAssignmentName, assignmentName, unit, assignmentId}) {
+function EditAssignment({setRate, rate, setModal, modal, editAssignment, getAssignmentList, moduleId, instructions, setInstructions, setAssignmentName, assignmentName, unit, assignmentId}) {
   const [editNotufy, setEditNotify] = useState(false)
   const isShared = null
   const [qwert, setQwert] = useState(editAssignment?.assignment?.instructions)
@@ -33,27 +33,40 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
 
   const updateTask = async (e) =>{
     e.preventDefault()
-    let id = assignmentId
-    let mId = moduleId
-    let response = await new ClassesAPI().updateAssignment(id, {assignmentName, instructions, isShared})
-      if(response.ok){
-        // alert('Assingment Updated')
-        // setEditNotify(true)
-        getAssignmentList(null, mId)
-        setModal(false)
-        success()
-      }else{
-        // alert(response.data.errorMessage)
-        toast.error(response.data.errorMessage, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          });
-      }
+    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || assignmentName === ''){
+      toast.error('Please input all the required fields.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else{
+      let id = assignmentId
+      let mId = moduleId
+      let response = await new ClassesAPI().updateAssignment(id, {assignmentName, instructions, rate, isShared})
+        if(response.ok){
+          // alert('Assingment Updated')
+          // setEditNotify(true)
+          getAssignmentList(null, mId)
+          setModal(false)
+          success()
+        }else{
+          // alert(response.data.errorMessage)
+          toast.error(response.data.errorMessage, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        }
+    }
+    
   }
 
   // useEffect(() => {
@@ -219,6 +232,10 @@ function EditAssignment({setModal, modal, editAssignment, getAssignmentList, mod
                   <Form.Label>Assignment Name</Form.Label>
                 <Form.Control defaultValue={assignmentName} placeholder='Enter Assignment Name here' type="text" onChange={(e) => setAssignmentName(e.target.value)} />
                   </Form.Group>
+                  <Form.Group className="mb-4">
+                <Form.Label>Rate</Form.Label>
+                  <Form.Control defaultValue={rate}  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
+                </Form.Group>
                   <Form.Group className="mb-4">
                     <Form.Label >Instruction</Form.Label>
                       <ContentField value={instructions} placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />

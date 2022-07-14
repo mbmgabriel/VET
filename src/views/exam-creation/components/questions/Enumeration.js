@@ -149,7 +149,8 @@ export default function Enumeration({
   setLoading,
   deleteQuestion,
   editable,
-  examName
+  examName,
+  shared
 }) {
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
@@ -352,7 +353,7 @@ export default function Enumeration({
             <hr/>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable && isContributor && (
+          {editable && !shared && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -369,7 +370,7 @@ export default function Enumeration({
           )}
         </div>
       ))}
-      {isContributor && editable && (
+      {isContributor && editable && !shared && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'

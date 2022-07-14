@@ -13,6 +13,8 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
   const [assignmentAnalysis, setAssignmentAnalysis] = useState([])
   const [showAssignmentAnalysis, setShowAssignmentAnalysis] = useState(false)
   const [dataDownload, setDataDownload] = useState({});
+  const [alphabetical, setAlphabetical] = useState(true);
+  const [sorted, setSorted] = useState([])
 
   let sessionClass = sessionStorage.getItem("classId")
   let sessionAssignmentId = sessionStorage.getItem("assignmentId")
@@ -45,9 +47,9 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
       let name = `${ st.student.lname} ${ st.student.fname}`
       let score = st.studentAssignments[0].score
       let status = st.studentAssignments[0].studentAnswer == null ? 'Not Submitted' : 'Submitted'
-      temp.student = name;
-      temp.grade = score;
-      temp.status = status;
+      temp[`Student Name`] = name;
+      temp.Grade = score;
+      temp.Status = status;
       tempData.push(temp);
     })
     setDataDownload(tempData);
@@ -67,6 +69,40 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
     writeFileXLSX(wb, `${assignmentName}_assignment_report.xlsx`);
   };
 
+  const handleClickIcon = () =>{
+    setAlphabetical(!alphabetical);
+    if(!alphabetical){
+      arrageAlphabetical(assignmentReport);
+    }
+    else{
+      arrageNoneAlphabetical(assignmentReport);
+    }
+  }
+
+  const arrageAlphabetical = (data) => {
+    let temp = data?.sort(function(a, b){
+      console.log(a, 'herererereherererereherererere TRUE')
+      let nameA = a.student.lname.toLocaleLowerCase();
+      let nameB = b.student.lname.toLocaleLowerCase();
+      if (nameA < nameB) {
+          return -1;
+      }
+    });
+    console.log(temp, '2222')
+    setSorted(temp)
+}
+
+const arrageNoneAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA > nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '111111')
+  setSorted(temp)
+}
 
   // if(showAssignmentAnalysis === false){
   return(
@@ -79,7 +115,7 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
       <Table hover size="lg" responsive>
         <thead>
           <tr>
-            <th>Student Name</th>
+          <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
             {/* {assignmentReport.map(item =>{
               return(
               item.columnAssignments.map(as =>{

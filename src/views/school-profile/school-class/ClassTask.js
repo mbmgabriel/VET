@@ -122,13 +122,13 @@ export default function SchoolAdminTask() {
       alert("Something went wrong while Deleting Deleting a getTaskModule")
     }
   }
-  useEffect(() => {
-    if(moduleId !== null){
-      return(
-        getTaskModule() 
-      )
-    }  
-  }, [])
+  // useEffect(() => {
+  //   if(moduleId !== null){
+  //     return(
+  //       getTaskModule() 
+  //     )
+  //   }  
+  // }, [])
 
   const removeTask = async (e, item, item1) => {
     let response = await new ClassesAPI().deleteTasks(item)

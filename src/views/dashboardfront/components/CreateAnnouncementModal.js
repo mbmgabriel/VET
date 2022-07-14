@@ -13,6 +13,7 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 	const [title, setTitle] = useState('')
 	const [content, setContent] = useState('')
 	const userContext = useContext(UserContext)
+	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const {user} = userContext.data
 
 	const handleCloseModal = e => {
@@ -23,6 +24,8 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 
 	const saveAnnouncement = async(e) => {
     e.preventDefault()
+		setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
 		if(title === ''){
 			toast.error('Please insert all the required fields', {
 				position: "top-right",
@@ -133,7 +136,7 @@ export default function CreateAnnouncement({getMyAnnouncement, setOpenCreateAnno
 						{' '}
 
 						<span style={{float:"right"}}>
-							<Button className="tficolorbg-button" type="submit">
+							<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
 									Save Announcement
 							</Button>
 						</span>

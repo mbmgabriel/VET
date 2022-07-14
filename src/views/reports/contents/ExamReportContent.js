@@ -10,7 +10,7 @@ import FrequencyError from './FrequencyError';
 import FrequencyOferror from './FrequencyOferror';
 
 
-function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHeader, getExamAnalysis, testname}) {
+function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHeader, getExamAnalysis, testName}) {
   
   const [examAnalysis, setExamAnalysis] = useState([])
   const [showExamAnalysis, setShowExamAnalysis] = useState(false)
@@ -24,6 +24,8 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
   const [showAnalysis, setShowAnalysis] = useState(false)
   const userContext = useContext(UserContext)
   const [testReport, setTestReport] = useState([])
+  const [sorted, setSorted] = useState([])
+  const [alphabetical, setAlphabetical] = useState(true);
   const {user} = userContext.data
   const [dataDownload, setDataDownload] = useState({});
   const pageURL = new URL(window.location.href);
@@ -72,13 +74,16 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     testReport.map((st, index) => {
       let temp= {};
       let name = `${ st.student.lname} ${ st.student.fname}`
-      let score = st.studentTests[0].score
-      let status = st.studentTests[0].isSubmitted ? 'Submitted' : 'Not Submitted'
-      temp.student = name;
-      temp.grade = score;
-      temp.status = status;
+      let score = `${st.studentTests[0].score}/${st.studentTests[0].rawScore}`
+      let isSubmitted = st.studentTests[0].isSubmitted;
+      let ifPassed = st.studentTests[0].rawScore/2 <= st.studentTests[0].score ? 'Passed': 'Failed';
+      let status = isSubmitted ? ifPassed : 'Not Submitted'
+      temp[`Student Name`] = name;
+      temp.Grade = isSubmitted ? score : 'Not Submitted';
+      temp.Status = status;
       tempData.push(temp);
     })
+    console.log(tempData, '-0-0-0-=0-0')
     setDataDownload(tempData);
   }
 
@@ -87,8 +92,48 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     const wb =utils.book_new();
     utils.book_append_sheet(wb, ws, "SheetJS");
     /* generate XLSX file and send to client */
-    writeFileXLSX(wb, `${testname}_exam_report.xlsx`);
+    writeFileXLSX(wb, `${testName}_exam_report.xlsx`);
   };
+  
+  const arrageAlphabetical = (data) => {
+    let temp = data?.sort(function(a, b){
+      console.log(a, 'herererereherererereherererere TRUE')
+      let nameA = a.student.lname.toLocaleLowerCase();
+      let nameB = b.student.lname.toLocaleLowerCase();
+      if (nameA < nameB) {
+          return -1;
+      }
+    });
+    console.log(temp, '2222')
+    setSorted(temp)
+}
+
+const arrageNoneAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA > nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '111111')
+  setSorted(temp)
+}
+
+useEffect(()=>{
+    arrageNoneAlphabetical(testReport);
+    arrageAlphabetical(testReport);
+}, [testReport])
+
+const handleClickIcon = () =>{
+  setAlphabetical(!alphabetical);
+  if(!alphabetical){
+    arrageAlphabetical(testReport);
+  }
+  else{
+    arrageNoneAlphabetical(testReport);
+  }
+}
 
   const getTestReport = async(e, sessionClass,testid) => {
     setLoading(true)
@@ -98,11 +143,14 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     if(response.ok){
       setTestReport(response.data)
       setExamReport(response.data[0].studentTests)
-      handleGetItems();
     }else{
       alert('response.data.errorMessage')
     }
   }
+
+  useEffect(() => {
+    handleGetItems();
+  },[testReport])
 
   useEffect(() => {
     if(sessionTestId != null){
@@ -256,14 +304,14 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     <Table striped hover size="sm">
       <thead>
         <tr>
-          <th>Student Name</th>
+        <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
           <th>Grade</th>
           <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        {testReport?.map(item =>{
+        {sorted?.map(item =>{
           return (
             item.studentTests.map(st =>{
               return (  

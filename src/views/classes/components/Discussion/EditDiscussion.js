@@ -105,7 +105,7 @@ function EditDiscussion({setModal, setInstructions, instructions, modal, toggle,
                   <ContentField value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
                   </Form.Group>
               <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Update Discussion</Button>
             </Form.Group>
         </Form> 
         </Modal.Body>

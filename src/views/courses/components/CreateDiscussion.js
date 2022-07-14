@@ -19,6 +19,8 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
@@ -32,6 +34,8 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
 
 	const saveDiscussion = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true)
     let response = await new CoursesAPI().createDiscussion(
       sessionModule,
@@ -142,7 +146,7 @@ export default function CreateDiscussion({openCreateDiscussionModal, setOpenCrea
 								</Form.Group>
 
 								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
+										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
 												Save Discussion
 										</Button>
 								</span>
