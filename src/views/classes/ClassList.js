@@ -174,7 +174,6 @@ function ClassList() {
         ):
         <ClassWaiting searchTerm={searchTerm} getStudentEnrolled={getStudentEnrolled} getStudentWaiting={getStudentWaiting} waitingStudent={waitingStudent} />}
     {handleShowUploadModal()}
-    {loading && <FullScreenLoader /> }
     </ClassSideNavigation>
   )
 }

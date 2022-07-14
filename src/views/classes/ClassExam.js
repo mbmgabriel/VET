@@ -28,7 +28,6 @@ export const ClassExam = () => {
   const fetchExams = async () => {
     setLoading(true);
     let response = await new ExamAPI().getExams(id);
-    setLoading(false);
     if (response.ok) {
       const filteredExams = response.data.filter(
         (item) => user.isTeacher || item.classTest != null
@@ -93,7 +92,6 @@ export const ClassExam = () => {
 
   return (
     <ClassSideNavigation>
-      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title={''} clicked={() => console.log('')}/>
       <div className="class-container position-relative">
         {/* {loading && <ActivityIndicator />} */}
