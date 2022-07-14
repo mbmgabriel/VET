@@ -1,12 +1,14 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button,  Tooltip, OverlayTrigger, Table} from 'react-bootstrap'
 import { useParams } from 'react-router'
 import ClassesAPI from '../../../api/ClassesAPI'
+import CoursesAPI from '../../../api/CoursesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './Task/TaskFileHeader';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../../context/UserContext';
 
 function ClassCourseFileLibrary() {
   const [displayFiles, setDisplayFiles] = useState([]);
@@ -17,15 +19,32 @@ function ClassCourseFileLibrary() {
   const [showFilesFolders, setShowFilesFolders] = useState(false);
   const [courseId, setCourseId] = useState(null)
   const {id} = useParams();
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const [isContributor, setIsContributor] = useState(true);
 
   const getClassInfo = async() => {
-    // setLoading(true)
     let response = await new ClassesAPI().getClassInformation(id)
     if(response.ok){
       setCourseId(response?.data?.courseId)
+      getCourseInformation(response?.data?.courseId)
       console.log({response})
     }
-    // setLoading(false)
+  }
+
+  const getCourseInformation = async(cId) => {
+    let response = await new CoursesAPI().getCourseInformation(cId);
+    if(response.ok){
+      let TFICourse = response.data.isTechfactors;
+      console.log(response.data, 'infoooooooooooooooooo', TFICourse)
+      if(TFICourse){
+        let contriList = await new CoursesAPI().getContributor(cId)
+        console.log(contriList, "--------------------------------");
+        let ifContri = contriList.data.find(i => i.userInformation?.userId == user.userId);
+        console.log(ifContri, user.userId, '-=-=-=')
+        setIsContributor(ifContri ? true : false);
+      }
+    }
   }
 
   useEffect(() => {
@@ -34,7 +53,6 @@ function ClassCourseFileLibrary() {
 
 
   const handleGetClassFiles = async(name) => {
-    // setLoading(true)
     let data = {
       "subFolderLocation": name
     }
@@ -189,9 +207,9 @@ function ClassCourseFileLibrary() {
               <tr>
                 <td colSpan={3} onClick={() => handleClickType('Class')} className='ellipsis w-25 task-folder'><i className="fas fa-folder" /><span> Class Files</span></td>
               </tr>
-              <tr>
+              {isContributor && <tr>
                 <td colSpan={3} onClick={() => handleClickType('Course')} className='ellipsis w-25 task-folder'><i className="fas fa-folder" /><span> Course Files</span></td>
-              </tr>
+              </tr>}
             </tbody>
           </Table>
         }

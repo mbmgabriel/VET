@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import ClassFilesContent from './components/ClassFileContent';
 import { useParams } from 'react-router';
 import ClassFileHeader from './components/ClassFileHeader'
 import { InputGroup, FormControl, Table } from 'react-bootstrap';
 import FilesAPI from '../../api/FilesApi';
 import ClassesAPI from '../../api/ClassesAPI';
+import CoursesAPI from '../../api/CoursesAPI'
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
+import { UserContext } from '../../context/UserContext';
 
 function ClassFiles() {
   const {id} = useParams();
@@ -19,6 +21,9 @@ function ClassFiles() {
   const [displayClassCourse, setDisplayClassCourse] = useState(false);
   const [displayType, setDisplayType] = useState('');
   const [courseId, setCourseId] = useState(null)
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const [isContributor, setIsContributor] = useState(true);
 
   useEffect(() => {
     getClassInfo();
@@ -31,10 +36,26 @@ function ClassFiles() {
     // setLoading(true)
     let response = await new ClassesAPI().getClassInformation(id)
     if(response.ok){
-      setCourseId(response?.data?.courseId)
+      setCourseId(response?.data?.courseId);
+      getCourseInformation(response?.data?.courseId);
       console.log({response})
     }
     // setLoading(false)
+  }
+
+  const getCourseInformation = async(cId) => {
+    let response = await new CoursesAPI().getCourseInformation(cId);
+    if(response.ok){
+      let TFICourse = response.data.isTechfactors;
+      console.log(response.data, 'infoooooooooooooooooo', TFICourse);
+      if(TFICourse){
+        let contriList = await new CoursesAPI().getContributor(cId)
+        console.log(contriList, "--------------------------------");
+        let ifContri = contriList.data.find(i => i.userInformation?.userId == user.userId);
+        console.log(ifContri, user.userId, '-=-=-=')
+        setIsContributor(ifContri ? true : false);
+      }
+    }
   }
 
   const handleRefetch = () => {
@@ -154,9 +175,11 @@ function ClassFiles() {
               <tr>
                 <td onClick={() => handleClickedItem('Class')} colSpan={3} className='ellipsis w-25 colored-class'><i className="fas fa-folder" /><span className='font-size-22'> Class Files</span></td>
               </tr>
-              <tr>
-                <td colSpan={3} onClick={() => handleClickedItem('Course')} className='ellipsis w-25 colored-class'><i className="fas fa-folder" /><span className='font-size-22'> Course Files</span></td>
-              </tr>
+              {
+                isContributor && <tr>
+                  <td colSpan={3} onClick={() => handleClickedItem('Course')} className='ellipsis w-25 colored-class'><i className="fas fa-folder" /><span className='font-size-22'> Course Files</span></td>
+                </tr>
+              }
             </tbody>
           </Table>
         </>  
