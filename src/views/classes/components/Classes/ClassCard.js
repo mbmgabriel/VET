@@ -5,7 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 
-function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
+function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedClass, getClasses}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
   const [itemId, setItemId] = useState('')
@@ -21,6 +21,10 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
   const handleDeleteNotify = (e, item) =>{
     setDeleteNotify(true)
     setItemId(item)
+  }
+
+  const handleCoverPhotoModal =() => {
+    setOpenCoverPhotoModal(true)
   }
 
   const handleOpeEditModal = (e, item) => {
@@ -99,6 +103,9 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                   <Dropdown.Menu >
                     <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>
                       Edit 
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={(e) => handleCoverPhotoModal()}>
+                      Upload Photo 
                     </Dropdown.Item>
                     <Dropdown.Item onClick={(e) => handleDeleteNotify(e, item.classId)}>
                       Archive 
