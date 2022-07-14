@@ -12,6 +12,8 @@ function TaskReportContent({getTaskReport, getTaskAnalysis, showTaskHeader, task
   const {user} = userContext.data
   const [taskAnalysis, setTaskAnalysis] = useState([])
   const [showTaskAnalysis, setShowTaskAnalysis] = useState(false)
+  const [sorted, setSorted] = useState([])
+  const [alphabetical, setAlphabetical] = useState(true);
 
   let sessionClass = sessionStorage.getItem("classId")
   let sessionTaskId = sessionStorage.getItem("taskId")
@@ -58,6 +60,46 @@ function TaskReportContent({getTaskReport, getTaskAnalysis, showTaskHeader, task
   useEffect(() => {
     // setShowTaskHeader(true)
   }, [])
+
+  const handleClickIcon = () =>{
+    setAlphabetical(!alphabetical);
+    if(!alphabetical){
+      arrageAlphabetical(taskReport);
+    }
+    else{
+      arrageNoneAlphabetical(taskReport);
+    }
+  }
+
+  useEffect(()=>{
+    arrageNoneAlphabetical(taskReport);
+    arrageAlphabetical(taskReport);
+}, [taskReport])
+
+const arrageNoneAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA > nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '111111')
+  setSorted(temp)
+}
+
+const arrageAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    console.log(a, 'herererereherererereherererere TRUE')
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA < nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '2222')
+  setSorted(temp)
+}
   
   if(showTaskAnalysis === false){
   return(
@@ -66,7 +108,7 @@ function TaskReportContent({getTaskReport, getTaskAnalysis, showTaskHeader, task
     <Table hover size="lg" responsive>
       <thead>
         <tr>
-          <th>Student Name</th>
+        <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
           {/* {assignmentReport.map(item =>{
             return(
             item.columnAssignments.map(as =>{
@@ -87,7 +129,7 @@ function TaskReportContent({getTaskReport, getTaskAnalysis, showTaskHeader, task
         </tr>
       </thead>
       <tbody>
-      {taskReport.map(item =>{
+      {sorted.map(item =>{
           return (
             <tr>
               
