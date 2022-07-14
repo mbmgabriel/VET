@@ -16,11 +16,16 @@ const toggle = () =>{
     <div>
       <div className="row m-b-20" style={{paddingTop:'10px'}}>
 			<div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Assignment </p>
-			<div>
-				<Button onClick={() => onRefresh()} className='ml-3'>
-					<i className="fa fa-sync"></i>
-				</Button>
-			</div>
+			  {
+          window.location.pathname.includes('/school_classes') ?
+          null
+          :
+          <div>
+          <Button onClick={() => onRefresh} className='ml-3'>
+            <i className="fa fa-sync"></i>
+          </Button>
+        </div>
+        }
 			{
         user.isTeacher && 
 					<p className='title-header m-0-dashboard'>

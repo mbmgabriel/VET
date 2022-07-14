@@ -14,6 +14,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   const [moduleId, setModuleId] = useState('')
   const [assignmentName, setAssignmentName] = useState('')
   const [instructions, setInstructions] = useState('')
+  const [rate, setRate] = useState('')
   const [addNotify, setAddNotity] = useState(false)
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
@@ -33,7 +34,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
     e.preventDefault()
     setIsButtonDisabled(true)
     setTimeout(()=> setIsButtonDisabled(false), 1000)
-    if(moduleId == ''){
+    if(moduleId == '' || assignmentName === '' || instructions === '' || instructions === '{{type=equation}}' || rate === '' ){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -44,12 +45,13 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
         progress: undefined,
         });
     }else{
-      let response = await new ClassesAPI().createAssignment(moduleId, id, {assignment:{assignmentName, instructions,}, classAssignment:{}} )
+      let response = await new ClassesAPI().createAssignment(moduleId, id, {assignment:{assignmentName, instructions, rate}, classAssignment:{}} )
       if(response.ok){
         success()
         setModuleId('')
         setAssignmentName('')
         setInstructions('')
+        setRate('')
         // alert('Save Assingment')
         // setAddNotity(true)
         getAssignmentList(null, moduleId)
@@ -123,6 +125,10 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
                 <Form.Label>Assignment Name</Form.Label>
                   <Form.Control onChange={(e) => setAssignmentName(e.target.value)} type="text" placeholder='Enter Assignment Name here'/>
               </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label>Rate</Form.Label>
+                  <Form.Control  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
+                </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label >Instruction</Form.Label>
                   <ContentField  value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />

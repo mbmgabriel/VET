@@ -1,12 +1,47 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { toast } from "react-toastify";
 import { UserContext } from '../../../context/UserContext';
+import AcademicTermAPI from '../../../api/AcademicTermAPI';
 
 export default function HomeLinks() {
   const userContext = useContext(UserContext)
   const {themeLogo} = userContext.data
+  const [academicTerm, setAcademicTerm] = useState([])
+  const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
+
+  useEffect(() => {
+    let temp = localStorage.getItem('academicTerm')
+    setCurrentAcademicTerm(temp)
+    getAcademicTerm()
+  },[])
+
+  const getAcademicTerm = async () =>{
+    let response = await new AcademicTermAPI().fetchAcademicTerm()
+    if(response.ok){
+      setAcademicTerm(response?.data);
+      let data = response.data;
+      let temp = localStorage.getItem('academicTerm')
+      let obj = data.find(o => o.isCurrentTerm === true);
+      if(temp === null) {
+        setCurrentAcademicTerm(temp ? temp : obj.academicTermName);
+        localStorage.setItem('academicTerm', obj.academicTermName);
+      }
+    }else{
+      toast.error("Something went wrong while fetching all Academic Term")
+    }
+  }
+
+  const selectAcademicTerm = (data) => {
+    localStorage.setItem('academicTerm', data);
+    setCurrentAcademicTerm(data)
+    let path = window.location.pathname
+    if(path == '/teacherdashboard' || path == '/classes'){
+      window.location.reload();
+    }
+  }
+
   return (
     <div className="home-links">
        <Link className="home-link " to="/teacherdashboard">
@@ -18,12 +53,12 @@ export default function HomeLinks() {
         <span>S.Y.</span>
         <Dropdown>
           <Dropdown.Toggle variant="reset" id="dropdown-basic" className="school-year-dropdown">
-            2021 - 2022
+            {currentAcademicTerm}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item href="#">2020 - 2021</Dropdown.Item>
-            <Dropdown.Item href="#">2021 - 2022</Dropdown.Item>
-            <Dropdown.Item href="#">2022 - 2023</Dropdown.Item>
+            {academicTerm.map((i, key) => {
+            return <Dropdown.Item key={key} onClick={() => selectAcademicTerm(i.academicTermName)}>{i.academicTermName}</Dropdown.Item>})
+            }
           </Dropdown.Menu>
         </Dropdown>
       </div>

@@ -24,6 +24,8 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
   const [showAnalysis, setShowAnalysis] = useState(false)
   const userContext = useContext(UserContext)
   const [testReport, setTestReport] = useState([])
+  const [sorted, setSorted] = useState([])
+  const [alphabetical, setAlphabetical] = useState(true);
   const {user} = userContext.data
   const [dataDownload, setDataDownload] = useState({});
   const pageURL = new URL(window.location.href);
@@ -89,6 +91,46 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     /* generate XLSX file and send to client */
     writeFileXLSX(wb, `${testname}_exam_report.xlsx`);
   };
+  
+  const arrageAlphabetical = (data) => {
+    let temp = data?.sort(function(a, b){
+      console.log(a, 'herererereherererereherererere TRUE')
+      let nameA = a.student.lname.toLocaleLowerCase();
+      let nameB = b.student.lname.toLocaleLowerCase();
+      if (nameA < nameB) {
+          return -1;
+      }
+    });
+    console.log(temp, '2222')
+    setSorted(temp)
+}
+
+const arrageNoneAlphabetical = (data) => {
+  let temp = data?.sort(function(a, b){
+    let nameA = a.student.lname.toLocaleLowerCase();
+    let nameB = b.student.lname.toLocaleLowerCase();
+    if (nameA > nameB) {
+        return -1;
+    }
+  });
+  console.log(temp, '111111')
+  setSorted(temp)
+}
+
+useEffect(()=>{
+    arrageNoneAlphabetical(testReport);
+    arrageAlphabetical(testReport);
+}, [testReport])
+
+const handleClickIcon = () =>{
+  setAlphabetical(!alphabetical);
+  if(!alphabetical){
+    arrageAlphabetical(testReport);
+  }
+  else{
+    arrageNoneAlphabetical(testReport);
+  }
+}
 
   const getTestReport = async(e, sessionClass,testid) => {
     setLoading(true)
@@ -256,14 +298,14 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     <Table striped hover size="sm">
       <thead>
         <tr>
-          <th>Student Name</th>
+        <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
           <th>Grade</th>
           <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        {testReport?.map(item =>{
+        {sorted?.map(item =>{
           return (
             item.studentTests.map(st =>{
               return (  

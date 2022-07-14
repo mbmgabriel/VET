@@ -88,6 +88,7 @@ export default function Essay({
   deleteQuestion,
   editable,
   examName,
+  shared
 }) {
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
@@ -227,7 +228,7 @@ export default function Essay({
             </p>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable &&  isContributor && (
+          {editable && !shared && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -241,7 +242,7 @@ export default function Essay({
           )}
         </div>
       ))}
-      {isContributor && editable && (
+      {editable && !shared && isContributor && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'
