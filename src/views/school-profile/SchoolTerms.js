@@ -12,7 +12,7 @@ export default function SchoolTerms() {
         <Col sm={3}>
           <AdminSideNavigation active="terms"/>
         </Col>
-        <Col sm={9} className='rounded-white-container px-4'>
+        <Col sm={9} className='scrollable vh-85 pb-5'>
           <SchoolTermTable />
         </Col>
       </Row>
