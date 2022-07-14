@@ -106,7 +106,7 @@ function TaskReportPage() {
       <div className="col-md-4 pages-header"><h1>{taskname}</h1></div>
       }
       {display == 'accordion' && <TaskReport filter={filter} setFilter={setFilter} getTaskReport={getTaskReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
-      {display == 'taskReport' && <TaskReportContent setTaskReport={setTaskReport} getTaskAnalysis={handleGetTaskAnalysis} taskReport={taskReport}/>}
+      {display == 'taskReport' && <TaskReportContent taskname={taskname} setTaskReport={setTaskReport} getTaskAnalysis={handleGetTaskAnalysis} taskReport={taskReport}/>}
       {display == 'analysis' && <TaskAnalysis taskAnalysis={taskAnalysis} setTaskAnalysis={setTaskAnalysis}/>}
 
 	  </ReportContainer>

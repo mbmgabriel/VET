@@ -99,7 +99,7 @@ function InteractiveReportPage() {
       <div className="col-md-4 pages-header"><h1>{interactiveName}</h1></div>
       }
       {display == 'accordion' && <InteractiveReport filter={filter} setFilter={setFilter} getInteractiveReport={getInteractiveReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
-      {display == 'interactiveReport' && <InteractiveReportContent getTaskAnalysis={handleGetTaskAnalysis} interactiveReport={interactiveReport}/>}
+      {display == 'interactiveReport' && <InteractiveReportContent interactiveName={interactiveName} getTaskAnalysis={handleGetTaskAnalysis} interactiveReport={interactiveReport}/>}
 
 	  </ReportContainer>
 	)

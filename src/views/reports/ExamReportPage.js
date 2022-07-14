@@ -27,15 +27,12 @@ function ReportHeader() {
   useEffect(() => {
     getClassModules(paramsId)
     setCurrentClassId(paramsId)
-    // if (user.isStudent) return (window.location.href = "/404");
   }, []);
 
   const getClassModules = async(selectedClassId) => {
-    console.log(selectedClassId)
     let response = await new ClassesAPI().getClassModules(selectedClassId)
     if(response.ok){
       setClassesModules(response.data)
-      console.log(response.data)
     }else{
       toast.error("Something went wrong while fetching class modules.")
     }
@@ -43,48 +40,29 @@ function ReportHeader() {
 
   const getTestReport = async( testid, testname, classid) => {
     setDisplay('testReport')
-    // setLoading(true)
     sessionStorage.setItem('testName',testname)
     sessionStorage.setItem('testid',testid)
-    // setViewTestReport(false)
     let response = await new ClassesAPI().getTestReport(currentClassId, testid)
-    // setLoading(false)
     if(response.ok){
       setTestReport(response.data) 
-      // setStartDate(response.studentTests.classTest.startDate)
     }else{
       toast.error(response.data?.ErrorMessage)
     }
   }
 
     const handlegetTestReport = (item) => {
-      console.log(item, '--------')
       setTestName(item.test.testName)
       getTestReport(item.test.id, item.test.testName, item.test.classId)
     }
 
   const handleGetExamAnalysis = async(studentid, sessionClass, testid, lname, fname) => {
-    // console.log(item)
-    // const getExamAnalysis = async(e, studentid, classid, testid) => {
-      setDisplay('analysis')
-      // setShowExamAnalysis(true)
-      setStudentName(`${lname}, ${fname}`)
-      let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
-      if(response.ok){
-        setExamAnalysis(response.data)
-        
-      }else{
-        // toast.error(response.data.errorMessage, {
-        //   position: "top-right",
-        //   autoClose: 5000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
-      }
+    setDisplay('analysis')
+    setStudentName(`${lname}, ${fname}`)
+    let response = await new ClassesAPI().getExamAnalysis(studentid, sessionClass, testid)
+    if(response.ok){
+      setExamAnalysis(response.data)
     }
+  }
 
     const handleClickBreedFirstItem = () => {
       setDisplay('accordion');
@@ -121,7 +99,7 @@ function ReportHeader() {
 				</div>
 			</div>
 		{display == 'accordion' && <ExamReport filter={filter} setFilter={setFilter} getTestReport={handlegetTestReport} classesModules={classesModules} selectedClassId={currentClassId}/>}
-    {display == 'testReport' && <ExamReportContent showReportHeader={true} getExamAnalysis={handleGetExamAnalysis} setShowReportHeader={()=> console.log('test')} setTestReport={()=> alert('setTestReport')} testReport={testReport}/>}
+    {display == 'testReport' && <ExamReportContent testName={testname} showReportHeader={true} getExamAnalysis={handleGetExamAnalysis} setShowReportHeader={()=> console.log('')} setTestReport={()=> alert('setTestReport')} testReport={testReport}/>}
     {display == 'analysis' && <ExamAnalysis examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} getExamAnalysis={handleGetExamAnalysis} />}
   </ReportContainer>
 	)
