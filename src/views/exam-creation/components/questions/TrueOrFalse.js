@@ -108,7 +108,8 @@ export default function TrueOrFalse({
   setLoading,
   deleteQuestion,
   editable,
-  examName
+  examName,
+  shared
 }) {
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
@@ -290,7 +291,7 @@ export default function TrueOrFalse({
             <p className='' title="">Answer: {question.answer}</p>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable && isContributor && (
+          {editable && !shared && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -306,7 +307,7 @@ export default function TrueOrFalse({
           
         </div>
       ))}
-      {isContributor && editable && (
+      {editable && !shared && isContributor && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'

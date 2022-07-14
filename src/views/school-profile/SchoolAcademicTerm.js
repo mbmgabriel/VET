@@ -3,17 +3,17 @@ import { Col, Row } from 'react-bootstrap'
 import MainContainer from '../../components/layouts/MainContainer'
 import AdminSideNavigation from '../../components/side-navigation/AdminSideNavigation'
 import SchoolTeachersTable from './components/SchoolTeachersTable'
-import SchoolTermTable from './components/SchoolTermTable'
+import AcademicTermTable from './components/AcademicTermTable'
 
-export default function SchoolTerms() {
+export default function SchoolAcademicTerms() {
   return (
     <MainContainer title="School" activeHeader={"school"} style='not-scrollable'>
       <Row className="mt-4">
         <Col sm={3}>
-          <AdminSideNavigation active="terms"/>
+          <AdminSideNavigation active="academicTerm"/>
         </Col>
-        <Col sm={9} className='scrollable vh-85 pb-5'>
-          <SchoolTermTable />
+        <Col sm={9} className='rounded-white-container px-4'>
+          <AcademicTermTable />
         </Col>
       </Row>
     </MainContainer>

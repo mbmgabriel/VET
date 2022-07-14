@@ -14,6 +14,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
   const [moduleId, setModuleId] = useState('')
   const [taskName, setTaskName] = useState('')
   const [instructions, setInstructions] = useState('')
+  const [rate, setRate] = useState('')
   const [addNotify, setAddNotity] = useState(false);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -33,7 +34,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
   const handleCloseModal = () => {
     setModal(false)
     setModuleId('')
-    setTaskName('')
+    setTaskName('') 
     setInstructions('')
   }
 
@@ -53,7 +54,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
     e.preventDefault()
     setIsButtonDisabled(true)
     setTimeout(()=> setIsButtonDisabled(false), 1000)
-    if(instructions === '' || instructions === '{{type=equation}}' || moduleId === ''){
+    if(instructions === '' || instructions === '{{type=equation}}' || moduleId === '' || rate === '' || taskName === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -64,10 +65,11 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
         progress: undefined,
         });
     }else{
-      let response = await new ClassesAPI().creatTask(moduleId, id, {task:{taskName, instructions,}, taskAssignment:{allowLate}} )
+      let response = await new ClassesAPI().creatTask(moduleId, id, {task:{taskName, instructions, rate}, taskAssignment:{allowLate}} )
       if(response.ok){
         setModuleId("")
         setTaskName("")
+        setRate('')
         setInstructions("")
         getTaskModule(null, moduleId)
         toggle(e)
@@ -115,6 +117,10 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
               <Form.Group className="mb-4">
                 <Form.Label>Task Name</Form.Label>
               <Form.Control onChange={(e) => setTaskName(e.target.value)} type="text" placeholder='Enter Task name here'/>
+                </Form.Group>
+                <Form.Group className="mb-4">
+                <Form.Label>Rate</Form.Label>
+                  <Form.Control  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
                 </Form.Group>
                 <Form.Group className="mb-4">
                   <Form.Label >Instruction</Form.Label>
