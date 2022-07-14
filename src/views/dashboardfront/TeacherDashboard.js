@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import { Col, Row } from 'react-bootstrap'
 import MainContainer from '../../components/layouts/MainContainer'
 import SummaryDashboard from '../dashboardfront/SummaryDashboard'
@@ -9,20 +9,22 @@ import CalendarDashboard from './CalendarDashboard'
 
 export default function TeacherDashboard() {
   const userContext = useContext(UserContext)
-  const {user} = userContext.data
+  const {user} = userContext.data;
+  const [studentCount, setStudentCount] = useState(0)
 
   return (
     <MainContainer fluid title="Teacher Dashboard" activeHeader={'teacherdashboard'} >
         {user?.isTeacher &&
           <>
+            <Col sm={12}>
+              <SummaryDashboard studentCount={studentCount}/>
+            </Col>
             <Row className="mt-4">
-              <Col sm={12}>
-                <SummaryDashboard />
-              </Col>
+              <Col sm={1} />
               <Col sm={3}>
-                <TeacherDashboardSidePanel />
+                <TeacherDashboardSidePanel setStudentCount={setStudentCount}/>
               </Col>
-              <Col sm={6}>
+              <Col sm={7}>
                 <AnnouncementDashboard />
               </Col>
             </Row>
@@ -31,15 +33,16 @@ export default function TeacherDashboard() {
           {user?.isStudent &&
           <>        
             <Row className="mt-4">
+              <Col sm={1}></Col>
               <Col sm={3}>
                 <TeacherDashboardSidePanel />
               </Col>
-              <Col sm={6}>
+              <Col sm={7}>
                 <AnnouncementDashboard />
               </Col>
-              <Col sm={3}>
+              {/* <Col sm={3}>
                 <CalendarDashboard />
-              </Col>
+              </Col> */}
             </Row> 
           </>
           }

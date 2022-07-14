@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import SchoolAPI from '../../api/SchoolAPI'
@@ -11,7 +10,7 @@ import CoursesDashboard from './CoursesDashboard'
 import ProfileDashboard from './ProfileDashboard'
 import CoursesAPI from '../../api/CoursesAPI'
 
-export default function TeacherDashboardSidePanel() {
+export default function TeacherDashboardSidePanel({setStudentCount}) {
 
   const userContext = useContext(UserContext)
   const [loading, setLoading] = useState(false)
@@ -27,6 +26,14 @@ export default function TeacherDashboardSidePanel() {
     setLoading(false)
     if(response.ok){
       setClasses(response.data)
+      // console.log(response.data, '=-==-=-=-=-=-=-=-=')
+      let temp = response.data
+      let count = 0;
+      temp.map(item => {
+        count = count + item.classEnrolledCount
+      })
+      setStudentCount(count);
+      console.log(count, '-=-=-=-=-=-=-=-=-=-= test');
     }else{
       alert("Something went wrong while fetching all getClasses")
     }
@@ -45,6 +52,26 @@ export default function TeacherDashboardSidePanel() {
     }
     setLoading(false)
   }
+
+  // const getClasses = async() => {
+  //   setLoading(true)
+  //   let response = await new ClassesAPI().getClasses(user.isTeacher ? user?.teacher?.id : user?.student?.id)
+  //   setLoading(false)
+  //   if(response.ok){
+  //     setClasses(response.data)
+  //     // console.log(response.data, '=-==-=-=-=-=-=-=-=')
+  //     let temp = response.data
+  //     let count = 0;
+  //     temp.map(item => {
+  //       count = count + item.classEnrolledCount
+  //     })
+  //     setStudentCount(count);
+  //     console.log(count, '-=-=-=-=-=-=-=-=-=-= test');
+  //   }else{
+  //     alert("Something went wrong while fetching all getClasses")
+  //   }
+  //   setLoading(false)
+  // }
 
   useEffect(() => {
     if(user?.student === null)
@@ -92,7 +119,7 @@ export default function TeacherDashboardSidePanel() {
           </div>
         </>
       }
-      <ClassesDashboard studentClasses={studentClasses}  />
+      <ClassesDashboard studentClasses={studentClasses} teacherClasses={classes} setStudentCount={setStudentCount} />
       {user?.isTeacher && 
         <>
            <CoursesDashboard />
