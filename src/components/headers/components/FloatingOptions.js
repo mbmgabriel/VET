@@ -11,7 +11,7 @@ export default function FloatingOptions() {
         <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >
           <div><i class="far fa-calendar"></i></div>
         </Link>
-        <Link className="floating-option" to="#" onClick={() => toast.error("Feature under development")}>
+        <Link className={`floating-option ${window.location.pathname == `/notifications` ? 'active' : ''}`} to="/notifications">
           <div><i class="fas fa-bell"></i></div>
         </Link>
         <Link className={`floating-option ${profileDropdownVisibility && 'active'}`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>

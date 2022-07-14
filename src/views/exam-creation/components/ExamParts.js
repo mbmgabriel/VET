@@ -14,7 +14,8 @@ export default function ExamParts({
   setLoading,
   setSelectedPart,
   setShowModal,
-  editable
+  editable,
+  
 }) {
   console.log({exam});
   const [selectedId, setSelectedId] = useState(null)
@@ -22,6 +23,8 @@ export default function ExamParts({
   const userContext = useContext(UserContext);
   const { user } = userContext.data;
   const [courseInfo, setCourseInfo] = useState("")
+  const shared = exam?.test?.isShared
+
   const courseid = sessionStorage.getItem('courseid')
   const [isContributor, setIsContributor] = useState(true);
 
@@ -93,16 +96,15 @@ export default function ExamParts({
             <div className='accordion-block-header'>
               <div className='header-content'>
                 <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} title='' />
-                <p title=''>{displayQuestionType(part.questionPart.questionTypeId)} </p>
+                <p>{displayQuestionType(part.questionPart.questionTypeId)}</p>
                 <span title=''>{`${part.questionDtos.length} Question(s)`}</span>
               </div>
             </div>
             {/* {courseInfo?.isTechfactors? (<></>):(<>
-
             </>)} */}
             {isContributor &&
             <>  
-              {editable && (
+              {(editable && !shared) && (
                 <div className='exam-actions' >
                   <OverlayTrigger
                     placement="right"
@@ -133,7 +135,6 @@ export default function ExamParts({
               )}
             </>
             }
-           
          
           </Accordion.Header>
           <Accordion.Body>
@@ -143,6 +144,7 @@ export default function ExamParts({
               getExamInformation={getExamInformation}
               setLoading={setLoading}
               editable={editable}
+              shared={shared}
             />
           </Accordion.Body>
         </Accordion.Item>

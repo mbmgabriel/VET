@@ -254,15 +254,21 @@ export default function CourseLearn() {
           <CoursesLearnContent courseInfo={courseInfo} setCourseInfo={setCourseInfo} setLessonContent={setLessonContent} lessonContent={lessonContent}/>
         :
         <React.Fragment>
-          <span className="content-pane-title">
-            Learn 
-              {
-                isContributor && 
-                <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus"></i> Add Module</Button>
-              }
-             
-            <CourseCreateUnit moduleInfo={moduleInfo} setModuleInfo={setModuleInfo} openCreateUnitModal={openCreateUnitModal} setOpenCreateUnitModal={setOpenCreateUnitModal}/>
-          </span>
+          <div className="content-pane-title col-md-10 pages-header">
+              Learn 
+              <div>
+                <Button onClick={() => getCourseUnitInformation()} className='ml-3'>
+                  <i className="fa fa-sync"></i>
+                </Button>
+              </div>
+                {
+                  isContributor && 
+                  <Button className="btn-create-class" variant="link" onClick={handleOpenCreateUnitModal}><i className="fa fa-plus pt-10"></i> Add Module</Button>
+                }
+              
+              <CourseCreateUnit moduleInfo={moduleInfo} setModuleInfo={setModuleInfo} openCreateUnitModal={openCreateUnitModal} setOpenCreateUnitModal={setOpenCreateUnitModal}/>
+          </div>
+
           <div className="row m-b-20 m-t-30">
             <div className="col-md-12">
               <InputGroup size="lg">

@@ -3,7 +3,7 @@ import { InputGroup, FormControl, Button } from 'react-bootstrap'
 import CreateAssignment from './CreateAssignment'
 import { UserContext } from '../../../../context/UserContext'
 
-function AssignmentHeader({module, getAssignmentList, refmoduleId, onSearch}) {
+function AssignmentHeader({module, getAssignmentList, refmoduleId, onSearch, onRefresh}) {
 const [modal, setModal] = useState(false)
 const userContext = useContext(UserContext)
 const {user} = userContext.data
@@ -11,12 +11,21 @@ const {user} = userContext.data
 const toggle = () =>{
     setModal(!modal)
   }
+
   return (
     <div>
       <div className="row m-b-20" style={{paddingTop:'10px'}}>
-			<div className="col-md-10 pages-header"><p className='title-header'>Assignment </p>
+			<div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Assignment </p>
+			<div>
+				<Button onClick={() => onRefresh()} className='ml-3'>
+					<i className="fa fa-sync"></i>
+				</Button>
+			</div>
 			{
-        user.isTeacher && <p className='title-header'><Button className='btn-create-task' Button variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Assignment  </Button></p>
+        user.isTeacher && 
+					<p className='title-header m-0-dashboard'>
+						<Button className='btn-create-task' Button variant="link" onClick={() => setModal(true) }><i className="fa fa-plus" /> Create Assignment</Button>
+					</p>
 			}
 			</div>
 			</div>

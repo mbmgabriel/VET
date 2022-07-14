@@ -1,7 +1,14 @@
+
+*:not(.fas, .far, .fa) {
+  font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
+    "Helvetica Neue", Arial, sans-serif !important;
+} 
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 
 .content{
   height: 100vh;
@@ -644,4 +651,22 @@ input[id^="courseInput2"]::-webkit-input-placeholder {
 
 .profile-container{
 margin: 0 auto;
+}
+
+.fd-row{
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.m-0-dashboard{
+  margin: 0%;
+  margin-bottom: .5rem !important;
+}
+
+.ml-3{
+  margin-left: 10px !important;
+}
+
+.pt-10{
+  padding-top: 10px !important;
 }
