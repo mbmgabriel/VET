@@ -1,7 +1,14 @@
+
+*:not(.fas, .far, .fa) {
+  font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
+    "Helvetica Neue", Arial, sans-serif !important;
+} 
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 
 .content{
   height: 100vh;

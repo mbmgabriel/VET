@@ -203,7 +203,8 @@ export default function MultipleChoice({
   setLoading,
   deleteQuestion,
   editable,
-  examName
+  examName,
+  shared
 }) {
   console.log('Parts', part)
   const [showModal, setShowModal] = useState(false);
@@ -423,7 +424,7 @@ export default function MultipleChoice({
             </h5>
             <p title="" className=''>Point(s): {question.question.rate}</p>
           </div>
-          {editable &&  isContributor && (
+          {editable && !shared && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -440,8 +441,7 @@ export default function MultipleChoice({
           )}
         </div>
       ))}
-      {isContributor &&
-        editable && (
+      {editable && !shared && isContributor && (
         <Button
           className='tficolorbg-button m-r-5'
           type='submit'
