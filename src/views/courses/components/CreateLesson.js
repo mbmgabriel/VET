@@ -8,6 +8,7 @@ import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from "../../../api/FilesApi"
 import { useParams } from "react-router";
+import CourseFileLibrary from '../components/CourseFileLibrary';
 
 export default function CreateLesson({openCreateLessonModal, setCreateLessonModal, setLessonInfo}){
 
@@ -130,32 +131,8 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveLesson}>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
-            <FileHeader type='Course' id={sessionCourse}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
-            {/* {
-             (displayFiles || []).map( (item,ind) => {
-                return(
-                  <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-                )
-              })
-            } */}
-             {
-              (displayFiles || []).map((item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                    <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-                (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
-          </div>
+              <CourseFileLibrary />
+            </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
 												Page Name

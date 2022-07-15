@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import ContentField from "../../../components/content_field/ContentField";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
+import CourseFileLibrary from "./CourseFileLibrary";
 
 export default function EditLesson({lessonId, setSequenceNo, setPageName, setContent, content, pageName, sequenceNo, openEditLessonModal, setOpenEditLessonModal, selectedLesson, setLessonInfo}){
 
@@ -98,29 +99,6 @@ export default function EditLesson({lessonId, setSequenceNo, setPageName, setCon
     }
   }
 
-	// useEffect(() => {
-  //   if(selectedLesson != null) {
-	// 		setPageName(selectedLesson?.pageName)
-	// 		setSequenceNo(selectedLesson?.sequenceNo)
-  //     setContent(selectedLesson?.content)
-  //     alert('test')
-	// 	}
-  //   handleGetClassFiles()
-  // }, [selectedLesson])
-
-
-  const handleGetClassFiles = async() => {
-    // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(sessionCourse)
-    // setLoading(false)
-    if(response.ok){
-      setDisplayFiles(response.data.files)
-      console.log(response.data, "-----------------")
-    }else{
-      alert("Something went wrong while fetching class files ;;.")
-    }
-  } 
-
   console.log('displayFiles', displayFiles)
 
 	return (
@@ -132,32 +110,8 @@ export default function EditLesson({lessonId, setSequenceNo, setPageName, setCon
 				<Modal.Body className="modal-label b-0px">
 						<Form onSubmit={saveEditLesson}>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
-            <FileHeader type='Course' id={sessionCourse}  subFolder={''}  doneUpload={()=> handleGetClassFiles()} />
-            {/* {
-             (displayFiles || []).map( (item,ind) => {
-                return(
-                  <img src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.fileName} height={30} width={30}/>
-                )
-              })
-            } */}
-             {
-               (displayFiles || []).map( (item,ind) => {
-                  return(
-                    item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                    <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} className='p-1' alt={item.name} height={30} width={30}/>
-                    :
-                   <span></span> // <i className="fas fa-sticky-note" style={{paddingRight: 5}}/>
-                  )
-                })
-              }
-              {
-               (displayFolder || []).map((itm) => {
-                  return(
-                    <i className='fas fa-folder-open' style={{height: 30, width: 30}}/>
-                  )
-                })
-              }
-          </div>
+              <CourseFileLibrary />
+            </div>
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
 												Page Name 
