@@ -22,14 +22,14 @@ export default function ProfileDropdown({visible}) {
     let response = await new ProfileInfoAPI().getProfileImage(tempId)
     if(response.ok){
       setprofileImage(response.data)
-    // }else{
-    //   toast.error('Something went wrong while getting profile image.')
     }
   }
 
   useEffect(() => {
     console.log(user);
-    getImage()
+    if(user.isStudent || user.isTeacher){
+      getImage();
+    }
   },[])
 
   console.log(user, '-=-=-=')

@@ -46,6 +46,22 @@ export default class SchoolAPI extends Base {
     })
   }
 
+  createSchoolAdmin = async(data) => {
+    return this.sendRequest({
+      path: `/api/Account/admin/school`,
+      method: 'POST',
+      data
+    })
+  }
+
+  updateAccount = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Account/${id}`,
+      method: 'PUT',
+      data
+    })
+  }
+
   deleteTeacher = async (id) => {
     return this.sendRequest({
       path: `/api/Teacher/${id}`,
@@ -125,6 +141,13 @@ export default class SchoolAPI extends Base {
     return this.sendRequest({
       path: `/api/Account?userroleid=2`,
       method: 'GET'
+    })
+  }
+
+  deleteAccount = async (id) => {
+    return this.sendRequest({
+      path: `/api/Account/${id}`,
+      method: 'DELETE'
     })
   }
 

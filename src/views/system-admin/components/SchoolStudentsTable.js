@@ -625,6 +625,11 @@ export default function StudentsList() {
       <ReactTable pageCount={100}
         list={Students} 
         filterable
+        defaultFilterMethod={(filter, row) => {
+          let f = filter.value.toLowerCase();
+          const id = filter.pivotId || filter.id
+          return row[id] !== undefined ? String(row[id].toLowerCase()).startsWith(f) : true
+        }}
         data={Students}
         columns={[{
           Header: '',
