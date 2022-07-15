@@ -29,7 +29,9 @@ export default function ProfileDropdown({visible}) {
 
   useEffect(() => {
     console.log(user);
-    getImage()
+    if(user.isStudent || user.isTeacher){
+      getImage();
+    }
   },[])
 
   console.log(user, '-=-=-=')
