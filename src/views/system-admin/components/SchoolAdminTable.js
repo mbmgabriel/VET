@@ -112,6 +112,17 @@ export default function TeachersList() {
     }
   }
 
+  const handleDeleteSchoolAdmin = async () => {
+    let response = await new SchoolAPI().deleteAccount(toDeleteId);
+    if (response.ok) {
+      toast.success("School Admin deleted successfully");
+      handleSchoolAdmin();
+    } else {
+      toast.error("Something went wrong while deleting Student.")
+    }
+    setDeleteNotify(false);
+  }
+
   const form = () => {
     return (
       <Modal size="lg" show={showEditModal} onHide={() => { setShowEditModal(false); clearState(); }} aria-labelledby="example-modal-sizes-title-lg">
@@ -178,6 +189,11 @@ export default function TeachersList() {
     setPassword('');
   };
 
+  const handleClickDelete = (id) => {
+    setToDeleteId(id);
+    setDeleteNotify(true)
+  }
+
   return (
     <>
       <span className='m-t-5'>School Admin List</span>|{' '}
@@ -185,6 +201,11 @@ export default function TeachersList() {
       <ReactTable pageCount={100}
         list={schoolAdmin}
         filterable
+        defaultFilterMethod={(filter, row) => {
+          let f = filter.value.toLowerCase();
+          const id = filter.pivotId || filter.id
+          return row[id] !== undefined ? String(row[id].toLowerCase()).startsWith(f) : true
+        }}
         data={schoolAdmin}
         columns={[{
           Header: '',
@@ -225,9 +246,9 @@ export default function TeachersList() {
                       className="btn btn-info btn-sm m-r-5" >
                       <i class="fas fa-edit" />
                     </button>
-                    {/* <button onClick={() => handleClickDelete(row.original.id)} className="btn btn-danger btn-sm m-r-5">
+                    <button onClick={() => handleClickDelete(row.original.id)} className="btn btn-danger btn-sm m-r-5">
                       <i class="fas fa-trash" />
-                    </button> */}
+                    </button>
                   </div>
                 )
               }
@@ -235,6 +256,18 @@ export default function TeachersList() {
         }]}
         csv edited={schoolAdmin} defaultPageSize={10} className="-highlight"
       />
+      <SweetAlert
+        showCancel
+        show={deleteNotify}
+        onConfirm={() => handleDeleteSchoolAdmin()}
+        confirmBtnText="Delete"
+        confirmBtnBsStyle="info"
+        cancelBtnBsStyle="error"
+        title="Are you sure?"
+        onCancel={() => setDeleteNotify(false)}
+      >
+        You will not be able to recover this data!
+      </SweetAlert>
       <Modal size="lg" show={showUploadModal} onHide={() => setShowUploadModal(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >

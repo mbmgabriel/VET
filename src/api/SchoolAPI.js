@@ -144,6 +144,13 @@ export default class SchoolAPI extends Base {
     })
   }
 
+  deleteAccount = async (id) => {
+    return this.sendRequest({
+      path: `/api/Account/${id}`,
+      method: 'DELETE'
+    })
+  }
+
   resetDefaultPassword = async(id) => {
     return this.sendRequest({
       path: `/api/Account/${id}/password/default`,
