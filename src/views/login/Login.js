@@ -36,13 +36,14 @@ export default function Login() {
   return (
     <MainContainer headerVisible={false} loading={loading}>
       <div className="auth-container">
-        <div className="login-container">
-          <h1 className="title"><span className="color-blue-green">Tek</span>Teach Account Login</h1>
-          <p className="subtitle">Welcome back to TekTeach! Making learning, a great experience!</p>
-          <p className="subtitle text-danger">{message}</p>
+        <div className="login-container login-bg-image">
           <div className="mt-5">
             <Row>
-              <Col size="md" >
+              <Col/>
+              <Col md={7}>
+                <h1 className="title"><span className="color-blue-green">Tek</span>Teach Account Login</h1>
+                <p className="subtitle">Welcome back to TekTeach! Making learning, a great experience!</p>
+                <p className="subtitle text-danger">{message}</p>
                 <Form onSubmit={login}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label className="custom-label">E-mail / Username</Form.Label>
@@ -68,7 +69,8 @@ export default function Login() {
                   <Button className="btn btn-lg btn-primary btn-auth w-100 d-block mt-5 mb-4" size="lg" variant="primary" type="submit">Log In</Button>
                 </Form>
               </Col>
-              <Col size="md" className="login-with-qr-container">
+              <Col/>
+              {/* <Col size="md" className="login-with-qr-container">
                 <div className="qr-container ">
                   <img src={qrScanner} alt="qr-code"/>
                 </div>
@@ -78,7 +80,7 @@ export default function Login() {
                   </p>
                   <p className="qr-text d-none">Scan this code with the <a href="https://google.com" target="blank" className="link-orange">TekTeach mobile app</a> to log in instantly</p>
                 </div>
-              </Col>
+              </Col> */}
             </Row>
           </div>
         </div>
