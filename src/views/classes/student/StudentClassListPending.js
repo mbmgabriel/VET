@@ -9,12 +9,12 @@ function StudentClassListPending({item}) {
           <Card.Header className='class-header-card-pending' >
             <Row>
               <Col sm={10}>
-                {item.classCode}
+                {/* {item.classCode} */}
               </Col>
               <Col sm={2} style={{textAlign:'right'}}>
               </Col>
               <Col sm={10}>
-                <b>{item.gradeName} -  {item.className} </b>
+                {/* <b>{item.gradeName} -  {item.className} </b> */}
               </Col>
               {/* <Col sm={8}>
                {item.courseName}
@@ -25,21 +25,27 @@ function StudentClassListPending({item}) {
            </Row>
           </Card.Header>
           <Card.Body>
-            <Card.Title>
+          <Card.Title>
             </Card.Title>
             <Card.Subtitle>
-            {item.courseName}
+            {item.courseName} 
+              <Col className='font-color' sm={10}>
+                {item.classCode}
+              </Col>
+              <Col sm={10}>
+                <b>
+                  {item.className} <br /> 
+                 <p className='font-color'> {item.gradeName} </p> 
+                </b> 
+              </Col>
             </Card.Subtitle>
-            <Card.Text style={{color:'#EE9337'}}>
+            <Card.Text className='font-color'>
             <Row>
             <Col sm={8}>
-            <br />
-               Student Enrolled
+               Student
               </Col>
               <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
-              <br />
                 <i className="fas fa-user"></i> {item?.classEnrolledCount}
-                <br />
                 <br />
              </Col>
             </Row>

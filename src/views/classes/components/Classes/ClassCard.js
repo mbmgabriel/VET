@@ -132,24 +132,24 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
             <Card.Title>
             </Card.Title>
             <Card.Subtitle>
-              <Col sm={10}>
-               {item.classCode}
+            {item.courseName} 
+              <Col className='font-color' sm={10}>
+                {item.classCode}
               </Col>
-              {item.courseName} 
               <Col sm={10}>
-                <b>{item.gradeName} -  {item.className.substring(0, 10)}... </b>
+                <b>
+                  {item.className} <br /> 
+                 <p className='font-color'> {item.gradeName} </p> 
+                </b> 
               </Col>
             </Card.Subtitle>
-            <Card.Text style={{color:'#EE9337'}}>
+            <Card.Text className='font-color'>
             <Row>
             <Col sm={8}>
-            <br />
                Student
               </Col>
               <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
-              <br />
                 <i className="fas fa-user"></i> {item?.classEnrolledCount}
-                <br />
                 <br />
              </Col>
             </Row>
