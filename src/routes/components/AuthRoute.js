@@ -6,11 +6,13 @@ export default function AuthRoute(props) {
 
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  const subsType = localStorage.getItem('subsType');
   useEffect(() => {
     if(user != null){
       if(user.isSchoolAdmin) return window.location.href = "/dashboard"
       if(user.isParent) return window.location.href = "/parent/dashboard"
       if(user.isSystemAdmin) return window.location.href = "/system-admin/dashboard"
+      if(user.isTeacher && subsType == 'TeacherResources') return window.location.href = "/courses"
       window.location.href = '/teacherdashboard'
     }
   }, [user])

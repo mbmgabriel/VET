@@ -23,6 +23,7 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   const [courseID, setCourseID] = useState('');
   const [courseInfo, setCourseInfo] = useState({});
   const [authorId, setAuthorId] = useState('');
+  const subsType = localStorage.getItem('subsType');
 
   const handleOpeEditModal = (e, item) => {
     e.preventDefault()
@@ -239,6 +240,18 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   useEffect(() => {
     localStorage.setItem('typeresource', 'course')
   });
+
+  const handleReturnLink = (id) => {
+    if(user.isTeacher && subsType == 'TeacherResources'){
+      return `/courses/${id}/resources`
+    }
+    if(user.isTeacher){
+      return `coursecontent/${id}/learn`
+    }
+    if(user.isSchoolAdmin){
+      return `/school_courses/${id}`
+    }
+  }
   
   return (
     <React.Fragment>
@@ -248,7 +261,8 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
         return(
           <>
           {item?.status?(<>
-            <Link to={user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}`} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
+          {/* user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}` */}
+            <Link to={handleReturnLink(item.id)} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
               <CoursesItemCard 
               courseCover={item.courseCover}
               courseId={item.id}

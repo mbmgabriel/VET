@@ -19,9 +19,9 @@ function CoursesResources() {
 
   useEffect(() => {
     handleGetTeacherResources('')
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS' || subsType == 'TeacherResources'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const handleRefetch = () => {
