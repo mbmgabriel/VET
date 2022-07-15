@@ -5,7 +5,7 @@ import ClassesAPI from '../../../../api/ClassesAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 
-function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
+function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedClass, getClasses, setClassIdCoverPhoto}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
   const [itemId, setItemId] = useState('')
@@ -21,6 +21,11 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
   const handleDeleteNotify = (e, item) =>{
     setDeleteNotify(true)
     setItemId(item)
+  }
+
+  const handleCoverPhotoModal =(e, item) => {
+    setOpenCoverPhotoModal(true)
+    setClassIdCoverPhoto(item)
   }
 
   const handleOpeEditModal = (e, item) => {
@@ -65,6 +70,8 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
     localStorage.setItem('typeresource', 'class')
   });
 
+  console.log('111111111:', item)
+
   return (
     <div>
         <SweetAlert
@@ -81,11 +88,11 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
             You will not be able to recover this imaginary file!
       </SweetAlert>
       <Card className='class-card' >
-        <Link to={ subsType == "LMS" ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` } onClick={() => setCourseID(item.courseId) }>
-          <Card.Header className='class-header-card' >
+        <Link to={ subsType == "LMS" ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` } onClick={() => setCourseID(item.courseId)}>
+          <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
               <Col sm={10}>
-               {item.classCode}
+               {/* {item.classCode} */}
               </Col>
               <Col sm={2} style={{textAlign:'right'}}>
               <OverlayTrigger
@@ -100,6 +107,9 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                     <Dropdown.Item onClick={(e) => handleOpeEditModal(e, item)}>
                       Edit 
                     </Dropdown.Item>
+                    <Dropdown.Item onClick={(e) => handleCoverPhotoModal(e, item.classId)}>
+                      Upload Photo 
+                    </Dropdown.Item>
                     <Dropdown.Item onClick={(e) => handleDeleteNotify(e, item.classId)}>
                       Archive 
                     </Dropdown.Item>
@@ -107,9 +117,9 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                 </Dropdown>
                 </OverlayTrigger>
               </Col>
-              <Col sm={10}>
+              {/* <Col sm={10}>
                 <b>{item.gradeName} -  {item.className} </b>
-              </Col>
+              </Col> */}
               {/* <Col sm={8}>
                {item.courseName}
               </Col>
@@ -122,18 +132,27 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
             <Card.Title>
             </Card.Title>
             <Card.Subtitle>
-              {item.courseName} 
+            {item.className} 
+              <Col className='font-color' sm={10}>
+                {item.classCode}
+              </Col>
+              <Col sm={10}>
+                <b>
+                {item.teacherName} <br /> 
+                 <spam className='font-color'> {item.gradeName} </spam> <br />
+                 {item.courseName}
+                </b> 
+                <br /> 
+                <br />
+              </Col>
             </Card.Subtitle>
-            <Card.Text style={{color:'#EE9337'}}>
+            <Card.Text className='font-color'>
             <Row>
             <Col sm={8}>
-            <br />
-               Student Enrolled
+               Student <br />
               </Col>
               <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
-              <br />
                 <i className="fas fa-user"></i> {item?.classEnrolledCount}
-                <br />
                 <br />
              </Col>
             </Row>

@@ -12,6 +12,7 @@ import StudentClasslist from './student/StudentClasslist'
 import StudentClassListHeader from './student/components/StudentClassListHeader'
 import StudentClassListPending from './student/StudentClassListPending'
 import StudentJoinClass from './student/StudentJoinClass'
+import ClassCoverPhoto from './components/Classes/ClassCoverPhoto'
 
 export default function Classes() {
   const [loading, setLoading] = useState(true)
@@ -21,6 +22,8 @@ export default function Classes() {
   const [seletedClass, setSeletedClass] = useState(null)
   const [openEditModal, setOpenEditModal] = useState(false)
   const [joinClassestModal, setJoinClassesModal] = useState(false)
+  const [openCoverPhotoModal, setOpenCoverPhotoModal] = useState(false)
+  const [classIdCoverPhoto, setClassIdCoverPhoto] = useState(null)
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   let studentId = user?.student?.id
@@ -149,9 +152,8 @@ export default function Classes() {
               }).map(item => {
                 return(
                   item.termName == currentAcademicTerm &&
-                    <ClassCard getClasses={getClasses}  item={item} setOpenEditModal={setOpenEditModal} setSeletedClass={setSeletedClass} />
-                )
-              })
+                    <ClassCard classIdCoverPhoto={classIdCoverPhoto} setClassIdCoverPhoto={setClassIdCoverPhoto} openCoverPhotoModal={openCoverPhotoModal} setOpenCoverPhotoModal={setOpenCoverPhotoModal} getClasses={getClasses}  item={item} setOpenEditModal={setOpenEditModal} setSeletedClass={setSeletedClass} />)
+                })
               :
               <span></span>
             }
@@ -161,6 +163,7 @@ export default function Classes() {
         </div>
       </div>
       <EditClassModal getClasses={getClasses} seletedClass={seletedClass} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} />
+      <ClassCoverPhoto getClasses={getClasses} classIdCoverPhoto={classIdCoverPhoto} setClassIdCoverPhoto={setClassIdCoverPhoto} openCoverPhotoModal={openCoverPhotoModal} setOpenCoverPhotoModal={setOpenCoverPhotoModal} />
     </MainContainer>
   )
 }

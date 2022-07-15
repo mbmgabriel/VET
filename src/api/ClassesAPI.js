@@ -687,4 +687,12 @@ creatTask = async (mId, cId,  data) => {
     })
   }
 
+  uploadCoverPhotoClass = async(classId, data) => {
+    return this.sendRequest({
+      path: `/api/Upload/class/${classId}/cover`,
+      method: 'POST',
+      data
+    })
+  }
+
 }
