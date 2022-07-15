@@ -39,12 +39,15 @@ function ClassList() {
   }
 
   const getStudentWaiting = async() =>{
+    setLoading(true);
     let isAccepted = false
     let response = await new ClassesAPI().getStudentList(id, isAccepted)
     if(response.ok){
       setWaitingStudent(response.data)
+      setLoading(true);
     }else{
       alert("Something went wrong while fetching all Waiting Student")
+      setLoading(true);
     }
     
   }
@@ -59,19 +62,20 @@ function ClassList() {
 
 
   const getStudentEnrolled = async() =>{
+    setLoading(true);
     let isAccepted = true
     let response = await new ClassesAPI().getStudentEnrolledList(id, isAccepted)
     if(response.ok){
       setEnrolledStudent(response.data)
+      setLoading(false);
     }else{
       alert("Something went wrong while fetching all Waiting Student")
+      setLoading(false);
     }
-    
   } 
 
   useEffect(() => {
     getStudentEnrolled()
-    
   }, [])
 
   const handleGetUploadedFile = (file) => {
@@ -139,17 +143,24 @@ function ClassList() {
   return (
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={() => console.log('')}/>
-    <Row style={{paddingTop:'15px'}}>
-      <Col className='title-header' >
-      <p>Class List</p> 
-      </Col>
-      <Col style={{textAlign:'right'}}>
-        <Button className='btn-Enrolled' onClick={handleOpenClassEnrolled} size='lg' variant="outline-warning"><b>Enrolled</b></Button>
-        <Button className='btn-Enrolled' onClick={handleOpenClassWaiting} size='lg' variant="outline-warning"><b>Waiting List</b></Button>
-        <Button className='btn-Enrolled' onClick={() => setShowUploadModal(true)} size='lg' variant="outline-warning"><b>Upload List</b></Button>
-      </Col>
-    </Row>
-    <div className="row m-b-20" style={{marginTop:'30px'}}>
+      <Row style={{paddingTop:'15px'}}>
+          <div className="col-md-12 pages-header fd-row ai-c"><p className='title-header m-0'>Class List </p>
+            <div className='mb-0'>
+              <Button onClick={() => {
+                getStudentEnrolled();
+                getStudentWaiting();
+              }} className='ml-3'>
+                <i className="fa fa-sync"></i>
+              </Button>
+            </div>
+            <Col style={{textAlign:'right'}}>
+              <Button className='btn-Enrolled' onClick={handleOpenClassEnrolled} size='lg' variant="outline-warning"><b>Enrolled</b></Button>
+              <Button className='btn-Enrolled ph-3' onClick={handleOpenClassWaiting} size='lg' variant="outline-warning"><b>Waiting List</b></Button>
+              <Button className='btn-Enrolled' onClick={() => setShowUploadModal(true)} size='lg' variant="outline-warning"><b>Upload List</b></Button>
+            </Col>
+          </div>
+        </Row>
+      <div className="row m-b-20" style={{marginTop:'30px'}}>
         <div className="col-md-12">
           <InputGroup size="lg">
             <FormControl onChange={(e) => onSearch(e.target.value)} aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search Student Last Name Here" type="search"/>
@@ -163,7 +174,6 @@ function ClassList() {
         ):
         <ClassWaiting searchTerm={searchTerm} getStudentEnrolled={getStudentEnrolled} getStudentWaiting={getStudentWaiting} waitingStudent={waitingStudent} />}
     {handleShowUploadModal()}
-    {loading && <FullScreenLoader /> }
     </ClassSideNavigation>
   )
 }

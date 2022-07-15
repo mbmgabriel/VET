@@ -456,7 +456,7 @@ creatTask = async (mId, cId,  data) => {
 
   getClassModules = async (id) =>{
     return this.sendRequest({
-      path: `/api/Module/class/${id}/item/1`,
+      path: `/api/Module/class/${id}/item/1`, 
       method: 'GET'
     })
   }

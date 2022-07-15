@@ -122,13 +122,13 @@ export default function SchoolAdminTask() {
       alert("Something went wrong while Deleting Deleting a getTaskModule")
     }
   }
-  useEffect(() => {
-    if(moduleId !== null){
-      return(
-        getTaskModule() 
-      )
-    }  
-  }, [])
+  // useEffect(() => {
+  //   if(moduleId !== null){
+  //     return(
+  //       getTaskModule() 
+  //     )
+  //   }  
+  // }, [])
 
   const removeTask = async (e, item, item1) => {
     let response = await new ClassesAPI().deleteTasks(item)
@@ -175,7 +175,7 @@ export default function SchoolAdminTask() {
           <ClassAdminSideNavigation active="task"/>
         </Col>
         <Col sm={9} className='scrollable vh-85'>
-        <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} />
+        <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} onRefresh={() => getClassInfo()}/>
         <Accordion>
           <SweetAlert
             warning

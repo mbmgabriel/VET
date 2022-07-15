@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import {InputGroup, FormControl } from 'react-bootstrap';
+import {InputGroup, FormControl, Button } from 'react-bootstrap';
 import InteractiveReport from './components/InteractiveReport';
 import ClassesAPI from '../../api/ClassesAPI';
 import { toast } from 'react-toastify'
 import ReportContainer from './Reports';
 import InteractiveReportContent from './contents/InteractiveReportContent';
 import ReportBreedCrumbs from './components/ReportsBreadCrumbs';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 // import InteractiveAnalysis from './contents/InteractiveAnalysis';
 
 function InteractiveReportPage() {
@@ -17,6 +18,7 @@ function InteractiveReportPage() {
   const [interactiveName, setInteractiveName] = useState('')
   const [taskAnalysis, setTaskAnalysis] = useState([])
   const [studentName, setStudentName] = useState('')
+  const [loading, setLoading] = useState(false);
 
 	const onSearch = (text) => {
     setFilter(text)
@@ -31,12 +33,15 @@ function InteractiveReportPage() {
   }, []);
 
   const getClassModules = async(id) => {
+    setLoading(true);
     let response = await new ClassesAPI().getClassModules(id)
     if(response.ok){
       setClassesModules(response.data)
+      setLoading(false);
       console.log(response.data)
     }else{
       toast.error("Something went wrong while fetching all class modules.")
+      setLoading(false);
     }
   }
 
@@ -81,10 +86,17 @@ function InteractiveReportPage() {
 
 	return (
 		<ReportContainer>
+      {loading && <FullScreenLoader />}
       <ReportBreedCrumbs title={interactiveName ? interactiveName : ''} secondItem={studentName ? studentName : ''} clicked={()=> handleClickBreedFirstItem()} clickedSecondItem={()=>handleClickSecondItem()}/>
 		  {display == 'accordion' ? <div>
-        <div className="row m-b-20">
-          <div className="col-md-8 pages-header"><h1>Grade Report - Interactive</h1></div>
+        <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Interactive </p>
+          <div>
+            <Button onClick={() => {
+              getClassModules(paramsId);
+            }} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
         </div>
         <div className="row m-b-20 m-t-30" onSearch={onSearch}>
           <div className="col-md-12">
@@ -96,10 +108,11 @@ function InteractiveReportPage() {
         </div>
       </div>
       :
-      <div className="col-md-4 pages-header"><h1>{interactiveName}</h1></div>
+      <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>{interactiveName}</p>
+    </div>
       }
       {display == 'accordion' && <InteractiveReport filter={filter} setFilter={setFilter} getInteractiveReport={getInteractiveReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
-      {display == 'interactiveReport' && <InteractiveReportContent getTaskAnalysis={handleGetTaskAnalysis} interactiveReport={interactiveReport}/>}
+      {display == 'interactiveReport' && <InteractiveReportContent interactiveName={interactiveName} getTaskAnalysis={handleGetTaskAnalysis} interactiveReport={interactiveReport}/>}
 
 	  </ReportContainer>
 	)

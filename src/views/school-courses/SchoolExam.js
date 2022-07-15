@@ -35,13 +35,13 @@ function SchoolExam() {
   }, []);
 
   return (
-  <MainContainer title="Exam" activeHeader={"courses"} loading={loading}>
-    <Row className="mt-4">
+  <MainContainer title="Exam" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+    <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Exam" />
       </Col>
-      <Col sm={9}>
-       <SchoolCourseExam setLoading={setLoading} />
+      <Col sm={9} className='scrollable vh-85'>
+       <SchoolCourseExam setLoading={setLoading}onRefresh={() => getCourseInformation()} />
       </Col>
     </Row>
   </MainContainer>

@@ -193,7 +193,6 @@ export default function CourseLearn() {
     setLoading(false)
     if(response.ok){
       setLessonContent(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all courses")
     }

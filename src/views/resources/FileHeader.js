@@ -206,6 +206,7 @@ function FileHeader(props) {
       if(response.ok){
         props.doneUpload()
         setShowAddFolderModal(false)
+        toast.success('Folder created successfully.')
       }else{
         setShowAddFolderModal(false)
         toast.error(response.data?.errorMessage.replace('distributor', 'contributor')); 
@@ -226,8 +227,6 @@ function FileHeader(props) {
       }
     }
   }
-
-  console.log('============================================================', user?.teacher.positionID == 7)
 
   return (
     <div>
@@ -363,7 +362,7 @@ function FileHeader(props) {
             :
             <></>
           }
-          <Button size="lg" variant="outline-warning" className={ folderCreatedCourse ? 'd-none' : "file-library file-button-upload"} onClick={()=> handleSaveFolder()}>Save</Button>
+          <Button size="lg" variant="outline-warning" className={ folderCreatedCourse ? 'd-none' : "file-library file-button-upload"} onClick={()=> handleSaveFolder()}>Save Folder</Button>
           {/* <Button size="lg" variant="outline-warning" disabled={allUploaded.length == 0 ? true : false} className={"file-library file-button-upload mx-3" } onClick={()=> handleUploadFile()}>{uploadStarted ? 'Uploading...' : 'Upload'}</Button> */}
           <Button size="lg" variant="outline-warning" className={ doneUpload ? "file-library file-button-upload" : 'd-none'} onClick={()=> handleDoneUpload()}>Done</Button>
         </Modal.Body>

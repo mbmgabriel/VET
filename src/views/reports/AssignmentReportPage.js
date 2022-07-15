@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import {InputGroup, FormControl } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react'
+import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import AssignmentReport from './components/AssignmentReport';
 import ClassesAPI from '../../api/ClassesAPI';
 import { toast } from 'react-toastify'
@@ -7,10 +7,11 @@ import ReportContainer from './Reports';
 import AssignmentReportContent from './contents/AssignmentReportContent';
 import ReportBreedCrumbs from './components/ReportsBreadCrumbs';
 import AssignmentAnalysis from './contents/AssignmentAnalysis';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 
 function AssignmentReportPage() {
 
-	const [filter, setFilter] = useState("")
+  const [filter, setFilter] = useState("")
   const [assignmentReport, setAssignmentReport] = useState([])
   const [display, setDisplay] = useState('accordion')
   const [classesModules, setClassesModules] = useState([])
@@ -18,8 +19,9 @@ function AssignmentReportPage() {
   const [assignmentName, setAssignmentName] = useState('')
   const [assignmentAnalysis, setAssignmentAnalysis] = useState([])
   const [studentName, setStudentName] = useState('')
+  const [loading, setLoading] = useState(false);
 
-	const onSearch = (text) => {
+  const onSearch = (text) => {
     setFilter(text)
   }
 
@@ -31,27 +33,31 @@ function AssignmentReportPage() {
     setCurrentClassId(paramsId)
   }, []);
 
-  const getClassModules = async(id) => {
+  const getClassModules = async (id) => {
+    setLoading(true);
     let response = await new ClassesAPI().getClassModules(id)
-    if(response.ok){
+    if (response.ok) {
       setClassesModules(response.data)
-      console.log(response.data)
-    }else{
+      setLoading(false);
+    } else {
       toast.error("Something went wrong while fetching all class modules.")
+      setLoading(false);
     }
   }
 
-  const getAssignmentReport = async(e, assignmentid, assignmentname) => {
+  const getAssignmentReport = async (e, assignmentid, assignmentname) => {
+    setLoading(true);
     setDisplay('assignmentReport');
     setAssignmentName(assignmentname);
-    sessionStorage.setItem('assignmentName',assignmentname)
-    sessionStorage.setItem('assignmentId',assignmentid)
+    sessionStorage.setItem('assignmentName', assignmentname)
+    sessionStorage.setItem('assignmentId', assignmentid)
     let response = await new ClassesAPI().getAssignmentReport(paramsId, assignmentid)
-    if(response.ok){
+    if (response.ok) {
       setAssignmentReport(response.data)
-      console.log(response.data)
-    }else{
+      setLoading(false);
+    } else {
       toast.error(response.data.errorMessage)
+      setLoading(false);
     }
   }
 
@@ -66,28 +72,32 @@ function AssignmentReportPage() {
     setStudentName('')
   }
 
-  const handleGetAssignmentAnalysis = async(e, studentid, classid, assignmentId, lname, fname) => {
-      // console.log(selectedClassId)
-      setDisplay('analysis');
-      sessionStorage.setItem('analysis','true')
-      sessionStorage.setItem('studentid',studentid)
-      setStudentName(`${lname}, ${fname}`)
-      let response = await new ClassesAPI().getAssignmentAnalysis(studentid, paramsId, assignmentId)
-      if(response.ok){
-        setAssignmentAnalysis(response.data)
-        console.log(response.data)
-        
-      }else{
-        toast.error(response.data.errorMessage)
-      }
+  const handleGetAssignmentAnalysis = async (e, studentid, classid, assignmentId, lname, fname) => {
+    setDisplay('analysis');
+    sessionStorage.setItem('analysis', 'true')
+    sessionStorage.setItem('studentid', studentid)
+    setStudentName(`${lname}, ${fname}`)
+    let response = await new ClassesAPI().getAssignmentAnalysis(studentid, paramsId, assignmentId)
+    if (response.ok) {
+      setAssignmentAnalysis(response.data)
+    } else {
+      toast.error(response.data.errorMessage)
     }
+  }
 
-	return (
-		<ReportContainer>
-      <ReportBreedCrumbs title={assignmentName ? assignmentName : ''} secondItem={studentName ? studentName : ''} clicked={()=> handleClickBreedFirstItem()} clickedSecondItem={()=>handleClickSecondItem()}/>
-		  {display == 'accordion' ? <div>
-        <div className="row m-b-20">
-          <div className="col-md-8 pages-header"><h1>Grade Report - Assignment</h1></div>
+  return (
+    <ReportContainer>
+      {loading && <FullScreenLoader />}
+      <ReportBreedCrumbs title={assignmentName ? assignmentName : ''} secondItem={studentName ? studentName : ''} clicked={() => handleClickBreedFirstItem()} clickedSecondItem={() => handleClickSecondItem()} />
+      {display == 'accordion' ? <div>
+        <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Assignment </p>
+          <div>
+            <Button onClick={() => {
+              getClassModules(paramsId);
+            }} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
         </div>
         <div className="row m-b-20 m-t-30" onSearch={onSearch}>
           <div className="col-md-12">
@@ -98,15 +108,30 @@ function AssignmentReportPage() {
           </div>
         </div>
       </div>
-      :
-      <div className="col-md-4 pages-header"><h1>{assignmentName}</h1></div>
+        :
+        <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>{assignmentName}</p>
+          {
+            display == 'assignmentReport' && <div>
+              <Button
+                onClick={(e) => {
+                  let assignmentId = sessionStorage.getItem('assignmentId');
+                  let assignmentName = sessionStorage.getItem('assignmentName');
+                  display == 'assignmentReport' && getAssignmentReport(e, assignmentId, assignmentName);
+                }}
+                className='ml-3'
+              >
+                <i className="fa fa-sync"></i>
+              </Button>
+            </div>
+          }
+        </div>
       }
       {display == 'accordion' && <AssignmentReport filter={filter} setFilter={setFilter} getAssignmentReport={getAssignmentReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
-      {display == 'assignmentReport' && <AssignmentReportContent setAssignmentRepor={setAssignmentReport} getAssignmentAnalysis={handleGetAssignmentAnalysis} assignmentReport={assignmentReport}/>}
+      {display == 'assignmentReport' && <AssignmentReportContent assignmentName={assignmentName} setAssignmentReport={setAssignmentReport} getAssignmentAnalysis={handleGetAssignmentAnalysis} assignmentReport={assignmentReport}/>}
       {display == 'analysis' && <AssignmentAnalysis assignmentAnalysis={assignmentAnalysis} setAssignmentAnalysis={setAssignmentAnalysis}/>}
 
-	  </ReportContainer>
-	)
+    </ReportContainer>
+  )
 }
 export default AssignmentReportPage
 

@@ -15,6 +15,7 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
   const [discussionName, setDiscussionName] = useState('')
   const [instructions, setInstructions] = useState('')
   const [addNotify, setAddNotity] = useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFilesFolders, setShowFilesFolders] = useState(false);
   const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
@@ -55,6 +56,8 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
 
   const saveDiscussion = async (e) =>{
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 1000)
     if(moduleId === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
@@ -292,7 +295,7 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
                     <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
                   </Form.Group>
               <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Save Discussion</Button>
             </Form.Group>
         </Form> 
         </Modal.Body>

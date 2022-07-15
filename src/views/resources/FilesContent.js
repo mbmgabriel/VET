@@ -3,10 +3,9 @@ import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-b
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import FilesAPI from '../../api/FilesApi';
-import CoursesAPI from '../../api/CoursesAPI';
+import CoursesAPI from '../../api/CoursesAPI'
+import { UserContext } from '../../context/UserContext'
 import Modal from 'react-bootstrap/Modal'
-import moment from 'moment';
-import { UserContext } from '../../context/UserContext';
 
 function FilesContent(props) {
 
@@ -95,7 +94,7 @@ function FilesContent(props) {
       "fileName": itemToDelete.name,
       "subFolderLocation":  props.subFolder,
     }
-    let response = await new FilesAPI().deleteClassFile(props.id, data)
+    let response = await new FilesAPI().deleteCourseTeacherResourceFile(props.id, data)
     if(response.ok){
       setDeleteNotify(false)
       props.deleted();
@@ -215,7 +214,7 @@ function FilesContent(props) {
     let data = {
       "subFolderLocation": `${props.subFolder}/${folderToDelete}`
     }
-    let response = await new FilesAPI().deleteFolder(props.id, props.type, data)
+    let response = await new FilesAPI().deleteCourseTeacherResourceFolder(props.id, data)
     if(response.ok){
       props.deleted();
       toast.success('Successfully deleted folder.')
@@ -266,7 +265,7 @@ function FilesContent(props) {
             <Form.Control defaultValue={newFileName} value={newFolderName} type="text" onChange={(e) => setNewFolderName(e.target.value.replace('.', ''))} />
           </InputGroup>
           <Form.Group className='right-btn'>
-            <Button className='tficolorbg-button' onClick={()=> saveNewFolderName()}>Save</Button>
+            <Button className='tficolorbg-button' onClick={()=> saveNewFolderName()}>Update Folder</Button>
           </Form.Group>
         </Form>
         </Modal.Body>

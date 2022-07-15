@@ -3,7 +3,7 @@ import {Row, Col, Accordion, Button} from 'react-bootstrap'
 import CoursesAPI from '../../../api/CoursesAPI'
 import { useParams } from "react-router";
 
-function SchoolCoursesDiscussionContent({setLoading}) {
+function SchoolCoursesDiscussionContent({setLoading,onRefresh}) {
   const [modules, setModules] = useState([])
   const [moduleId, setModuleId] = useState(null)
   const [discussioninfo, setDiscussionInfo] = useState([])
@@ -71,8 +71,13 @@ function SchoolCoursesDiscussionContent({setLoading}) {
     :
     <>
      <div className='rounded-white-container'>
-      <div className="col-md-10 pages-header"><p className='title-header'>Discussion </p>
-			</div>
+      <div className="col-md-10 pages-header fd-row"><p className='title-header'>Discussion </p>
+        <div className='mb-3'>
+          <Button onClick={() => onRefresh()} className='ml-3'>
+            <i className="fa fa-sync"></i>
+          </Button>
+        </div>
+      </div>
       <Accordion>
         {modules.map((item, index) => {
           return(

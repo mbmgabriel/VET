@@ -34,13 +34,13 @@ function SchoolTask() {
   }, []);
 
   return (
-  <MainContainer title="Task" activeHeader={"courses"} loading={loading}>
-    <Row className="mt-4">
+  <MainContainer title="Task" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+    <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Task" />
       </Col>
-      <Col sm={9}>
-        <SchoolCourseTask />
+      <Col sm={9} className='scrollable vh-85'>
+        <SchoolCourseTask onRefresh={() => getCourseInformation()} />
       </Col>
     </Row>
   </MainContainer>

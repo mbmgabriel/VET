@@ -9,7 +9,7 @@ import ClassesAPI from '../../api/ClassesAPI'
 import CoursesAPI from '../../api/CoursesAPI'
 import CalendarDashboard from './CalendarDashboard'
 
-export default function SummaryDashboard() {
+export default function SummaryDashboard({studentCount}) {
 
   const userContext = useContext(UserContext)
   const [loading, setLoading] = useState(false)
@@ -62,7 +62,7 @@ export default function SummaryDashboard() {
 					<div className='analytics-icon'><i className="fas fa-user-graduate "></i></div>
 					<h5 className="color-black my-0 ml-5">Students</h5>
 				</div>
-				<h2 className='color-secondary analytics-value h2 text-align-right'>145,322</h2>
+				<h2 className='color-secondary analytics-value h2 text-align-right'>{studentCount}</h2>
 			</div>
 			<div className="dashboard-content-item rounded shadow bg-white" >
 				<div className='analytics-label' style={{color:"#EE9337"}}>
@@ -85,9 +85,9 @@ export default function SummaryDashboard() {
 				</div>
 				<h2 className='color-black analytics-value h2 text-align-right'></h2>
 			</div> */}
-      <Col sm={3}>
+      {/* <Col sm={3}>
         <CalendarDashboard />
-      </Col>
+      </Col> */}
 		</div>
     </React.Fragment>
   )

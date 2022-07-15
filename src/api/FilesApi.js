@@ -102,6 +102,14 @@ export default class GradeAPI extends Base {
     });
   };
 
+  deleteCourseTeacherResourceFolder = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/resource/folder/v3/delete`,
+      method: 'PUT',
+      data
+    });
+  };
+
   editClassFile = async(id, data) => {
     return this.sendRequest({
       path: `/api/Class/${id}/files/v3/update`,

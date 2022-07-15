@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import { CardGroup } from 'react-bootstrap'
 import ClassesAPI from '../../api/ClassesAPI'
+import AcademicTermAPI from '../../api/AcademicTermAPI';
 import MainContainer from '../../components/layouts/MainContainer'
 import ClassCard from './components/Classes/ClassCard'
 import ClassHeader from './components/Classes/ClassHeader'
@@ -27,6 +28,7 @@ export default function Classes() {
   const {user} = userContext.data
   let studentId = user?.student?.id
   const [searchTerm, setSearchTerm] = useState('')
+  const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
 
   const onSearch = (text) =>{
     setSearchTerm(text)
@@ -68,6 +70,18 @@ export default function Classes() {
       }
   }
 
+  const getAcademicTerm = async () =>{
+    let response = await new AcademicTermAPI().fetchAcademicTerm()
+    if(response.ok){
+      let data = response.data;
+      let temp = localStorage.getItem('academicTerm')
+      let obj = data.find(o => o.isCurrentTerm === true);
+      if(temp === null) {}
+        setCurrentAcademicTerm(temp ? temp : obj.academicTermName);
+        localStorage.setItem('academicTerm', obj.academicTermName);
+    }
+  }
+
   useEffect(() => {
     if(user?.teacher === null)
     return(
@@ -77,6 +91,9 @@ export default function Classes() {
   }, [])
 
   useEffect(() => {
+    let temp = localStorage.getItem('academicTerm')
+    setCurrentAcademicTerm(temp)
+    getAcademicTerm();
     if(user?.student === null)
       return(
         getClasses()
@@ -133,9 +150,13 @@ export default function Classes() {
                   return item
                 }
               }).map(item => {
-                return(<ClassCard classIdCoverPhoto={classIdCoverPhoto} setClassIdCoverPhoto={setClassIdCoverPhoto} openCoverPhotoModal={openCoverPhotoModal} setOpenCoverPhotoModal={setOpenCoverPhotoModal} getClasses={getClasses}  item={item} setOpenEditModal={setOpenEditModal} setSeletedClass={setSeletedClass} />)
-                  }):<span></span>
-                }
+                return(
+                  item.termName == currentAcademicTerm &&
+                    <ClassCard classIdCoverPhoto={classIdCoverPhoto} setClassIdCoverPhoto={setClassIdCoverPhoto} openCoverPhotoModal={openCoverPhotoModal} setOpenCoverPhotoModal={setOpenCoverPhotoModal} getClasses={getClasses}  item={item} setOpenEditModal={setOpenEditModal} setSeletedClass={setSeletedClass} />)
+                })
+              :
+              <span></span>
+            }
           </CardGroup>
           </>
         }

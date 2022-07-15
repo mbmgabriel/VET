@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import ClassesAPI from "../../api/ClassesAPI";
 import ClassSideNavigation from "./components/ClassSideNavigation";
 import ClassBreadcrumbs from "./components/ClassBreedCrumbs";
+import FullScreenLoader from "../../components/loaders/FullScreenLoader";
 
 export const ClassExam = () => {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,6 @@ export const ClassExam = () => {
   const fetchExams = async () => {
     setLoading(true);
     let response = await new ExamAPI().getExams(id);
-    setLoading(false);
     if (response.ok) {
       const filteredExams = response.data.filter(
         (item) => user.isTeacher || item.classTest != null

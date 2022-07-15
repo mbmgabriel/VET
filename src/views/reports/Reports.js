@@ -5,6 +5,8 @@ import { UserContext } from './../../context/UserContext'
 import {Form,ListGroup, Row, Col} from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import ClassesAPI from './../../api/ClassesAPI'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
+import { set } from 'react-hook-form'
 
 export default function Reports({children}) {
   const userContext = useContext(UserContext)
@@ -13,6 +15,7 @@ export default function Reports({children}) {
   const [selectedClassId, setSelectedClassId] = useState(null)
   const [classId, setClassId] = useState('')
   const currentLoc = window.location.pathname;
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const pageURL = new URL(window.location.href);
@@ -32,20 +35,26 @@ export default function Reports({children}) {
   }, [])
 
   const getClasses = async() => {
+    setLoading(true);
     let response = await new ClassesAPI().getClasses(user.teacher.id)
     if(response.ok){
       setClasses(response.data)
+      setLoading(false);
     }else{
       alert("Something went wrong while fetching all courses")
+      setLoading(false);
     }
   }
 
   const getClassesStudent = async() => {
+    setLoading(true)
     let response = await new ClassesAPI().getClasses(user.student.id)
     if(response.ok){
       setClasses(response.data)
+    setLoading(false);
     }else{
       alert("Something went wrong while fetching all courses")
+      setLoading(false);
     }
   }
 
@@ -61,17 +70,21 @@ export default function Reports({children}) {
   }
 
   const addClassIdOnParams = (id) => {
+    setLoading(true)
     let newURL = new URL(window.location);
     newURL.searchParams.set('classId', id);
     window.history.pushState(null, '', newURL.toString());
     setClassId(id);
+    setLoading(false);
     if(window.location.pathname !== '/reports'){
       window.location.reload();
+    setLoading(false);
     }
   }
 
   return (
     <MainContainer activeHeader={'reports'} fluid style=''> 
+      {loading && <FullScreenLoader />}
       {/* <SideReport/> */}
       <Col style={{height: 100}} />
       <Row>
