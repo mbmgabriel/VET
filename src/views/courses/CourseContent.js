@@ -302,7 +302,7 @@ export default function CourseContent({children}) {
               </ListGroup>
             }
             {
-              subsType == '' &&
+              subsType == 'TeacherResources' &&
               <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
                 <OverlayTrigger
                   placement="right"
