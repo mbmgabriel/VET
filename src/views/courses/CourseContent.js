@@ -151,7 +151,7 @@ export default function CourseContent({children}) {
                 </Col>
               </Row>
             </ListGroup.Item> 
-            {subsType == 'LMS' ? 
+            {subsType == 'LMS' &&
               <ListGroup>
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   Learn
@@ -187,12 +187,20 @@ export default function CourseContent({children}) {
                   </Link>
                 }
               </ListGroup>
-              :
+            }
+            {
+              subsType == 'Ebooks' &&
               <ListGroup>
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   Learn
                 </Link>
               </ListGroup>
+            }
+            {
+              subsType == 'TeacherResources' &&
+              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                Teacher Resources
+              </Link>
             }
           </Col>
           :
@@ -200,7 +208,7 @@ export default function CourseContent({children}) {
             <Col className="text-align-right mb-2">
               <i className="fas fa-chevron-right cursor-pointer" onClick={()=> handleClicked(true)}/>
             </Col>
-            {subsType == 'LMS' ? 
+            {subsType == 'LMS' &&
               <ListGroup>
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   <OverlayTrigger
@@ -279,7 +287,9 @@ export default function CourseContent({children}) {
                   </Link>
                 }
               </ListGroup>
-              :
+            }
+            {
+              subsType == 'Ebooks' &&
               <ListGroup>
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   <OverlayTrigger
@@ -290,6 +300,17 @@ export default function CourseContent({children}) {
                   </OverlayTrigger>
                 </Link>
               </ListGroup>
+            }
+            {
+              subsType == 'TeacherResources' &&
+              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 1, hide: 25 }}
+                  overlay={renderTooltipTeacherResources}>
+                  <i className="fas fa-link" />
+                </OverlayTrigger>
+              </Link>
             }
           </Col>
           }
