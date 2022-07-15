@@ -683,3 +683,9 @@ margin: 0 auto;
   margin-left: 5px !important;
   margin-right:  5px !important;
 }
+
+.login-bg-image{
+  background-image: url("../images/login-bg.png");
+  background-size: cover;
+  background-color: #cccccc;
+}
