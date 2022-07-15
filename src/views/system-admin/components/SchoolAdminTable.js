@@ -46,17 +46,6 @@ export default function TeachersList() {
     handleSchoolAdmin()
   }, [])
 
-  const handleDeleteTeacher = async () => {
-    let response = await new SchoolAPI().deleteTeacher(toDeleteId);
-    if (response.ok) {
-      toast.success("Teacher deleted successfully")
-      handleSchoolAdmin();
-    } else {
-      toast.error("Something went wrong while deleting teacher.")
-    }
-    setDeleteNotify(false);
-  }
-
   const handleSchoolAdmin = async () => {
     let response = await new SchoolAPI().getSchoolAdmin();
     if (response.ok) {
@@ -103,67 +92,55 @@ export default function TeachersList() {
     }
   }
 
-  const handleRegisterTeacher = async () => {
+  const handleRegisterSchoolAdmin = async () => {
     let data = {
       username,
       password
     }
-    let response = await new SchoolAPI().createSchoolAdmin(data)
-    if (response?.ok) {
-      handleSchoolAdmin();
-      clearState();
-      toast.success("Successfully registered the school admin");
-      setShowEditModal(false);
-    } else {
-      toast.error(response?.data?.errorMessage);
+    if(username != '' && password != '') {
+      let response = await new SchoolAPI().createSchoolAdmin(data)
+      if (response?.ok) {
+        handleSchoolAdmin();
+        clearState();
+        toast.success("Successfully registered the school admin");
+        setShowEditModal(false);
+      } else {
+        toast.error(response?.data?.errorMessage);
+      }
+    }else{
+      toast.error('Please input all required fileds.')
     }
   }
 
   const form = () => {
     return (
-      formType == 'Edit' ? <Modal size="lg" show={showEditModal} onHide={() => { setShowEditModal(false); clearState(); }} aria-labelledby="example-modal-sizes-title-lg">
-        <Modal.Header className='class-modal-header' closeButton>Edit Account</Modal.Header>
+      <Modal size="lg" show={showEditModal} onHide={() => { setShowEditModal(false); clearState(); }} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header className='class-modal-header' closeButton>{formType == 'Edit' ? 'Edit Account' : 'Register School Admin'}</Modal.Header>
         <Modal.Body>
           <div className="row row-space-10">
             <div className="col-md-6 m-b-15">
-              <label className="control-label">Username</label>
+              <label className="control-label">Username <span className='text-danger'>*</span></label>
               <InputGroup className="mb-4">
                 <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
               </InputGroup>
             </div>
             <div className="col-md-6 m-b-15">
-              <label className="control-label">Password</label>
+              <label className="control-label">Password <span className='text-danger'>*</span></label>
               <InputGroup className="mb-4">
                 <Form.Control type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
               </InputGroup>
             </div>
           </div>
-          <button className="btn float-right tficolorbg-button mb-4" onClick={() => handleSaveEdit()}>Save Edit</button>
+          {
+            formType == 'Edit'
+            ?
+            <button className="btn float-right tficolorbg-button mb-4" onClick={() => handleSaveEdit()}>Save Edit</button>
+            :
+            <button className="btn float-right tficolorbg-button mb-4" onClick={() => handleRegisterSchoolAdmin()}>Register</button>
+          }
           <button className="btn float-right btn-danger mb-4 m-r-10" onClick={() => setShowEditModal(false)}>Cancel</button>
         </Modal.Body>
       </Modal>
-        :
-        <Modal size="lg" show={showEditModal} onHide={() => setShowEditModal(false)} aria-labelledby="example-modal-sizes-title-lg">
-          <Modal.Header className='class-modal-header' closeButton>Register School Admin</Modal.Header>
-          <Modal.Body>
-          <div className="row row-space-10">
-            <div className="col-md-6 m-b-15">
-              <label className="control-label">Username</label>
-              <InputGroup className="mb-4">
-                <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-              </InputGroup>
-            </div>
-            <div className="col-md-6 m-b-15">
-              <label className="control-label">Password</label>
-              <InputGroup className="mb-4">
-                <Form.Control type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-              </InputGroup>
-            </div>
-          </div>
-            <button className="btn float-right tficolorbg-button mb-4" onClick={() => handleRegisterTeacher()}>Register</button>
-            <button className="btn float-right btn-danger mb-4 m-r-10" onClick={() => setShowEditModal(false)}>Cancel</button>
-          </Modal.Body>
-        </Modal>
     )
   }
 
@@ -172,16 +149,20 @@ export default function TeachersList() {
       username,
       password
     }
-    let response = await new SchoolAPI().updateAccount(toEditId, data)
-    if (response.ok) {
-      setShowEditModal(false);
-      handleSchoolAdmin()
-      toast.success("Successfully updated the teacher information.");
-      setToEditId('')
-      setPositionID('');
-      setUserAccountID('');
-    } else {
-      toast.error(response?.data?.errorMessage);
+    if(username != '' && password != '') {
+      let response = await new SchoolAPI().updateAccount(toEditId, data)
+      if (response.ok) {
+        setShowEditModal(false);
+        handleSchoolAdmin()
+        toast.success("Successfully updated the teacher information.");
+        setToEditId('')
+        setPositionID('');
+        setUserAccountID('');
+      } else {
+        toast.error(response?.data?.errorMessage);
+      }
+    }else{
+      toast.error('Please input all required fileds.');
     }
   }
 
