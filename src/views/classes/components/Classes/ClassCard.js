@@ -70,7 +70,7 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
     localStorage.setItem('typeresource', 'class')
   });
 
-  console.log('item:', item.classCover)
+  console.log('111111111:', item)
 
   return (
     <div>
@@ -139,6 +139,7 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
               <Col sm={10}>
                 <b>
                   {item.className} <br /> 
+                  {item.teacherName} <br />
                  <p className='font-color'> {item.gradeName} </p> 
                 </b> 
               </Col>

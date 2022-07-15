@@ -39,6 +39,7 @@ function StudentClasslist({item}) {
               <Col sm={10}>
                 <b>
                   {item.className} <br /> 
+                  {item.teacherName} <br />
                  <p className='font-color'> {item.gradeName} </p> 
                 </b> 
               </Col>
