@@ -81,10 +81,10 @@ return (
         return(
           <div>
           <Card className='class-card' >
-          <Card.Header className='class-header-card' >
+          <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
               <Col sm={10}>
-               {item.classCode}
+               {/* {item.classCode} */}
               </Col>
               <Col sm={2} style={{textAlign:'right'}}>
                 <Dropdown isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
@@ -104,20 +104,41 @@ return (
                 </Dropdown>
               </Col>
               <Col sm={10}>
-                <b>{item.gradeName}   {item.className} </b>
+                {/* <b>{item.gradeName}   {item.className} </b> */}
               </Col>
               <Col sm={8}>
                {item.courseName}
               </Col>
               <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
-                <i className="fas fa-user"></i> 30
+                {/* <i className="fas fa-user"></i> 30 */}
              </Col>
            </Row>
           </Card.Header>
           <Card.Body>
-            <Card.Text style={{color:'#EE9337', textAlign:'center'}}>
+          <Card.Title>
+            </Card.Title>
+            <Card.Subtitle>
+              <Col sm={10}>
+               {item.classCode}
+              </Col>
+              {item.courseName} 
+              <Col sm={10}>
+                <b>{item.className.substring(0, 25)}... </b>
+              </Col>
+            </Card.Subtitle>
+            <Card.Text style={{color:'#EE9337'}}>
+            <Row>
+            <Col sm={8}>
             <br />
-            <i style={{fontSize:'90px', paddingBottom:'25px'}} class="fas fa-box-open"></i>
+               {/* Student */}
+              </Col>
+              <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
+              <br />
+                {/* <i className="fas fa-user"></i> {item?.classEnrolledCount} */}
+                <br />
+                <br />
+             </Col>
+            </Row>
             </Card.Text>
           </Card.Body>
       </Card>

@@ -13,16 +13,16 @@ function StudentClasslist({item}) {
     <div>
          <Card className='class-card' >
         <Link to={subsType == 'LMS' ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` }>
-          <Card.Header className='class-header-card' >
+          <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
-              <Col sm={10}>
+              {/* <Col sm={10}>
                 {item.classCode}
               </Col>
               <Col sm={2} style={{textAlign:'right'}}>
               </Col>
               <Col sm={10}>
                 <b>{item.gradeName} -  {item.className} </b>
-              </Col>
+              </Col> */}
               {/* <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
                 <i className="fas fa-user"></i> 30
              </Col> */}
@@ -33,13 +33,19 @@ function StudentClasslist({item}) {
             
             </Card.Title>
             <Card.Subtitle>
-            {item.courseName}
+            <Col sm={10}>
+               {item.classCode}
+              </Col>
+              {item.courseName} 
+              <Col sm={10}>
+                <b>{item.gradeName} -  {item.className.substring(0, 10)}... </b>
+              </Col>
             </Card.Subtitle>
             <Card.Text style={{color:'#EE9337'}}>
             <Row>
             <Col sm={8}>
             <br />
-               Student Enrolled
+               Student
               </Col>
               <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
               <br />
