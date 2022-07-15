@@ -63,7 +63,7 @@ function ClassCoverPhoto({openCoverPhotoModal, setOpenCoverPhotoModal, classIdCo
               File Extension .jpg, .jpeg, .tiff, .bmp, .png
             </Col>
             <Col className='font-color' >
-              Image must 275x183
+              Image must 290x168
             </Col>
             <Button onClick={() => handleUploadCover()} className="m-r-5 color-white tficolorbg-button float-right" size="sm">UPLOAD</Button>
 					</Modal.Body>
