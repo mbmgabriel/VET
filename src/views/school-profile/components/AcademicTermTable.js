@@ -118,7 +118,7 @@ export default function SchoolTermTable() {
             Header: "",
             columns: [
               {
-                Header: "Current Term",
+                Header: "Current School Year",
                 id: "term",
                 accessor: (d) => d.academicTermName,
                 Cell: (row) => (
@@ -127,7 +127,7 @@ export default function SchoolTermTable() {
               },
 
               {
-                Header: "Academic Term",
+                Header: "School Year",
                 id: "term",
                 accessor: (d) => d.academicTermName,
               },
@@ -173,7 +173,7 @@ export default function SchoolTermTable() {
         class='btn btn-primary px-5 mt-3'
         onClick={() => setShowForm(true)}
       >
-        Create new term
+        Create new school year
       </button>
       <SweetAlert
         showCancel
@@ -202,14 +202,14 @@ export default function SchoolTermTable() {
           <Modal.Header className='font-10' closeButton>
             <span className='font-20'>
               {selectedTerm != null
-                ? `Update ${selectedTerm.description}`
-                : "Create term"}
+                ? `Update School Year`
+                : "Create School Year"}
             </span>
           </Modal.Header>
           <Modal.Body>
             <div className="row">
               <div className='col-md-4 m-b-15'>
-                <label className='control-label mb-2'>Term name</label>
+                <label className='control-label mb-2'>School Year</label>
                   <input
                   {...register("academicTermName", {
                     required: "Term name is required",
@@ -239,11 +239,11 @@ export default function SchoolTermTable() {
           <Modal.Footer>
             {selectedTerm != null ? 
                 <button type='submit' className='btn btn-primary'>
-                Update Term
+                Update School Year
               </button>  
               :
               <button type='submit' className='btn btn-primary'>
-              Save Term
+              Save School Year
             </button>
             }
           </Modal.Footer>

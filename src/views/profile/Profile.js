@@ -56,8 +56,8 @@ function Profile() {
     if(response.ok){
       console.log(response.data)
       setprofileImage(response.data)
-    }else{
-      toast.error('Something went wrong while getting profile image.')
+    // }else{
+    //   toast.error('Something went wrong while getting profile image.')
     }
   }
 
