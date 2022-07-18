@@ -75,10 +75,10 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
       </SweetAlert>
       <Card className='class-card' >
         <Link to={`/school_classes/${item.classId}/feed`}>
-          <Card.Header className='class-header-card' >
+          <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
               <Col sm={10}>
-               {item.classCode}
+               {/* {item.classCode} */}
               </Col>
               {!user.isSchoolAdmin && <Col sm={2} style={{textAlign:'right'}}>
               <OverlayTrigger
@@ -101,7 +101,7 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
                 </OverlayTrigger>
               </Col>}
               <Col sm={10}>
-                <b>{item.gradeName} -  {item.className} </b>
+                {/* <b>{item.gradeName} -  {item.className} </b> */}
               </Col>
               {/* <Col sm={8}>
                {item.courseName}
@@ -112,21 +112,30 @@ function ClassCard({item, setOpenEditModal, setSeletedClass, getClasses}) {
            </Row>
           </Card.Header>
           <Card.Body>
-            <Card.Title>
+          <Card.Title>
             </Card.Title>
             <Card.Subtitle>
-              {item.courseName} 
+            {item.className} 
+              <Col className='font-color' sm={10}>
+                {item.classCode}
+              </Col>
+              <Col sm={10}>
+                <b>
+                {item.teacherName} <br /> 
+                 <spam className='font-color'> {item.gradeName} </spam> <br />
+                 {item.courseName}
+                </b> 
+                <br /> 
+                <br />
+              </Col>
             </Card.Subtitle>
-            <Card.Text style={{color:'#EE9337'}}>
+            <Card.Text className='font-color'>
             <Row>
             <Col sm={8}>
-            <br />
-               Student Enrolled
+               Student <br />
               </Col>
               <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
-              <br />
                 <i className="fas fa-user"></i> {item?.classEnrolledCount}
-                <br />
                 <br />
              </Col>
             </Row>
