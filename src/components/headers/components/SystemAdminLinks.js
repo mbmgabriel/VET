@@ -13,6 +13,7 @@ export default function SystemAdminLinks({activeHeader}) {
         <Link className={activeHeader === "courses" && 'active'} to="/system-admin/courses">Courses</Link>
         <Link className={activeHeader === "profile" && 'active'} to="/system-admin/profile">Profile</Link>
         <Link className={activeHeader === "school" && 'active'} to="/system-admin/teachers">School</Link>
+        <Link className={activeHeader === "miranda" && 'active'} to="/system-admin/miranda">Miranda</Link>
       </div>
     )
   }
