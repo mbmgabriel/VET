@@ -110,6 +110,8 @@ import InteractiveReportPage from '../views/reports/InteractiveReportPage';
 import NotificationsPage from '../views/notification/Notifications';
 import SchoolAcademicTerms from "../views/school-profile/SchoolAcademicTerm";
 
+import MirandaAccount from '../views/system-admin/miranda/Miranda';
+
 export default function Routes() {
   const userContext = useContext(UserContext);
   const {loading, refreshUser} = userContext.data
@@ -220,7 +222,7 @@ export default function Routes() {
             <PrivateRoute path='/system-admin/school-profile' exact component={SystemAdminSchool} />
             <PrivateRoute path='/system-admin/courses' exact component={SystemAdminCourses} />
             <PrivateRoute path='/system-admin/school_admin' exact component={SystemAdminSchoolAdmin} />
-          
+            <PrivateRoute path='/system-admin/miranda' exact component={MirandaAccount} />
             {/* System admin routes end */}
 
             <PrivateRoute path='/notifications' exact component={NotificationsPage} />
