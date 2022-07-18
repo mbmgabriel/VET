@@ -419,7 +419,7 @@ export default function MultipleChoice({
             </h5>
             <p title="" className=''>Point(s): {question.question.rate}</p>
           </div>
-          {editable && !shared && isContributor && (
+          {editable && ifCoursetab && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {

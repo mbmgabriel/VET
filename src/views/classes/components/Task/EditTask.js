@@ -17,7 +17,7 @@ function EditTask({setRate, rate, moduleName, setTaskName, taskName, setInstruct
   const [displayFolder, setDisplayFolder] = useState([]);
   const [displayFiles, setDisplayFiles] = useState([]);
   const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
-  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const subFolderDirectory = breedCrumbsItemClass?.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
   const [displayType, setDisplayType] = useState('');
   const [showFilesFolders, setShowFilesFolders] = useState(false);
   const [courseId, setCourseId] = useState(null)

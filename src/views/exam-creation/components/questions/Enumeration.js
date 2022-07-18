@@ -351,7 +351,7 @@ export default function Enumeration({
             <hr/>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable && !shared && isContributor && (
+          {editable && ifCoursetab && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {

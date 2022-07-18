@@ -19,7 +19,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
   const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
-  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const subFolderDirectory = breedCrumbsItemClass?.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
   const [displayType, setDisplayType] = useState('');
   const [showFilesFolders, setShowFilesFolders] = useState(false);
   const [courseId, setCourseId] = useState(null)
