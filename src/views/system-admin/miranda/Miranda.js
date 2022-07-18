@@ -12,14 +12,13 @@ import moment from "moment"
 import MainContainer from '../../../components/layouts/MainContainer';
 
 
-export default function SystemAdminCourses() {
+export default function MirandaAccounts() {
 
-  const [teachers, setTeachers ] = useState([]);
+  const [mirandaAccounts, setMirandaAccounts ] = useState([]);
   const [ deleteNotify, setDeleteNotify ] = useState(false);
   const [toDeleteId, setToDeleteId] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState('');
   const [showUpload, setShowUpload] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -48,8 +47,7 @@ export default function SystemAdminCourses() {
     setLoading(true);
     let response = await new MirandaAPI().fetchMirandaAccounts();
     if(response.ok){
-      console.log(response, 'sample')
-      setTeachers(response.data)
+      setMirandaAccounts(response.data)
     }else{
       toast.error("Something went wrong while fetching exam information")
     }
@@ -179,7 +177,6 @@ export default function SystemAdminCourses() {
   const handleGetUploadedFile = (file) => {
     getBase64(file).then(
       data => {
-        console.log(file.name)
         let toUpload = {
           "base64String": data,
           "fileName": file.name
@@ -220,14 +217,14 @@ export default function SystemAdminCourses() {
       <span className='font-24'>Miranda Accounts</span> |{' '}
       <button onClick={() => { setShowUpload('Register')}} className="tficolorbg-button btn btn-info btn-sm m-r-5 my-3">Add Miranda Account{' '}<i class="fas fa-plus"></i></button>
         <ReactTable pageCount={100}
-          list={teachers}
+          list={mirandaAccounts}
           filterable
           defaultFilterMethod={(filter, row) => {
             let f = filter.value.toLowerCase();
             const id = filter.pivotId || filter.id
             return row[id] !== undefined ? String(row[id].toLowerCase()).startsWith(f) : true
           }}
-          data={teachers}
+          data={mirandaAccounts}
           columns={[{
             Header: '',
             columns:
@@ -269,7 +266,7 @@ export default function SystemAdminCourses() {
               }
             ]
           }]}
-        csv edited={teachers} defaultPageSize={10} className="-highlight" 
+        csv edited={mirandaAccounts} defaultPageSize={10} className="-highlight" 
         />
         <Modal size="lg" show={showUpload} onHide={() => showUpload(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
