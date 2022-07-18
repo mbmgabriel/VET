@@ -46,8 +46,9 @@ export default function Dashboard() {
         <Col className='px-4' sm={12}>
         <h2 className="primary-color mt-5 mb-3">Notifications</h2>
           {events.map((e, key) => {
+            console.log({e})
             return(
-              <Col>
+              <Col key={key}>
                 <Row className="justify-content-around">
                   <Col md={10}>
                     <h3>{e.class}</h3>
@@ -55,7 +56,8 @@ export default function Dashboard() {
                     <p>{e.description ? e.description : 'No description available.'}</p>
                   </Col>
                   <Col md={2}>
-                    <p className='float-end'>{handleConvertDate(e.startDate)}</p>
+                    {/* <p className='float-end'>{handleConvertDate(e.startDate)}</p> */}
+                    <p className='float-end'>{moment(e.dateUpdated).startOf().fromNow()}</p>
                   </Col>
                 </Row>
                 <hr />
