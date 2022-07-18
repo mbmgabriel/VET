@@ -127,13 +127,13 @@ export default function TrueOrFalse({
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const ifCoursetab = window.location.pathname.includes('course') ? true : !shared;
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -154,12 +154,10 @@ export default function TrueOrFalse({
     handleGetItems();
   },[part])
 
-  console.log(part, '..................');
   const submitQuestion = async (e) => {
     e.preventDefault();
     setIsButtonDisabled(true)
     setTimeout(()=> setIsButtonDisabled(false), 1000)
-    console.log({ selectedQuestion });
     setLoading(true);
     const data = {
       question: {
@@ -223,9 +221,6 @@ export default function TrueOrFalse({
   };
 
   const addQuestion = async (data) => {
-    console.log(id,
-      part.questionPart.id,
-      data)
     let response = await new ExamAPI().addTrueOrFalse(
       examid,
       part.questionPart.id,
@@ -248,7 +243,6 @@ export default function TrueOrFalse({
   };
 
   const handleGetItems = () => {
-    console.log(part.questionDtos, '----------=======')
     let tempData =[]
     part.questionDtos.map((question, index) => {
       let temp= {};
@@ -269,7 +263,6 @@ export default function TrueOrFalse({
   }
 
   const downloadxls = (e, data) => {
-    console.log(data);
     e.preventDefault();
     const ws =utils.json_to_sheet(data);
     const wb =utils.book_new();
@@ -307,7 +300,7 @@ export default function TrueOrFalse({
           
         </div>
       ))}
-      {editable && !shared && isContributor && (
+      {editable && ifCoursetab && isContributor && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'

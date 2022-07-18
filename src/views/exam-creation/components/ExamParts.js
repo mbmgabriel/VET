@@ -25,6 +25,8 @@ export default function ExamParts({
   const [courseInfo, setCourseInfo] = useState("")
   const shared = exam?.test?.isShared
 
+  console.log(shared, '---------=======!', {exam});
+
   const courseid = sessionStorage.getItem('courseid')
   const [isContributor, setIsContributor] = useState(true);
 
@@ -33,7 +35,7 @@ export default function ExamParts({
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
+      console.log(ifContri, user, '================================', {response})
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -104,8 +106,8 @@ export default function ExamParts({
             </>)} */}
             {isContributor &&
             <>  
-              {(editable && !shared) && (
-                <div className='exam-actions' >
+              {(editable && shared) && (
+                <div className='exam-actions'>
                   <OverlayTrigger
                     placement="right"
                     delay={{ show: 0, hide: 0 }}

@@ -80,7 +80,7 @@ const EnumerationForm = ({
             <div>
               {choices.map((choice, index) => {
                 const onChoiceTextChange = (key, value) => {
-                  console.log({ key, value });
+                  // console.log({ key, value });
                   const tempChoices = choices.map((choice, i) => {
                     if (i === key) {
                       return {
@@ -169,13 +169,13 @@ export default function Enumeration({
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const ifCoursetab = window.location.pathname.includes('course') ? true : !shared;
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -200,7 +200,6 @@ export default function Enumeration({
     e.preventDefault();
     setIsButtonDisabled(true)
     setTimeout(()=> setIsButtonDisabled(false), 1000)
-    console.log({ selectedQuestion });
     const data = {
       question: {
         questionTypeId,
@@ -228,7 +227,7 @@ export default function Enumeration({
       toast.error("Please add unique answers")
       return
     }
-    console.log({choices}, "GO HERE")
+    // console.log({choices}, "GO HERE")
     setLoading(true);
 
     if (selectedQuestion != null) {
@@ -323,7 +322,6 @@ export default function Enumeration({
   }
 
   const downloadxls = (e, data) => {
-    console.log(data);
     e.preventDefault();
     const ws =utils.json_to_sheet(data);
     const wb =utils.book_new();
@@ -357,7 +355,7 @@ export default function Enumeration({
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
-                console.log({ question });
+                // console.log({ question });
                 setChoices(question.choices);
                 setSelectedQuestion(question);
                 setQuestion(question.question.testQuestion);
@@ -370,7 +368,7 @@ export default function Enumeration({
           )}
         </div>
       ))}
-      {isContributor && editable && !shared && (
+      {isContributor && editable && ifCoursetab && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'
