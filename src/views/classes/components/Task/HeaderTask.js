@@ -5,27 +5,24 @@ import { UserContext } from '../../../../context/UserContext';
 import {useParams} from 'react-router';
 
 function HeaderTask({module, getTaskModule, refModuleId, onSearch, onRefresh}) {
-const [modal, setModal] = useState(false)
-const userContext = useContext(UserContext)
-const {user} = userContext.data
-const {id} = useParams();
-const toggle = () =>{
-    setModal(!modal)
-  }
+	const [modal, setModal] = useState(false)
+	const userContext = useContext(UserContext)
+	const {user} = userContext.data
+	const {id} = useParams();
+
+	const toggle = () =>{
+			setModal(!modal)
+		}
+
 	return (
 		<div>
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
 				<div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Task </p>
-					{
-          window.location.pathname.includes('/school_classes') ?
-					  null
-						:
 					 <div>
-						<Button onClick={() => onRefresh} className='ml-3'>
+						<Button onClick={onRefresh} className='ml-3'>
 							<i className="fa fa-sync"></i>
 						</Button>
 					</div>
-          }
 						{
 							user.isTeacher && 
 								<p className='title-header m-0-dashboard'>
@@ -46,5 +43,5 @@ const toggle = () =>{
 		</div>
 	)
 }
-export default HeaderTask
 
+export default HeaderTask;

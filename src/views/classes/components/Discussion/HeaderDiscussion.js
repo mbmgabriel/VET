@@ -4,27 +4,23 @@ import CreateDiscussion from './CreateDiscussion';
 import { UserContext } from '../../../../context/UserContext'
 
 function HeaderDiscussion({module, getDiscussionUnit, onSearch,onRefresh}) {
-const [modal, setModal] = useState(false)
-const userContext = useContext(UserContext)
-const {user} = userContext.data
+	const [modal, setModal] = useState(false)
+	const userContext = useContext(UserContext)
+	const {user} = userContext.data
 
-const toggle = () =>{
-    setModal(!modal)
-  }
+	const toggle = () =>{
+			setModal(!modal)
+		}
+
 	return (
 		<div>
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
 				<div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Discussion </p>
-				{
-          window.location.pathname.includes('/school_classes') ?
-					  null
-						:
 					 <div>
-						<Button onClick={() => onRefresh} className='ml-3'>
+						<Button onClick={onRefresh} className='ml-3'>
 							<i className="fa fa-sync"></i>
 						</Button>
 					</div>
-          }
 					{
 						user.isTeacher && 
 							<p className='title-header m-0-dashboard'>
