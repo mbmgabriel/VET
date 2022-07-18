@@ -187,6 +187,15 @@ export default class SchoolAPI extends Base {
     })
   }
 
+  getSchoolCodeAPI = async() => {
+    return this.sendRequest({
+      path: `/api/School/code`,
+      method: 'GET'
+    })
+  }
+
+
+
   
 
 }
