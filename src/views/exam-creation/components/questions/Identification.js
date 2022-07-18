@@ -121,13 +121,13 @@ export default function Identification({
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const ifCoursetab = window.location.pathname.includes('course') ? true : !shared;
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -152,7 +152,7 @@ export default function Identification({
     e.preventDefault();
     setIsButtonDisabled(true)
     setTimeout(()=> setIsButtonDisabled(false), 1000)
-    console.log({ selectedQuestion });
+    // console.log({ selectedQuestion });
     setLoading(true);
     const data = {
       question: {
@@ -287,7 +287,7 @@ export default function Identification({
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
 
-          {editable && !shared && isContributor && (
+          {editable && ifCoursetab && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -302,7 +302,7 @@ export default function Identification({
           )}
         </div>
       ))}
-      {editable && !shared && isContributor && (
+      {editable && ifCoursetab && isContributor && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'

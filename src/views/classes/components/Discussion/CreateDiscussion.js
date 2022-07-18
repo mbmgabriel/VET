@@ -21,7 +21,7 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
   const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
   const [showFiles, setShowFiles] = useState(false);
   const [displayType, setDisplayType] = useState('');
-  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const subFolderDirectory = breedCrumbsItemClass?.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
   const [displayFolder, setDisplayFolder] = useState([]);
   const [courseId, setCourseId] = useState(null)
   const allowLate = true
@@ -211,7 +211,7 @@ function CreateDiscussion({setModal, modal, toggle, classInfo, module, getDiscus
               <span onClick={()=> handleClickType('')} className={displayType ? 'colored-class-task' : 'fix-color-bread'}>Files</span>
               {displayType && <span onClick={()=> handleFileBreed()} className={breedCrumbsItemClass.length == 0 ? 'fix-color-bread' : 'colored-class-task'}> <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {displayType} Files</span>}
               {
-                breedCrumbsItemClass.map((item, index) => {
+                breedCrumbsItemClass?.map((item, index) => {
                   return <span onClick={() => handleClickedBreadcrumbsItem(item.value, index, 'Class')} className={breedCrumbsItemClass.length == (index+1) ? 'fix-color-bread' : 'colored-class-task'}>  <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {item.naame}</span>
                 })
               }

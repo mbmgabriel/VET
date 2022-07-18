@@ -38,8 +38,6 @@ const MultipleChoiceForm = ({
   const courseid = sessionStorage.getItem('courseid')
   const { id } = useParams();
   const tabType = window.location.pathname.includes("class") ? true : false; // if class or course
-
-  console.log(editQuestion)
   
   const addQuestion = (e) => {
     e.preventDefault();
@@ -116,7 +114,7 @@ const MultipleChoiceForm = ({
             <div>
               {choices.map((choice, index) => {
                 const onChoiceTextChange = (key, value) => {
-                  console.log({ key, value });
+                  // console.log({ key, value });
                   const tempChoices = choices.map((choice, i) => {
                     if (i === key) {
                       return {
@@ -130,7 +128,7 @@ const MultipleChoiceForm = ({
                 };
 
                 const onChoiceAnswerChange = (key) => {
-                  console.log({ key });
+                  // console.log({ key });
                   const tempChoices = choices.map((choice, i) => {
                     if (i === key) {
                       return {
@@ -206,7 +204,6 @@ export default function MultipleChoice({
   examName,
   shared
 }) {
-  console.log('Parts', part)
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState("");
   const [rate, setRate] = useState(1);
@@ -224,13 +221,13 @@ export default function MultipleChoice({
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const ifCoursetab = window.location.pathname.includes('course') ? true : !shared;
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -272,7 +269,6 @@ export default function MultipleChoice({
     e.preventDefault();
     setIsButtonDisabled(true)
     setTimeout(()=> setIsButtonDisabled(false), 1000)
-    console.log({ selectedQuestion });
     setLoading(true);
     const data = {
       question: {
@@ -390,7 +386,6 @@ export default function MultipleChoice({
   }
 
   const downloadxls = (e, data) => {
-    console.log(data);
     e.preventDefault();
     const ws =utils.json_to_sheet(data);
     const wb =utils.book_new();
@@ -424,11 +419,10 @@ export default function MultipleChoice({
             </h5>
             <p title="" className=''>Point(s): {question.question.rate}</p>
           </div>
-          {editable && !shared && isContributor && (
+          {editable && ifCoursetab && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
-                console.log({ question });
                 setChoices(question.choices);
                 setSelectedQuestion(question);
                 setQuestion(question.question.testQuestion);
@@ -441,7 +435,7 @@ export default function MultipleChoice({
           )}
         </div>
       ))}
-      {editable && !shared && isContributor && (
+      {editable && ifCoursetab && isContributor && (
         <Button
           className='tficolorbg-button m-r-5'
           type='submit'

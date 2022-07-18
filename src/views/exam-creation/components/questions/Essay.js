@@ -105,13 +105,13 @@ export default function Essay({
   const isCourse = window.location.pathname.includes('course');
   const [isContributor, setIsContributor] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const ifCoursetab = window.location.pathname.includes('course') ? true : !shared;
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -207,7 +207,6 @@ export default function Essay({
   }
 
   const downloadxls = (e, data) => {
-    console.log(data);
     e.preventDefault();
     const ws =utils.json_to_sheet(data);
     const wb =utils.book_new();
@@ -228,7 +227,7 @@ export default function Essay({
             </p>
             <p className='' title="">Point(s): {question.question.rate}</p>
           </div>
-          {editable && !shared && isContributor && (
+          {editable && ifCoursetab && isContributor && (
             <QuestionActions
               onDelete={(e) => deleteQuestion(e, question.question.id)}
               onEdit={(e) => {
@@ -242,7 +241,7 @@ export default function Essay({
           )}
         </div>
       ))}
-      {editable && !shared && isContributor && (
+      {editable && ifCoursetab && isContributor && (
         <Button
           title=""
           className='tficolorbg-button m-r-5'

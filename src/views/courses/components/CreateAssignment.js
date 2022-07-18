@@ -24,7 +24,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
   const {id} = useParams();
   const [displayFolder, setDisplayFolder] = useState([])
   const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
-  const subFolderDirectory = breedCrumbsItemClass.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const subFolderDirectory = breedCrumbsItemClass?.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
 
 	const handleCloseModal = e => {
     setAssignmentName('')

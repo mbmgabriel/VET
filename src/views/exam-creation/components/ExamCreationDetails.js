@@ -32,12 +32,9 @@ export default function ExamCreationDetails({
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
-  // console.log('courseidcourseidcourseid:', courseid)
-  // console.log('courseInfoscourseInfoscourseInfos:', courseInfos)
 
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -52,7 +49,6 @@ export default function ExamCreationDetails({
       getCourseInformation();
     }
   }, [])
-  console.log(exam,  '-----------------------------');
 
   return exam != null ? (
     <div className='exam-information-container' title="">
@@ -84,9 +80,8 @@ export default function ExamCreationDetails({
       </div>
       <hr />
       <p className='secondary-title mt-4'>Exam Parts</p>
-      {isContributor &&
-        <>
-          {editable && ifCoursetab && (
+      {
+        isContributor && editable && ifCoursetab && 
           <Button
             className='btn btn-primary my-4'
             variant='primary'
@@ -99,9 +94,6 @@ export default function ExamCreationDetails({
           >
             Add Part
           </Button>
-        )
-        }
-        </>
       }
       <ExamParts
         selectedPart={selectedPart}
