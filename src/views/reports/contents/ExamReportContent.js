@@ -318,7 +318,7 @@ const handleClickIcon = () =>{
                 <tr>
                   <td >
                     <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
-                      <span style={{cursor:'pointer'}} onClick={(e) => getExamAnalysis(item.student.id, st.test.classId, st.test.id, item.student.lname, item.student.fname)} >
+                      <span style={{cursor:'pointer'}} onClick={(e) => getExamAnalysis(item.student.id, sessionClass, st.test.id, item.student.lname, item.student.fname)} >
                       { item.student.lname} { item.student.fname}
                       {st.isSubmitted == true }
                       </span> 
