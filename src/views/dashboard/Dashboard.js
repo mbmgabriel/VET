@@ -29,10 +29,10 @@ export default function Dashboard() {
 
   const getSchoolCode = async() => {
     // setLoading(true)
-    let response = await new SchoolAPI().getSchoolList()
+    let response = await new SchoolAPI().getSchoolCodeAPI()
     if(response.ok){
       setSchoolCode(response.data)
-      console.log(response.data)
+      console.log("Haru",response.data)
     }else{
       alert("Something went wrong while fetching all courses")
     }
@@ -44,16 +44,9 @@ export default function Dashboard() {
     let response = await new SchoolAPI().getSchoolInfo(sc, df, dt)
     if(response.ok){
       setSchoolData(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all courses")
     }
-    // setLoading(false)
-  }
-
-  const testSchool = async(aa) => {
-    // setLoading(true)
-    alert(aa)
     // setLoading(false)
   }
 
@@ -132,18 +125,18 @@ export default function Dashboard() {
               <Form >  
                 <ListGroup.Item className="list-group-item-o">
                   <Row>
-                    <Form.Select onChange={(e) => setSchoolInfo(e.target.value)}>
+                    {/* <Form.Select onChange={(e) => setSchoolInfo(e.target.value)}>
                     <option value="">-- Select School Here --</option>
                     {schoolCode.map(item =>{
                       return (<option value={item?.code} > {item?.code}</option>)
                     })}
-                    </Form.Select>
+                    </Form.Select> */}
                     <br></br>
                     Date From: <Form.Control type="date" onChange={(e) => setDateFrom(e.target.value)}/>
                     <br></br>
                     Date To: <Form.Control type="date" onChange={(e) => setDateTo(e.target.value)}/> 
-                    {/* <Button className='tficolorbg-button' onClick={(e) => getSchoolData(schoolCode, dateFrom, dateTo)} >Generate</Button>      */}
-                    <Button className='tficolorbg-button' onClick={(e) => getSchoolData(schoolInfo, dateFrom, dateTo)} >Generate</Button>         
+                    <br></br>
+                    <Button className='tficolorbg-button' onClick={(e) => getSchoolData(schoolCode.code, dateFrom, dateTo)} >Generate</Button>         
                   </Row>
                 </ListGroup.Item>
               </Form>
@@ -158,6 +151,7 @@ export default function Dashboard() {
                   <th>#</th>
                   <th>Role Name</th>
                   <th>Name</th>
+                  <th>Grade</th>
                   <th>No. Of Login</th>
                   <th>Last Login</th>
                 </tr>
@@ -169,6 +163,7 @@ export default function Dashboard() {
                     <td>{item.id}</td>
                     <td>{item.roleName}</td>
                     <td>{item?.teacherFullName}{item?.studentFullName}</td>
+                    <td>{item.gradeName}</td>
                     <td>{item.numberofLogin}</td>
                     <td>{moment(item.loginDate).format("LLL")}</td>
                   </tr>
@@ -178,7 +173,6 @@ export default function Dashboard() {
             </Table>
             </div>
           </Col>
-
         </Row>
       </MainContainer>
     )
