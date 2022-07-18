@@ -7,8 +7,8 @@ import ContentField from "../../../../components/content_field/ContentField";
 import { UserContext } from "../../../../context/UserContext";
 import ClassCourseFileLibrary from "../ClassCourseFileLibrary";
 
-function ClassExamHeader({ onSearch, modules = [],fetchExams, onRefresh}, ) {
-  const {id} = useParams();
+function ClassExamHeader({ onSearch, modules = [], fetchExams, onRefresh },) {
+  const { id } = useParams();
   const { data } = useContext(UserContext);
   const { user } = data;
   const [showModal, setShowModal] = useState(false);
@@ -22,10 +22,10 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams, onRefresh}, ) {
     setModule(modules[0]?.id)
   }, [modules])
 
-  const submitForm = async(e)  => {
+  const submitForm = async (e) => {
     e.preventDefault()
     setIsButtonDisabled(true)
-    setTimeout(()=> setIsButtonDisabled(false), 2000)
+    setTimeout(() => setIsButtonDisabled(false), 2000)
     const data = {
       "test": {
         "moduleItemId": module,
@@ -35,44 +35,38 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams, onRefresh}, ) {
         isShared: false
       }
     }
-    console.log({id, module, data})
     let response = await new ExamAPI().createExam(id, module, data)
-    if(response.ok){
+    if (response.ok) {
       toast.success("Successfully created the exam")
       await fetchExams()
       setShowModal(false)
       console.log("")
-    }else{
+    } else {
       toast.error("Please input all the required fields.")
     }
   }
+
   return (
     <div>
       <div className="row m-b-20">
         <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Exam </p>
-        {
-          window.location.pathname.includes('/school_classes') ?
-					  null
-						:
-					 <div>
-						<Button onClick={() => onRefresh} className='ml-3'>
-							<i className="fa fa-sync"></i>
-						</Button>
-					</div>
-          }
+          <div>
+            <Button onClick={onRefresh} className='ml-3'>
+              <i className="fa fa-sync"></i>
+            </Button>
+          </div>
           {
-            user.isTeacher && 
-              <p className='title-header m-0-dashboard'>
-                <Button 
-                  className='btn-create-task' 
-                  Button variant="link" 
-                  onClick={() => setShowModal(true) }
-                >
-                  <i className="fa fa-plus" /> Create Exam</Button>
-              </p>
+            user.isTeacher &&
+            <p className='title-header m-0-dashboard'>
+              <Button
+                className='btn-create-task'
+                Button variant="link"
+                onClick={() => setShowModal(true)}
+              >
+                <i className="fa fa-plus" /> Create Exam</Button>
+            </p>
           }
-        </div> 
-
+        </div>
       </div>
       <div className="row m-b-20">
         <div className="col-md-12">
@@ -101,14 +95,14 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams, onRefresh}, ) {
         </Modal.Header>
         <Modal.Body className="modal-label b-0px">
           <Form onSubmit={submitForm}>
-          <div className={showFiles ? 'mb-3' : 'd-none'}>
-            <ClassCourseFileLibrary />
-          </div>
+            <div className={showFiles ? 'mb-3' : 'd-none'}>
+              <ClassCourseFileLibrary />
+            </div>
             <Form.Group className="m-b-20">
               <Form.Label for="courseName">Module</Form.Label>
               <Form.Select aria-label="Default select example" onChange={(e) => setModule(e.target.value)}>
                 {modules.map((item, index) => {
-                  console.log({item})
+                  console.log({ item })
                   return <option key={index} value={item.id}>{item.moduleName}</option>
                 })}
               </Form.Select>
@@ -125,8 +119,8 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams, onRefresh}, ) {
               />
             </Form.Group>
             <div>
-                  <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
-                </div>
+              <Button className='float-right my-2' onClick={() => setShowFiles(!showFiles)}>File Library</Button>
+            </div>
             <Form.Group className="m-b-20">
               <Form.Label for="description">Exam Instructions</Form.Label>
               {/* <Form.Control
@@ -137,7 +131,7 @@ function ClassExamHeader({ onSearch, modules = [],fetchExams, onRefresh}, ) {
                 placeholder="Enter exam instructions"
                 onChange={(e) => setTestInstructions(e.target.value)}
               /> */}
-              <ContentField value={testInstructions}  placeholder='Enter instruction here'  onChange={value => setTestInstructions(value)} />
+              <ContentField value={testInstructions} placeholder='Enter instruction here' onChange={value => setTestInstructions(value)} />
             </Form.Group>
 
             <span style={{ float: "right" }}>

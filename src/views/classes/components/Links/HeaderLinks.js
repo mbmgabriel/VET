@@ -4,41 +4,33 @@ import CreateLinks from './CreateLinks';
 import { UserContext } from '../../../../context/UserContext'
 
 function HeaderLinks({getConfe, getVideos, getLinks, onSearch,onRefresh}) {
-const [modal, setModal] = useState(false)
-const userContext = useContext(UserContext)
-const [typeId, setTypeId] = useState('')
-const [description, setDescription] = useState('')
-const [url, setUrl] = useState('')
-const {user} = userContext.data
+	const [modal, setModal] = useState(false)
+	const userContext = useContext(UserContext)
+	const [typeId, setTypeId] = useState('')
+	const [description, setDescription] = useState('')
+	const [url, setUrl] = useState('')
+	const {user} = userContext.data
 
-const toggle = () =>{
-    setModal(!modal)
-		setTypeId('')
-		setDescription('')
-		setUrl('')
-  }
+	const toggle = () =>{
+			setModal(!modal)
+			setTypeId('')
+			setDescription('')
+			setUrl('')
+		}
+
 	return (
 		<div>
 			<div className="row m-b-20" style={{paddingTop:'15px'}}>
 				<div className="content-pane-title col-md-10 pages-header">
 					Links 
-					{
-            window.location.pathname.includes('/school_classes') ?
-					  null
-						:
 					 <div>
-						<Button onClick={() => onRefresh} className='ml-3'>
+						<Button onClick={onRefresh} className='ml-3'>
 							<i className="fa fa-sync"></i>
 						</Button>
 					</div>
-          }
-			{(user?.teacher === null)?(
-			<></>
-			):(
-			<>
-				<p className='title-header' >	<Button className='btn-create-link' variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Links  </Button></p>
-			</>
-			)}
+			{
+				user?.teacher != null && <p className='title-header' >	<Button className='btn-create-link' variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Links  </Button></p>
+			}
 				</div>
 			</div>
 			<div className="row m-b-20">
