@@ -10,6 +10,7 @@ import EditAnnouncement from '../../dashboardfront/components/EditAnnouncementMo
 import CreateAnnouncement from '../../dashboardfront/components/CreateAnnouncementModal'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import ReactPaginate from 'react-paginate'
+import ContentViewer from '../../../components/content_field/ContentViewer'
 
 
 function SchoolAnouncementContent() {
@@ -200,7 +201,7 @@ function SchoolAnouncementContent() {
           </div>
           <br></br>
           <span className='dash-date'><small>{item?.announcedBy} . {Moment(item?.createdDate).format('LL')}</small></span><br></br>
-          <span className='dash-content'>{item?.content.substring(0, 70)}</span>
+          <span className='dash-content'><ContentViewer>{item?.content.substring(0, 350)}</ContentViewer></span>
           <span className='dash-read-more' ><Link to={'#'} onClick={(e) => handleViewAnnoncement(item?.title, item?.content,item?.createdDate)}> ...Read more </Link></span>
           <br></br>
           <hr></hr>

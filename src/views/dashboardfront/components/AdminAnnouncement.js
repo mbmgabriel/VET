@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import ReactPaginate from 'react-paginate'
 import Moment from 'moment'
 import { Link } from 'react-router-dom'
+import ContentViewer from '../../../components/content_field/ContentViewer'
 
 function AdminAnnouncement({handleViewAnnoncement, announcement, searchTerm}) {
   const [pageNumber, setPagesNumber] = useState(0)
@@ -41,7 +42,7 @@ function AdminAnnouncement({handleViewAnnoncement, announcement, searchTerm}) {
               <>
                 <span className='dash-title'>{item?.title}</span><br></br>
                 <span className='dash-date'><small>{item?.announcedBy} . {Moment(item?.createdDate).format('LL')}</small></span><br></br>
-                <span className='dash-content'>{item?.content.substring(0, 70)}</span>
+                <span className='dash-content'><ContentViewer>{item?.content.substring(0, 70)}</ContentViewer></span>
                 <span className='dash-read-more' ><Link to={'#'} onClick={(e) => handleViewAnnoncement(item?.title, item?.content,item?.createdDate)}> ...Read more </Link></span>
                 <br></br>
                 <hr></hr>
