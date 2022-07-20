@@ -37,9 +37,10 @@ export default function EditExam({
     if(response.ok){
       toast.success("Successfully updated the exam!")
       setShowEditModal(false)
+      setShowFiles(false)
       fetchExams()
     }else{
-      toast.error(response?.data?.errorMessage || "Something went wrong while updating the exam")
+      toast.error(response?.data?.errorMessage || 'Please input all the required fields.')
       setLoading(false)
     }
   }

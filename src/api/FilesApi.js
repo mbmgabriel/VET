@@ -182,5 +182,20 @@ export default class GradeAPI extends Base {
     })
   }
 
+  uploadImageAnnouncment = async(data) =>{
+    return this.sendRequest({
+      path: `/api/Upload/user/${data.id}/file`,
+      method: 'POST',
+      data: data.data
+    })
+  }
+
+  getAddminFiles = async(id, data) =>{
+    return this.sendRequest({
+      path:`/api/Account/${id}/files/v3`,
+      method: 'POST',
+      data
+    })
+  }
 }
 

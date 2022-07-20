@@ -21,6 +21,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
   const [academicTermId, setAcademicTermId] = useState('')
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  const subsType = localStorage.getItem('subsType');
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -193,7 +194,9 @@ function CreateClassModal({setModal, modal, getClasses}) {
                 <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
                   <option>-- Select School Year HERE --</option>
                   {academicTerm.map(item =>{
-                      return(<option value={item.id}>{item.academicTermName}</option>)
+                    console.log(item)
+                      return(
+                      subsType == 'Ebooks' && item.isCurrentTerm && <option value={item.id}>{item.academicTermName}</option>)
                       })
                     }
                 </Form.Select> 

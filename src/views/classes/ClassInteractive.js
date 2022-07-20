@@ -114,7 +114,7 @@ function ClassInteractive() {
         getIndteractive()
         )
       } 
-    if(subsType != 'LMS'){
+    if(subsType == 'Ebooks' || subsType == 'TeacherResources'){
       window.location.href = "/classes"
     }
   }, [])

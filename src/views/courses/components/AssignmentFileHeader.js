@@ -122,6 +122,41 @@ function FileHeader(props) {
         }
       })
     }
+    // admin upload
+    if(props.type == 'AdminFiles'){
+      files.map( async(item, index) => {
+        if(item.progress == 0){
+          let tempData = {
+            fileName: item.fileName,
+            base64String: item.base64String,
+            subFolderLocation: props.subFolder
+          },
+          toSave = {
+            data: tempData,
+            id: props.id
+          }
+          files[index].progress = 30;
+          setFiles([...files])
+          let response = await new FilesAPI().uploadImageAnnouncment(toSave)
+          if(response.ok){
+            files[index].progress = 100;
+            setFiles([...files])
+            let allUploaded = files.filter(itm => { //check if all items is already 100% uploaded
+              return itm.progress != 100
+            })
+            setDoneUpload(allUploaded.length == 0 ? true : false)
+            setUploadStarted(allUploaded.length == 0 ? false : true)
+          }else{
+            setShowUploadModal(false)
+            setFiles([])
+            setDoneUpload(false)
+            setUploadStarted(false)
+            toast.error(response.data?.errorMessage?.replace('distributor', 'contributor'));
+          }
+        }
+      })
+    }
+
   }
 
   const handelRemoveSelectedFiles = (index) => {

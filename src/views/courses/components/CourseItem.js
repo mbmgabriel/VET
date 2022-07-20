@@ -178,6 +178,12 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
             <Col>
               <input className='' accept="image/png, image/gif, image/jpeg" type='file' style={{ backgroundColor: 'inherit' }} onChange={(e) => handleSetFiles(e.target.files[0])} />
             </Col>
+            <Col className='font-color' >
+              File Extension .jpg, .jpeg, .tiff, .bmp, .png
+            </Col>
+            <Col className='font-color' >
+              Image must 300x300
+            </Col>
             <Button onClick={() => handleUploadCover()} className="m-r-5 color-white tficolorbg-button float-right" size="sm">UPLOAD</Button>
 					</Modal.Body>
 			</Modal>
