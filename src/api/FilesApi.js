@@ -174,5 +174,13 @@ export default class GradeAPI extends Base {
     })
   }
 
+  ebooksFiles = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/files/ebooks/v3`,
+      method: 'POST',
+      data
+    })
+  }
+
 }
 

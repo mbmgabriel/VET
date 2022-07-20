@@ -10,6 +10,7 @@ export default function HomeLinks() {
   const {themeLogo} = userContext.data
   const [academicTerm, setAcademicTerm] = useState([])
   const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
+  const subsType = localStorage.getItem('subsType');
 
   useEffect(() => {
     let temp = localStorage.getItem('academicTerm')
@@ -51,16 +52,20 @@ export default function HomeLinks() {
       </Link> 
       <div className="school-year-container">
         <span>S.Y.</span>
-        <Dropdown>
-          <Dropdown.Toggle variant="reset" id="dropdown-basic" className="school-year-dropdown">
-            {currentAcademicTerm}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {academicTerm.map((i, key) => {
-            return <Dropdown.Item key={key} onClick={() => selectAcademicTerm(i.academicTermName)}>{i.academicTermName}</Dropdown.Item>})
-            }
-          </Dropdown.Menu>
-        </Dropdown>
+          {subsType == 'Ebooks'  ?
+            <p className='school-year-dropdown'> {currentAcademicTerm}</p>
+            :
+            <Dropdown>
+              <Dropdown.Toggle variant="reset" id="dropdown-basic" className="school-year-dropdown">
+                {currentAcademicTerm}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {academicTerm.map((i, key) => {
+                return <Dropdown.Item key={key} onClick={() => selectAcademicTerm(i.academicTermName)}>{i.academicTermName}</Dropdown.Item>})
+                }
+              </Dropdown.Menu>
+          </Dropdown>
+          }
       </div>
     </div>
   )

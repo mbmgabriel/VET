@@ -194,6 +194,9 @@ export default function CourseContent({children}) {
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   Learn
                 </Link>
+                <Link className={currentLoc.includes('ebooks') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/ebooks`}>
+                  Files
+                </Link>
               </ListGroup>
             }
             {

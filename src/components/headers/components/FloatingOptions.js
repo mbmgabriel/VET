@@ -11,6 +11,7 @@ export default function FloatingOptions() {
   const {user} = userContext.data
   const [profileDropdownVisibility, setProfileDropdownVisibility] = useState(false)
   const [profileImage, setprofileImage] = useState('');
+  const subsType = localStorage.getItem('subsType');
 
   const getImage = async() =>{
     let tempId = user.isStudent ? user.student?.id : user.teacher?.id
@@ -29,6 +30,19 @@ export default function FloatingOptions() {
 
   return (
     <div>
+      {subsType == 'Ebooks' ? 
+      <div className="floating-options">
+      <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
+        {profileImage ?
+        <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
+        :
+        <div>
+          <i class="fas fa-user"></i>
+        </div>
+        }
+      </Link>
+    </div>
+      :
       <div className="floating-options">
         <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >
           <div><i class="far fa-calendar"></i></div>
@@ -46,6 +60,7 @@ export default function FloatingOptions() {
           }
         </Link>
       </div>
+      }
       <ProfileDropdown visible={profileDropdownVisibility}/>
     </div>
   )

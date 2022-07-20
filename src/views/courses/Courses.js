@@ -39,6 +39,7 @@ export default function Courses() {
   const [godsParkItem, setGodsParkItem] = useState([])
   const [inActive, setInActive] = useState([])
   const [showActive, setShowActive] = useState(false)
+  const subsType = localStorage.getItem('subsType');
 
 	const onSearch = (text) => {
     setFilter(text)
@@ -145,12 +146,12 @@ export default function Courses() {
             <>
             			<Row style={{paddingTop:'15px'}}>
         <Col className='title-header' >
-        <h1>Courses <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button></h1>
+        <h1>Courses {subsType !== 'Ebooks' && <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button>}</h1>
         </Col>
-        <Col style={{textAlign:'right'}} className={user.isSchoolAdmin ? 'd-none' : ''}>
-                  <Button onClick={() => handleShowActive()} className='btn-Enrolled'  size='lg' variant="outline-warning"><b>Active</b></Button>
-                  <Button onClick={() => handleShowInactive()}  className='btn-Enrolled'  size='lg' variant="outline-warning"><b>Inactive</b></Button>
-        </Col>
+        {subsType !== 'Ebooks' && <Col style={{textAlign:'right'}} className={user.isSchoolAdmin ? 'd-none' : ''}>
+          <Button onClick={() => handleShowActive()} className='btn-Enrolled'  size='lg' variant="outline-warning"><b>Active</b></Button>
+          <Button onClick={() => handleShowInactive()}  className='btn-Enrolled'  size='lg' variant="outline-warning"><b>Inactive</b></Button>
+        </Col>}
       </Row>
             </>
           }
