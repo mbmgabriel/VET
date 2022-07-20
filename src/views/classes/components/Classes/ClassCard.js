@@ -12,8 +12,6 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
   const [loading, setLoading] = useState(false)
   const subsType = localStorage.getItem('subsType');
 
-  console.log('ClassCard:', item)
-
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
   }
@@ -70,7 +68,11 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
     localStorage.setItem('typeresource', 'class')
   });
 
-  console.log('111111111:', item)
+  const handleredirect = (id) => {
+    if(subsType == 'LMS') return `/classescontent/${id}/feed`;
+    if(subsType == 'Ebooks') return `/classes/${id}/learn`
+    if(subsType == 'Interactives') return `/classes/${id}/interactives`
+  }
 
   return (
     <div>
@@ -88,7 +90,7 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
             You will not be able to recover this imaginary file!
       </SweetAlert>
       <Card className='class-card' >
-        <Link to={ subsType == "LMS" ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` } onClick={() => setCourseID(item.courseId)}>
+        <Link to={ handleredirect(item.classId) } onClick={() => setCourseID(item.courseId)}>
           <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
               <Col sm={10}>

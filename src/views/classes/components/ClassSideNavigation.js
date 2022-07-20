@@ -128,7 +128,7 @@ export default function ClassSideNavigation({children}) {
               </Col>
             </Row>
           </ListGroup.Item>
-        {subsType == 'LMS' ? 
+        {subsType == 'LMS' &&
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               Feed
@@ -183,12 +183,20 @@ export default function ClassSideNavigation({children}) {
               </>
             }
           </ListGroup>
-          :
+        }
+        {
+          subsType == 'Ebooks' &&
           <ListGroup>
             <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/learn`}>
               Learn
             </Link>
           </ListGroup>
+        }
+        {
+          subsType == 'Interactives' &&
+          <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
+          Class Interactives
+        </Link>
         }
       </Col>
       :
@@ -196,7 +204,7 @@ export default function ClassSideNavigation({children}) {
         <Col className="text-align-right mb-2">
           <i className="fas fa-chevron-right" style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
         </Col>
-        {subsType == 'LMS' ? 
+        {subsType == 'LMS' &&
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               <OverlayTrigger
@@ -302,7 +310,9 @@ export default function ClassSideNavigation({children}) {
               </Link>
             </>}
           </ListGroup>
-          :
+        }
+        {
+          subsType == 'Ebooks' &&
           <ListGroup>
             <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/learn`}>
               <OverlayTrigger
@@ -313,6 +323,17 @@ export default function ClassSideNavigation({children}) {
               </OverlayTrigger>
             </Link>
           </ListGroup>
+        }
+        {
+          subsType == 'Interactives' &&
+           <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
+           <OverlayTrigger
+             placement="right"
+             delay={{ show: 1, hide: 1 }}
+             overlay={renderTooltipInteractive}>
+             <i className='fas fa-chalkboard-teacher' />
+           </OverlayTrigger>
+         </Link>
         }
       </Col>
       }
