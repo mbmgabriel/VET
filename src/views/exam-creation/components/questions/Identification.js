@@ -139,8 +139,10 @@ export default function Identification({
   }
 
   useEffect(() => {
-    getContributor();
-    getCourseInformation();
+    if(window.location.pathname.includes('course')){
+      getContributor();
+      getCourseInformation();
+    }
     handleGetItems()
   }, [])
 
