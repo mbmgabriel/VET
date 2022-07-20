@@ -90,7 +90,6 @@ const Field = (props) => {
           'customStyles',
           'fontSize',
           'fontFamily',
-          
         ],
         imageUpload: false,
         imagePaste: true,

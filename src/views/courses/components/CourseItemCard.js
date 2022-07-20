@@ -33,7 +33,7 @@ export default function CoursesItemCard({courseCover, courseId, courseName, subj
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
+      console.log(ifContri, user.userId, '-----', ifContri ? true : false)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -71,56 +71,28 @@ export default function CoursesItemCard({courseCover, courseId, courseName, subj
               {user.isTeacher && isContributor &&
                   <>
                     <Col md={12}>
-                        {authorName !== "Techfactors Inc." && 
-                          <OverlayTrigger
-                          placement="right"
-                          delay={{ show: 10, hide: 25 }}
-                          overlay={renderTooltip}>
-                          <Dropdown className="float-right" isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
-                            <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
-                              <i className="fa fa-ellipsis-v fa-2x"></i>
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                            <Dropdown.Item onClick={(e) => handleOpeEditModal(e, courseInfo)}>
-                            Edit 
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={(e) =>uploadModalTrigger(courseInfo)}>
-                            Upload Cover
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={(e) => handleClickContributor(courseInfo.id)}>
-                              Contributor
-                            </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                          </OverlayTrigger>
-                        }
-                        {authorName === "Techfactors Inc." && user.teacher.positionID === 7 && isContributor &&
-                          <OverlayTrigger
-                          placement="right"
-                          delay={{ show: 10, hide: 25 }}
-                          overlay={renderTooltip}>
-                          <Dropdown className="float-right" isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
-                            <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
-                              <i className="fa fa-ellipsis-v fa-2x"></i>
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                            <Dropdown.Item onClick={(e) => handleOpeEditModal(e, courseInfo)}>
-                            Edit 
-                            </Dropdown.Item>
-                            <Dropdown.Item>
-                            Delete
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={(e) => uploadModalTrigger(courseInfo)}>
-                            Upload Cover
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={(e) => handleClickContributor(courseInfo.id)}>
-                              Contributor
-                            </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                          </OverlayTrigger>
-                        }
-                      </Col>
+                      <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 10, hide: 25 }}
+                      overlay={renderTooltip}>
+                      <Dropdown className="float-right" isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
+                        <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
+                          <i className="fa fa-ellipsis-v fa-2x"></i>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                        <Dropdown.Item onClick={(e) => handleOpeEditModal(e, courseInfo)}>
+                          Edit 
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => uploadModalTrigger(courseInfo)}>
+                          Upload Cover
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => handleClickContributor(courseInfo.id)}>
+                          Contributor
+                        </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      </OverlayTrigger>
+                    </Col>
                   </>
                 }
               <Col md={12} className="t-a-c m-t-20">

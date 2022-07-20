@@ -54,7 +54,10 @@ export default function SystemAdminCourses() {
     setLoading(true);
     let response = await new CoursesAPI().getCourses();
     if(response.ok){
-      setTeachers(response.data)
+      console.log(response.data);
+      let temp = response.data;
+      let filtered = temp.filter(i => i.status !== null && i.deleted !== true); //remove status == null and remove deleted course
+      setTeachers(filtered)
     }else{
       toast.error("Something went wrong while fetching exam information")
     }
