@@ -18,6 +18,7 @@ import FilesAPI from '../../api/FilesApi';
 import FileHeader from '../classes/components/Task/TaskFileHeader';
 import ContentViewer from '../../components/content_field/ContentViewer';
 import ContentRichText from '../../components/content_field/ContentRichText';
+import ClassCourseFileLibrary from './components/ClassCourseFileLibrary';
 
 function ClassFeed() {
   const [content, setContent] = useState('')
@@ -346,80 +347,8 @@ const getComment = (item, item1, item3) => {
               </Card.Title>
             <Form onSubmit={createAnnouncementClass}>
             <div className={showFiles ? 'mb-3' : 'd-none'}>
-            {displayType == 'Class' ?
-              <FileHeader type='Class' id={classId}  subFolder={`${subFolderDirectory.join('')}`}  doneUpload={()=> handleGetClassFiles(subFolderDirectory.join(''))} />
-              :
-              <div>
-                <p className='title-header'>Files</p>
-              </div>
-            }
-            <div>
-              <span onClick={()=> handleClickType('')} className={displayType ? 'colored-class-task' : 'fix-color-bread'}>Files</span>
-              {displayType && <span onClick={()=> handleFileBreed()} className={breedCrumbsItemClass.length == 0 ? 'fix-color-bread' : 'colored-class-task'}> <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {displayType} Files</span>}
-              {
-                breedCrumbsItemClass?.map((item, index) => {
-                  return <span onClick={() => handleClickedBreadcrumbsItem(item.value, index, 'Class')} className={breedCrumbsItemClass.length == (index+1) ? 'fix-color-bread' : 'colored-class-task'}>  <i class="fas fa-chevron-right m-l-10 m-r-10"></i> {item.naame}</span>
-                })
-              }
-            </div>
-            { showFilesFolders ?
-              <>
-              {
-                displayFiles.map( (item,ind) => {
-                  console.log(item)
-                    return(
-                      <OverlayTrigger
-                        placement="bottom"
-                        delay={{ show: 1, hide: 0 }}
-                        overlay={(props) => 
-                          <Tooltip id="button-tooltip" {...props}>
-                            {item.name}
-                          </Tooltip>}
-                      >
-                     {item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 
-                        <img key={ind+item.name} src={item.pathBase.replace('http:', 'https:')} onClick={() => clickFile(item.pathBase)} className='p-1' alt={item.name} height={30} width={30}/>
-                        :
-                        <i className="fas fa-sticky-note" onClick={() => clickFile(item.pathBase)} style={{paddingRight: 5}}/>
-                      }
-                      </OverlayTrigger>
-                    )
-                  })
-                }
-                {
-                  displayFolder.map((itm) => {
-                    return(
-                      <OverlayTrigger
-                        placement="bottom"
-                        delay={{ show: 1, hide: 0 }}
-                        overlay={(props) => 
-                          <Tooltip id="button-tooltip" {...props}>
-                            {itm.name}
-                          </Tooltip>}
-                      >
-                        <i className='fas fa-folder-open' onClick={()=> handleClickedFolder(itm.name, displayType)} title='' style={{height: 30, width: 30}}/>
-                      </OverlayTrigger>
-                    )
-                  })
-                }
-              </>
-              :
-              <Table responsive="sm">
-                <thead>
-                  <tr>
-                    <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colSpan={3} onClick={() => handleClickType('Class')} className='ellipsis w-25 task-folder'><i className="fas fa-folder" /><span> Class Files</span></td>
-                  </tr>
-                  <tr>
-                    <td colSpan={3} onClick={() => handleClickType('Course')} className='ellipsis w-25 task-folder'><i className="fas fa-folder" /><span> Course Files</span></td>
-                  </tr>
-                </tbody>
-              </Table>
-            }
-          </div> 
+            <ClassCourseFileLibrary />
+            </div> 
               {/* <InputGroup  size="lg">
                 <InputGroup.Text id="basic-addon2" className="feed-button"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
                   <FormControl onChange={(e) => setContent(e.target.value)} value={content} className='feed-box'  aria-label="small" aria-describedby="inputGroup-sizing-sm" placeholder="Type an Announcement for the class here" type="text"/> 
