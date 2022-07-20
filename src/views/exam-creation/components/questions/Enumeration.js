@@ -187,9 +187,13 @@ export default function Enumeration({
   }
 
   useEffect(() => {
-    getContributor();
+    if(window.location.pathname.includes('course')){
+      getContributor();
+      getCourseInformation();
+    }
+    // getContributor();
+    // getCourseInformation();
     handleGetItems();
-    getCourseInformation();
   }, [])
 
   useEffect(() => {

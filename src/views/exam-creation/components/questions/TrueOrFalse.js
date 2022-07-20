@@ -145,9 +145,12 @@ export default function TrueOrFalse({
   }
 
   useEffect(() => {
-    getContributor();
-    handleGetItems()
-    getCourseInformation();
+    if(window.location.pathname.includes('course')){
+      getContributor();
+      getCourseInformation();
+    }
+    // getContributor();
+    // getCourseInformation();
   }, [])
 
   useEffect(() => {

@@ -24,6 +24,7 @@ export default function ExamParts({
   const { user } = userContext.data;
   const [courseInfo, setCourseInfo] = useState("")
   const shared = exam?.test?.isShared
+  const ifCoursetab = window.location.pathname.includes('course') ? true : !shared;
 
   console.log(shared, '---------=======!', {exam});
 
@@ -53,7 +54,7 @@ export default function ExamParts({
 
   useEffect(() => {
     getContributor();
-    if(courseid != null){
+    if(window.location.pathname.includes('course')){
       getCourseInformation();
     }
   }, [])
@@ -102,42 +103,36 @@ export default function ExamParts({
                 <span title=''>{`${part.questionDtos.length} Question(s)`}</span>
               </div>
             </div>
-            {/* {courseInfo?.isTechfactors? (<></>):(<>
-            </>)} */}
-            {isContributor &&
-            <>  
-              {(editable && shared) && (
-                <div className='exam-actions'>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 0, hide: 0 }}
-                    overlay={renderTooltipEdit}>
-                  <a
-                    href='#edit-part'
-                    onClick={(e) => {
-                      setShowModal(true);
-                      setSelectedPart(part);
-                    }}
-                  >
-                    <i class='fas fa-edit' title=""></i>
-                  </a>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 0, hide: 0 }}
-                    overlay={renderTooltipDelete}>
-                  <a href='#delete-part' onClick={(e) => {
-                    setShowWarning(true)
-                    setSelectedId(part)
-                  }}>
-                    <i class='fas fa-trash-alt' title=""></i>
-                  </a>
-                  </OverlayTrigger>
-                </div>
-              )}
-            </>
+            {
+              isContributor && editable && ifCoursetab && 
+              <div className='exam-actions'>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 0, hide: 0 }}
+                  overlay={renderTooltipEdit}>
+                <a
+                  href='#edit-part'
+                  onClick={(e) => {
+                    setShowModal(true);
+                    setSelectedPart(part);
+                  }}
+                >
+                  <i class='fas fa-edit' title=""></i>
+                </a>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 0, hide: 0 }}
+                  overlay={renderTooltipDelete}>
+                <a href='#delete-part' onClick={(e) => {
+                  setShowWarning(true)
+                  setSelectedId(part)
+                }}>
+                  <i class='fas fa-trash-alt' title=""></i>
+                </a>
+                </OverlayTrigger>
+              </div>
             }
-         
           </Accordion.Header>
           <Accordion.Body>
             <Questions
