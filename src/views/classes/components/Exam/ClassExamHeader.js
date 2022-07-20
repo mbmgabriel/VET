@@ -39,11 +39,19 @@ function ClassExamHeader({ onSearch, modules = [], fetchExams, onRefresh },) {
     if (response.ok) {
       toast.success("Successfully created the exam")
       await fetchExams()
-      setShowModal(false)
+      closeModal()
       console.log("")
     } else {
-      toast.error("Please input all the required fields.")
+      toast.error(response.data.errorMessage || 'Please input all the required fields.')
     }
+  }
+
+  const closeModal = ()=>{
+    setShowModal(false)
+    setModule(modules[0]?.id)
+    setTestName('')
+    setTestInstructions('')
+    setShowFiles(false)
   }
 
   return (
@@ -88,7 +96,7 @@ function ClassExamHeader({ onSearch, modules = [], fetchExams, onRefresh },) {
         size="lg"
         className="modal-all"
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={() => closeModal()}
       >
         <Modal.Header className="modal-header" closeButton>
           Create Exam
