@@ -18,8 +18,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
 
-  
-
   useEffect(() => {
     fetchEvents()
   }, [])
@@ -29,7 +27,10 @@ export default function Dashboard() {
     const response = await new FeedsAPI().fetchEvents(user?.userId);
     if(response.ok){
       console.log(response.data);
-      setEvents(response.data);
+      const events = response.data.filter((item) => moment(item.endDate).isAfter(moment(new Date())));
+      events.sort((a,b)=> moment(a.endDate)-moment(b.endDate));
+      console.log(events);
+      setEvents(events);
     }else{
       toast.error("Something went wrong while fetching notifications")
     }
@@ -46,7 +47,6 @@ export default function Dashboard() {
         <Col className='px-4' sm={12}>
         <h2 className="primary-color mt-5 mb-3">Notifications</h2>
           {events.map((e, key) => {
-            console.log({e})
             return(
               <Col key={key}>
                 <Row className="justify-content-around">
