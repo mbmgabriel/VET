@@ -42,7 +42,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
               </Form.Group>
             </>)
           })}
-            Correct Answer: {item2?.answer}
+           <div className='d-flex' > Correct Answer : &nbsp; <ContentViewer>{item2?.answer}</ContentViewer> </div>
             <hr />
           </>)
          })}</>):(<></>
@@ -83,7 +83,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
               </Form.Group>
             </>)
           })}
-              Correct Answer: {item2?.answer}
+               <div className='d-flex' > Correct Answer : &nbsp; <ContentViewer>{item2?.answer}</ContentViewer> </div>
             <hr />
           </>)
          })}</>):(<></>
@@ -119,7 +119,7 @@ function PreviewExam({showPreviewExamModal, setShowPreviewExamModal, testItem, q
               </Form.Group>
             </>)
           })}
-              Correct Answer:{item2?.answer}
+               <div className='d-flex' > Correct Answer : &nbsp; <ContentViewer>{item2?.answer}</ContentViewer> </div>
             <hr />
           </>)
          })}</>):(<></>
