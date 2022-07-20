@@ -20,9 +20,12 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
   let sessionModule = sessionStorage.getItem('moduleid')
 
 
-	const handleCloseModal = e => {
-    e.preventDefault()
+	const handleCloseModal = () => {
+
     setOpenCreateExamModal(false)
+    setTestName('')
+    setTestInstructions('')
+    setShowFiles(false)
   }
 
 	const saveExam = async(e) => {
@@ -35,11 +38,20 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
       {testName, testInstructions}
     )
     if(response.ok){
-			handleCloseModal(e)
+			handleCloseModal()
       notifySaveExam()
       getExamInfo()
     }else{
-      alert(response.data.errorMessage)
+      // alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     setLoading(false)
   }
@@ -85,7 +97,7 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 
 	return (
 		<div>
-			<Modal size="lg" className="modal-all" show={openCreateExamModal} onHide={()=> setOpenCreateExamModal(!openCreateExamModal)} >
+			<Modal size="lg" className="modal-all" show={openCreateExamModal} onHide={()=> handleCloseModal()} >
 				<Modal.Header className="modal-header" closeButton>
 				Create Exam
 				</Modal.Header>
