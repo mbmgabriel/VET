@@ -43,7 +43,7 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
       getExamInfo()
     }else{
       // alert(response.data.errorMessage)
-      toast.error(response.data.errorMessage, {
+      toast.error(response.data.errorMessage || "Something went wrong while updating the exam", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
