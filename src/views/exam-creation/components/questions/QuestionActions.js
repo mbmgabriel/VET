@@ -38,7 +38,7 @@ export default function QuestionActions({onEdit = () => alert("Ongoing developme
   )
   return (
     <>
-    {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<>
+    {/* {courseInfo?.isTechfactors && user?.teacher.positionID != 7 ? (<></>):(<> */}
       <div className='exam-actions '>
       <OverlayTrigger
         placement="right"
@@ -57,7 +57,7 @@ export default function QuestionActions({onEdit = () => alert("Ongoing developme
         </a>
       </OverlayTrigger>
     </div>
-    </>)}
+    {/* </>)} */}
     </>
   );
 }
