@@ -18,12 +18,13 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
   const [gradeLevelId, setGradeLevelId] = useState('')
   const [academicTerm, setAcademicTerm] = useState([])
   const [academicTermId, setAcademicTermId] = useState('')
+  const [validated, setValidated] = useState(false);
   const userContext = useContext(UserContext)
   const {user} = userContext.data
 
-  const handleCloseModal = (e) =>{
-    e.preventDefault()
+  const handleCloseModal = () =>{
     setOpenEditModal(false)
+    setValidated(false)
   }
 
   const closeNotify = () =>{
@@ -72,6 +73,12 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
 
   const saveEditClasses = async (e) =>{
     e.preventDefault()
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setValidated(true);
     let teacherId = user.teacher.id
     let classId = seletedClass.classId
     let classCode = seletedClass.classCode
@@ -83,7 +90,7 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
       // setAddNotity(true)
       success()
       getClasses()
-      handleCloseModal(e)
+      handleCloseModal()
     }else{
       // alert(response.data.errorMessage)
       toast.error(response.data.errorMessage, {
@@ -127,17 +134,17 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
   
   return (
 		<div>
-			<Modal size="lg" show={openEditModal} onHide={()=> setOpenEditModal(!setOpenEditModal)} aria-labelledby="example-modal-sizes-title-lg">
+			<Modal size="lg" show={openEditModal} onHide={()=> handleCloseModal()} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
             Edit Class
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form onSubmit={saveEditClasses}>
+        <Form noValidate validated={validated} onSubmit={saveEditClasses}>
           <Form.Group className="mb-3">
             <Form.Label>Grade Level</Form.Label>
-            	<Form.Select onChange={(e) => setGradeLevelId(e.target.value)}>
+            	<Form.Select required onChange={(e) => setGradeLevelId(e.target.value)}>
                 <option value={seletedClass?.gradeLevelId}>{seletedClass?.gradeName}</option>
                   {grade.map(item =>{
                     return (<option value={item.id}>{item.gradeName}</option>) 
@@ -166,7 +173,7 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
 
             <Form.Group className="mb-4">
             	<Form.Label>School Year</Form.Label>
-                <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
+                <Form.Select required onChange={(e) => setAcademicTermId(e.target.value)}>
                 <option value={seletedClass?.academicTermId}>{seletedClass?.termName}</option>
                   {academicTerm.map(item =>{
                       return(<option value={item.id}>{item.academicTermName}</option>)
@@ -178,7 +185,7 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
 
             <Form.Group className="mb-4">
             	<Form.Label >Class Name</Form.Label>
-                <Form.Control defaultValue={seletedClass?.className} onChange={(e) => setClassName(e.target.value)} type="text" placeholder='Enter class name here'/>
+                <Form.Control required defaultValue={seletedClass?.className} onChange={(e) => setClassName(e.target.value)} type="text" placeholder='Enter class name here'/>
             </Form.Group>
             {/* <Form.Group className="mb-4">
             	<Form.Label >Class Description</Form.Label>
