@@ -28,9 +28,8 @@ export default function Dashboard() {
     if(response.ok){
       console.log(response.data);
       const events = response.data.filter((item) => moment(item.endDate).isAfter(moment(new Date())));
-      events.sort((a,b)=> moment(a.endDate)-moment(b.endDate));
-      console.log(events);
-      setEvents(events);
+      const sorted = events.sort((a,b)=> moment(a.endDate)-moment(b.endDate));
+      setEvents(sorted);
     }else{
       toast.error("Something went wrong while fetching notifications")
     }
