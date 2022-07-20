@@ -54,9 +54,9 @@ function ClassList() {
 
   useEffect(() => {
     getStudentWaiting()
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
 
 

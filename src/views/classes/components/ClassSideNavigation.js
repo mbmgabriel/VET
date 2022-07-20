@@ -188,6 +188,9 @@ export default function ClassSideNavigation({children}) {
             <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/learn`}>
               Learn
             </Link>
+            <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
+              Class List
+            </Link>
           </ListGroup>
         }
       </Col>
