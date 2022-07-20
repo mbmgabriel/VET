@@ -39,7 +39,7 @@ function CourseFiles() {
     if(response.ok){
       setFilesToDisplay(response.data.files);
       setFolderToDisplay(response.data.folders);
-      console.log(response.data)
+      console.log(response.data, '!!!!!')
     }else{
       alert("Something went wrong while fetching Course files.")
     }
@@ -96,7 +96,7 @@ function CourseFiles() {
               })
           }
         </p>
-        <FilesContent filter={filter} data={filesToDisplay} folders={foldersToDisplay} subFolder={subFolderDirectory.join('')} clickedFolder={(data) => handleClickedFolder(data.name)} deleted={() => handleRefetch()} type='Course' id={id}/>
+        <FilesContent filter={filter} data={filesToDisplay} folders={foldersToDisplay} subFolder={subFolderDirectory.join('')} clickedFolder={(data) => handleClickedFolder(data.name)} deleted={() => handleRefetch()} type='Ebooks' id={id}/>
       </div>
     </CourseContent>
   )
