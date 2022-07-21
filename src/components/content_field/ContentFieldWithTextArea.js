@@ -117,7 +117,7 @@ export default function ContentField(props) {
   const setDefaultType = () => {
     if(props.value.includes(EQUATION_TAG))
       return props.value
-    return ''
+    return RICH_TEXT
   }
 
   const [inputType, setInputType] = useState(setDefaultType());
@@ -165,14 +165,14 @@ export default function ContentField(props) {
           checked={inputType === RICH_TEXT}
           onChange={e => updateInputType(RICH_TEXT)}
         />
-        <Form.Check
+        {/* <Form.Check
           inline
           label="Equation Editor"
           type={"radio"}
           value="equation"
           checked={inputType === EQUATION}
           onChange={e => updateInputType(EQUATION)}
-        />
+        /> */}
       </div>
       <Field {...props} inputType={inputType}/>
     </div>
