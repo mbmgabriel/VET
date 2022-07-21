@@ -82,7 +82,7 @@ function FilesContent(props) {
       props.deleted();
       toast.success('Successfully renamed folder.')
     }else{
-      toast.error("Something went wrong while updating folder name.")
+      toast.error(response.data?.errorMessage)
     }
   }
 
@@ -300,7 +300,7 @@ function FilesContent(props) {
             <Form.Control defaultValue={newFileName} value={newFolderName} type="text" onChange={(e) => setNewFolderName(e.target.value.replace('.', ''))} />
           </InputGroup>
           <Form.Group className='right-btn'>
-            <Button className='tficolorbg-button' onClick={()=> saveNewFolderName()}>Save</Button>
+            <Button className='tficolorbg-button' onClick={()=> saveNewFolderName()}>Update Folder</Button>
           </Form.Group>
         </Form>
         </Modal.Body>
