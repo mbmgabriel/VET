@@ -199,9 +199,17 @@ export default function ClassSideNavigation({children}) {
         }
         {
           subsType == 'Interactives' &&
+          <ListGroup>
           <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
-          Class Interactives
-        </Link>
+            Class Interactives
+          </Link>
+          {
+            user?.teacher != null && 
+            <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
+              Class List
+            </Link>
+          }
+          </ListGroup>
         }
       </Col>
       :
