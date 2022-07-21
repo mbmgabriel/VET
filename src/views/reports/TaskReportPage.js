@@ -72,8 +72,11 @@ function TaskReportPage() {
   }
 
   const handleClickSecondItem = () => {
+    let taskid = sessionStorage.getItem('taskId');
+    let taskname = sessionStorage.getItem('taskName');
     setDisplay('taskReport');
     setStudentName('')
+    getTaskReport(null, taskid, taskname)
   }
 
   const handleGetTaskAnalysis = async(e, studentid, classid, taskid, lname, fname) => {
@@ -134,7 +137,7 @@ function TaskReportPage() {
       </div>
       }
       {display == 'accordion' && <TaskReport filter={filter} setFilter={setFilter} getTaskReport={getTaskReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
-      {display == 'taskReport' && <TaskReportContent taskname={taskname} setTaskReport={setTaskReport} getTaskAnalysis={handleGetTaskAnalysis} taskReport={taskReport}/>}
+      {display == 'taskReport' && <TaskReportContent getTaskReport={getTaskReport} taskname={taskname} setTaskReport={setTaskReport} getTaskAnalysis={handleGetTaskAnalysis} taskReport={taskReport}/>}
       {display == 'analysis' && <TaskAnalysis taskAnalysis={taskAnalysis} setTaskAnalysis={setTaskAnalysis}/>}
 
 	  </ReportContainer>
