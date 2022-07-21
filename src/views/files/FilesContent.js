@@ -289,7 +289,7 @@ function FilesContent(props) {
       <Modal  size="lg" show={editFolderModal} onHide={ () => setEditFolderModal(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
-            Edit Folder name
+            Edit Folder name 1
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
