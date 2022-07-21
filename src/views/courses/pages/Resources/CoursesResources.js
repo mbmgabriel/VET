@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {Accordion, Row, Col, InputGroup, FormControl} from 'react-bootstrap'
 import FilesContent from '../../../resources/FilesContent';
 import FileHeader from '../../../resources/FileHeader'
@@ -6,6 +6,7 @@ import FilesAPI from '../../../../api/FilesApi';
 import CourseContent from "../../CourseContent";
 import {useParams} from 'react-router';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
+import {UserContext} from '../../../../context/UserContext';
 
 function CoursesResources() {
   const [filesToDisplay, setFilesToDisplay] = useState([]);
@@ -15,7 +16,9 @@ function CoursesResources() {
   const [breadCrumbsItemCourse, setBreadCrumbsItemCourse] = useState([])
   const [filter, setFilter] = useState('');
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
-  const subsType = localStorage.getItem('subsType');
+  const userContext = useContext(UserContext);
+  const {user} = userContext.data;
+  const subsType = user.subsType;
 
   useEffect(() => {
     handleGetTeacherResources('')

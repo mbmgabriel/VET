@@ -18,7 +18,7 @@ export default function CourseContent({children}) {
   const [moduleInfo, setModuleInfo] = useState({})
   const userContext = useContext(UserContext)
   const {user} = userContext.data
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const [isContributor, setIsContributor] = useState(true);
 
   const getCourseUnitInformation = async(e) => {

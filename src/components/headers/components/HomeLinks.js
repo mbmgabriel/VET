@@ -7,10 +7,10 @@ import AcademicTermAPI from '../../../api/AcademicTermAPI';
 
 export default function HomeLinks() {
   const userContext = useContext(UserContext)
-  const {themeLogo} = userContext.data
+  const {themeLogo, user} = userContext.data
   const [academicTerm, setAcademicTerm] = useState([])
   const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   useEffect(() => {
     let temp = localStorage.getItem('academicTerm')
@@ -52,7 +52,7 @@ export default function HomeLinks() {
       </Link> 
       <div className="school-year-container">
         <span>S.Y.</span>
-          {subsType == 'Ebooks'  ?
+          {subsType == 'Ebooks'  || subsType == 'TeacherResources'?
             <p className='school-year-dropdown'> {currentAcademicTerm}</p>
             :
             <Dropdown>

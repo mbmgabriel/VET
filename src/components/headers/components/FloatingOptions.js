@@ -11,7 +11,7 @@ export default function FloatingOptions() {
   const {user} = userContext.data
   const [profileDropdownVisibility, setProfileDropdownVisibility] = useState(false)
   const [profileImage, setprofileImage] = useState('');
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const getImage = async() =>{
     let tempId = user.isStudent ? user.student?.id : user.teacher?.id
@@ -30,7 +30,7 @@ export default function FloatingOptions() {
 
   return (
     <div>
-      {subsType == 'Ebooks' ? 
+      {subsType == 'Ebooks' || subsType == 'TeacherResources' ? 
       <div className="floating-options">
       <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
         {profileImage ?

@@ -21,7 +21,7 @@ function ClassList() {
   const [loading, setLoading] = useState(false);
   const userContext = useContext(UserContext)
   const {user} = userContext.data
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const onSearch = (text) => {
     setSearchTerm(text)

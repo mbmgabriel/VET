@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useContext} from 'react'
 import CoursesAPI from '../../../../api/CoursesAPI'
 import { useParams } from 'react-router'
 import AccordionConference from './components/AccordionConference'
@@ -8,7 +8,7 @@ import HeaderLinks from './components/HeaderLinks'
 import AccordionEdit from './components/AccordionEdit';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import CourseContent from "../../CourseContent";
-
+import {UserContext} from '../../../../context/UserContext';
 function CourseLinks() {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [conference, setConference] = useState([])
@@ -22,8 +22,9 @@ function CourseLinks() {
   const [itemId, setItemId] = useState()
   const [showTask, setShowTask] = useState(false);
   const [linkName, setLinkName] = useState('')
-  const subsType = localStorage.getItem('subsType');
-
+  const userContext = useContext(UserContext);
+  const {user} = userContext.data;
+  const subsType = user.subsType;
 
   const onSearch = (text) => {
     setSearchTerm(text)

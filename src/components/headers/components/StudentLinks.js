@@ -5,7 +5,7 @@ import { UserContext } from '../../../context/UserContext'
 export default function StudentLinks({activeHeader}) {
   const userContext = useContext(UserContext)
   const { user } = userContext.data
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   
   if(user.isStudent){
     return (

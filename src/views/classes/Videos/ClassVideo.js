@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ClassesAPI from "../../../api/ClassesAPI";
 import CoursesAPI from "../../../api/CoursesAPI";
@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ClassSideNavigation from "../components/ClassSideNavigation";
 import {useParams} from 'react-router';
 import ClassBreedCrumbs from "../components/ClassBreedCrumbs";
+import { UserContext } from "../../../context/UserContext";
 
 export default function CoursesVideos() {
 
@@ -27,8 +28,10 @@ export default function CoursesVideos() {
   const [moduleInfo, setModuleInfo] = useState([]);
   const {id} = useParams();
   const [showVideos, setShowVideos] = useState(false);
-  const [videoName, setVideoName] = useState('')
-  const subsType = localStorage.getItem('subsType');
+  const [videoName, setVideoName] = useState('');
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const subsType = user.subsType;
   
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')

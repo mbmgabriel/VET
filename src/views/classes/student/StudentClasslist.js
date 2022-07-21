@@ -7,7 +7,7 @@ import { UserContext } from '../../../context/UserContext'
 function StudentClasslist({item}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   return (
     <div>

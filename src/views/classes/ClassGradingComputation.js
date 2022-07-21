@@ -40,7 +40,7 @@ export default function ClassGradingComputation() {
   const [loading, setLoading] = useState(true);
   const [gradingTemplate, setGradingTemplate] = useState(null);
   const [student, setStudent] = useState([]);
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   
   const total =
     parseFloat(exam || "0") +

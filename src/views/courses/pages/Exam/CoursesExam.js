@@ -34,7 +34,7 @@ export default function CoursesExam() {
   const moduleid = sessionStorage.getItem('moduleid')
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const [isContributor, setIsContributor] = useState(true);
 
   const getContributor = async() => {

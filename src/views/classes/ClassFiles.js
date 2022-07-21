@@ -17,7 +17,7 @@ function ClassFiles() {
   const [breadCrumbsItemClass, setBreadCrumbsItemClass] = useState([])
   const [filter, setFilter] = useState("");
   const subFolderDirectory = breadCrumbsItemClass.map(item => { return `/${item.value}`})
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const [displayClassCourse, setDisplayClassCourse] = useState(false);
   const [displayType, setDisplayType] = useState('');
   const [courseId, setCourseId] = useState(null)

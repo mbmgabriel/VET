@@ -24,12 +24,10 @@ function FilesContent(props) {
   const [deleteFolderNotify, setDeleteFolderNotify] = useState(false)
   const [editFolderModal, setEditFolderModal] = useState(false);
   const [displayButtons, setDisplayButtons] = useState(true);
-  const subsType = localStorage.getItem('subsType');
-
   const {id} = useParams()
-
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
+  const subsType = user.subsType;
   const displayHeader = window.location.pathname.includes(props.type.toLowerCase()) ||  window.location.pathname.includes('files'); //if file header is called from files
   const courseid = sessionStorage.getItem('courseid')
 

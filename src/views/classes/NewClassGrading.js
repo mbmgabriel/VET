@@ -36,7 +36,7 @@ export default function NewClassGrading() {
   const { user } = userContext.data;
   const [loading, setLoading] = useState(true);
   const [gradingTemplate, setGradingTemplate] = useState(null);
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const total =
     parseFloat(exam || "0") +

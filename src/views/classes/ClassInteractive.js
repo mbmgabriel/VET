@@ -32,7 +32,7 @@ function ClassInteractive() {
   const [accountInfo, setAccountInfo] = useState('')
   const [schoolCode, setSchoolCode] = useState('')
   const [resultToken, setResultToken] = useState('')
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const onSearch = (item) => {
     setSearchTerm(item)
   }

@@ -34,7 +34,7 @@ export default function CoursesTask() {
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const [isContributor, setIsContributor] = useState(true);
 
   const getContributor = async() => {

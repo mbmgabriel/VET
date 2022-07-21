@@ -15,7 +15,7 @@ export default function ClassSideNavigation({children}) {
   const [collapseSide, setCollapseSide] = useState(localStorage.getItem('collaps') == 'false' ? false : true);
   const [loading, setLoading] = useState(false);
   const [showTab, setShowTab] = useState(true)
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const getClassInfo = async() => {
     setLoading(true)

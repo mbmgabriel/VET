@@ -21,7 +21,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
   const [academicTermId, setAcademicTermId] = useState('')
   const userContext = useContext(UserContext)
   const {user} = userContext.data
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const closeNotify = () =>{
     setAddNotity(false)
