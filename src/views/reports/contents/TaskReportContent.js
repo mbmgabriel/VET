@@ -16,14 +16,17 @@ function TaskReportContent({getTaskReport, getTaskAnalysis, taskname, taskReport
   const [sorted, setSorted] = useState([])
   const [alphabetical, setAlphabetical] = useState(true);
 
+  const pageURL = new URL(window.location.href);
+  const paramsId = pageURL.searchParams.get("classId");
+
   let sessionClass = sessionStorage.getItem("classId")
   let sessionTaskId = sessionStorage.getItem("taskId")
 
   const reTakeTask = async (e, taskId, studentId) => {
-    let response = await new ClassesAPI().reTakeTask(sessionClass, taskId, studentId)
+    let response = await new ClassesAPI().reTakeTask(paramsId, taskId, studentId)
     if(response.ok){
       notifyRetakeTask()
-      getTaskReport(sessionClass, taskId)
+      getTaskReport(e, taskId, taskname)
     }else{
       alert(response.data.errorMessage)
     }
@@ -150,9 +153,10 @@ const arrageAlphabetical = (data) => {
                   return (
                   <>
                     <td><i class="fas fa-user-circle td-icon-report-person"></i> 
-                      <span onClick={(e) => getTaskAnalysis(e, item.student.id, st.task.classId, st.task.id, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
+                      <span style={{cursor: 'pointer'}} onClick={(e) => getTaskAnalysis(e, item.student.id, st.task.classId, st.task.id, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
                     </td>
-                    <td>{st.score} </td>
+                    <td>{st.score === 0 ? <Badge bg="danger">No Grade</Badge>:
+                      st.score} </td>
                     <td>         
                     {st?.studentAnswer === null ? <Badge bg="danger">Not Submitted</Badge>:
                       <Badge bg="success">Submitted</Badge>

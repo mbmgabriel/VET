@@ -19,6 +19,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
   const [className, setClassName] = useState('')
   const [academicTerm, setAcademicTerm] = useState([])
   const [academicTermId, setAcademicTermId] = useState('')
+  const [validated, setValidated] = useState(false);
   const userContext = useContext(UserContext)
   const {user} = userContext.data
 
@@ -35,6 +36,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
     setGetCourseId('')
     setClassName('')
     setAcademicTermId('')
+    setValidated(false)
   }
 
   const getClassCode = e =>{
@@ -98,6 +100,12 @@ function CreateClassModal({setModal, modal, getClasses}) {
 
   const addClass = async(e) => {
     e.preventDefault()
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setValidated(true);
     if(academicTermId == '' || courseId == '' || gradeLevelId == '' ){
       toast.error('Please input all required fields', {
         position: "top-right",
@@ -159,11 +167,11 @@ function CreateClassModal({setModal, modal, getClasses}) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form onSubmit={addClass}>
+        <Form noValidate validated={validated} onSubmit={addClass}>
           <Form.Group className="mb-3">
             <Form.Label>Grade Level</Form.Label>
-              <Form.Select onChange={(e) => setGetGradeLevel(e.target.value)}>
-                <option>-- Select Grade Level Here --</option>
+              <Form.Select required onChange={(e) => setGetGradeLevel(e.target.value)}>
+                <option value={''}>-- Select Grade Level Here --</option>
                 {grade.map(item =>{
                     return(<option value={item.id}>{item.gradeName}</option>)
                     })
@@ -180,7 +188,8 @@ function CreateClassModal({setModal, modal, getClasses}) {
                       })
                     }
                 </Form.Select> */}
-                <Form.Control autoComplete='off' list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
+                {/* <Form.Control autoComplete='off' list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" /> */}
+                <Form.Control autoComplete='off' required list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
                 <datalist id="courses" onChange={(e) => console.log(e, 'sample')}>
                   {course.map(item =>{
                       return <option value={item.courseName} />
@@ -190,8 +199,8 @@ function CreateClassModal({setModal, modal, getClasses}) {
             </Form.Group>
             <Form.Group className="mb-4">
             	<Form.Label>School Year</Form.Label>
-                <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
-                  <option>-- Select School Year HERE --</option>
+                <Form.Select required onChange={(e) => setAcademicTermId(e.target.value)}>
+                  <option value={''}>-- Select School Year HERE --</option>
                   {academicTerm.map(item =>{
                       return(<option value={item.id}>{item.academicTermName}</option>)
                       })
@@ -200,7 +209,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
             </Form.Group>
             <Form.Group className="mb-4">
           		<Form.Label >Class Name</Form.Label>
-                <Form.Control onChange={(e) => setClassName(e.target.value)} type="text" placeholder='Enter class name here'/>
+                <Form.Control required onChange={(e) => setClassName(e.target.value)} type="text" placeholder='Enter class name here'/>
             </Form.Group>
             {/* <Form.Group className="mb-4">
             <Form.Label >Class Description</Form.Label>
@@ -213,7 +222,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
                 	</Button>
               </Form.Group>
               <Form.Group className="mb-4">
-                <Form.Control pattern="^[a-zA-Z0-9]+$" title='Please Avoid special character on Class Code' value={classCode} onChange={(e) => setGetCode(e.target.value) } type="text" placeholder='Enter class Code here'/>
+                <Form.Control required pattern="^[a-zA-Z0-9]+$" title='Please Avoid special character on Class Code' value={classCode} onChange={(e) => setGetCode(e.target.value) } type="text" placeholder='Enter class Code here'/>
                 
             </Form.Group>
             <Form.Group className='right-btn'>

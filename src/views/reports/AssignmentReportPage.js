@@ -8,6 +8,7 @@ import AssignmentReportContent from './contents/AssignmentReportContent';
 import ReportBreedCrumbs from './components/ReportsBreadCrumbs';
 import AssignmentAnalysis from './contents/AssignmentAnalysis';
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
+import { useParams } from "react-router-dom";
 
 function AssignmentReportPage() {
 
@@ -20,10 +21,13 @@ function AssignmentReportPage() {
   const [assignmentAnalysis, setAssignmentAnalysis] = useState([])
   const [studentName, setStudentName] = useState('')
   const [loading, setLoading] = useState(false);
+  const { id } = useParams();
 
   const onSearch = (text) => {
     setFilter(text)
   }
+
+  console.log('classId', id)
 
   const pageURL = new URL(window.location.href);
   const paramsId = pageURL.searchParams.get("classId");
@@ -68,8 +72,11 @@ function AssignmentReportPage() {
   }
 
   const handleClickSecondItem = () => {
+    let assignmentId = sessionStorage.getItem('assignmentId');
+    let assignmentName = sessionStorage.getItem('assignmentName');
     setDisplay('assignmentReport');
     setStudentName('')
+    getAssignmentReport(null, assignmentId, assignmentName)
   }
 
   const handleGetAssignmentAnalysis = async (e, studentid, classid, assignmentId, lname, fname) => {
@@ -127,7 +134,7 @@ function AssignmentReportPage() {
         </div>
       }
       {display == 'accordion' && <AssignmentReport filter={filter} setFilter={setFilter} getAssignmentReport={getAssignmentReport} classesModules={classesModules} setClassesModules={setClassesModules} />}
-      {display == 'assignmentReport' && <AssignmentReportContent assignmentName={assignmentName} setAssignmentReport={setAssignmentReport} getAssignmentAnalysis={handleGetAssignmentAnalysis} assignmentReport={assignmentReport}/>}
+      {display == 'assignmentReport' && <AssignmentReportContent getAssignmentReport={getAssignmentReport}  assignmentName={assignmentName} setAssignmentReport={setAssignmentReport} getAssignmentAnalysis={handleGetAssignmentAnalysis} assignmentReport={assignmentReport}/>}
       {display == 'analysis' && <AssignmentAnalysis assignmentAnalysis={assignmentAnalysis} setAssignmentAnalysis={setAssignmentAnalysis}/>}
 
     </ReportContainer>
