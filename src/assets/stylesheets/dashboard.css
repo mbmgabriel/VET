@@ -689,3 +689,7 @@ margin: 0 auto;
   background-size: cover;
   background-color: #cccccc;
 }
+
+.fr-popup{
+  z-index: 99999 !important;
+}
