@@ -24,7 +24,7 @@ function FilesContent(props) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
   const subsType = user.subsType;
-  
+
   const  downloadImage = (url) => {
     fetch(url, {
       mode : 'no-cors',
@@ -316,7 +316,7 @@ function FilesContent(props) {
 
   return (
     <>
-      {subsType == 'TeacherResources' && <Col className='d-flex justify-content-end'>
+      {subsType == 'TeacherResources' && props.data.length > 0 && <Col className='d-flex justify-content-end'>
         <Button size="lg" className='tficolorbg-button float-right' onClick={()=>downloadAll(props?.data)} >Download ALL Files</Button>
       </Col>}
       <Table responsive="sm">
@@ -334,33 +334,33 @@ function FilesContent(props) {
               return(
                 <tr key={index+item.name}>
                   <td className='ellipsis w-75 file-name font-size-22'>{item.name}</td>
-                  {displayButtons && window.location.pathname.includes("course") ? <>
-                    <td style={{paddingRight:'15px'}} >
+                  {displayButtons && window.location.pathname.includes("course") &&  subsType == 'LMS' ? <>
+                    {<td style={{paddingRight:'15px'}} >
+                        <OverlayTrigger
+                          placement="right"
+                          delay={{ show: 1, hide: 0 }}
+                          overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
+                        >
+                          <a href={item.pathBase} download={true} target='_blank'>                     
+                            <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
+                          </a> 
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="right"
+                          delay={{ show: 1, hide: 0 }}
+                          overlay={renderTooltipEdit}
+                        >
+                          <i className={user.isSchoolAdmin ? 'd-none' : "fas fas fa-edit td-file-page"} onClick={() => handleEdit(item) } />
+                        </OverlayTrigger>
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 0 }}
-                        overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
-                      >
-                        <a href={item.pathBase} download={true} target='_blank'>                     
-                          <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
-                        </a> 
+                        overlay={renderTooltipDelete}>
+                        <a>
+                          <i className={user.isSchoolAdmin ? 'd-none' : "fas fa-trash-alt td-file-page"} onClick={() => handleOnClick(item) }></i>
+                        </a>
                       </OverlayTrigger>
-                      <OverlayTrigger
-                        placement="right"
-                        delay={{ show: 1, hide: 0 }}
-                        overlay={renderTooltipEdit}
-                      >
-                        <i className={user.isSchoolAdmin ? 'd-none' : "fas fas fa-edit td-file-page"} onClick={() => handleEdit(item) } />
-                      </OverlayTrigger>
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 1, hide: 0 }}
-                      overlay={renderTooltipDelete}>
-                      <a>
-                        <i className={user.isSchoolAdmin ? 'd-none' : "fas fa-trash-alt td-file-page"} onClick={() => handleOnClick(item) }></i>
-                      </a>
-                    </OverlayTrigger>
-                    </td>
+                    </td>}
                   </>
                   :
                   <td>
@@ -386,7 +386,7 @@ function FilesContent(props) {
                 <tr key={index+item.name}>
                   <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
                 {
-                  displayButtons && window.location.pathname.includes("course") ? <td>
+                  displayButtons && window.location.pathname.includes("course") &&  subsType == 'LMS' ? <td>
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 0 }}
