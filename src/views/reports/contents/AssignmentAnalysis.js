@@ -56,8 +56,9 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
   }
 
   const addScoreAssignment = async (e) => {
+    console.log({assignmentGrade})
     e.preventDefault()
-    if( (assignmentGrade == '') || (assignmentGrade < 0) ){
+    if( (assignmentGrade == '') || (assignmentGrade < 0) || (assignmentGrade == null)){
       toast.error('Points cannot be empty!')
     }else{
       await new ClassesAPI().updateAssignmentPoints

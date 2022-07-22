@@ -27,7 +27,6 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
     }
   }
 
-
   const notifyRetakeAssignment = () => 
   toast.success('Assignment can now be retaken', {
     position: "top-right",

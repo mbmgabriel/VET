@@ -25,7 +25,7 @@ function TaskReportContent({getTaskReport, getTaskAnalysis, taskname, taskReport
       notifyRetakeTask()
       getTaskReport(e, taskId, taskname)
     }else{
-      alert(response.data.errorMessage)
+      alert(response?.data?.errorMessage)
     }
   }
 
@@ -133,7 +133,7 @@ const arrageAlphabetical = (data) => {
                     </td>
                     <td>
                       {
-                        st.score === 0 
+                        st.score === 0 && st?.studentAnswer == null
                           ? <Badge bg="danger">No Grade</Badge>
                           : `${st.score} / ${st?.task?.rate}`
                       }

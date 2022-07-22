@@ -50,7 +50,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
 
   const addScoreTask = async (e) => {
     e.preventDefault()
-    if( (taskGrade === '') || (taskGrade < 0) ){
+    if( (taskGrade === '') || (taskGrade < 0) || (taskGrade == null) ){
       toast.error('Points cannot be empty!')
     }else{
       await new ClassesAPI().updateTaskPoints
