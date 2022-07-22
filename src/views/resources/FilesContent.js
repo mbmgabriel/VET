@@ -206,7 +206,7 @@ function FilesContent(props) {
       props.deleted();
       toast.success('Successfully renamed folder.')
     }else{
-      toast.error("Something went wrong while updating folder name.")
+      toast.error(response.data?.errorMessage)
     }
   }
 
