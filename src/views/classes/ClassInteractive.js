@@ -125,6 +125,12 @@ function ClassInteractive() {
     getSchoolCode()
   }, [])
 
+  const handleRefresh = () => {
+    getClassInfo()
+    getAccountInfo()
+    getSchoolCode()
+  }
+
   const renderTooltipReasign = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Reassign
@@ -475,7 +481,7 @@ function ClassInteractive() {
   return (
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={() => console.log('')} />
-      <ClassInteractiveHeader onSearch={onSearch} />
+      <ClassInteractiveHeader onSearch={onSearch} onRefresh={()=> handleRefresh()}/>
       <Accordion>
         {module.map((item, index) => {
           return ( <Accordion.Item eventKey={index} onClick={(e) => getIndteractive(e, item?.id)} >

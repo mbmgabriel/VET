@@ -20,7 +20,6 @@ function FileHeader(props) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const {id, path} = useParams()
-
   const [folderCreatedCourse, setFolderCreatedCourse] = useState(false); 
   const typeresource = localStorage.getItem('typeresource')
   const allUploaded = files.filter(itm => { //check if all items is already 100% uploaded
