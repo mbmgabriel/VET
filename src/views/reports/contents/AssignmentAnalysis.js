@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
+  console.log({assignmentAnalysis})
   const [openModal, setOpenModal] = useState(false)
   const [assignmentGrade, setAssignmentGrade] = useState("")
   const [feedback, setFeedback] = useState("")
@@ -199,11 +200,11 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
                 placeholder="Enter points"
                 onChange={(e) => {
                   setAssignmentGrade(e.target.value);
-
                   if(e?.target?.value > totalRate){
                     toast.error('Points must not be greater than the total rate.');
+                  }else{
+                    setAssignmentGrade(e.target.value);
                   }
-                  
                 }}
               />
             </Form.Group>
