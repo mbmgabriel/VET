@@ -26,13 +26,10 @@ export default function ProfileDropdown({visible}) {
   }
 
   useEffect(() => {
-    console.log(user);
     if(user.isStudent || user.isTeacher){
       getImage();
     }
   },[])
-
-  console.log(user, '-=-=-=')
 
   return (
     <div className={`profile-dropdown-container dropdown-menu shadow ${visible && 'show'}`}>

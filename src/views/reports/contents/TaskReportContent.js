@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import {writeFileXLSX, utils} from "xlsx";
 
 function TaskReportContent({getTaskReport, getTaskAnalysis, taskname, taskReport, setTaskReport, taskColumns = ["header 1", "header 2"]}) {
+  console.log({taskReport})
   
   const userContext = useContext(UserContext)
   const {user} = userContext.data
@@ -155,8 +156,13 @@ const arrageAlphabetical = (data) => {
                     <td><i class="fas fa-user-circle td-icon-report-person"></i> 
                       <span style={{cursor: 'pointer'}} onClick={(e) => getTaskAnalysis(e, item.student.id, st.task.classId, st.task.id, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
                     </td>
-                    <td>{st.score === 0 ? <Badge bg="danger">No Grade</Badge>:
-                      st.score} </td>
+                    <td>
+                      {
+                        st.score === 0 
+                          ? <Badge bg="danger">No Grade</Badge>
+                          : `${st.score} / ${st?.task?.rate}`
+                      }
+                    </td>
                     <td>         
                     {st?.studentAnswer === null ? <Badge bg="danger">Not Submitted</Badge>:
                       <Badge bg="success">Submitted</Badge>

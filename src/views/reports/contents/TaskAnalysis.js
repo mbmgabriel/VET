@@ -18,6 +18,8 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
   const [selectedTaskId, setSelectedTaskId] = useState("")
   const [selectedAnswerId, setSelectedAnswerId] = useState("")
   const [taskAnswer, setTaskAnswer] = useState({});
+  let totalRate = taskAnalysis?.task?.rate;
+
 
   const pageURL = new URL(window.location.href);
   const paramsId = pageURL.searchParams.get("classId");
@@ -36,6 +38,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
     setTaskGrade(score)
     setFeedback(afeedback)
 }
+
 
 const updateScoreTask = async(e, studentid, id, assignmentid, answerid) => {
   e.preventDefault()
@@ -209,15 +212,23 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
           <Form onSubmit={taskAnalysis.studentTask?.taskGrade === null ? addteScoreTask : updateScoreTask}>
             <Form.Group className="m-b-20">
               <Form.Label for="courseName">
-                  Rate / Points
+                Total Rate / Points: {totalRate}
               </Form.Label>
               <Form.Control 
                 defaultValue={taskGrade}
                 className="custom-input" 
                 size="lg" 
-                type="text" 
+                type="number" 
                 placeholder="Enter points"
-                onChange={(e) => setTaskGrade(e.target.value)}
+                // onChange={(e) => setTaskGrade(e.target.value)}
+                onChange={(e) => {
+                  if(e?.target?.value > totalRate){
+                    toast.error('Points must not be greater than the total rate.');
+                  }else{
+                    setTaskGrade(e.target.value)
+                  }
+                  setTaskGrade(e.target.value)
+                }}
               />
             </Form.Group>
             <Form.Group className="m-b-20">
@@ -230,17 +241,24 @@ const addteScoreTask = async(e, studentid, classid, assignmentid, answerid) => {
                 onChange={(e) => setFeedback(e.target.value)}
               />
             </Form.Group>
-            <span style={{float:"right"}}>
-            {taskAnalysis.studentTask?.taskGrade === null ? 
-              <Button className="tficolorbg-button" type="submit">
-               Save Points
-              </Button>
-            :
-              <Button className="tficolorbg-button" type="submit">
-                Update Points
-              </Button>
+
+            {    
+              taskGrade <= totalRate && 
+                <span style={{float:"right"}}>
+                  {
+                  taskAnalysis.studentTask?.taskGrade === null 
+                  ? 
+                    <Button className="tficolorbg-button" type="submit">
+                      Save Points
+                    </Button>
+                  :
+                    <Button className="tficolorbg-button" type="submit">
+                      Update Points
+                    </Button>
+                  }
+                </span>
             }
-            </span>
+
           </Form>
         </Modal.Body>
       </Modal>
