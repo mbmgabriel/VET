@@ -83,6 +83,9 @@ export default function Classes() {
   }
 
   useEffect(() => {
+    let temp = localStorage.getItem('academicTerm')
+    setCurrentAcademicTerm(temp)
+    getAcademicTerm();
     if(user?.teacher === null)
     return(
       getClassesStudent(),
@@ -118,6 +121,7 @@ export default function Classes() {
               }
             }).map(item => {
               return( 
+                item.termName == currentAcademicTerm &&
               <StudentClasslist item={item} />
               )
             }):<></>  
@@ -131,6 +135,7 @@ export default function Classes() {
               }
             }).map(item =>{
               return(
+                item.termName == currentAcademicTerm &&
                 <StudentClassListPending item={item} />
               )
             }):<></>

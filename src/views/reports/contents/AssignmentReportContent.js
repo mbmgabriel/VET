@@ -5,6 +5,7 @@ import ClassesAPI from './../../../api/ClassesAPI'
 import AssignmentAnalysis from './AssignmentAnalysis'
 import { toast } from 'react-toastify';
 import {writeFileXLSX, utils} from "xlsx";
+import { useParams } from "react-router-dom";
 
 function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, assignmentName, selectedClassId, viewAssignmentReport, setViewAssignmentReport, assignmentReport, setAssignmentReport, assignmentColumns = ["header 1", "header 2"]}) {
   
@@ -15,19 +16,24 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
   const [dataDownload, setDataDownload] = useState({});
   const [alphabetical, setAlphabetical] = useState(true);
   const [sorted, setSorted] = useState([])
+  const { id } = useParams();
+  const pageURL = new URL(window.location.href);
+  const paramsId = pageURL.searchParams.get("classId");
 
   let sessionClass = sessionStorage.getItem("classId")
   let sessionAssignmentId = sessionStorage.getItem("assignmentId")
 
   const reTakeAssigment = async(e, assignmentId, studentId) => {
-    let response = await new ClassesAPI().reTakeAssigment(sessionClass, assignmentId, studentId)
+    let response = await new ClassesAPI().reTakeAssigment(paramsId, assignmentId, studentId)
     if(response.ok){
       notifyRetakeAssignment()
-      getAssignmentReport(sessionClass, assignmentId)
+      getAssignmentReport(e, assignmentId, assignmentName)
     }else{
       alert(response.data.errorMessage)
     }
   }
+
+  console.log('classId', id)
 
   const notifyRetakeAssignment = () => 
   toast.success('Assignment can now be retaken', {
@@ -78,6 +84,8 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
       arrageNoneAlphabetical(assignmentReport);
     }
   }
+
+  console.log('assignmentReportassignmentReportassignmentReportassignmentReport:', assignmentReport)
 
   const arrageAlphabetical = (data) => {
     let temp = data?.sort(function(a, b){
@@ -146,7 +154,8 @@ const arrageNoneAlphabetical = (data) => {
                   <td><i class="fas fa-user-circle td-icon-report-person"></i> 
                     <span style={{cursor:'pointer'}} onClick={(e) => getAssignmentAnalysis(e, item.student.id, sessionClass, sessionAssignmentId, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
                   </td>
-                  <td>{st.score}</td>
+                  <td>{st.score === 0 ? <Badge bg="danger">No Grade</Badge>:
+                      st.score}</td>
                   <td>         
                     {st?.studentAnswer === null ? <Badge bg="danger">Not Submitted</Badge>:
                       <Badge bg="success">Submitted</Badge>
