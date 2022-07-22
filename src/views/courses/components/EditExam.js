@@ -18,9 +18,10 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
   let sessionModule = sessionStorage.getItem('moduleid')
 
 
-	const handleCloseModal = e => {
-    e.preventDefault()
+	const handleCloseModal = () => {
     setOpenEditExamModal(false)
+    setTestName('')
+    setShowFiles(false)
   }
 
 	const saveEditExam = async(e) => {
@@ -31,11 +32,11 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
       {testName, testInstructions}
     )
     if(response.ok){
-			handleCloseModal(e)
+			handleCloseModal()
       notifyUpdateExam()
       getExamInfo(null, sessionModule)
     }else{
-      toast.error('Please input all the required fields.', {
+      toast.error(response.data.errorMessage || "Please input all the required fields.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -95,7 +96,7 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
 
 	return (
 		<div>
-			<Modal size="lg" className="modal-all" show={openEditExamModal} onHide={()=> setOpenEditExamModal(!openEditExamModal)} >
+			<Modal size="lg" className="modal-all" show={openEditExamModal} onHide={()=> handleCloseModal()} >
 				<Modal.Header className="modal-header" closeButton>
 				Edit Exam
 				</Modal.Header>

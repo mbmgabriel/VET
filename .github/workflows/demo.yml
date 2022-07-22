@@ -14,5 +14,6 @@ jobs:
        - run: remove-item -path C:\inetpub\wwwroot\CICD\build\LMSv3UI -force -recurse
        - run: mkdir C:\inetpub\wwwroot\CICD\build\LMSv3UI
        - run: xcopy C:\inetpub\wwwroot\CICD\LMS-Web\_work\LMSV3FRONTEND\LMSV3FRONTEND\build C:\inetpub\wwwroot\CICD\build\LMSv3UI /E /H /C /I
+       - run: xcopy C:\inetpub\wwwroot\CICD\LMS-Web\_work\LMSV3FRONTEND\LMSV3FRONTEND\build C:\inetpub\wwwroot\LMSV2 OblatesFroalaedit /E /H /C /I
 
       

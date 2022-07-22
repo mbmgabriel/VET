@@ -36,6 +36,7 @@ export default function CoursesExam() {
   const {user} = userContext.data;
   const subsType = user.subsType;
   const [isContributor, setIsContributor] = useState(true);
+  const [examId, setExamId] = useState('')
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
@@ -104,13 +105,18 @@ export default function CoursesExam() {
     setSweetError(false)
   }
 
-  const confirmSweetError = (id) => {
-    deleteCourseExam(id)
-    setSweetError(false)
-  } 
+  // const confirmSweetError = (id) => {
+  //   deleteCourseExam(id)
+  //   setSweetError(false)
+  // } 
 
   const onSearch = (text) => {
     setFilter(text)
+  }
+
+  const handlDeleteExam = (id) =>{
+    setSweetError(true)
+    setExamId(id)
   }
 
   const deleteCourseExam = async(data) => {
@@ -120,6 +126,7 @@ export default function CoursesExam() {
     if(response.ok){
       notifyDeletedExam()
       getExamInfo(null, moduleid)
+      cancelSweetError()
     }else{
       alert("Something went wrong while fetching all pages")
     }
@@ -224,21 +231,8 @@ export default function CoursesExam() {
                                 placement="bottom"
                                 delay={{ show: 1, hide: 25 }}
                                 overlay={renderTooltipDelete}>
-                                <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => setSweetError(true)}><i className="fa fa-trash" ></i></Button>
+                                <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={() => handlDeleteExam(ei.id)}><i className="fa fa-trash" ></i></Button>
                               </OverlayTrigger>
-                              <SweetAlert
-                                warning
-                                showCancel
-                                show={sweetError}
-                                confirmBtnText="Yes, delete it!"
-                                confirmBtnBsStyle="danger"
-                                title="Are you sure?"
-                                onConfirm={() => confirmSweetError(ei.id)}
-                                onCancel={cancelSweetError}
-                                focusCancelBtn
-                              >
-                                You will not be able to recover this imaginary file!
-                              </SweetAlert>
                             </Col>
                           }
                           {examInfo.length == 0 && !loading && <div className="no-exams">No exam found...</div>}
@@ -253,6 +247,19 @@ export default function CoursesExam() {
               })
             }
           </Accordion>
+          <SweetAlert
+                                warning
+                                showCancel
+                                show={sweetError}
+                                confirmBtnText="Yes, delete it!"
+                                confirmBtnBsStyle="danger"
+                                title="Are you sure?"
+                                onConfirm={() => deleteCourseExam(examId)}
+                                onCancel={cancelSweetError}
+                                focusCancelBtn
+                              >
+                                You will not be able to recover this imaginary file!
+                              </SweetAlert>
         </React.Fragment>
     </CourseContent>
   )
