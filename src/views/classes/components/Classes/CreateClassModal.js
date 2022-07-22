@@ -188,7 +188,8 @@ function CreateClassModal({setModal, modal, getClasses}) {
                       })
                     }
                 </Form.Select> */}
-                <Form.Control required list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
+                {/* <Form.Control autoComplete='off' list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" /> */}
+                <Form.Control autoComplete='off' required list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
                 <datalist id="courses" onChange={(e) => console.log(e, 'sample')}>
                   {course.map(item =>{
                       return <option value={item.courseName} />
