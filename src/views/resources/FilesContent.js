@@ -206,7 +206,8 @@ function FilesContent(props) {
       props.deleted();
       toast.success('Successfully renamed folder.')
     }else{
-      toast.error(response.data?.errorMessage)
+      toast.error('Folder name is already exist.')
+      // toast.error(response.data?.errorMessage || 'Folder name is already exist.')
     }
   }
 
@@ -229,7 +230,7 @@ function FilesContent(props) {
       <Modal  size="lg" show={modal} onHide={ () => showModal(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
-            Edit Filename
+            Edit Filename 
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -241,7 +242,7 @@ function FilesContent(props) {
             <InputGroup.Text>{extFilename}</InputGroup.Text>
           </InputGroup>
           <Form.Group className='right-btn'>
-            <Button className='tficolorbg-button' onClick={()=> handleSaveNewFilename()} >Save</Button>
+            <Button className='tficolorbg-button' onClick={()=> handleSaveNewFilename()} >Update Filename</Button>
           </Form.Group>
         </Form> 
         </Modal.Body>
@@ -254,7 +255,7 @@ function FilesContent(props) {
       <Modal  size="lg" show={editFolderModal} onHide={ () => setEditFolderModal(false)} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
-            Edit Folder name
+            Edit Folder name 
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
