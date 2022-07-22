@@ -18,7 +18,8 @@ export default function AddPartModal({
 }) {
   const [showFiles, setShowFiles] = useState(false);
   console.log('selectedPart:', selectedPart)
-
+  const tabType = window.location.pathname.includes("class") ? true : false; // if class or course
+  
   const handleGetUploadedFile = (file) => {
     getBase64(file).then(
       data => {
@@ -55,7 +56,7 @@ export default function AddPartModal({
       <Modal.Body className='modal-label b-0px'>
         <Form onSubmit={addPart}>
         <div className={showFiles ? 'mb-3' : 'd-none'}>
-                <ClassCourseFileLibrary />
+        {tabType ? <ClassCourseFileLibrary /> : <CourseFileLibrary />}
               </div>
           {selectedPart == null && <Form.Group className='m-b-20'>
             <Form.Label for='courseName'>Type of Test</Form.Label>
