@@ -207,6 +207,7 @@ function FilesContent(props) {
       toast.success('Successfully renamed folder.')
     }else{
       toast.error('Folder name is already exist.')
+      // toast.error(response.data?.errorMessage || 'Folder name is already exist.')
     }
   }
 

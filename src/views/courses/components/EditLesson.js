@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { toast } from 'react-toastify';
-import ContentField from "../../../components/content_field/ContentField";
+import ContentFieldWithTextArea from "../../../components/content_field/ContentFieldWithTextArea";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
 import CourseFileLibrary from "./CourseFileLibrary";
@@ -160,7 +160,7 @@ export default function EditLesson({lessonId, setSequenceNo, setPageName, setCon
                 </div>
                 <Form.Group className="m-b-20">
                   <Form.Label >Content</Form.Label>
-                    <ContentField value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
+                    <ContentFieldWithTextArea value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
                 </Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">

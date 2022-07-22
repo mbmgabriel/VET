@@ -23,8 +23,8 @@ function AccordionEdit({openEditModal, setOpenEditModal, editLinks, getConfe, ge
 
   const toggle =() =>{
     setOpenEditModal(false)
-    setEditDescription(editLinks?.description)
-    setEditUrl(editLinks?.url)
+    setEditDescription('')
+    setEditUrl('')
   }
 
   const saveEditClassLinks = async (e) =>{

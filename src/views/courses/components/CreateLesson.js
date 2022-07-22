@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import CoursesAPI from "../../../api/CoursesAPI";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ContentField from "../../../components/content_field/ContentField";
+import ContentFieldWithTextArea from "../../../components/content_field/ContentFieldWithTextArea";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from "../../../api/FilesApi"
 import { useParams } from "react-router";
@@ -178,7 +178,7 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
                 </div>
                 <Form.Group className="m-b-20">
                   <Form.Label >Content</Form.Label>
-                    <ContentField value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
+                    <ContentFieldWithTextArea value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
                 </Form.Group>
                 {' '}
     
