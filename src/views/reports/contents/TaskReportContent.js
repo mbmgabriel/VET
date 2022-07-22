@@ -133,7 +133,7 @@ const arrageAlphabetical = (data) => {
                     </td>
                     <td>
                       {
-                        st.score === 0 && st?.studentAnswer == null
+                        st.score === 0 
                           ? <Badge bg="danger">No Grade</Badge>
                           : `${st.score} / ${st?.task?.rate}`
                       }
