@@ -1,20 +1,16 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Accordion, Row, Col, Table, Badge, Button} from 'react-bootstrap'
+import {Col, Table, Badge, Button} from 'react-bootstrap'
 import ClassesAPI from './../../../api/ClassesAPI'
 import { UserContext } from './../../../context/UserContext'
-import TaskAnalysis from './TaskAnalysis'
 import { toast } from 'react-toastify';
 import {writeFileXLSX, utils} from "xlsx";
 
 function TaskReportContent({getTaskReport, getTaskAnalysis, taskname, taskReport, setTaskReport, taskColumns = ["header 1", "header 2"]}) {
-  console.log({taskReport})
   
   const userContext = useContext(UserContext)
   const {user} = userContext.data
-  const [taskAnalysis, setTaskAnalysis] = useState([])
   const [showTaskAnalysis, setShowTaskAnalysis] = useState(false)
   const [dataDownload, setDataDownload] = useState({});
-  const [sorted, setSorted] = useState([])
   const [alphabetical, setAlphabetical] = useState(true);
 
   const pageURL = new URL(window.location.href);
@@ -96,21 +92,16 @@ const arrageNoneAlphabetical = (data) => {
         return -1;
     }
   });
-  console.log(temp, '111111')
-  setSorted(temp)
 }
 
 const arrageAlphabetical = (data) => {
   let temp = data?.sort(function(a, b){
-    console.log(a, 'herererereherererereherererere TRUE')
     let nameA = a.student.lname.toLocaleLowerCase();
     let nameB = b.student.lname.toLocaleLowerCase();
     if (nameA < nameB) {
         return -1;
     }
   });
-  console.log(temp, '2222')
-  setSorted(temp)
 }
   
   if(showTaskAnalysis === false){
@@ -125,20 +116,6 @@ const arrageAlphabetical = (data) => {
         <thead>
           <tr>
           <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
-            {/* {assignmentReport.map(item =>{
-              return(
-              item.columnAssignments.map(as =>{
-                  return(
-                  <th>{as.assignmentName}</th>
-                  )
-                })
-              )
-            })} */}
-            {/* {taskColumns.map((item, index) => {
-              return (
-                <th key={index}>{item}</th>
-              )
-            })} */}
             <th>Grade </th>
             <th>Status</th>
             <th>Action</th>
@@ -148,9 +125,7 @@ const arrageAlphabetical = (data) => {
         {taskReport.map(item =>{
             return (
               <tr>
-                
                 {item.studentTasks.map(st =>{
-                  
                   return (
                   <>
                     <td><i class="fas fa-user-circle td-icon-report-person"></i> 
@@ -158,7 +133,7 @@ const arrageAlphabetical = (data) => {
                     </td>
                     <td>
                       {
-                        st.score === 0 
+                        st.score === 0 && st.studentAnswer == null
                           ? <Badge bg="danger">No Grade</Badge>
                           : `${st.score} / ${st?.task?.rate}`
                       }
@@ -174,6 +149,7 @@ const arrageAlphabetical = (data) => {
                   </td>
                   </>
                   )
+
               })}
               </tr>
             )
