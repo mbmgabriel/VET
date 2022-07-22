@@ -165,12 +165,12 @@ export default function ExamInformation() {
     if (part.questionPart.questionTypeId == 5) {
       payload = part.questionDtos.map((question) => {
         let studentAnswers =
-          question.studentAnswer ||
-          question.choices.map(() => ({ answer: "" }));
-
+        question.studentAnswer ||
+        question.choices.map(() => ({ answer: "" }));
+        
         studentAnswers.forEach((choice) => {
           if (
-            studentAnswers.filter((c) => c.answer == choice.answer).length > 1
+            studentAnswers.filter((c) => c.answer.toLowerCase().trim() == choice.answer.toLowerCase().trim()).length > 1
           ) {
             unique = false;
           }
