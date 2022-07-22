@@ -73,7 +73,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
     if(response.ok){
       setTaskAnalysis(response.data)
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage);
     }
   }
 
@@ -81,8 +81,6 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
     let response = await new ClassesAPI().getStudentTaskAnwswer(studentid, classid, assignmentid)
     if(response.ok){
       setTaskAnswer(response.data)
-    }else{
-      alert(response.data.errorMessage)
     }
   }
 
