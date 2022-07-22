@@ -43,16 +43,21 @@ export default function HomeLinks() {
     }
   }
 
+  const handleRedirect = () => {
+    if(subsType == 'LMS') return '/teacherdashboard';
+      return '/classes';
+  }
+
   return (
     <div className="home-links">
-       <Link className="home-link " to="/teacherdashboard">
+       <Link className="home-link " to={handleRedirect()}>
         <div>
           {themeLogo ? <img src={themeLogo} alt="logo" className="home-link-logo"/> : <i className="fas fa-home"></i>}
         </div>
       </Link> 
       <div className="school-year-container">
         <span>S.Y.</span>
-          {subsType == 'Ebooks'  || subsType == 'TeacherResources'?
+          {subsType == 'Ebooks'  || subsType == 'TeacherResources' || subsType == 'Interactives' ?
             <p className='school-year-dropdown'> {currentAcademicTerm}</p>
             :
             <Dropdown>
@@ -64,7 +69,7 @@ export default function HomeLinks() {
                 return <Dropdown.Item key={key} onClick={() => selectAcademicTerm(i.academicTermName)}>{i.academicTermName}</Dropdown.Item>})
                 }
               </Dropdown.Menu>
-          </Dropdown>
+            </Dropdown>
           }
       </div>
     </div>

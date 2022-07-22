@@ -10,14 +10,21 @@ export default function StudentLinks({activeHeader}) {
   if(user.isStudent){
     return (
       <div className="header-links">
-        {subsType == 'Ebooks' ? 
+        {subsType == 'Ebooks' &&
           <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
-        :
-        <>
-          <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
+        }
+        {subsType == 'Interactives' &&
           <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
-        </>
-      }
+        }
+         {subsType == 'TeacherResources' &&
+          <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
+        }
+        {subsType == 'LMS' &&
+          <>
+            <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
+            <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
+          </>
+        }
       </div>
     )
   }

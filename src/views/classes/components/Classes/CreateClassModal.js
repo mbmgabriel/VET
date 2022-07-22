@@ -193,12 +193,18 @@ function CreateClassModal({setModal, modal, getClasses}) {
             	<Form.Label>School Year</Form.Label>
                 <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
                   <option>-- Select School Year HERE --</option>
-                  {academicTerm.map(item =>{
-                    console.log(item)
+                  {
+                    subsType == 'Ebooks' && academicTerm.map(item =>{
                       return(
-                      subsType == 'Ebooks' && item.isCurrentTerm && <option value={item.id}>{item.academicTermName}</option>)
-                      })
-                    }
+                        item.isCurrentTerm && <option value={item.id}>{item.academicTermName}</option>)
+                    })
+                  }
+                  {
+                    subsType !== 'Ebooks' && academicTerm.map(item =>{
+                      return(
+                      <option value={item.id}>{item.academicTermName}</option>)
+                    })
+                  }
                 </Form.Select> 
             </Form.Group>
             <Form.Group className="mb-4">

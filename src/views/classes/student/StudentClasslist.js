@@ -9,10 +9,22 @@ function StudentClasslist({item}) {
   const {user} = userContext.data
   const subsType = user.subsType;
 
+  const handleRedirect = (id) => {
+    if(subsType == 'LMS'){
+      return `/classescontent/${id}/feed`
+    }
+    if(subsType == 'Ebooks'){
+      return `/classes/${id}/learn`
+    }
+    if(subsType == 'Interactives' && user.isStudent){
+      return `/classes/${id}/interactives`
+    }
+  }
+
   return (
     <div>
          <Card className='class-card' >
-        <Link to={subsType == 'LMS' ? `/classescontent/${item.classId}/feed` : `/classes/${item.classId}/learn` }>
+        <Link to={handleRedirect(item.classId)}>
           <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
               {/* <Col sm={10}>

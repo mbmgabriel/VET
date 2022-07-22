@@ -18,7 +18,7 @@ export default function ClassSideNavigation({children}) {
   const subsType = user.subsType;
 
   const getClassInfo = async() => {
-    setLoading(true)
+    // setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       console.log(response.data, '--------------------------------')
@@ -189,6 +189,9 @@ export default function ClassSideNavigation({children}) {
           <ListGroup>
             <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/learn`}>
               Learn
+            </Link>
+            <Link className={currentLoc.includes('ebooksFiles') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/ebooksFiles`}>
+              Files
             </Link>
             {user?.isTeacher && 
               <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>

@@ -28,20 +28,22 @@ export default function FloatingOptions() {
     }
   },[])
 
+  console.log(subsType == 'Ebooks' || subsType == 'TeacherResources', '1111--------------------------------');
+
   return (
     <div>
       {subsType == 'Ebooks' || subsType == 'TeacherResources' ? 
       <div className="floating-options">
-      <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
-        {profileImage ?
-        <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
-        :
-        <div>
-          <i class="fas fa-user"></i>
-        </div>
-        }
-      </Link>
-    </div>
+        <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
+          {profileImage ?
+          <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
+          :
+          <div>
+            <i class="fas fa-user"></i>
+          </div>
+          }
+        </Link>
+      </div>
       :
       <div className="floating-options">
         <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >

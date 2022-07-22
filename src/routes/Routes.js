@@ -112,6 +112,7 @@ import SchoolAcademicTerms from "../views/school-profile/SchoolAcademicTerm";
 
 import MirandaAccount from '../views/system-admin/miranda/Miranda';
 import EbooksFiles from '../views/courses/pages/Files/EbooksFiles';
+import ClassEbooksFiles from '../views/classes/EbooksFiles';
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -230,7 +231,8 @@ export default function Routes() {
             <PrivateRoute path='/academicTerm' exact component={SchoolAcademicTerms} />
 
             <PrivateRoute path='/courses/:id/ebooks' exact component={EbooksFiles} />
-
+            <PrivateRoute path='/classes/:id/ebooksFiles' exact component={ClassEbooksFiles} />
+            
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
             <PublicRoute path='/calendar' exact component={CalendarPage}/>
