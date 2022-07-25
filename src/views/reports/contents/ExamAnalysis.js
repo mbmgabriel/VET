@@ -32,6 +32,9 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
   let studentidsession = sessionStorage.getItem('studentid')
   let testidsession = sessionStorage.getItem('testid')
 
+
+  console.log({testname,classid,studentidsession,testidsession})
+
   const handleOpenModal = (e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
     setOpenModal(true)
@@ -45,10 +48,10 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
   const considerAnswerExamT = async(e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
     let isConsider = true
-    let response = await new ClassesAPI().considerAnswerExamTrue
-    (
-      studentid, classid, testid, answerid, {isConsider}
-    )
+    let response = await new ClassesAPI().considerAnswerExamTrue(studentid, classid, testid, answerid, {isConsider});
+    
+    console.log({CONSIDER: response.data})
+
     if(response.ok){
     }else{
       toast.error(response.data.errorMessage, {
@@ -66,24 +69,30 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
   const considerAnswerExamF = async(e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
     let isConsider = false
-    let response = await new ClassesAPI().considerAnswerExamTrue
-    (
-      studentid, classid, testid, answerid, {isConsider}
-    )
-    if(response.ok){
-      notifyUnconsidered()
-      getExamAnalysis(studentidsession, classid, testidsession, examAnalysis.student?.lname,  examAnalysis.student?.fname)
-    }else{
-      toast.error(response.data.errorMessage, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
+    let response = await new ClassesAPI().considerAnswerExamTrue(studentid, classid, testid, answerid, {isConsider})
+
+    console.log({UNCONSIDER: response.data})
+
+      if(response.ok){
+        notifyUnconsidered()
+        getExamAnalysis(
+          studentidsession, 
+          classid, 
+          testidsession, 
+          examAnalysis.student?.lname,  
+          examAnalysis.student?.fname
+          )
+      }else{
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     }
   
 
@@ -141,19 +150,19 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
 
   const handleInputChange = (e, questionid, answerid, studentid, testid, rate) => {
     e.preventDefault()
-    setConsiderAnswer(true)
+    // setConsiderAnswer(true)
     isChecked(e, e.target.checked, questionid, answerid, studentid, testid, rate);
   }
 
   const isChecked = (e, etc, questionid, answerid, studentid, testid, rate) => {
-    let haru = etc
-        if(haru === true){
-          considerAnswerExamT(e, questionid, answerid, studentid, testid, rate)
-          handleOpenModal(e, questionid, answerid, studentid, testid, rate)
-        }else{
-          considerAnswerExamF(e, questionid, answerid, studentid, testid, rate)
-          
-        }
+    let haru = etc;
+    if(haru === true){
+      considerAnswerExamT(e, questionid, answerid, studentid, testid, rate)
+      handleOpenModal(e, questionid, answerid, studentid, testid, rate)
+    }else{
+      considerAnswerExamF(e, questionid, answerid, studentid, testid, rate)
+      
+    }
   }
 
   const cancelSweetError = () => {

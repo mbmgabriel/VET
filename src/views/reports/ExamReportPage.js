@@ -66,6 +66,7 @@ function ReportHeader() {
   }
 
   const handleGetExamAnalysis = async (studentid, sessionClass, testid, lname, fname) => {
+    console.log({studentid})
     // console.log(item)
     // const getExamAnalysis = async(e, studentid, classid, testid) => {
     setDisplay('analysis')
