@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import SchoolAPI from '../../../api/SchoolAPI'
 import ActivityIndicator from '../../../components/loaders/ActivityIndicator'
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader'
 import { UserContext } from '../../../context/UserContext'
 import toBase64 from '../../../utils/toBase64'
 
@@ -68,7 +69,7 @@ export default function SchoolProfileContent() {
 
   return (
     <div className='rounded-white-container'>
-      {loading && <ActivityIndicator/>}
+      {loading && <FullScreenLoader />}
       <h1 className='title mb-3'>School Profile</h1>
       <p className='label m-0'>Logo</p>
       <img 

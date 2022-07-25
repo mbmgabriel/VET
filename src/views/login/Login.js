@@ -42,7 +42,7 @@ export default function Login() {
             <Row>
               <Col/>
               <Col md={7}>
-                <h1 className="title"><span className="color-blue-green">Tek</span>Teach Account Login</h1>
+                <h1 className="title"><span className="orange">Tek</span>Teach Account Login</h1>
                 <p className="subtitle">Welcome back to TekTeach! Making learning, a great experience!</p>
                 <p className="subtitle text-danger">{message}</p>
                 <Form onSubmit={login}>
