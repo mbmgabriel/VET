@@ -2,13 +2,10 @@ import React, { useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { Form, Button, } from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
-import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 function StudentJoinClass({joinClassesToggle, joinClassestModal, getPendingClasses}) {
   const [code, setCode] = useState('')
-  const [addNotify, setAddNotity] = useState(false)
-  const [wrongCodeNotify, setWrongCodeNotify] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
 
   const submitRequest = async (e) => {
     e.preventDefault()
@@ -17,23 +14,14 @@ function StudentJoinClass({joinClassesToggle, joinClassestModal, getPendingClass
         getPendingClasses()
         setCode('')
         joinClassesToggle()
-        setAddNotity(true)
+        toast.success('Done!');
       }else{
-        setWrongCodeNotify(true)
-        if(errorMessage === ''){
-          setErrorMessage('Please enter the classcode')
+        if(code === ''){
+          toast.error('Please enter the classcode');
         }else{
-          setErrorMessage(response.data.errorMessage)
+          toast.error(response.data.errorMessage);
         } 
       }
-  }
-
-  const closeNotify = () =>{
-    setAddNotity(false)
-  }
-
-  const closeWrongNotify = () => {
-    setWrongCodeNotify(false)
   }
 
   return (
@@ -55,18 +43,6 @@ function StudentJoinClass({joinClassesToggle, joinClassestModal, getPendingClass
         </Form>  
         </Modal.Body>
       </Modal>
-      <SweetAlert 
-          success
-          show={addNotify} 
-          title="Done!" 
-          onConfirm={closeNotify}>
-        </SweetAlert>
-        <SweetAlert 
-          warning
-          show={wrongCodeNotify} 
-          title={errorMessage} 
-          onConfirm={closeWrongNotify}>
-        </SweetAlert>
     </div>
   )
 }
