@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 
@@ -9,13 +9,15 @@ import GradeTermAPI from '../../api/GradeTermAPI';
 import SweetAlert from "react-bootstrap-sweetalert";
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import { Link, useParams } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 
 function ClassGrading() {
   const {id} = useParams();
-
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
   const [loading, setLoading] = useState(true);
   const [terms, setTerms] = useState([]);
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   
   useEffect(() => {
     handleGetAllTerms();

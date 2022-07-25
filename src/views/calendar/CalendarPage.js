@@ -53,7 +53,6 @@ export default function CalendarPage() {
               endAccessor='end'
               defaultView='month'
               onSelectEvent={(data) => console.log(`You click ${data.title}`)}
-
             />
           </div>
         </div>

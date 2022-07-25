@@ -17,8 +17,8 @@ export default function CourseExamCreation() {
   const userContext = useContext(UserContext);
   const { user } = userContext.data;
   const [courseInfos, setCourseInfos] = useState([])
-  const subsType = localStorage.getItem('subsType');
-
+  const subsType = user.subsType;
+  
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(id)
     if(response.ok){

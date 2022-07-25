@@ -50,8 +50,8 @@ function ClassTask() {
   const [moduleName, setModuleName] = useState('')
   const [selectedTaskName, setSelectedTaskName] = useState("")
   const [loading, setLoading] = useState(false);
+  const subsType =  user.subsType;
 
-  const subsType = localStorage.getItem('subsType');
   const onSearch = (text) => {
     setSearchTerm(text)
   }

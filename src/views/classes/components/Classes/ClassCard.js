@@ -1,16 +1,18 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect, useContext } from 'react'
 import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger, renderTooltip, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ClassesAPI from '../../../../api/ClassesAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
+import { UserContext } from '../../../../context/UserContext'
 
 function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedClass, getClasses, setClassIdCoverPhoto}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
   const [itemId, setItemId] = useState('')
+  const userContext = useContext(UserContext);
+  const {user} = userContext.data;
   const [loading, setLoading] = useState(false)
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)

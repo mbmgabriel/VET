@@ -20,9 +20,9 @@ function FileHeader(props) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const {id, path} = useParams()
-
   const [folderCreatedCourse, setFolderCreatedCourse] = useState(false); 
   const typeresource = localStorage.getItem('typeresource')
+  const subsType = user.subsType;
   const allUploaded = files.filter(itm => { //check if all items is already 100% uploaded
     return itm.progress != 100
   })
@@ -239,7 +239,7 @@ function FileHeader(props) {
             ""
           :
         <>
-          {displayButtons && <>
+          {displayButtons &&  subsType == 'LMS' && <>
             <div>
               <OverlayTrigger
                 placement="right"

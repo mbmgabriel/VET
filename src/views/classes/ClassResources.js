@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {Accordion, Row, Col, InputGroup, FormControl} from 'react-bootstrap'
 import FilesContent from '../../views/resources/FilesContent';
 import FileHeader from '../../views/resources/FileHeader'
@@ -6,7 +6,7 @@ import FilesAPI from '../../api/FilesApi';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import {useParams} from 'react-router';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
-
+import { UserContext } from '../../context/UserContext';
 function ClassResources() {
   const [filesToDisplay, setFilesToDisplay] = useState([]);
   const [foldersToDisplay, setFolderToDisplay] = useState([]);
@@ -15,7 +15,9 @@ function ClassResources() {
   const [breadCrumbsItemCourse, setBreadCrumbsItemCourse] = useState([])
   const [filter, setFilter] = useState('');
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
-  const subsType = localStorage.getItem('subsType');
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const subsType = user.subsType;
   const courseid = localStorage.getItem("courseid")
   
   useEffect(() => {

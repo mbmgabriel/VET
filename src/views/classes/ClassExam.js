@@ -23,7 +23,7 @@ export const ClassExam = () => {
   const [showExam, setShowExam] = useState(false)
   const [examName, setExamName] = useState('');
   const { user } = data;
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const fetchExams = async () => {
     setLoading(true);

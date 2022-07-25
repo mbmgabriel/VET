@@ -40,19 +40,23 @@ export class UserContextProvider extends Component {
       switch (user.role) {
         case "Student":
           user.name = `${user.student?.fname} ${user.student?.lname}`
-          user.isStudent = true
+          user.isStudent = true;
+          user.subsType = window.localStorage.getItem('subsType');
           break;
         case "Teacher":
           user.name = `${user.teacher?.fname} ${user.teacher?.lname}`
-          user.isTeacher = true
+          user.isTeacher = true;
+          user.subsType = window.localStorage.getItem('subsType');
           break;
           case "School Admin":
             user.name = `School Admin`
-            user.isSchoolAdmin = true
+            user.isSchoolAdmin = true;
+            user.subsType = window.localStorage.getItem('subsType');
             break;
           case "Parent":
             user.name = `Parent`
-            user.isParent = true
+            user.isParent = true;
+            user.subsType = window.localStorage.getItem('subsType');
             break;
           case "System Admin":
             user.name = `System Admin`

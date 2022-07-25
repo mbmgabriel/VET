@@ -174,6 +174,14 @@ export default class GradeAPI extends Base {
     })
   }
 
+  ebooksFiles = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/Course/${id}/files/ebooks/v3`,
+      method: 'POST',
+      data
+    })
+  }
+
   uploadImageAnnouncment = async(data) =>{
     return this.sendRequest({
       path: `/api/Upload/user/${data.id}/file`,
@@ -189,6 +197,5 @@ export default class GradeAPI extends Base {
       data
     })
   }
-
 }
 

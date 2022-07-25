@@ -15,10 +15,10 @@ export default function ClassSideNavigation({children}) {
   const [collapseSide, setCollapseSide] = useState(localStorage.getItem('collaps') == 'false' ? false : true);
   const [loading, setLoading] = useState(false);
   const [showTab, setShowTab] = useState(true)
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const getClassInfo = async() => {
-    setLoading(true)
+    // setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
       console.log(response.data, '--------------------------------')
@@ -190,13 +190,29 @@ export default function ClassSideNavigation({children}) {
             <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/learn`}>
               Learn
             </Link>
+            <Link className={currentLoc.includes('ebooksFiles') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/ebooksFiles`}>
+              Files
+            </Link>
+            {user?.isTeacher && 
+              <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
+                Class List
+              </Link>
+            }
           </ListGroup>
         }
         {
           subsType == 'Interactives' &&
+          <ListGroup>
           <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
-          Class Interactives
-        </Link>
+            Class Interactives
+          </Link>
+          {
+            user?.teacher != null && 
+            <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
+              Class List
+            </Link>
+          }
+          </ListGroup>
         }
       </Col>
       :

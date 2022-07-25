@@ -16,6 +16,7 @@ export default function Reports({children}) {
   const [classId, setClassId] = useState('')
   const currentLoc = window.location.pathname;
   const [loading, setLoading] = useState(false);
+  const subsType = user.subsType;
 
   useEffect(() => {
     const pageURL = new URL(window.location.href);
@@ -98,18 +99,26 @@ export default function Reports({children}) {
             </Form.Select>
           </ListGroup.Item>
           <ListGroup style={{paddingLeft:'15px'}}>
-            <Link className={currentLoc.includes('reports/exam') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/exam?classId=${classId}` : '/reports'}>
-              Exam
-            </Link>
-            <Link className={currentLoc.includes('reports/assignment') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/assignment?classId=${classId}` : '/reports'}>
-              Assignment
-            </Link>
-            <Link className={currentLoc.includes('reports/task') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/task?classId=${classId}` : '/reports'}>
-              Task
-            </Link>
-            <Link className={currentLoc.includes('reports/interactive') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/interactive?classId=${classId}` : '/reports'}>
-              Interactive
-            </Link>
+          {subsType == 'Interactives' ?
+              <Link className={currentLoc.includes('reports/interactive') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/interactive?classId=${classId}` : '/reports'}>
+                Interactive
+              </Link>
+          :
+            <>
+              <Link className={currentLoc.includes('reports/exam') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/exam?classId=${classId}` : '/reports'}>
+                Exam
+              </Link>
+              <Link className={currentLoc.includes('reports/assignment') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/assignment?classId=${classId}` : '/reports'}>
+                Assignment
+              </Link>
+              <Link className={currentLoc.includes('reports/task') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/task?classId=${classId}` : '/reports'}>
+                Task
+              </Link>
+              <Link className={currentLoc.includes('reports/interactive') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/interactive?classId=${classId}` : '/reports'}>
+                Interactive
+              </Link>
+            </>
+          }
           </ListGroup>
         </Col>
         <Col sm={9} className='scrollable vh-90 pb-5 pl-20'>
