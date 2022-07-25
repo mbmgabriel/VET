@@ -40,8 +40,8 @@ function CoursesResources() {
     let response = await new FilesAPI().getTeacherResources(id, data)
     // setLoading(false)
     if(response.ok){
-      setFilesToDisplay(response.data.files);
-      setFolderToDisplay(response.data.folders);
+      setFilesToDisplay(response.data?.files);
+      setFolderToDisplay(response.data?.folders);
     }else{
       alert("Something went wrong while fetching Course files.")
     }

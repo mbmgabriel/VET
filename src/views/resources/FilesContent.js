@@ -317,7 +317,7 @@ function FilesContent(props) {
 
   return (
     <>
-      {subsType == 'TeacherResources' && props.data.length > 0 && <Col className='d-flex justify-content-end'>
+      {subsType == 'TeacherResources' && props.data?.length > 0 && <Col className='d-flex justify-content-end'>
         <Button size="lg" className='tficolorbg-button float-right' onClick={()=>downloadAll(props?.data)} >Download ALL Files</Button>
       </Col>}
       <Table responsive="sm">
