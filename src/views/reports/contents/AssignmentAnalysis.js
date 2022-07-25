@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
+  console.log({assignmentAnalysis})
   const [openModal, setOpenModal] = useState(false)
   const [assignmentGrade, setAssignmentGrade] = useState("")
   const [feedback, setFeedback] = useState("")
@@ -15,7 +16,9 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
   const [assignmentAnswer, setAssignmentAnswer] = useState({})
   const pageURL = new URL(window.location.href);
   const paramsId = pageURL.searchParams.get("classId");
+
   let studentidsession = sessionStorage.getItem('studentid')
+  let totalRate = assignmentAnalysis?.assignment?.rate;
 
   const handleOpenModal = (e, studentid, assignmentid, answerid, score, afeedback) => {
     e.preventDefault()
@@ -53,8 +56,12 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
   }
 
   const addScoreAssignment = async (e) => {
+    console.log({assignmentGrade})
     e.preventDefault()
-    let response = await new ClassesAPI().updateAssignmentPoints
+    if( (assignmentGrade == '') || (assignmentGrade < 0) || (assignmentGrade == null)){
+      toast.error('Points cannot be empty!')
+    }else{
+      await new ClassesAPI().updateAssignmentPoints
       (
         selectedStudentId,
         sClassId,
@@ -62,18 +69,18 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
         selectedAnswerId,
         { assignmentGrade, feedback }
       )
-    if (response.ok) {
       setOpenModal(false)
       notifySaveAssignmentScore()
       getAssignmentAnalysis(e, selectedStudentId, sClassId, selectedAssignmentId)
-    } else {
-      alert(response.data.errorMessage)
     }
   }
 
   const updateScoreAssignment = async (e) => {
     e.preventDefault()
-    let response = await new ClassesAPI().updateAssignmentPoints
+    if( (assignmentGrade == '') || (assignmentGrade < 0) ){
+      toast.error('Points cannot be less than 0')
+    }else{
+      await new ClassesAPI().updateAssignmentPoints
       (
         selectedStudentId,
         sClassId,
@@ -81,12 +88,9 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
         selectedAnswerId,
         { assignmentGrade, feedback }
       )
-    if (response.ok) {
       setOpenModal(false)
       notifyUpdateAssignmentScore()
-      getAssignmentAnalysis(e, selectedStudentId, paramsId, selectedAssignmentId)
-    } else {
-      toast.error(response.data.ErrorMessage)
+      getAssignmentAnalysis(e, selectedStudentId, sClassId, selectedAssignmentId)
     }
   }
 
@@ -139,7 +143,8 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
                       assignmentAnalysis.studentAssignment.id,
                       assignmentAnalysis.studentAssignment.assignmentGrade,
                       assignmentAnalysis.studentAssignment.feedback
-                    )}>
+                    )}
+                    >
                   <i class="fas fa-redo" style={{ paddingRight: '10px' }} />Add Points
                 </Button>
                 :
@@ -187,14 +192,21 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
         <Modal.Body className="modal-label b-0px">
           <Form onSubmit={assignmentAnalysis.studentAssignment?.assignmentGrade === null ? addScoreAssignment : updateScoreAssignment}>
             <Form.Group className="m-b-20">
-              <Form.Label for="courseName">Rate / Points</Form.Label>
+              <Form.Label for="courseName">Total Rate / Points: {totalRate}</Form.Label>
               <Form.Control
                 defaultValue={assignmentGrade}
                 className="custom-input"
                 size="lg"
-                type="text"
+                type="number"
                 placeholder="Enter points"
-                onChange={(e) => setAssignmentGrade(e.target.value)}
+                onChange={(e) => {
+                  setAssignmentGrade(e.target.value);
+                  if(e?.target?.value > totalRate){
+                    toast.error('Points must not be greater than the total rate.');
+                  }else{
+                    setAssignmentGrade(e.target.value);
+                  }
+                }}
               />
             </Form.Group>
             <Form.Group className="m-b-20">
@@ -207,15 +219,16 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
                 onChange={(e) => setFeedback(e.target.value)}
               />
             </Form.Group>
-
-            <span style={{ float: "right" }}>
-              {
-                assignmentAnalysis.studentAssignment?.assignmentGrade === null
-                  ? <Button className="tficolorbg-button" type="submit">Save Points</Button>
-                  : <Button className="tficolorbg-button" type="submit">Update Points</Button>
-              }
-            </span>
-
+            {
+             assignmentGrade <= totalRate  &&
+              <span style={{ float: "right" }}>
+                  {
+                    assignmentAnalysis.studentAssignment?.assignmentGrade === null
+                      ? <Button className="tficolorbg-button" type="submit">Save Points</Button>
+                      : <Button className="tficolorbg-button" type="submit">Update Points</Button>
+                  }   
+                </span>
+            }
           </Form>
         </Modal.Body>
       </Modal>

@@ -1,22 +1,16 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Accordion, Row, Col, Table, Button, Badge} from 'react-bootstrap'
+import {Col, Table, Button, Badge} from 'react-bootstrap'
 import { UserContext } from './../../../context/UserContext'
 import ClassesAPI from './../../../api/ClassesAPI'
-import AssignmentAnalysis from './AssignmentAnalysis'
 import { toast } from 'react-toastify';
 import {writeFileXLSX, utils} from "xlsx";
 import { useParams } from "react-router-dom";
 
 function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, assignmentName, selectedClassId, viewAssignmentReport, setViewAssignmentReport, assignmentReport, setAssignmentReport, assignmentColumns = ["header 1", "header 2"]}) {
-  
   const userContext = useContext(UserContext)
   const {user} = userContext.data
-  const [assignmentAnalysis, setAssignmentAnalysis] = useState([])
-  const [showAssignmentAnalysis, setShowAssignmentAnalysis] = useState(false)
   const [dataDownload, setDataDownload] = useState({});
   const [alphabetical, setAlphabetical] = useState(true);
-  const [sorted, setSorted] = useState([])
-  const { id } = useParams();
   const pageURL = new URL(window.location.href);
   const paramsId = pageURL.searchParams.get("classId");
 
@@ -32,8 +26,6 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
       alert(response.data.errorMessage)
     }
   }
-
-  console.log('classId', id)
 
   const notifyRetakeAssignment = () => 
   toast.success('Assignment can now be retaken', {
@@ -89,15 +81,12 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
 
   const arrageAlphabetical = (data) => {
     let temp = data?.sort(function(a, b){
-      console.log(a, 'herererereherererereherererere TRUE')
       let nameA = a.student.lname.toLocaleLowerCase();
       let nameB = b.student.lname.toLocaleLowerCase();
       if (nameA < nameB) {
           return -1;
       }
     });
-    console.log(temp, '2222')
-    setSorted(temp)
 }
 
 const arrageNoneAlphabetical = (data) => {
@@ -108,8 +97,6 @@ const arrageNoneAlphabetical = (data) => {
         return -1;
     }
   });
-  console.log(temp, '111111')
-  setSorted(temp)
 }
 
   // if(showAssignmentAnalysis === false){
@@ -148,25 +135,30 @@ const arrageNoneAlphabetical = (data) => {
             return (
               <tr>
                 {item.studentAssignments.map(st =>{
-                  
                 return (
                   <>
                   <td><i class="fas fa-user-circle td-icon-report-person"></i> 
                     <span style={{cursor:'pointer'}} onClick={(e) => getAssignmentAnalysis(e, item.student.id, sessionClass, sessionAssignmentId, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
                   </td>
-                  <td>{st.score === 0 ? <Badge bg="danger">No Grade</Badge>:
-                      st.score}</td>
+                  <td>
+                    {
+                      st.score === 0 
+                        ? <Badge bg="danger">No Grade</Badge>
+                        : `${st.score} / ${st?.assignment?.rate}`
+                    }
+                  </td>
                   <td>         
                     {st?.studentAnswer === null ? <Badge bg="danger">Not Submitted</Badge>:
                       <Badge bg="success">Submitted</Badge>
                     }</td>
                   <td>
-                    {st?.studentAnswer === null ? <spam></spam>:
+                    {st?.studentAnswer === null ? <span />:
                       <Button style={{color:"white"}} variant="warning" size="sm" onClick={(e) => reTakeAssigment(e, st?.assignment?.id, item?.student?.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
                     }
                   </td>
                   </>
                   )
+
               })}
               </tr>
             )

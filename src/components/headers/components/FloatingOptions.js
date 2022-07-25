@@ -22,7 +22,6 @@ export default function FloatingOptions() {
   }
 
   useEffect(() => {
-    console.log(user);
     if(user.isStudent || user.isTeacher){
       getImage()
     }
