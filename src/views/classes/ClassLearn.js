@@ -94,6 +94,7 @@ function ClassLearn() {
     let response = await new ClassesAPI().teacherMiranda()
     if(response.ok){
       setTMiranda(response.data)
+      console.log(response.data)
     }else{
       // alert("Teacher Miranda Error")
     }
@@ -125,6 +126,9 @@ function ClassLearn() {
         <Row>
           <Col className='scrollable vh-80 pb-5' style={{marginLeft:'15px'}} >
             <ClassLearnHeader content={content}  classInfo={classInfo}/> 
+            {tMiranda.roomNumber}
+            TFI Sample Course
+
             {cName === 'Innovators 1 (Second Edition)' && pageName === 'Lesson 3- Introduction to Miranda Simulator' &&
             <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
               {user?.teacher ?
@@ -146,13 +150,15 @@ function ClassLearn() {
               </Link>
               :
               <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
-                <i class="fas fa-tv"></i> Robotics Simulator S
+                <i class="fas fa-tv"></i> Robotics Simulator
               </Link>
               }
             </Card>
             }
+            
           </Col>
           <Col md='3'>
+            
             <Card className='calendar kb-0px'style={{backgroundColor:'white'}}>
               <Card.Header className='calendar-header' style={{backgroundColor:'white'}}>
                 <div className="row calendar-title">
