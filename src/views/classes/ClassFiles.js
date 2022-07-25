@@ -12,6 +12,8 @@ import { UserContext } from '../../context/UserContext';
 
 function ClassFiles() {
   const {id} = useParams();
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
   const [filesToDisplay, setFilesToDisplay] = useState([]);
   const [foldersToDisplay, setFolderToDisplay] = useState([]);
   const [breadCrumbsItemClass, setBreadCrumbsItemClass] = useState([])
@@ -21,8 +23,6 @@ function ClassFiles() {
   const [displayClassCourse, setDisplayClassCourse] = useState(false);
   const [displayType, setDisplayType] = useState('');
   const [courseId, setCourseId] = useState(null)
-  const userContext = useContext(UserContext)
-  const {user} = userContext.data
   const [isContributor, setIsContributor] = useState(true);
 
   useEffect(() => {
