@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import ActivityIndicator from "../../../components/loaders/ActivityIndicator";
 import ClassExamHeader from "../../classes/components/Exam/ClassExamHeader";
 import ExamItem from "./components/ExamItem";
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader'
 
 function ClassAdminExam() {
   const [loading, setLoading] = useState(true);
@@ -91,7 +92,7 @@ function ClassAdminExam() {
         </Col>
         <Col sm={9} className='scrollable vh-85'>
         <div className="class-container position-relative">
-        {loading && <ActivityIndicator />}
+        {loading && <FullScreenLoader />}
         <ClassExamHeader onSearch={onSearch} modules={modules} fetchExams={fetchExams} onRefresh={() => fetchExams()}/>
         <Accordion defaultActiveKey="0">
           {modules.map((module, index) => {
