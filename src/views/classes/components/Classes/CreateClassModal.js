@@ -22,6 +22,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
   const [validated, setValidated] = useState(false);
   const userContext = useContext(UserContext)
   const {user} = userContext.data
+  const subsType = user.subsType;
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -199,12 +200,18 @@ function CreateClassModal({setModal, modal, getClasses}) {
             </Form.Group>
             <Form.Group className="mb-4">
             	<Form.Label>School Year</Form.Label>
-                <Form.Select required onChange={(e) => setAcademicTermId(e.target.value)}>
-                  <option value={''}>-- Select School Year HERE --</option>
-                  {academicTerm.map(item =>{
-                      return(<option value={item.id}>{item.academicTermName}</option>)
-                      })
-                    }
+                <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
+                  <option>-- Select School Year HERE --</option>
+                  {
+                    academicTerm.map(item =>{
+                      return(
+                        subsType == 'LMS' ?
+                      <option value={item.id}>{item.academicTermName}</option>
+                      :
+                      item.isCurrentTerm && <option value={item.id}>{item.academicTermName}</option>
+                      )
+                    })
+                  }
                 </Form.Select> 
             </Form.Group>
             <Form.Group className="mb-4">

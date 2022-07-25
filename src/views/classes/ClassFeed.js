@@ -39,7 +39,7 @@ function ClassFeed() {
   const [commentName, setCommentName] = useState([])
   const [commentInfo, setCommentInfo] = useState([])
   const [classInfo, setClassInfo] = useState(null)
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const [showLike, setShowLike] = useState(false)
   const [feedItemLike, setFeedItemLike] = useState([])
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)

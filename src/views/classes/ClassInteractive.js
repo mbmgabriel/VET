@@ -32,7 +32,7 @@ function ClassInteractive() {
   const [accountInfo, setAccountInfo] = useState('')
   const [schoolCode, setSchoolCode] = useState('')
   const [resultToken, setResultToken] = useState('')
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const onSearch = (item) => {
     setSearchTerm(item)
   }
@@ -124,6 +124,12 @@ function ClassInteractive() {
     getAccountInfo()
     getSchoolCode()
   }, [])
+
+  const handleRefresh = () => {
+    getClassInfo()
+    getAccountInfo()
+    getSchoolCode()
+  }
 
   const renderTooltipReasign = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -475,7 +481,7 @@ function ClassInteractive() {
   return (
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={() => console.log('')} />
-      <ClassInteractiveHeader onSearch={onSearch} />
+      <ClassInteractiveHeader onSearch={onSearch} onRefresh={()=> handleRefresh()}/>
       <Accordion>
         {module.map((item, index) => {
           return ( <Accordion.Item eventKey={index} onClick={(e) => getIndteractive(e, item?.id)} >

@@ -34,7 +34,7 @@ export default function CoursesVideos() {
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
   const [courseInfo, setCourseInfo] = useState("");
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const [isContributor, setIsContributor] = useState(false);
   const handleOpenCreateVideoModal = () =>{
     setOpenCreateVideoModal(!openCreateVideoModal)

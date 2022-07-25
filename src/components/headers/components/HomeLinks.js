@@ -7,9 +7,10 @@ import AcademicTermAPI from '../../../api/AcademicTermAPI';
 
 export default function HomeLinks() {
   const userContext = useContext(UserContext)
-  const {themeLogo} = userContext.data
+  const {themeLogo, user} = userContext.data
   const [academicTerm, setAcademicTerm] = useState([])
   const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
+  const subsType = user.subsType;
 
   useEffect(() => {
     let temp = localStorage.getItem('academicTerm')
@@ -42,25 +43,35 @@ export default function HomeLinks() {
     }
   }
 
+  const handleRedirect = () => {
+    if(subsType == 'TeacherResources') return '/courses'
+    if(subsType == 'LMS') return '/teacherdashboard';
+      return '/classes';
+  }
+
   return (
     <div className="home-links">
-       <Link className="home-link " to="/teacherdashboard">
+       <Link className="home-link " to={handleRedirect()}>
         <div>
           {themeLogo ? <img src={themeLogo} alt="logo" className="home-link-logo"/> : <i className="fas fa-home"></i>}
         </div>
       </Link> 
       <div className="school-year-container">
         <span>S.Y.</span>
-        <Dropdown>
-          <Dropdown.Toggle variant="reset" id="dropdown-basic" className="school-year-dropdown">
-            {currentAcademicTerm}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {academicTerm.map((i, key) => {
-            return <Dropdown.Item key={key} onClick={() => selectAcademicTerm(i.academicTermName)}>{i.academicTermName}</Dropdown.Item>})
-            }
-          </Dropdown.Menu>
-        </Dropdown>
+          {subsType == 'Ebooks'  || subsType == 'TeacherResources' || subsType == 'Interactives' ?
+            <p className='school-year-dropdown'> {currentAcademicTerm}</p>
+            :
+            <Dropdown>
+              <Dropdown.Toggle variant="reset" id="dropdown-basic" className="school-year-dropdown">
+                {currentAcademicTerm}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {academicTerm.map((i, key) => {
+                return <Dropdown.Item key={key} onClick={() => selectAcademicTerm(i.academicTermName)}>{i.academicTermName}</Dropdown.Item>})
+                }
+              </Dropdown.Menu>
+            </Dropdown>
+          }
       </div>
     </div>
   )

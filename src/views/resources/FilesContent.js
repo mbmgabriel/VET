@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup } from 'react-bootstrap'
+import {Table, Button, OverlayTrigger, Tooltip, Form, InputGroup, Col } from 'react-bootstrap'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import FilesAPI from '../../api/FilesApi';
@@ -23,6 +23,7 @@ function FilesContent(props) {
   const [editFolderModal, setEditFolderModal] = useState(false);
   const userContext = useContext(UserContext)
   const {user} = userContext.data;
+  const subsType = user.subsType;
 
   const  downloadImage = (url) => {
     fetch(url, {
@@ -285,34 +286,85 @@ function FilesContent(props) {
     setDeleteFolderNotify(true)
   }
 
+  const  downloadAll = (files) => {
+      function download_next(i) {
+        if (i >= files.length) {
+          return;
+        }
+        var a = document.createElement('a');
+        a.href = files[i].pathBase;
+        a.target = '_blank';
+        // Use a.download if available, it prevents plugins from opening.
+        if ('download' in a) {
+          a.download = files[i].name;
+        }
+        // Add a to the doc for click to work.
+        (document.body || document.documentElement).appendChild(a);
+        if (a.click) {
+          a.click(); // The click method is supported by most browsers.
+        }
+        // Delete the temporary link.
+        a.parentNode.removeChild(a);
+        // Download the next file with a small timeout. The timeout is necessary
+        // for IE, which will otherwise only download the first file.
+        setTimeout(function() {
+          download_next(i + 1);
+        }, 500);
+      }
+      // Initiate the first download.
+      download_next(0);
+  }
+
   return (
-    <Table responsive="sm">
-      <thead>
-        <tr>
-          <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
-          {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
-          <th >Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/* <tr colSpan={3} className={props.data?.length == 0 ? 'text-center p-3' : 'd-none'}>
-          <td colSpan={3}>
-            No items to display
-          </td>
-        </tr> */}
-        {
-          props.data?.filter(item =>
-              item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
-            return(
-              <tr key={index+item.name}>
-                <td className='ellipsis w-75 file-name font-size-22'>{item.name}</td>
-                {/* {
-                  props.type == 'Class' ? <td className='ellipsis w-50' style={{fontSize:'20px'}}>{item.classFiles ? moment(item.classFiles?.createdDate).format('LL') : moment(item.courseFiles?.createdDate).format('LL')}</td> 
-                    :
-                  <td className='ellipsis w-25' style={{fontSize:'20px'}} >{moment(item.createdDate).format('LL')}</td>
-                } */}
-                 {displayButtons && window.location.pathname.includes("course") ? <>
-                  <td style={{paddingRight:'15px'}} >
+    <>
+      {subsType == 'TeacherResources' && props.data?.length > 0 && <Col className='d-flex justify-content-end'>
+        <Button size="lg" className='tficolorbg-button float-right' onClick={()=>downloadAll(props?.data)} >Download ALL Files</Button>
+      </Col>}
+      <Table responsive="sm">
+        <thead>
+          <tr>
+            <th>Name</th>  {/* icon for sorting <i class="fas fa-sort-alpha-down td-file-page"></i> */}
+            {/* <th >Date Modified</th>  icon for sorting <i class="fas fa-sort-numeric-down td-file-page"></i> */}
+            <th >Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            props.data?.filter(item =>
+                item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
+              return(
+                <tr key={index+item.name}>
+                  <td className='ellipsis w-75 file-name font-size-22'>{item.name}</td>
+                  {displayButtons && window.location.pathname.includes("course") &&  subsType == 'LMS' ? <>
+                    {<td style={{paddingRight:'15px'}} >
+                        <OverlayTrigger
+                          placement="right"
+                          delay={{ show: 1, hide: 0 }}
+                          overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
+                        >
+                          <a href={item.pathBase} download={true} target='_blank'>                     
+                            <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
+                          </a> 
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="right"
+                          delay={{ show: 1, hide: 0 }}
+                          overlay={renderTooltipEdit}
+                        >
+                          <i className={user.isSchoolAdmin ? 'd-none' : "fas fas fa-edit td-file-page"} onClick={() => handleEdit(item) } />
+                        </OverlayTrigger>
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 1, hide: 0 }}
+                        overlay={renderTooltipDelete}>
+                        <a>
+                          <i className={user.isSchoolAdmin ? 'd-none' : "fas fa-trash-alt td-file-page"} onClick={() => handleOnClick(item) }></i>
+                        </a>
+                      </OverlayTrigger>
+                    </td>}
+                  </>
+                  :
+                  <td>
                     <OverlayTrigger
                       placement="right"
                       delay={{ show: 1, hide: 0 }}
@@ -322,101 +374,74 @@ function FilesContent(props) {
                         <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
                       </a> 
                     </OverlayTrigger>
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 1, hide: 0 }}
-                      overlay={renderTooltipEdit}
-                    >
-                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fas fa-edit td-file-page"} onClick={() => handleEdit(item) } />
-                    </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 1, hide: 0 }}
-                    overlay={renderTooltipDelete}>
-                    <a>
-                      <i className={user.isSchoolAdmin ? 'd-none' : "fas fa-trash-alt td-file-page"} onClick={() => handleOnClick(item) }></i>
-                    </a>
-                  </OverlayTrigger>
                   </td>
-                </>
-                :
-                <td>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 1, hide: 0 }}
-                    overlay={item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? renderTooltipView : renderTooltipDownload }
-                  >
-                    <a href={item.pathBase} download={true} target='_blank'>                     
-                      <i class={`${item.pathBase?.match(/.(jpg|jpeg|png|gif|pdf)$/i) ? 'fa-eye' : 'fa-arrow-down'} fas td-file-page`}></i>
-                    </a> 
-                  </OverlayTrigger>
-                </td>
-                }
-              </tr>
-            )
-          })
-        }
-        {
-          props.folders?.filter(item =>
-            item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
-            return(
-              <tr key={index+item.name}>
-                <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
-               {
-                displayButtons && window.location.pathname.includes("course") ? <td>
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 1, hide: 0 }}
-                      overlay={renderTooltipEdit}
-                    >
-                      <i class="fas fas fa-edit td-file-page" onClick={() => handleClickFolder(item) } />
-                    </OverlayTrigger>
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 1, hide: 0 }}
-                      overlay={renderTooltipDelete}>
-                      <a>
-                        <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClickFolder(item) }></i>
-                      </a>
-                    </OverlayTrigger>
-                  </td>
-                  :
-                  <td></td>
-                }
-              </tr>
-            )
-          })
-        }
-      </tbody>
-      {handleEditFilenameModal()}
-      {handleEditFolderName()}
-      <SweetAlert
-        warning
-        showCancel
-        show={deleteNotify}
-        confirmBtnText="Yes, delete it!"
-        confirmBtnBsStyle="danger"
-        title="Are you sure?"
-        onConfirm={() => handledeleteItem()}
-        onCancel={() => setDeleteNotify(false)}
-        focusCancelBtn
-          >
-           You will not be able to recover this file!
-      </SweetAlert>
-      <SweetAlert
-        warning
-        showCancel
-        show={deleteFolderNotify}
-        confirmBtnText="Yes, delete it!"
-        confirmBtnBsStyle="danger"
-        title="Are you sure?"
-        onConfirm={() => deleteFolder()}
-        onCancel={() => setDeleteFolderNotify(false)}
-        focusCancelBtn
-          >
-           You will not be able to recover this folder!
-      </SweetAlert>
-    </Table>
+                  }
+                </tr>
+              )
+            })
+          }
+          {
+            props.folders?.filter(item =>
+              item.name.toLowerCase().includes(props.filter?.toLowerCase())).map((item, index) => {
+              return(
+                <tr key={index+item.name}>
+                  <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
+                {
+                  displayButtons && window.location.pathname.includes("course") &&  subsType == 'LMS' ? <td>
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 1, hide: 0 }}
+                        overlay={renderTooltipEdit}
+                      >
+                        <i class="fas fas fa-edit td-file-page" onClick={() => handleClickFolder(item) } />
+                      </OverlayTrigger>
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 1, hide: 0 }}
+                        overlay={renderTooltipDelete}>
+                        <a>
+                          <i class="fas fa-trash-alt td-file-page" onClick={() => handleOnClickFolder(item) }></i>
+                        </a>
+                      </OverlayTrigger>
+                    </td>
+                    :
+                    <td></td>
+                  }
+                </tr>
+              )
+            })
+          }
+        </tbody>
+        {handleEditFilenameModal()}
+        {handleEditFolderName()}
+        <SweetAlert
+          warning
+          showCancel
+          show={deleteNotify}
+          confirmBtnText="Yes, delete it!"
+          confirmBtnBsStyle="danger"
+          title="Are you sure?"
+          onConfirm={() => handledeleteItem()}
+          onCancel={() => setDeleteNotify(false)}
+          focusCancelBtn
+            >
+            You will not be able to recover this file!
+        </SweetAlert>
+        <SweetAlert
+          warning
+          showCancel
+          show={deleteFolderNotify}
+          confirmBtnText="Yes, delete it!"
+          confirmBtnBsStyle="danger"
+          title="Are you sure?"
+          onConfirm={() => deleteFolder()}
+          onCancel={() => setDeleteFolderNotify(false)}
+          focusCancelBtn
+            >
+            You will not be able to recover this folder!
+        </SweetAlert>
+      </Table>
+    </>
   )
 }
 export default FilesContent

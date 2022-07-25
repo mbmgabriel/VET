@@ -36,7 +36,7 @@ export default function CoursesAssignment() {
   const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
   const moduleid = sessionStorage.getItem('moduleid')
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   const {id} = useParams()
   const [isContributor, setIsContributor] = useState(true);
 

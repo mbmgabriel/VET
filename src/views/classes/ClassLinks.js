@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useContext} from 'react'
 import ClassesAPI from '../../api/ClassesAPI'
 import { useParams } from 'react-router'
 import AccordionConference from './components/Links/AccordionConference'
@@ -9,6 +9,7 @@ import AccordionEdit from './components/Links/AccordionEdit';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import FullScreenLoader from '../../components/loaders/FullScreenLoader'
+import { UserContext } from '../../context/UserContext'
 
 function ClassLinks() {
   const [openEditModal, setOpenEditModal] = useState(false)
@@ -22,8 +23,9 @@ function ClassLinks() {
   const [confeUrlItem, setConfeUrlItem] = useState('')
   const [itemId, setItemId] = useState()
   const [loading, setLoading] = useState(false);
-
-  const subsType = localStorage.getItem('subsType');
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
+  const subsType = user.subsType;
   
   const onSearch = (text) => {
     setSearchTerm(text)

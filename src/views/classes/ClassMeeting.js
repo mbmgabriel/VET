@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 
@@ -10,7 +10,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import { Link, useParams } from 'react-router-dom';
 import ClassesAPI from '../../api/ClassesAPI';
-
+import {UserContext} from '../../context/UserContext'
 function ClassMeeting() {
   const {id} = useParams();
   const {
@@ -21,9 +21,10 @@ function ClassMeeting() {
     formState: { errors },
   } = useForm();
 
-
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
   const [loading, setLoading] = useState(true);
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
   
   const getClassInformation = async() => {
     setLoading(true);

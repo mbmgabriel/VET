@@ -49,7 +49,7 @@ function ClassAssignment() {
   const [unit, setUnit] = useState('')
   const [xmoduleId, setXModuleId] = useState(null)
   const [selectedAssignmentName, setSelectedAssignmentName] = useState("")
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const onSearch = (text) => {
     setSearchTerm(text)

@@ -5,7 +5,8 @@ import { UserContext } from '../../../context/UserContext'
 export default function TeacherLinks({activeHeader}) {
   const userContext = useContext(UserContext)
   const { user } = userContext.data
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
+
   if(user.isTeacher){
     return (
       <div className="header-links">
@@ -20,7 +21,10 @@ export default function TeacherLinks({activeHeader}) {
         }
         {
           subsType == 'Ebooks' && 
-          <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 
+          <>
+            <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 
+            <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
+          </>
         }
         {
           subsType == 'TeacherResources' && 
@@ -28,7 +32,11 @@ export default function TeacherLinks({activeHeader}) {
         }
         {
            subsType == 'Interactives' &&
-          <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
+           <>
+            <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 
+            <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
+            <Link className={activeHeader === "reports" && 'active'} to="/reports">Reports</Link>
+           </>
         }
       </div>
     )

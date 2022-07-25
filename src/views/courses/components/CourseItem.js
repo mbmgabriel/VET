@@ -23,7 +23,7 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   const [courseID, setCourseID] = useState('');
   const [courseInfo, setCourseInfo] = useState({});
   const [authorId, setAuthorId] = useState('');
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const handleOpeEditModal = (e, item) => {
     e.preventDefault()
@@ -250,6 +250,9 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   const handleReturnLink = (id) => {
     if(user.isTeacher && subsType == 'TeacherResources'){
       return `/courses/${id}/resources`
+    }
+    if(user.isTeacher && subsType == 'Interactives'){
+      return `/courses`
     }
     if(user.isTeacher){
       return `coursecontent/${id}/learn`

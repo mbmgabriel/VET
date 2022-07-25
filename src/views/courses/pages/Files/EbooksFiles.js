@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Accordion, Row, Col, InputGroup, FormControl} from 'react-bootstrap'
 import FilesContent from '../../../files/FilesContent';
 import FileHeader from '../../../files/FileHeader'
@@ -6,7 +6,6 @@ import FilesAPI from '../../../../api/FilesApi';
 import CourseContent from "../../CourseContent";
 import {useParams} from 'react-router';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
-import {UserContext} from '../../../../context/UserContext';
 
 function CourseFiles() {
   const [filesToDisplay, setFilesToDisplay] = useState([]);
@@ -16,15 +15,12 @@ function CourseFiles() {
   const [breadCrumbsItemCourse, setBreadCrumbsItemCourse] = useState([])
   const [filter, setFilter] = useState('');
   const subFolderDirectory = breadCrumbsItemCourse.map(item => { return `/${item.value}`})
-  const userContext = useContext(UserContext);
-  const {user} = userContext.data;
-  const subsType = user.subsType;
-
+ 
   useEffect(() => {
     handleGetCourseFiles('')
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const handleRefetch = () => {
@@ -37,11 +33,12 @@ function CourseFiles() {
     let data = {
       "subFolderLocation": name
     }
-    let response = await new FilesAPI().getCourseFiles(id, data)
+    let response = await new FilesAPI().ebooksFiles(id, data)
     // setLoading(false)
     if(response.ok){
       setFilesToDisplay(response.data.files);
       setFolderToDisplay(response.data.folders);
+      console.log(response.data, '!!!!!')
     }else{
       alert("Something went wrong while fetching Course files.")
     }
@@ -73,7 +70,10 @@ function CourseFiles() {
     <CourseContent>
       <CourseBreadcrumbs title={''} clicked={() => console.log('')}/>
       <div className="row m-b-20 file-content">
-        <FileHeader type='Course'  title='Course Files' id={id} subFolder={subFolderDirectory.join('')}  doneUpload={()=> handleRefetch()}/>
+        {/* <FileHeader type='Course'  title='Course Files' id={id} subFolder={subFolderDirectory.join('')}  doneUpload={()=> handleRefetch()}/> */}
+        <div>
+          <p className='title-header'>Files</p>
+        </div>
         <div className="row m-b-20">
           <div className="col-md-12">
             <InputGroup size="lg">
@@ -95,7 +95,7 @@ function CourseFiles() {
               })
           }
         </p>
-        <FilesContent filter={filter} data={filesToDisplay} folders={foldersToDisplay} subFolder={subFolderDirectory.join('')} clickedFolder={(data) => handleClickedFolder(data.name)} deleted={() => handleRefetch()} type='Course' id={id}/>
+        <FilesContent filter={filter} data={filesToDisplay} folders={foldersToDisplay} subFolder={subFolderDirectory.join('')} clickedFolder={(data) => handleClickedFolder(data.name)} deleted={() => handleRefetch()} type='Ebooks' id={id}/>
       </div>
     </CourseContent>
   )

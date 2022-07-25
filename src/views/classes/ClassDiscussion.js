@@ -49,7 +49,7 @@ function ClassDiscussion() {
   const [selectedDiscussionName, setSelectedDiscussionName] = useState("")
   const [loading, setLoading] = useState(false);
 
-  const subsType = localStorage.getItem('subsType');
+  const subsType = user.subsType;
 
   const getClassInfo = async() => {
     let response = await new DiscussionAPI().getClassInfo(id)
