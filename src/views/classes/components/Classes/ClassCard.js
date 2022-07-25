@@ -3,6 +3,7 @@ import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger, renderTooltip, Butto
 import { Link } from 'react-router-dom';
 import ClassesAPI from '../../../../api/ClassesAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 
 function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedClass, getClasses, setClassIdCoverPhoto}) {
@@ -37,6 +38,7 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
       if(response.ok){
           setDeleteNotify(false)
           getClasses()
+          toast.success('Done!')
       }else{
         alert(response.data.errorMessage)
       }
