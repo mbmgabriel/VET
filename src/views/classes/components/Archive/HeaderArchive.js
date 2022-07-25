@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import { CardGroup, Card, Dropdown, InputGroup, FormControl, Button, Row, Col, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { BrowserRouter as Router, useHistory } from 'react-router-dom'
-import { Link } from "react-router-dom";
 import ClassesAPI from "../../../../api/ClassesAPI";
-import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from "react-toastify";
 
 export default function HeaderArchive({archiveItem, getArchive, onSearch, searchTerm}) {
 const [openDropdown, setOpenDropdown] = useState(false)
-const [editNotify, setEditNotity] = useState(false)
 const history = useHistory();
-
-const closeNotify = () =>{
-  setEditNotity(false)
-}
 
 const handleHistoryArchive = () => {
   history.push('/archive')
@@ -25,10 +19,10 @@ const handleHistoryList = () => {
 const retrieveArchive = async(item) =>{
   let response = await new ClassesAPI().retrieveArchive(item)
     if(response.ok){
-      setEditNotity(true)
+      toast.success('Done!')
       getArchive()
     }else{
-      alert(response.data.errorMessage)
+      toast.error(response.data.errorMessage)
     }
 }
 
@@ -84,7 +78,6 @@ return (
           <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
               <Col sm={10}>
-               {/* {item.classCode} */}
               </Col>
               <Col sm={2} style={{textAlign:'right'}}>
                 <Dropdown isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
@@ -146,58 +139,6 @@ return (
         )
       })}
      </CardGroup>
-     <SweetAlert 
-          success
-          show={editNotify} 
-          title="Done!" 
-          onConfirm={closeNotify}>
-        </SweetAlert>
-
-      {/* <div className="col-md-3 card-group-tfi">
-          <Card className="card-design b-0px">
-            <Card.Header className="card-header">
-            <div className="row" style={{color:"white"}}>
-              <div className="col-md-6">
-              <i class="fas fa-unlock"></i>
-              </div>
-              <div className="col-md-6 t-a-r">
-                <Dropdown isOpen={openDropdown} toggle={()=> setOpenDropdown(!openDropdown)}>
-                <Dropdown.Toggle data-toggle="dropdown" as={CustomToggle} >
-                  <i className="fa fa-ellipsis-v fa-2x"></i>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                <Dropdown.Item onClick={handleOpeEditModal}>
-                    Restore 
-                </Dropdown.Item>
-                <Dropdown.Item>
-                    Delete
-                </Dropdown.Item>
-                </Dropdown.Menu>
-                </Dropdown>
-              </div>
-                <div className="col-md-3"></div>
-                <div className="col-md-6" style={{textAlign:"center", marginTop:20}}>
-                        <i className="fa fa-book-open fa-7x"></i>
-                </div>
-                  <div className="col-md-3"></div>
-                </div>
-            </Card.Header>
-            <Card.Body>
-              <Card.Title tag="h5">
-                <Link to="/coursecontent" className="active">Web Programming</Link>
-              </Card.Title>
-                <Card.Subtitle
-                    className="mb-2 text-muted"
-                    tag="h6"
-                  >
-                    Card subtitle
-                </Card.Subtitle>
-                <Card.Text>
-                  This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                </Card.Text>
-            </Card.Body>
-        </Card>
-  </div> */}
 </div>
   )
 }
