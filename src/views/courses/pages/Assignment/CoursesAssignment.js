@@ -30,6 +30,7 @@ export default function CoursesAssignment() {
   const [moduleInfo, setModuleInfo] = useState([])
   const [showAssignment, setShowAssignment] = useState(false);
   const [assignmmentName, setAssignmentName] = useState('')
+  const [rate, setRate] = useState(null)
   const [instructions, setInstructions] = useState('')
   const [courseInfo, setCourseInfo] = useState("")
   const userContext = useContext(UserContext);
@@ -76,11 +77,12 @@ export default function CoursesAssignment() {
     setOpenCreateAssignmentModal(!openCreateAssignmentModal)
   }
 
-  const handleOpenEditAssignmentModal = (e, assignmentName, instructions, assignmentId) =>{
+  const handleOpenEditAssignmentModal = (e, assignmentName, instructions, assignmentId, rate) =>{
     e.preventDefault()
     setAssignmentName(assignmentName)
     setInstructions(instructions)
     setAssignmentId(assignmentId)
+    setRate(rate)
     setOpenEditAssignmentModal(!openEditAssignmentModal)
   }
 
@@ -219,6 +221,8 @@ export default function CoursesAssignment() {
         assignmentId={assignmentId}
         setAssignmentName={setAssignmentName}
         setInstructions={setInstructions}
+        rate={rate}
+        setRate={setRate}
         setAssignmentInfo={setAssignmentInfo} selectedAssignment={selectedAssignment} openEditAssignmentModal={openEditAssignmentModal} setOpenEditAssignmentModal={setOpenEditAssignmentModal}/>
         <Accordion defaultActiveKey="0">
           {moduleInfo.map((item, index) => {
@@ -239,7 +243,8 @@ export default function CoursesAssignment() {
                     ).map((as, index) => (
                       <Row>
                         <Col className="lesson-header" md={9} >
-                          <span onClick={(e) => {viewAss(as)}}>{as?.assignmentName}</span>
+                          <span style={{cursor: 'pointer'}} onClick={(e) => {viewAss(as)}}>{as?.assignmentName}</span><br />
+                          <span style={{fontSize:'18px'}} > Rate: {as?.rate}</span>
                         </Col>
                         {isContributor &&
                           <>
@@ -248,7 +253,7 @@ export default function CoursesAssignment() {
                                 placement="bottom"
                                 delay={{ show: 1, hide: 25 }}
                                 overlay={renderTooltipEdit}>
-                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id)}><i className="fa fa-edit"></i></Button>
+                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id, as?.rate)}><i className="fa fa-edit"></i></Button>
                               </OverlayTrigger>
                               <OverlayTrigger
                                 placement="bottom"
