@@ -18,6 +18,8 @@ import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs'
 import ContentViewer from '../../components/content_field/ContentViewer'
 import Status from '../../components/utilities/Status'
+import { toast } from 'react-toastify'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 function ClassAssignment() {
   const [submittedAssignment, setSubmittedAssignment] = useState(false)
@@ -50,6 +52,7 @@ function ClassAssignment() {
   const [xmoduleId, setXModuleId] = useState(null)
   const [selectedAssignmentName, setSelectedAssignmentName] = useState("")
   const subsType = user.subsType;
+  const [loading, setLoading] = useState(false);
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -63,17 +66,15 @@ function ClassAssignment() {
   }, [])
 
   const getClassInfo = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
-      console.log({response})
+    setLoading(false)
       getModule(response.data.classInformation?.courseId)
-      // setClassInfo(response.data)
-      console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      toast.error('Something went wrong while fetching all courses')
     }
-    // setLoading(false)
+    setLoading(false)
   }
 
   console.log('this is assignment:', assignment)
@@ -193,6 +194,7 @@ function ClassAssignment() {
 
   return (
     <ClassSideNavigation>
+      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title='' clicked={()=> console.log('')}/>
       <AssignmentHeader onSearch={onSearch} module={module} onRefresh={()=> getClassInfo()} getAssignmentList={getAssignmentList} />
       <Accordion>

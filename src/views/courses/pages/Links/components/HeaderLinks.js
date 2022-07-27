@@ -4,6 +4,8 @@ import CreateLinks from './CreateLinks';
 import { UserContext } from '../../../../../context/UserContext'
 import {useParams} from 'react-router';
 import CoursesAPI from '../../../../../api/CoursesAPI';
+import FullScreenLoader from '../../../../../components/loaders/FullScreenLoader';
+import { toast } from 'react-toastify';
 
 function HeaderLinks({getConfe, getVideos, getLinks, onSearch}) {
 const [modal, setModal] = useState(false)
@@ -12,6 +14,7 @@ const [courseInfo, setCourseInfo] = useState("");
 const {user} = userContext.data
 const {id} = useParams();
 const [isContributor, setIsContributor] = useState(false)
+const [loading, setLoading] = useState(false);
 
 
   useEffect( async() => {
@@ -19,7 +22,6 @@ const [isContributor, setIsContributor] = useState(false)
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   },[])
@@ -29,16 +31,19 @@ const [isContributor, setIsContributor] = useState(false)
   }, [])
 
   const getCourseInformation = async() => {
+		setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(id)
     if(response.ok){
+			setLoading(false)
       setCourseInfo(response.data)
     }else{
-      alert("Something went wrong while fetching course information")
+			toast.error('Something went wrong while fetching course information')
     }
   }
 
 	return (
 		<div>
+			{loading && <FullScreenLoader />}
 			<div className="row m-b-20 fd-row" style={{paddingTop:'15px'}}>
 				<div className="content-pane-title col-md-10 pages-header fd-row">
 					Links 

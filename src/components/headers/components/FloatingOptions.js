@@ -27,8 +27,6 @@ export default function FloatingOptions() {
     }
   },[])
 
-  console.log(subsType == 'Ebooks' || subsType == 'TeacherResources', '1111--------------------------------');
-
   return (
     <div>
       {subsType == 'Ebooks' || subsType == 'TeacherResources' ? 

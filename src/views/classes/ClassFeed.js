@@ -19,6 +19,7 @@ import FileHeader from '../classes/components/Task/TaskFileHeader';
 import ContentViewer from '../../components/content_field/ContentViewer';
 import ContentRichText from '../../components/content_field/ContentRichText';
 import ClassCourseFileLibrary from './components/ClassCourseFileLibrary';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 
 function ClassFeed() {
   const [content, setContent] = useState('')
@@ -52,7 +53,8 @@ function ClassFeed() {
   const subFolderDirectory = breedCrumbsItemClass?.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
   const [displayFolder, setDisplayFolder] = useState([]);
   const [courseId, setCourseId] = useState(null)
-  const classId = id
+  const classId = id;
+  const [loading, setLoading] = useState(false);
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -138,14 +140,17 @@ const getComment = (item, item1, item3) => {
 
   const getFeedClass = async () => {
     console.log(id, 'classssssssss')
+    setLoading(true);
     let response = await new ClassesAPI().getFeedClass(id)
     if(response.ok){
+    setLoading(false);
     setFeedClass(response.data)
       if(response.data?.feedInformations?.isLike === true){
         setCommentName(response.data?.feedInformations?.commentedBy)
       }
   }else{
-    alert(response.data.errorMessage)
+    toast.error(response.data.errorMessage)
+    setLoading(false);
    }
   }
 
@@ -317,6 +322,7 @@ const getComment = (item, item1, item3) => {
   return (
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={() => console.log('')}/>
+      {loading && <FullScreenLoader />}
     <div>
       <SweetAlert
         warning
