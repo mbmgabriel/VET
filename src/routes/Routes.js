@@ -113,6 +113,9 @@ import SchoolAcademicTerms from "../views/school-profile/SchoolAcademicTerm";
 import MirandaAccount from '../views/system-admin/miranda/Miranda';
 import EbooksFiles from '../views/courses/pages/Files/EbooksFiles';
 import ClassEbooksFiles from '../views/classes/EbooksFiles';
+import StudentEbooks from '../views/Ebooks/StudentEbooks';
+
+import SystemAdminEbooks from '../views/system-admin/Ebooks/Ebooks'
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -225,6 +228,8 @@ export default function Routes() {
             <PrivateRoute path='/system-admin/courses' exact component={SystemAdminCourses} />
             <PrivateRoute path='/system-admin/school_admin' exact component={SystemAdminSchoolAdmin} />
             <PrivateRoute path='/system-admin/miranda' exact component={MirandaAccount} />
+            <PrivateRoute path='/system-admin/ebooks' exact component={SystemAdminEbooks} />
+
             {/* System admin routes end */}
 
             <PrivateRoute path='/notifications' exact component={NotificationsPage} />
@@ -232,6 +237,7 @@ export default function Routes() {
 
             <PrivateRoute path='/courses/:id/ebooks' exact component={EbooksFiles} />
             <PrivateRoute path='/classes/:id/ebooksFiles' exact component={ClassEbooksFiles} />
+            <PrivateRoute path='/student_ebooks' exact component={StudentEbooks} />
             
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
