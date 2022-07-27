@@ -42,7 +42,7 @@ export default function EditAssignment({rate, setRate, setInstructions, setAssig
     }else{
       let response = await new CoursesAPI().editAssignment(
         assignmentId,
-        {assignmentName, instructions}
+        {assignmentName, instructions, rate}
       )
       if(response.ok){
         handleCloseModal(e)

@@ -142,6 +142,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
               <Form.Group className="mb-4">
                 <Form.Label >Instruction</Form.Label>
                   <ContentField  value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
+                  {/* <Form.Control  onChange={(e) => setInstructions(e.target.value)} type='text' placeholder='Enter Rate here'/> */}
               </Form.Group>  
               <Form.Group className='right-btn'>
                   <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Save Assignment</Button>

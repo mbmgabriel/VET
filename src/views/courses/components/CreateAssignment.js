@@ -73,7 +73,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
       setLoading(true)
       let response = await new CoursesAPI().createAssignment(
         sessionModule,
-        {assignmentName, instructions}
+        {assignmentName, instructions, rate}
       )
       if(response.ok){
         handleCloseModal(e)
