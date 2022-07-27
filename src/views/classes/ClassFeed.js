@@ -376,13 +376,13 @@ const getComment = (item, item1, item3) => {
     
     {}
     <Card.Title>
-                <div className="col-md-10 pages-header fd-row">
-                  <p className='title-header m-0'>Announcement </p>
-                  <Button onClick={() => getFeedClass()} className='ml-3'>
-                    <i className="fa fa-sync"></i>
-                  </Button>
-                </div>
-              </Card.Title>
+      <div className="col-md-10 pages-header fd-row">
+        <p className='title-header m-0'>Announcement </p>
+        <Button onClick={() => getFeedClass()} className='ml-3'>
+          <i className="fa fa-sync"></i>
+        </Button>
+      </div>
+    </Card.Title>
     {feedClass?.map(item => {
       return(
         <>
