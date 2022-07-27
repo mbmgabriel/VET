@@ -146,7 +146,7 @@ function EditAssignedAssignment({
             </Form.Group>
             <Form.Group className='right-btn'>
               <Button className='tficolorbg-button' type='submit'>
-                Save
+                Update Assignment
               </Button>
             </Form.Group>
           </Form>
