@@ -6,6 +6,7 @@ import ClassesAPI from '../../../../api/ClassesAPI'
 import { UserContext } from '../../../../context/UserContext'
 import { useParams } from 'react-router'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { toast } from 'react-toastify';
 
 
 function StudentDiscussionComment({getDiscussionComments, getComments, studentCommentToggle, studentCommentModal, comments, discussionId, moduleId, getDiscussionUnit, startDate, startTime, endDate, endTime }) {
@@ -19,6 +20,7 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
   const timeNow = moment().format('HH:mm');
   const dateTimeNow = dateCompareNow + ' ' + '00:00:00';
   const [reply, setReply] = useState('')
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const handleDeleteNotify = (item) => {
     getDiscussionUnit(null, moduleId)
@@ -28,16 +30,26 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
 
   const submitComment = async (e, item) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
+    setTimeout(()=> setIsButtonDisabled(false), 10000)
     let classId = id
     let userAccountId = user?.userId
     let response = await new ClassesAPI().submitComment(classId, item, { userAccountId, reply })
     if (response.ok) {
-      setCommentAlert(true)
       setReply('')
+      success()
       getDiscussionComments(null, item, startDate, startTime, endDate, endTime)
     } else {
-      alert('No good')
-    }
+      toast.error(response.data.errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+     }  
   }
 
   const cancelSweetAlert = () => {
@@ -46,6 +58,18 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
 
   const closeNotify = () => {
     setCommentAlert(false)
+  }
+
+  const success = () => {
+    toast.success('Successfully comment on discussion!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
 
   const deleteComment = async (item) => {
@@ -73,7 +97,7 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
         onCancel={cancelSweetAlert}
         focusCancelBtn
       >
-        You will not be able to recover this imaginary file!
+        You will not be able to recover your comment!
       </SweetAlert>
       <Modal size="lg" show={studentCommentModal} onHide={studentCommentToggle} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
@@ -82,7 +106,7 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form  >
             {(studentCommentModal === true) ? (<>
               {(getComments.map(item => {
                 return (
@@ -131,10 +155,11 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
             moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(endDate + ' ' + endTime, 'YYYY-MM-DD HH:mm')) &&
             <>
               <br />
-              {!user.isSchoolAdmin &&  <Form>
+              {!user.isSchoolAdmin &&  <Form onSubmit={(e) => submitComment(e, discussionId)} >
                 <InputGroup size="sm">
                   <FormControl onChange={(e) => setReply(e.target.value)} value={reply} aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Reply" />
-                  <InputGroup.Text onClick={(e) => submitComment(e, discussionId)} id="basic-addon2" className="comment-btn"><i className="fas fa-paper-plane"></i></InputGroup.Text>
+                  {/* <InputGroup.Text disabled={isButtonDisabled} onClick={(e) => submitComment(e, discussionId)} id="basic-addon2" className="comment-btn"><i className="fas fa-paper-plane"></i></InputGroup.Text> */}
+                  <Button onClick={(e) => submitComment(e, discussionId)} disabled={isButtonDisabled} className='btn-like' size="sm" Button variant="link"><i className="fas fa-paper-plane"></i></Button>
                 </InputGroup><br />
               </Form>}
             </>
