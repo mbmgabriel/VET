@@ -19,14 +19,12 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
   const [studentInformation, setStudentInformation] = useState([]);
   const [alphabetical, setAlphabetical] = useState(true);
   const userContext = useContext(UserContext)
-  const {user} = userContext.data
+  const {themeColor} = userContext.data
 
   const cancelSweetAlert = () => {
     setDeleteNotify(false)
   }
   
-  
-
   const openPortfolioToggle = (item, item1, item2) => {
     setStudentInfo(item)
     setClassinfo(item1)
@@ -154,7 +152,7 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
             <tr>
               <td >
                 <div className='class-waiting-list' style={{fontSize:'24px', color:'#707070', marginLeft:'25px'}} >
-                  <i class="fas fa-user-circle fas-1x" style={{color:'#EE9337',fontSize:'36px'}}></i>&nbsp;
+                  <i class="fas fa-user-circle fas-1x" style={{color: themeColor,fontSize:'36px'}}></i>&nbsp;
                     <Button className='btn-student-portfolio' onClick={() => openPortfolioToggle(item, enrolledStudent?.classInformation, item.id)} variant="link">{item.fname} {item.lname}</Button>
                 </div>
               </td>
