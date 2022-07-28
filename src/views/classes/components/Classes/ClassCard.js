@@ -1,18 +1,17 @@
 import React, { useState,useEffect, useContext } from 'react'
-import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger, renderTooltip, Button } from 'react-bootstrap';
+import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ClassesAPI from '../../../../api/ClassesAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../../../context/UserContext'
 
-function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedClass, getClasses, setClassIdCoverPhoto}) {
+function ClassCard({item, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedClass, getClasses, setClassIdCoverPhoto}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
-  const [itemId, setItemId] = useState('')
+  const [itemId, setItemId] = useState('');
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
-  const [loading, setLoading] = useState(false)
   const subsType = user.subsType;
 
   const cancelSweetAlert = () => {
@@ -98,7 +97,6 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
           <Card.Header className='class-header-card' style={{ backgroundImage: `url(${item.classCover})` }} >
             <Row>
               <Col sm={10}>
-               {/* {item.classCode} */}
               </Col>
               <Col sm={2} style={{textAlign:'right'}}>
               <OverlayTrigger
@@ -123,22 +121,22 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
                 </Dropdown>
                 </OverlayTrigger>
               </Col>
-              {/* <Col sm={10}>
-                <b>{item.gradeName} -  {item.className} </b>
-              </Col> */}
-              {/* <Col sm={8}>
-               {item.courseName}
-              </Col>
-              <Col ms={22} style={{fontSize:'15px', textAlign:'right',}}>
-                <i className="fas fa-user"></i> 30
-             </Col> */}
            </Row>
           </Card.Header>
           <Card.Body>
-            <Card.Title>
-            </Card.Title>
+            <OverlayTrigger
+                placement="top"
+                delay={{ show: 1, hide: 0 }}
+                overlay={(props) => 
+                  <Tooltip id="button-tooltip" {...props}>
+                    {item.className}
+                  </Tooltip>}
+              >
+                <Card.Title tag="h5">
+                  {item.className?.length > 20 ? `${item.className.substring(0, 20)}...` : item.className}
+                </Card.Title>
+              </OverlayTrigger>
             <Card.Subtitle>
-            {item.className} 
               <Col className='font-color' sm={10}>
                 {item.classCode}
               </Col>
@@ -146,7 +144,19 @@ function ClassCard({item, openCoverPhotoModal, setOpenCoverPhotoModal,  setOpenE
                 <b>
                 {item.teacherName} <br /> 
                  <spam className='font-color'> {item.gradeName} </spam> <br />
-                 {item.courseName}
+                 <OverlayTrigger
+                  placement="top"
+                  delay={{ show: 1, hide: 0 }}
+                  overlay={(props) => 
+                  <Tooltip id="button-tooltip" {...props}>
+                    {item.courseName}
+                  </Tooltip>}
+                >
+                <span>
+                  {item.courseName?.length > 20 ? `${item.courseName.substring(0, 20)}...` : item.courseName}
+                </span>
+              </OverlayTrigger>
+            <Card.Subtitle></Card.Subtitle>
                 </b> 
                 <br /> 
                 <br />

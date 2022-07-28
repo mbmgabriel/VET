@@ -1,20 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger, Modal, Button } from 'react-bootstrap';
+import { Card, Dropdown, Row, Col, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import "../../../../node_modules/@fortawesome/fontawesome-free/css/all.css"
-import { Link } from 'react-router-dom'
-import userEvent from "@testing-library/user-event";
 import { UserContext } from './../../../context/UserContext'
 import CoursesAPI from "../../../api/CoursesAPI";
-import { ToastContainer, toast } from 'react-toastify';
 
 export default function CoursesItemCard({courseCover, courseId, courseName, subjectAreaName, description, authorName, courseInfo, setOpenEditModal, setSelectedCourse, getCourses, uploadModalTrigger, handleClickContributor}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [openDropdown, setOpenDropdown] = useState(false)
-  const [data, setData] = useState([])
-  const [uploadModal, setUploadModal] = useState(false);
-  const [fileToUpload, setFileToUpload] = useState({});
-  const [id, setId] = useState('');
   const [isContributor, setIsContributor] = useState(true);
 
   useEffect(() => {
@@ -33,7 +26,6 @@ export default function CoursesItemCard({courseCover, courseId, courseName, subj
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId, '-----', ifContri ? true : false)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -54,8 +46,6 @@ export default function CoursesItemCard({courseCover, courseId, courseName, subj
       }}
     >{children}</span>
   ))
-
-  console.log('qweqwe:', courseCover)
 
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -96,14 +86,23 @@ export default function CoursesItemCard({courseCover, courseId, courseName, subj
                   </>
                 }
               <Col md={12} className="t-a-c m-t-20">
-                {/* <i className="fa fa-book-open fa-7x"></i> */}
               </Col>
           </Row>
         </Card.Header>
           <Card.Body>
-              <Card.Title tag="h5">
-                  {courseName.substring(0, 20)}...
-              </Card.Title>
+              <OverlayTrigger
+                placement="top"
+                delay={{ show: 1, hide: 0 }}
+                overlay={(props) => 
+                  <Tooltip id="button-tooltip" {...props}>
+                    {courseName}
+                  </Tooltip>}
+              >
+                <Card.Title tag="h5">
+                  {courseName?.length > 20 ? `${courseName.substring(0, 20)}...` : courseName}
+                </Card.Title>
+              </OverlayTrigger>
+
               <Card.Subtitle
                   className="mb-2 text-muted"
                   tag="h6"

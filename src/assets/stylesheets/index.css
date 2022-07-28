@@ -514,6 +514,7 @@ border-top-right-radius: 0px !important;
 .card-title{
   color: var(--primary-color)!important;
   text-decoration: none !important;
+  width: fit-content;
 }
 
 .primary-color{
