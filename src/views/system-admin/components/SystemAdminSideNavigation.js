@@ -13,7 +13,7 @@ export default function SystemAdminSideNavigation({active}) {
       <Link to="/system-admin/teachers" className={`side-navigation-item ${active === "teachers" ? "active" : ""}`}>Teachers</Link>
       <Link to="/system-admin/school_admin" className={`side-navigation-item ${active === "school_admin" ? "active" : ""}`}>School Admin</Link>
       {/* {subsType == 'Ebooks' && */}
-       <Link to="/system-admin/ebooks" className={`side-navigation-item ${active === "ebooks" ? "active" : ""}`}>Ebooks</Link>
+       {/* <Link to="/system-admin/ebooks" className={`side-navigation-item ${active === "ebooks" ? "active" : ""}`}>Ebooks</Link> */}
        {/* } */}
     </div>
   )

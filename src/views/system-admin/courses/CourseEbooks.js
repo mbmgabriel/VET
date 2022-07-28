@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Col, Row, Modal, Form, Button, InputGroup, FormControl} from 'react-bootstrap'
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
 import SchoolAPI from '../../../api/SchoolAPI';
+import EbooksAPI from '../../../api/EbooksAPI';
 import CoursesAPI from '../../../api/CoursesAPI';
 import SubjectAreaAPI from '../../../api/SubjectAreaAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from "react-toastify";
 import moment from "moment"
 import MainContainer from '../../../components/layouts/MainContainer';
-
+import { UserContext } from '../../../context/UserContext';
 
 export default function SystemAdminCourses() {
-
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data;
+  const subsType = user.subsType;
   const [teachers, setTeachers ] = useState([]);
   const [ deleteNotify, setDeleteNotify ] = useState(false);
   const [toDeleteId, setToDeleteId] = useState('');
@@ -31,7 +34,12 @@ export default function SystemAdminCourses() {
   const [courseID, setCourseID] = useState('');
   const [courseInfo, setCourseInfo] = useState({});
   const [authorId, setAuthorId] = useState('');
-  
+  const [uploadModal, setUploadModal] = useState(false);
+  const [filesToUpload, setFilesToUpload] = useState({});
+  const [userType, setUserType] = useState('')
+  const [showList, setShowList] = useState(false);
+  const [ebookLinks, setEbookLinks] =useState([]);
+
 	useEffect(() => {
     viewSubjectArea()
     getCourses()
@@ -255,7 +263,6 @@ export default function SystemAdminCourses() {
     if(response.ok){
       setCourseInfo(response.data)
       setAuthorId(response.data.createdBy)
-      console.log(response, '-=-=-')
     }else{
       alert("Something went wrong while fetching course information")
     }
@@ -329,8 +336,146 @@ export default function SystemAdminCourses() {
     )
   }
 
+  const handleClickUpload = (id) => {
+    setCourseID(id);
+    setUploadModal(true)
+  }
+
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  const handleUploadFile = async (e) => {
+    e.preventDefault();
+    setUploadModal(false);
+    setLoading(true);
+    let response = await new EbooksAPI().uploadLinks(courseID, userType, filesToUpload)
+    if (response.ok) {
+      getCourses();
+      setCourseID('');
+      setUserType('');
+      toast.success("Successfully uploaded Ebook links.")
+    } else {
+      toast.error("Something went wrong while uploading teacher list.")
+    }
+    setLoading(false);
+  }
+
+  const getEbooks = async (id) => {
+    // e.preventDefault();
+    setUploadModal(false);
+    setLoading(true);
+    let response = await new EbooksAPI().getEbooksPerCourse(id)
+    if (response.ok) {
+      setEbookLinks(response.data);
+      // setLoading(false);
+      // getStudentEnrolled();
+      // handleGetAllTeachers()
+    } else {
+      toast.error("Something went wrong while getting ebooks links.")
+    }
+    setLoading(false);
+  }
+
+  const handleGetUploadedFile = (file) => {
+    getBase64(file).then(
+      data => {
+        console.log(file.name)
+        let toUpload = {
+          "base64String": data,
+          "fileName": file.name
+        }
+        setFilesToUpload(toUpload)
+      }
+    );
+  }
+
+  const clickShowList = (item) => {
+    setCourseID(item.id);
+    getEbooks(item.id);
+    setCourseInfo(item);
+    setShowList(true)
+    console.log(item);
+  }
+
   return (
-    <MainContainer title="Dashboard" activeHeader={"school"} loading={loading}>
+    <MainContainer title="Dashboard" activeHeader={"courses"} loading={loading}>
+      {showList ?
+      <>
+        <button onClick={() => setShowList(false)} className="float-right btn btn-success btn-sm m-r-5" >
+         Back to Course List
+        </button>
+        <h3 className='m-b-20 m-t-20'>{courseInfo?.courseName}</h3>
+        <ReactTable pageCount={100}
+          list={ebookLinks}
+          filterable
+          defaultFilterMethod={(filter, row) => {
+            let f = filter.value.toLowerCase();
+            const id = filter.pivotId || filter.id
+            return row[id] !== undefined ? String(row[id].toLowerCase()).startsWith(f) : true
+          }}
+          data={ebookLinks}
+          columns={[{
+            Header: '',
+            columns:
+            [
+              {
+                Header: 'First Name',
+                id: 'fname',
+                accessor: d => d.student ? d.student?.fname : d.teacher.fname,
+                Cell: row => (
+                  <div className="d-flex justify-content-center align-items-center">
+                    {row.original.student ? row.original.student?.fname : row.original.teacher?.fname}
+                  </div>
+                )
+              },
+              {
+                Header: 'Last Name',
+                id: 'lname',
+                accessor: d => d.student ? d.student?.lname : d.teacher.lname,
+                Cell: row => (
+                  <div className="d-flex justify-content-center align-items-center">
+                    {row.original.student ? row.original.student?.lname : row.original.teacher?.lname}
+                  </div>
+                )
+              },
+              {
+                Header: 'Link',
+                id: 'link',
+                accessor: d => d.userEbook.ebookLink,
+                Cell: row => (
+                  <div className="d-flex justify-content-center align-items-center">
+                    {row.original.userEbook?.ebookLink}
+                  </div>
+                )
+              },
+              // {
+              //   Header: 'Actions',
+              //   id: 'edit',
+              //   accessor: d => d.id,
+              //   Cell: row => (
+              //     <div className="d-flex justify-content-center align-items-center">
+              //       <button onClick={() => handleClickEdit(row.original)} className="btn btn-info btn-sm m-r-5" >
+              //         <i class="fas fa-edit"/>
+              //       </button>
+              //       <button onClick={() => handleClickContributor(row.original.id)} className="btn btn-danger btn-sm m-r-5" >
+              //         <i class="fas fa-trash" />
+              //       </button>
+              //     </div>
+              //   )
+              // },
+            ]
+          }]}
+        csv edited={teachers} defaultPageSize={10} className="-highlight" 
+        />
+      </>
+      :
+      <>
         <h3 className='m-b-20 m-t-20'>Course List</h3> 
         <ReactTable pageCount={100}
           list={teachers}
@@ -396,16 +541,64 @@ export default function SystemAdminCourses() {
                     <button onClick={() => handleClickContributor(row.original.id)} className="btn tficolorbg-button btn-sm m-r-5" >
                       CONTRIBUTOR
                     </button>
-                    {/* <button onClick={() => handleClickDelete(row.original.id)} className="btn btn-danger btn-sm m-r-5">
-                      <i class="fas fa-trash" />
-                    </button> */}
                   </div>
                 )
-              }
+              },
+              {
+                Header: 'Upload',
+                id: 'ebook',
+                accessor: d => 'Upload Ebook Links',
+                Cell: row => (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <button onClick={() => handleClickUpload(row.original.id)} className="btn btn-success btn-sm m-r-5">
+                      Upload Ebook Links
+                    </button>
+                  </div>
+                )
+              },
+              {
+                Header: 'Links',
+                id: 'links',
+                accessor: d => 'See Links',
+                Cell: row => (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <button onClick={() => clickShowList(row.original)} className="btn btn-warning btn-sm m-r-5">
+                      See Links
+                    </button>
+                  </div>
+                )
+              },
             ]
           }]}
         csv edited={teachers} defaultPageSize={10} className="-highlight" 
         />
+      </>}
+      <Modal size="lg" show={uploadModal} onHide={() => setUploadModal(false)} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header className='class-modal-header' closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg" >
+            Upload Ebook links
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={(e) => handleUploadFile(e)} >
+            <Form.Group className="mb-4">
+            <Form.Label>User Type</Form.Label>
+            <Form.Select required onChange={(e) => setUserType(e.target.value)}>
+                <option value=''>Select user</option>
+                <option value='teacher'>Teacher</option>
+                <option value='student'>Student</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Control type="file" accept=".xls,.xlsx," onChange={(e) => handleGetUploadedFile(e.target.files[0])} />
+            </Form.Group>
+            <p>.xslx</p>
+            <Form.Group className='right-btn'>
+              <Button className='tficolorbg-button' type='submit'>Upload</Button>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+      </Modal>
         <SweetAlert 
           showCancel
           show={deleteNotify} 

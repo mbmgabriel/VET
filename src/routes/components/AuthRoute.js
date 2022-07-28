@@ -17,7 +17,7 @@ export default function AuthRoute(props) {
       if(user.isStudent && subsType == 'TeacherResources') return window.location.href = "/classes"
 
       if(user.isTeacher && subsType == 'Ebooks') return window.location.href = "/student_ebooks"
-      if(user.isStudent && subsType == 'Ebooks') return window.location.href = "/classes"
+      if(user.isStudent && subsType == 'Ebooks') return window.location.href = "/student_ebooks"
 
       if(user.isTeacher && subsType == 'Interactives') return window.location.href = "/classes"
       if(user.isStudent && subsType == 'Interactives') return window.location.href = "/classes"

@@ -115,7 +115,7 @@ import EbooksFiles from '../views/courses/pages/Files/EbooksFiles';
 import ClassEbooksFiles from '../views/classes/EbooksFiles';
 import StudentEbooks from '../views/Ebooks/StudentEbooks';
 
-import SystemAdminEbooks from '../views/system-admin/Ebooks/Ebooks'
+import SystemAdminEbooks from '../views/system-admin/courses/CourseEbooks';
 
 export default function Routes() {
   const userContext = useContext(UserContext);
