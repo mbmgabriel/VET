@@ -274,7 +274,7 @@ function FileHeader(props) {
               return(
                 <tr key={item.fileName}>
                   <td>{item.fileName}</td>
-                  <td><ProgressBar variant="warning" now={item.progress} /></td>
+                  <td><ProgressBar variant="" now={item.progress} /></td>
                   <td>{item.size} B <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                 </tr>
               );
@@ -326,7 +326,7 @@ function FileHeader(props) {
                 return(
                   <tr key={item.fileName}>
                     <td>{item.fileName}</td>
-                    <td><ProgressBar variant="warning" now={item.progress} /></td>
+                    <td><ProgressBar variant="" now={item.progress} /></td>
                     <td>{item.size} B <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                   </tr>
                 );

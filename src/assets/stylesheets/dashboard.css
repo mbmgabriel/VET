@@ -693,3 +693,12 @@ margin: 0 auto;
 .fr-popup{
   z-index: 99999 !important;
 }
+
+.form-check-input:checked{
+  background-color: var(--primary-color) !important;
+} 
+
+.progress-bar {
+  background-color: var(--primary-color) !important;
+}
+
