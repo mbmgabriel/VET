@@ -117,6 +117,10 @@ function ClassLearn() {
     window.open('https://irai2.com/mir2021.1.2/?'+sCode+','+sRoom+':'+sUser+','+sPass ) 
 }
 
+            let subdomain1 =  /:\/\/([^\/]+)/.exec(window.location.href)[1]
+            let subdomain2 = window.location.pathname;
+            let subdomain =  window.location.host.split('.')[1] ? window.location.host.split('.')[0] : false;
+
   
   
   return (
@@ -126,8 +130,6 @@ function ClassLearn() {
         <Row>
           <Col className='scrollable vh-80 pb-5' style={{marginLeft:'15px'}} >
             <ClassLearnHeader content={content}  classInfo={classInfo}/> 
-            {tMiranda.roomNumber}
-            TFI Sample Course
 
             {cName === 'Innovators 1 (Second Edition)' && pageName === 'Lesson 3- Introduction to Miranda Simulator' &&
             <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
@@ -142,6 +144,25 @@ function ClassLearn() {
               }
             </Card>
             }
+
+
+            {subdomain1 === 'ama' &&
+            <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+              {user?.teacher ?
+              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                <i class="fas fa-tv"></i> Robotics Simulator T
+              </Link>
+              :
+              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                <i class="fas fa-tv"></i> Robotics Simulator S
+              </Link>
+              }
+            </Card>
+            }
+
+
+
+            
             {cName === 'Creators 1 (Second Edition)' && pageName === 'Lesson 10' &&
             <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
               {user?.teacher ?
@@ -155,6 +176,7 @@ function ClassLearn() {
               }
             </Card>
             }
+           
             
           </Col>
           <Col md='3'>
