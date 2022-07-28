@@ -61,7 +61,7 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
   }
 
   const success = () => {
-    toast.success('Successfully comment on discussion!', {
+    toast.success('Successfully added comment!', {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
