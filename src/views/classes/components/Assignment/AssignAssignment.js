@@ -97,7 +97,7 @@ function AssignAssignment({ selectedAssignmentName, moduleId, getAssignmentList,
               <Form.Control type="time" onChange={(e) => setEndTime(e.target.value)}  />
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button className='tficolorbg-button' type='submit' >Save</Button>
+              <Button className='tficolorbg-button' type='submit' >Save Assignment</Button>
             </Form.Group>
           </Form> 
         </Modal.Body>
