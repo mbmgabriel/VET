@@ -16,6 +16,7 @@ import ClassBreadcrumbs from './components/ClassBreedCrumbs'
 import ClassSideNavigation from './components/ClassSideNavigation'
 import { toast } from 'react-toastify'
 import FullScreenLoader from '../../components/loaders/FullScreenLoader'
+import Status from '../../components/utilities/Status'
 
 function ClassDiscussion() {
   const [discussionCommentModal, setDiscussionCommentModal] = useState(false)
@@ -304,13 +305,13 @@ function ClassDiscussion() {
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.discussionAssignment?.startDate + ' ' + moduleitem?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
                     
-                     <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
+                     <div style={{color:'#EE9337', fontSize:'15px'}}><b><Status>Upcoming</Status></b></div>
                     }
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(moduleitem?.discussionAssignment?.endDate + ' ' + moduleitem?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <>
                       <div className='inline-flex'>
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended&nbsp;</b></div>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><b><Status>Ended</Status>&nbsp;</b></div>
                       <div style={{paddingBottom:'5px'}} >
                         <Button onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{moduleitem.responseCount}</Button>
                       </div>
@@ -319,14 +320,14 @@ function ClassDiscussion() {
                     }
                     {
                        moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(moduleitem?.discussionAssignment?.startDate + ' ' + moduleitem?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                       <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                     }
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(moduleitem?.discussionAssignment?.startDate + ' ' + moduleitem?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.discussionAssignment?.endDate + ' ' + moduleitem?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <>
                       <div className='inline-flex'>
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing &nbsp; </b></div>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status> &nbsp;</div>
                       <div style={{paddingBottom:'5px'}} >
                         <Button onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id, moduleitem?.discussionAssignment?.startDate, moduleitem?.discussionAssignment?.startTime, moduleitem?.discussionAssignment?.endDate, moduleitem?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{moduleitem.responseCount}</Button>
                       </div>
@@ -374,8 +375,8 @@ function ClassDiscussion() {
                  </Row>
                  </div>):
                   <div>
-                    <div style={{color:'red'}}>
-                        <b>Not Assigned</b>
+                    <div>
+                    <Status>Unassigned</Status>
                     </div>
                   <hr />
                 </div> 

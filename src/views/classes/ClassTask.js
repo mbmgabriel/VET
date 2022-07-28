@@ -18,6 +18,7 @@ import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ContentViewer from '../../components/content_field/ContentViewer'
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
+import Status from '../../components/utilities/Status';
 
 function ClassTask() {
   const [modal, setModal] = useState(false)
@@ -333,20 +334,20 @@ function ClassTask() {
                     <>
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.startDate + ' ' + moduleitem?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b></div>
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(moduleitem?.taskAssignment?.startDate + ' ' + moduleitem?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(moduleitem?.taskAssignment?.startDate + ' ' + moduleitem?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
                       <Col sm={7} className='due-date-discusstion' >
                         <div className='inline-flex'>
@@ -386,8 +387,8 @@ function ClassTask() {
                     </>
                     ):
                     <>
-                      <div style={{color:'red'}}>
-                        <b>Not Assigned</b>
+                      <div>
+                       <Status>Unassigned</Status>
                       </div>
                       <div className='text-color-bcbcbc' >
                       <hr></hr>

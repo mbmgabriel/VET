@@ -358,20 +358,20 @@ function ClassAssignment() {
               <Row>
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
-                    <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
                 }
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                    <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b></div>
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status></div>
                 }
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                 }
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                    <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                 } 
                 <Col sm={7} className='due-date-discusstion' >
                 <div className='inline-flex'>
@@ -408,8 +408,8 @@ function ClassAssignment() {
               <hr />
             </Row>):
               <div>                      
-                <div style={{color:'red'}}>
-                    <b>Not Assigned</b>
+                <div >
+                <Status>Unassigned</Status>
                 </div>
               <hr />
             </div>

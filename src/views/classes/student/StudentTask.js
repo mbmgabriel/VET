@@ -8,6 +8,7 @@ import { UserContext } from '../../../context/UserContext'
 import ClassesAPI from '../../../api/ClassesAPI';
 import StudentViewTask from './components/StudentViewTask';
 import ContentViewer from '../../../components/content_field/ContentViewer';
+import Status from '../../../components/utilities/Status';
 
 function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
   const userContext = useContext(UserContext)
@@ -161,7 +162,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.taskAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <Col sm={3} className='icon-exam'>
-                      {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Not Submitted</Button>}
+                      {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm"></Button>}
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 1 }}
@@ -186,19 +187,19 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.taskAssignment?.startDate + ' ' + item?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.taskAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                     }
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.taskAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b>&nbsp;</div>  
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status>&nbsp;</div>  
                     }
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.taskAssignment?.startDate + ' ' + item?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><b><Status>Upcoming</Status></b></div>
                     }
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.taskAssignment?.startDate + ' ' + item?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                     }
                     <Col sm={6} className='due-date-discusstion' >
                         <div className='inline-flex'>

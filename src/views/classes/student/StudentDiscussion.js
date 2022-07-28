@@ -6,6 +6,7 @@ import StudentDiscussionComment from './components/StudentDiscussionComment'
 import ClassesAPI from '../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { useParams } from 'react-router';
+import Status from '../../../components/utilities/Status'
 
 function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searchTerm}) {
   const [discussionId, setDiscussionId] = useState('')
@@ -109,19 +110,19 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                 }
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b>&nbsp;</div>  
+                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status>&nbsp;</div>  
                 }
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
+                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
                 }
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                 }
               <Col sm={6} className='due-date-discusstion' >
                   <div className='inline-flex'>
