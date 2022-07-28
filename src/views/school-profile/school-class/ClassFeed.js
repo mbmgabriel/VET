@@ -20,6 +20,7 @@ import ContentViewer from '../../../components/content_field/ContentViewer';
 import ContentRichText from '../../../components/content_field/ContentRichText';
 import MainContainer from '../../../components/layouts/MainContainer'
 import ClassAdminSideNavigation from './components/ClassAdminSideNavigation'
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader';
 
 function ClassFeed() {
   const [content, setContent] = useState('')
@@ -109,13 +110,13 @@ function ClassFeed() {
   }
 
   const getClassInformation = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new ClassesAPI().getClassInformation(id)
     if(response.ok){
+      setLoading(false)
       setCourseId(response?.data?.courseId)
-      console.log({response})
     }
-    // setLoading(false)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -126,7 +127,6 @@ function ClassFeed() {
     getClassInfo();
   }, [window.location.pathname])
 
-  console.log('classInfo:', classInfo)
 
 const getComment = (item, item1, item3) => {
   setRefId(item)
@@ -136,7 +136,6 @@ const getComment = (item, item1, item3) => {
 }
 
   const getFeedClass = async () => {
-    console.log(id, 'classssssssss')
     let response = await new ClassesAPI().getFeedClass(id)
     if(response.ok){
     setFeedClass(response.data)
@@ -148,7 +147,6 @@ const getComment = (item, item1, item3) => {
    }
   }
   useEffect(() => {
-    console.log("Selecting class: " + id)
     setSelectedClassId(id)
     getFeedClass();
     if(subsType != 'LMS'){
@@ -321,6 +319,7 @@ const getComment = (item, item1, item3) => {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
     <Row className="mt-4">
       <Col sm={3}>
         <ClassAdminSideNavigation active="feed"/>
@@ -341,7 +340,16 @@ const getComment = (item, item1, item3) => {
         </SweetAlert>
         <Card className='calendar-card'>
           <Card.Body>
-          <Card.Title><div className="col-md-10 pages-header"><p className='title-header'>Announcement </p></div></Card.Title>
+          <Card.Title>
+            <div className="col-md-10 pages-header">
+              <p className='title-header'>Announcement </p>
+              <div>
+                <Button onClick={()=> getClassInformation()} className='ml-3'>
+                  <i className="fa fa-sync"></i>
+                </Button>
+              </div>
+            </div>
+          </Card.Title>
           <Form onSubmit={createAnnouncementClass}>
           <div className={showFiles ? 'mb-3' : 'd-none'}>
           {displayType == 'Class' ?
@@ -364,7 +372,6 @@ const getComment = (item, item1, item3) => {
             <>
             {
               displayFiles.map( (item,ind) => {
-                console.log(item)
                   return(
                     <OverlayTrigger
                       placement="bottom"

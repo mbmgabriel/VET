@@ -659,7 +659,7 @@ margin: 0 auto;
 
 .fd-row{
   flex-direction: row !important;
-  align-items: center;
+  align-items: center !important;
 }
 
 .m-0-dashboard{

@@ -14,6 +14,8 @@ import EditAssignDiscussion from '../../classes/components/Discussion/EditAssign
 import { UserContext } from '../../../context/UserContext'
 import StudentDiscussion from '../../classes/student/StudentDiscussion'
 import DiscussionComments from '../../classes/components/Discussion/DiscussionComments'
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader';
+import { toast } from 'react-toastify';
 
 export default function SchoolAdminDiscussion() {
   const [discussionCommentModal, setDiscussionCommentModal] = useState(false)
@@ -49,12 +51,11 @@ export default function SchoolAdminDiscussion() {
     setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
-      console.log({response})
+      setLoading(false)
       getModule(response.data.classInformation?.courseId)
       setClassInfo(response.data)
-      console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      toast.error('Something went wrong while fetching all courses')
     }
     setLoading(false)
   }
@@ -111,7 +112,7 @@ export default function SchoolAdminDiscussion() {
       setdiscussionModule(response.data)
       setModuleId(item)
     }else{
-      alert("Something went wrong while getDiscussionUnit")
+      toast.error('Something went wrong while fetching discussion unit"')
     }
   }
 
@@ -172,6 +173,7 @@ export default function SchoolAdminDiscussion() {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="discussion"/>

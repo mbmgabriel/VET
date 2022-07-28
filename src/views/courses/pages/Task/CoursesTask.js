@@ -12,11 +12,10 @@ import CourseContent from "../../CourseContent";
 import {useParams} from 'react-router';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
+import FullScreenLoader from "../../../../components/loaders/FullScreenLoader";
 
 export default function CoursesTask() {
-
-  const [loading, setLoading] = useState(false)
-
+  const [loading, setLoading] = useState(false);
   const [openCreateTaskModal, setCreateTaskModal] = useState(false)
   const [openEditTaskModal, setOpenEditTaskModal] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
@@ -43,15 +42,14 @@ export default function CoursesTask() {
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
   const getCourseInformation = async() => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(courseid)
-    setLoading(false)
     if(response.ok){
+    setLoading(false)
       setCourseInfo(response.data)
     }else{
       toast.error('Something went wrong while fetching course information.')
@@ -100,7 +98,6 @@ export default function CoursesTask() {
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching course unit")
     }
@@ -173,6 +170,7 @@ export default function CoursesTask() {
 
   return (
     <CourseContent>
+      {loading && <FullScreenLoader />}
       <CourseBreadcrumbs title={taskName} clicked={() => clickedTab()}/>
      {showTask ?
         <ViewTask selectedTask={selectedTask} showTask={showTask} setShowTask={setShowTask} />
