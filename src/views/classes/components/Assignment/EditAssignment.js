@@ -43,7 +43,17 @@ function EditAssignment({setRate, rate, setModal, modal, editAssignment, getAssi
         draggable: true,
         progress: undefined,
         });
-    }else{
+    } else if(rate <= 0){
+      toast.error('Rate must be greater than to 0.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    } else{
       let id = assignmentId
       let mId = moduleId
       let response = await new ClassesAPI().updateAssignment(id, {assignmentName, instructions, rate, isShared})

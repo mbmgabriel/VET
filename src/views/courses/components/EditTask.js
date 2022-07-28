@@ -9,7 +9,7 @@ import FilesAPI from '../../../api/FilesApi'
 import { useParams } from "react-router";
 import CourseFileLibrary from './CourseFileLibrary';
 
-export default function EditTask({setTaskName,setInstructions, taskId, instructions, taskName, openEditTaskModal, setOpenEditTaskModal, selectedTask, setTaskInfo}){
+export default function EditTask({rate, setRate, setTaskName,setInstructions, taskId, instructions, taskName, openEditTaskModal, setOpenEditTaskModal, selectedTask, setTaskInfo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
@@ -32,16 +32,8 @@ export default function EditTask({setTaskName,setInstructions, taskId, instructi
 	const saveEditTask = async(e) => {
     e.preventDefault()
     setLoading(true)
-    let response = await new CoursesAPI().editTask(
-      taskId,
-      {taskName, instructions}
-    )
-    if(response.ok){
-			handleCloseModal(e)
-      notifyUpdateTask()
-      getTaskInfo(null, sessionModule)
-    }else{
-      toast.error(response.data.errorMessage, {
+    if(rate <= 0){
+      toast.error('Rate must be greater than to 0.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -50,8 +42,28 @@ export default function EditTask({setTaskName,setInstructions, taskId, instructi
         draggable: true,
         progress: undefined,
         });
+    }else{
+      let response = await new CoursesAPI().editTask(
+        taskId,
+        {taskName, instructions, rate}
+      )
+      if(response.ok){
+        handleCloseModal(e)
+        notifyUpdateTask()
+        getTaskInfo(null, sessionModule)
+      }else{
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+      }
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const getCourseUnitPages = async(e, data, data1) => {
@@ -142,6 +154,21 @@ export default function EditTask({setTaskName,setInstructions, taskId, instructi
                   onChange={(e) => setTaskName(e.target.value)}
                 />
             </Form.Group>
+            <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Rate
+                  </Form.Label>
+                  <Form.Control 
+                    defaultValue={rate}
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Rate"
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setRate(e.target.value)}
+                  />
+              </Form.Group>
             <div>
               <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
             </div>

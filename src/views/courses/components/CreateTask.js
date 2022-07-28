@@ -16,6 +16,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
   const [modulePages, setModulePages] = useState([])
 	const [taskName, setTaskName] = useState('')
 	const [instructions, setInstructions] = useState('')
+  const [rate, setRate] = useState(null)
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -34,20 +35,8 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
 
 	const saveTask = async(e) => {
     e.preventDefault()
-    setIsButtonDisabled(true)
-    setTimeout(()=> setIsButtonDisabled(false), 1000)
-    setLoading(true)
-    let isShared = false
-    let response = await new CoursesAPI().createTask(
-      sessionModule,
-      {taskName, instructions, isShared:false}
-    )
-    if(response.ok){
-			handleCloseModal()
-      getTaskInfo(sessionModule)
-      notifySaveTask()
-    }else{
-      toast.error(response.data.errorMessage, {
+    if(rate === null) {
+      toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -56,8 +45,42 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
         draggable: true,
         progress: undefined,
         });
+    }else if(rate <= 0) {
+            toast.error('Rate must be greater than to 0.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    } else{
+      setIsButtonDisabled(true)
+      setTimeout(()=> setIsButtonDisabled(false), 1000)
+      setLoading(true)
+      let isShared = false
+      let response = await new CoursesAPI().createTask(
+        sessionModule,
+        {taskName, instructions, rate, isShared:false}
+      )
+      if(response.ok){
+        handleCloseModal()
+        getTaskInfo(sessionModule)
+        notifySaveTask()
+      }else{
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+      }
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const getCourseUnitPages = async(e, data, data1) => {
@@ -131,6 +154,20 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
                     type="text" 
                     placeholder="Enter Task Name"
                     onChange={(e) => setTaskName(e.target.value)}
+                  />
+              </Form.Group>
+              <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Rate
+                  </Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Rate"
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setRate(e.target.value)}
                   />
               </Form.Group>
               <div>

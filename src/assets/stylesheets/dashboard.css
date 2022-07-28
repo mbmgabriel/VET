@@ -385,6 +385,10 @@ code {
   cursor: default;
 }
 
+.content-viewer p {
+  margin-bottom: 0 !important;
+}
+
 .mq-scaled.mq-paren{
   transform: scale(1) !important;
 }

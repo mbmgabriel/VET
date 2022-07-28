@@ -9,7 +9,7 @@ import FilesAPI from '../../../api/FilesApi'
 import { useParams } from "react-router-dom";
 import CourseFileLibrary from './CourseFileLibrary';
 
-export default function EditAssignment({setInstructions, setAssignmentName, assignmentId, instructions, assignmentName, openEditAssignmentModal, setOpenEditAssignmentModal, selectedAssignment, setAssignmentInfo}){
+export default function EditAssignment({rate, setRate, setInstructions, setAssignmentName, assignmentId, instructions, assignmentName, openEditAssignmentModal, setOpenEditAssignmentModal, selectedAssignment, setAssignmentInfo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
@@ -29,16 +29,8 @@ export default function EditAssignment({setInstructions, setAssignmentName, assi
 	const saveEditAssignment = async(e) => {
     e.preventDefault()
     setLoading(true)
-    let response = await new CoursesAPI().editAssignment(
-      assignmentId,
-      {assignmentName, instructions}
-    )
-    if(response.ok){
-			handleCloseModal(e)
-      notifyUpdateAssignment()
-      getAssignmentInfo(sessionModule)
-    }else{
-      toast.error(response.data.errorMessage, {
+    if(rate <= 0){
+      toast.error('Rate must be greater than to 0.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -47,8 +39,28 @@ export default function EditAssignment({setInstructions, setAssignmentName, assi
         draggable: true,
         progress: undefined,
         });
+    }else{
+      let response = await new CoursesAPI().editAssignment(
+        assignmentId,
+        {assignmentName, instructions, rate}
+      )
+      if(response.ok){
+        handleCloseModal(e)
+        notifyUpdateAssignment()
+        getAssignmentInfo(sessionModule)
+      }else{
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+      }
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const getAssignmentInfo = async(e, data) => {
@@ -139,6 +151,21 @@ export default function EditAssignment({setInstructions, setAssignmentName, assi
                   onChange={(e) => setAssignmentName(e.target.value)}
                 />
             </Form.Group>
+            <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Rate
+                  </Form.Label>
+                  <Form.Control 
+                    defaultValue={rate}
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Rate"
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setRate(e.target.value)}
+                  />
+              </Form.Group>
             <div>
               <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
             </div>
