@@ -352,18 +352,22 @@ export default function SystemAdminCourses() {
 
   const handleUploadFile = async (e) => {
     e.preventDefault();
-    setUploadModal(false);
-    setLoading(true);
-    let response = await new EbooksAPI().uploadLinks(courseID, userType, filesToUpload)
-    if (response.ok) {
-      getCourses();
-      setCourseID('');
-      setUserType('');
-      toast.success("Successfully uploaded Ebook links.")
-    } else {
-      toast.error("Something went wrong while uploading teacher list.")
+    if(userType != ''){
+      setUploadModal(false);
+      setLoading(true);
+      let response = await new EbooksAPI().uploadLinks(courseID, userType, filesToUpload)
+      if (response.ok) {
+        getCourses();
+        setCourseID('');
+        setUserType('');
+        toast.success("Successfully uploaded Ebook links.")
+      } else {
+        toast.error("Something went wrong while uploading teacher list.")
+      }
+      setLoading(false);
+    }else{
+      toast.error('Please select user type.')
     }
-    setLoading(false);
   }
 
   const getEbooks = async (id) => {
@@ -383,16 +387,19 @@ export default function SystemAdminCourses() {
   }
 
   const handleGetUploadedFile = (file) => {
-    getBase64(file).then(
-      data => {
-        console.log(file.name)
-        let toUpload = {
-          "base64String": data,
-          "fileName": file.name
+    console.log(file);
+   if(file){ 
+      getBase64(file).then(
+        data => {
+          console.log(file.name)
+          let toUpload = {
+            "base64String": data,
+            "fileName": file.name
+          }
+          setFilesToUpload(toUpload)
         }
-        setFilesToUpload(toUpload)
-      }
-    );
+      );
+    }
   }
 
   const clickShowList = (item) => {
@@ -590,7 +597,7 @@ export default function SystemAdminCourses() {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control type="file" accept=".xls,.xlsx," onChange={(e) => handleGetUploadedFile(e.target.files[0])} />
+              <Form.Control required type="file" accept=".xls,.xlsx," onChange={(e) => handleGetUploadedFile(e.target.files[0])} />
             </Form.Group>
             <p>.xslx</p>
             <Form.Group className='right-btn'>
