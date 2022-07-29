@@ -11,7 +11,7 @@ export default function StudentLinks({activeHeader}) {
     return (
       <div className="header-links">
         {subsType == 'Ebooks' &&
-          <Link to="/student_ebooks">Ebooks</Link>
+          <Link to="/ebook_links">Ebooks</Link>
           // <><p>{''}</p></>
         }
         {subsType == 'Interactives' &&

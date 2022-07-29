@@ -22,7 +22,7 @@ export default function TeacherLinks({activeHeader}) {
         {
           subsType == 'Ebooks' && 
           <>
-            <Link to="/student_ebooks">Ebooks</Link>
+            <Link to="/ebook_links">Ebooks</Link>
             {/* <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 
             <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link> */}
           </>

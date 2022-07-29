@@ -237,7 +237,7 @@ export default function Routes() {
 
             <PrivateRoute path='/courses/:id/ebooks' exact component={EbooksFiles} />
             <PrivateRoute path='/classes/:id/ebooksFiles' exact component={ClassEbooksFiles} />
-            <PrivateRoute path='/student_ebooks' exact component={StudentEbooks} />
+            <PrivateRoute path='/ebook_links' exact component={StudentEbooks} />
             
             <PrivateRoute path='/terms' exact component={SchoolTerms} />
             <PrivateRoute path='/admin/grading' exact component={Grading} />
