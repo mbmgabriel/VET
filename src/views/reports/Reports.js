@@ -6,6 +6,7 @@ import {Form,ListGroup, Row, Col} from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import ClassesAPI from './../../api/ClassesAPI'
 import FullScreenLoader from '../../components/loaders/FullScreenLoader'
+import { toast } from 'react-toastify'
 import { set } from 'react-hook-form'
 
 export default function Reports({children}) {
@@ -71,16 +72,21 @@ export default function Reports({children}) {
   }
 
   const addClassIdOnParams = (id) => {
-    setLoading(true)
-    let newURL = new URL(window.location);
-    newURL.searchParams.set('classId', id);
-    window.history.pushState(null, '', newURL.toString());
-    setClassId(id);
-    setLoading(false);
-    if(window.location.pathname !== '/reports'){
-      window.location.reload();
-    setLoading(false);
+    if(id == ''){
+      toast.error('Please Select Class')
+    }else{
+      setLoading(true)
+      let newURL = new URL(window.location);
+      newURL.searchParams.set('classId', id);
+      window.history.pushState(null, '', newURL.toString());
+      setClassId(id);
+      setLoading(false);
+      if(window.location.pathname !== '/reports'){
+        window.location.reload();
+      setLoading(false);
+      }
     }
+
   }
 
   return (
@@ -91,12 +97,14 @@ export default function Reports({children}) {
       <Row>
         <Col className='report-sidenav' sm={3}>
           <ListGroup.Item className="list-group-item-o">
+            <Form>
             <Form.Select value={classId} onChange={(e) => addClassIdOnParams(e.target.value)}>
               <option value="">-- Select Class Here --</option>
               {classes.map(item =>{
                 return (<option value={item?.classId} > {item?.className}</option>)
               })}
             </Form.Select>
+            </Form>
           </ListGroup.Item>
           <ListGroup style={{paddingLeft:'15px'}}>
           {subsType == 'Interactives' ?
