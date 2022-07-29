@@ -44,7 +44,8 @@ export default function HomeLinks() {
   }
 
   const handleRedirect = () => {
-    if(subsType == 'TeacherResources') return '/courses'
+    if(subsType == 'TeacherResources' && user.isTeacher) return '/courses'
+    if(subsType == 'TeacherResources' && user.isStudent) return '/classes'
     if(subsType == 'LMS') return '/teacherdashboard';
       return '/classes';
   }

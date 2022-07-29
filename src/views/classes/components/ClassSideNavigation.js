@@ -214,6 +214,25 @@ export default function ClassSideNavigation({children}) {
           }
           </ListGroup>
         }
+        {
+          subsType == 'TeacherResources' && 
+          <ListGroup>
+            {user?.teacher !== null &&
+              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/resources`}>
+                Teacher Resources
+              </Link>
+            }
+            <Link className={currentLoc.includes('interactives') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/interactives`}>
+              Class Interactives
+            </Link>
+            {
+              user?.teacher != null && 
+              <Link className={currentLoc.includes('classList') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/classList`}>
+                Class List
+              </Link>
+            }
+          </ListGroup>
+        }
       </Col>
       :
       <Col className='row-course-bg course-widget-font' sm={1}>
@@ -278,14 +297,14 @@ export default function ClassSideNavigation({children}) {
                 <i className='fas fa-chalkboard-teacher' />
               </OverlayTrigger>
             </Link>
-            <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipTeacherResources}>
-                  <i className="fas fa-link" />
-                </OverlayTrigger>
-              </Link>
+            <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/resources`}>
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 1, hide: 25 }}
+                overlay={renderTooltipTeacherResources}>
+                <i className="fas fa-link" />
+              </OverlayTrigger>
+            </Link>
             <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/links`}>
               <OverlayTrigger
                 placement="right"
@@ -296,7 +315,7 @@ export default function ClassSideNavigation({children}) {
             </Link>
             {
               classInfo?.classInformation.course?.isTechfactors && 
-              <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
+              <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/classes/${id}/videos`}>
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 1, hide: 25 }}
@@ -350,6 +369,12 @@ export default function ClassSideNavigation({children}) {
              <i className='fas fa-chalkboard-teacher' />
            </OverlayTrigger>
          </Link>
+        }
+        {
+          subsType == 'TeacherResources' && 
+          <ListGroup>
+
+          </ListGroup>
         }
       </Col>
       }

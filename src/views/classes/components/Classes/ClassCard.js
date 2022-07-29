@@ -73,24 +73,25 @@ function ClassCard({item, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedC
 
   const handleredirect = (id) => {
     if(subsType == 'LMS') return `/classescontent/${id}/feed`;
-    if(subsType == 'Ebooks') return `/classes/${id}/learn`
-    if(subsType == 'Interactives') return `/classes/${id}/interactives`
+    if(subsType == 'Ebooks') return `/classes/${id}/learn`;
+    if(subsType == 'Interactives') return `/classes/${id}/interactives`;
+    if(subsType == 'TeacherResources' && user.isTeacher) return `/classes/${id}/resources`;
   }
 
   return (
     <div>
-        <SweetAlert
-          warning
-          showCancel
-          show={deleteNotify}
-          confirmBtnText="Yes, delete it!"
-          confirmBtnBsStyle="danger"
-          title="Are you sure?"
-          onConfirm={() => deleteClasses(itemId)}
-          onCancel={cancelSweetAlert}
-          focusCancelBtn
-          >
-            You will not be able to recover this imaginary file!
+      <SweetAlert
+        warning
+        showCancel
+        show={deleteNotify}
+        confirmBtnText="Yes, delete it!"
+        confirmBtnBsStyle="danger"
+        title="Are you sure?"
+        onConfirm={() => deleteClasses(itemId)}
+        onCancel={cancelSweetAlert}
+        focusCancelBtn
+        >
+          You will not be able to recover this imaginary file!
       </SweetAlert>
       <Card className='class-card' >
         <Link to={ handleredirect(item.classId) } onClick={() => setCourseID(item.courseId)}>
