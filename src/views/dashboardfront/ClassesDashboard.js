@@ -30,23 +30,9 @@ export default function ClassesDashboard({studentClasses, teacherClasses}) {
     setLoading(false)
   }
 
-  const getAcademicTerm = async () =>{
-    let response = await new AcademicTermAPI().fetchAcademicTerm()
-    if(response.ok){
-      let data = response.data;
-      let temp = localStorage.getItem('academicTerm')
-      let obj = data.find(o => o.isCurrentTerm === true);
-      if(temp === null) {
-        setCurrentAcademicTerm(temp ? temp : obj.academicTermName);
-        localStorage.setItem('academicTerm', obj.academicTermName);
-      }
-    }
-  }
-
   useEffect(() => {
     let temp = localStorage.getItem('academicTerm')
     setCurrentAcademicTerm(temp)
-    getAcademicTerm();
     if(user?.student === null)
       return(
         getClasses()
@@ -68,6 +54,7 @@ export default function ClassesDashboard({studentClasses, teacherClasses}) {
       </Row>
       {user?.isTeacher &&
       <>
+      {console.log(teacherClasses, '-------')}
         {teacherClasses.length?
           teacherClasses.slice(0, 8).map(item => {
             return(

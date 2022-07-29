@@ -28,8 +28,6 @@ function CreateClassModal({setModal, modal, getClasses}) {
     setAddNotity(false)
   }
 
-  console.log('course12312:', course)
-
   const toggle = () =>{
     setModal(!modal)
     setGetCode('')
@@ -57,8 +55,6 @@ function CreateClassModal({setModal, modal, getClasses}) {
       progress: undefined,
       });
   }
-
-  console.log(classCode)
 
   const getGrade = async() =>{
     let response = await new GradeAPI().getGrade()
@@ -154,7 +150,6 @@ function CreateClassModal({setModal, modal, getClasses}) {
   }
 
   const handleGetSelected = (data) => {
-    console.log(data)
     let selected = course.find(e => e.courseName == data);
     setGetCourseId(selected?.id.toString());
   }
@@ -191,7 +186,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
                 </Form.Select> */}
                 {/* <Form.Control autoComplete='off' list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" /> */}
                 <Form.Control autoComplete='off' required list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
-                <datalist id="courses" onChange={(e) => console.log(e, 'sample')}>
+                <datalist id="courses">
                   {course.map(item =>{
                       return <option value={item.courseName} />
                       })

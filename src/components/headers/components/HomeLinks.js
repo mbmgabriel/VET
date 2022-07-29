@@ -15,7 +15,7 @@ export default function HomeLinks() {
   useEffect(() => {
     let temp = localStorage.getItem('academicTerm')
     setCurrentAcademicTerm(temp)
-    getAcademicTerm()
+      getAcademicTerm()
   },[])
 
   const getAcademicTerm = async () =>{
@@ -24,9 +24,9 @@ export default function HomeLinks() {
       setAcademicTerm(response?.data);
       let data = response.data;
       let temp = localStorage.getItem('academicTerm')
-      let obj = data.find(o => o.isCurrentTerm === true);
-      if(temp === null) {
-        setCurrentAcademicTerm(temp ? temp : obj.academicTermName);
+      if(temp == null) {
+        let obj = data.find(o => o.isCurrentTerm === true);
+        setCurrentAcademicTerm(obj.academicTermName);
         localStorage.setItem('academicTerm', obj.academicTermName);
       }
     }else{
