@@ -300,6 +300,22 @@ function ClassDiscussion() {
                       }
                       </>
                     }
+                                {moduleitem?.discussionAssignment === null ? (<></>):(<>
+              <Col sm={7} className='due-date-discusstion' >
+                <p className='exam-instruction m-0'>
+                  <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                    Start:
+                  </span>
+                    &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.discussionAssignment?.startDate).format("MMMM Do YYYY")}, {moment(moduleitem?.discussionAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                </p>
+                <p className='exam-instruction m-0 mb-3'>
+                  <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                    End:
+                  </span>
+                    &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.discussionAssignment?.endDate).format("MMMM Do YYYY")}, {moment(moduleitem?.discussionAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                </p> 
+              </Col>
+             </>)}
                     {moduleitem.discussionAssignment?.startDate?(
                   <div>
                     {
@@ -313,14 +329,20 @@ function ClassDiscussion() {
                       <div className='inline-flex'>
                       <div style={{color:'#EE9337', fontSize:'15px'}}><b><Status>Ended</Status>&nbsp;</b></div>
                       <div style={{paddingBottom:'5px'}} >
-                        <Button onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{moduleitem.responseCount}</Button>
+                        {/* <Button onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{moduleitem.responseCount}</Button> */}
+                       <span onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id)} style={{cursor:'pointer'}} ><Status>Comments</Status> </span>
+                       {moduleitem?.discussionAssignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}  
                       </div>
                       </div>
                       </>
                     }
                     {
                        moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(moduleitem?.discussionAssignment?.startDate + ' ' + moduleitem?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                       <div className='inline-flex' >
                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
+                       <span onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id, moduleitem?.discussionAssignment?.startDate, moduleitem?.discussionAssignment?.startTime, moduleitem?.discussionAssignment?.endDate, moduleitem?.discussionAssignment?.endTime)} style={{cursor:'pointer'}} ><Status>Comments</Status> </span>
+                        {moduleitem?.discussionAssignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)} 
+                       </div>
                     }
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(moduleitem?.discussionAssignment?.startDate + ' ' + moduleitem?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
@@ -329,15 +351,18 @@ function ClassDiscussion() {
                       <div className='inline-flex'>
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status> &nbsp;</div>
                       <div style={{paddingBottom:'5px'}} >
-                        <Button onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id, moduleitem?.discussionAssignment?.startDate, moduleitem?.discussionAssignment?.startTime, moduleitem?.discussionAssignment?.endDate, moduleitem?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{moduleitem.responseCount}</Button>
+                      <span onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id, moduleitem?.discussionAssignment?.startDate, moduleitem?.discussionAssignment?.startTime, moduleitem?.discussionAssignment?.endDate, moduleitem?.discussionAssignment?.endTime)} style={{cursor:'pointer'}} ><Status>Comments</Status> </span>
+                      {moduleitem?.discussionAssignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}  
+                        {/* <Button onClick={(e) => getDiscussionComments(e, moduleitem.discussion?.id, moduleitem?.discussionAssignment?.startDate, moduleitem?.discussionAssignment?.startTime, moduleitem?.discussionAssignment?.endDate, moduleitem?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{moduleitem.responseCount}</Button> */}
                       </div>
                       </div>
                       <>
                       <br />
                       </>
                       </> 
-                    }                
-                  <Row>
+                    }      
+                            
+                  {/* <Row>
                   <Col sm={7} className='due-date-discusstion' >
                      <div className='inline-flex'>
                        <div className='text-color-bcbcbc'>
@@ -371,12 +396,14 @@ function ClassDiscussion() {
                        </div>
                      </div>
                    </Col>
-                   <hr />
-                 </Row>
+                  
+                 </Row> */}
+                  <hr />
                  </div>):
                   <div>
-                    <div>
+                    <div className='inline-flex' >
                     <Status>Unassigned</Status>
+                    {moduleitem?.discussionAssignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
                     </div>
                   <hr />
                 </div> 

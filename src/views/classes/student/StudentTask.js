@@ -162,7 +162,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.taskAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <Col sm={3} className='icon-exam'>
-                      {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm"></Button>}
+                      {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Not Submitted</Button>}
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 1 }}
@@ -184,6 +184,22 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                     }
                     </>
                     }
+                                        {item?.taskAssignment === null ? (<></>):(<>
+                      <Col sm={7} className='due-date-discusstion' >
+                        <p className='exam-instruction m-0'>
+                          <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                            Start:
+                          </span>
+                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.taskAssignment?.startDate).format("MMMM Do YYYY")}, {moment(item?.taskAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                        </p>
+                        <p className='exam-instruction m-0 mb-3'>
+                          <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                            End:
+                          </span>
+                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.taskAssignment?.endDate).format("MMMM Do YYYY")}, {moment(item?.taskAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                        </p> 
+                      </Col>
+                      </>)}
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.taskAssignment?.startDate + ' ' + item?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.taskAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
@@ -201,7 +217,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.taskAssignment?.startDate + ' ' + item?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                     }
-                    <Col sm={6} className='due-date-discusstion' >
+                    {/* <Col sm={6} className='due-date-discusstion' >
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
                             Start Date:&nbsp;
@@ -232,7 +248,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                             {item?.taskAssignment?.endTime}
                           </div>
                         </div>
-                      </Col>
+                      </Col> */}
                 </Row>
                 <hr />
               </>
