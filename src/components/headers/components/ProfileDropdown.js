@@ -18,8 +18,8 @@ export default function ProfileDropdown({visible}) {
   }
 
   const getImage = async() =>{
-    let tempId = user.isStudent ? user.student?.id : user.teacher?.id
-    let response = await new ProfileInfoAPI().getProfileImage(tempId)
+    let tempId = user.userId;
+    let response = await new ProfileInfoAPI().getProfileImage(tempId);
     if(response.ok){
       setprofileImage(response.data)
     }
