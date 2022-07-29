@@ -4,6 +4,7 @@ import {Button, Row, Col, Accordion, Form, InputGroup, FormControl} from 'react-
 import FilesContent from './FilesContent';
 import FileHeader from './FileHeader'
 import CoursesAPI from "../../api/CoursesAPI";
+import AcademicTermAPI from '../../api/AcademicTermAPI';
 import ClassesAPI from '../../api/ClassesAPI';
 import FilesAPI from '../../api/FilesApi';
 import { UserContext } from '../../context/UserContext';
@@ -31,7 +32,8 @@ export default function FilesClass() {
   const [filter, setFilter] = useState("");
   const [classFilter, setClassFilter] = useState('');
   const [classInfo, setClassInfo] = useState({});
-
+  const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
+  
   const subFolderDirectory = breadCrumbsItemClass.map(item => { return `/${item.value}`})
   subFolderDirectory.shift();
 
@@ -56,12 +58,23 @@ export default function FilesClass() {
 
   useEffect(()=>{
     getClasses();
+    getAcademicTerm();
   }, [])
 
   useEffect(() => {
     if (user.isStudent) return (window.location.href = "/404");
   }, []);
 
+  const getAcademicTerm = async () =>{
+    let response = await new AcademicTermAPI().fetchAcademicTerm()
+    if(response.ok){
+      let data = response.data;
+      let obj = data.find(o => o.isCurrentTerm === true);
+      setCurrentAcademicTerm(obj.academicTermName);
+    }else{
+      toast.error("Something went wrong while fetching all Academic Term")
+    }
+  }
 
 
   const handleGetClassFiles = async(id, name) => {
@@ -169,7 +182,7 @@ export default function FilesClass() {
                 {
                   allClass.filter(item => item.className.toLowerCase().includes(classFilter.toLowerCase())).map((item, index) => {
                     return(
-                      <div key={item.className} className="colored-class">
+                      currentAcademicTerm == item.termName && <div key={item.className} className="colored-class">
                         <div className='inline-flex'>
                           <div style={{paddingLeft:'20px'}}>
                             <i class="fas fa-folder"></i> 
