@@ -22,30 +22,22 @@ export default function CourseContent({children}) {
   const [isContributor, setIsContributor] = useState(true);
 
   const getCourseUnitInformation = async(e) => {
-    setLoading(true)
     let response = await new CoursesAPI().getCourseUnit(id)
-    setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
-      console.log(response.data)
     }else{
       toast.error("Something went wrong while fetching coursse unit")
     }
   }
 
   const getCourseInformation = async(e) => {
-    setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(id)
-    setLoading(false)
     if(response.ok){
       setCourseInfo(response.data)
       let TFICourse = response.data.isTechfactors;
-      console.log(response.data, 'infoooooooooooooooooo', TFICourse)
       if(TFICourse){
         let contriList = await new CoursesAPI().getContributor(id)
-        console.log(contriList, "--------------------------------");
         let ifContri = contriList.data.find(i => i.userInformation?.userId == user.userId);
-        console.log(ifContri, user.userId, '-=-=-=')
         setIsContributor(ifContri ? true : false);
       }
     }else{
@@ -306,14 +298,16 @@ export default function CourseContent({children}) {
             }
             {
               subsType == 'TeacherResources' &&
-              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipTeacherResources}>
-                  <i className="fas fa-link" />
-                </OverlayTrigger>
-              </Link>
+              <ListGroup>
+                <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipTeacherResources}>
+                    <i className="fas fa-link" />
+                  </OverlayTrigger>
+                </Link>
+              </ListGroup>
             }
           </Col>
           }

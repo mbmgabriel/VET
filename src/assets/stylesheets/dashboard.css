@@ -1,7 +1,7 @@
 
 *:not(.fas, .far, .fa) {
   font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
-    "Helvetica Neue", Arial, sans-serif !important;
+    "Helvetica Neue", Arial, sans-serif, Garamond !important;
 } 
 
 code {
@@ -385,6 +385,10 @@ code {
   cursor: default;
 }
 
+.content-viewer p {
+  margin-bottom: 0 !important;
+}
+
 .mq-scaled.mq-paren{
   transform: scale(1) !important;
 }
@@ -655,7 +659,7 @@ margin: 0 auto;
 
 .fd-row{
   flex-direction: row !important;
-  align-items: center;
+  align-items: center !important;
 }
 
 .m-0-dashboard{
@@ -693,3 +697,12 @@ margin: 0 auto;
 .fr-popup{
   z-index: 99999 !important;
 }
+
+.form-check-input:checked{
+  background-color: var(--primary-color) !important;
+} 
+
+.progress-bar {
+  background-color: var(--primary-color) !important;
+}
+

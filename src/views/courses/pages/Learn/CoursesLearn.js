@@ -15,11 +15,11 @@ import { UserContext } from '../../../../context/UserContext';
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import EditModule from "../../components/EditModule";
+import FullScreenLoader from "../../../../components/loaders/FullScreenLoader";
 
 export default function CourseLearn() {
 
   const {id} = useParams()
-  console.log(id, 'sasasasas')
 
   const [loading, setLoading] = useState(false)
   const [openCreateUnitModal, setOpenCreateUnitModal] = useState(false)
@@ -57,11 +57,9 @@ export default function CourseLearn() {
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
-  console.log('moduleInfo:', moduleInfo)
 
   const toggleModelEditModule = (moduleId, sequenceNoEdit, moduleDescription, moduleName) =>{
     setModuleName(moduleName)
@@ -132,7 +130,6 @@ export default function CourseLearn() {
     setLoading(false)
     if(response.ok){
       setLessonInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all pages")
     }
@@ -144,21 +141,19 @@ export default function CourseLearn() {
     setLoading(false)
     if(response.ok){
       setCourseInfo(response.data)
-      console.log(response.data)
     }else{
-      alert("Something went wrong while fetching course information")
+      toast.error('Something went wrong while fetching course information')
     }
   }
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseUnit(id)
-    setLoading(false)
     if(response.ok){
+    setLoading(false)
       setModuleInfo(response.data)
-      console.log(response, '...............')
     }else{
-      alert("Something went wrong while fetching course unit")
+      toast.error('Something went wrong while fetching course unit')
     }
   }
 
@@ -168,7 +163,6 @@ export default function CourseLearn() {
       notifyDeleteLesson()
       setSweetError(false)
       getCourseLessons(null, moduleid)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all pages")
     }
@@ -248,6 +242,7 @@ export default function CourseLearn() {
   
   return (
     <CourseContent>
+      {loading && <FullScreenLoader />}
       <CourseBreadcrumbs title={clickedModule} clicked={() => clickedTab()}/>
       {viewLesson ? 
           <CoursesLearnContent courseInfo={courseInfo} setCourseInfo={setCourseInfo} setLessonContent={setLessonContent} lessonContent={lessonContent}/>

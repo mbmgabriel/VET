@@ -19,6 +19,7 @@ import FileHeader from '../classes/components/Task/TaskFileHeader';
 import ContentViewer from '../../components/content_field/ContentViewer';
 import ContentRichText from '../../components/content_field/ContentRichText';
 import ClassCourseFileLibrary from './components/ClassCourseFileLibrary';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 
 function ClassFeed() {
   const [content, setContent] = useState('')
@@ -32,7 +33,8 @@ function ClassFeed() {
   const [editAnnouncementItem, setEditAssignAssignmentItem] = useState()
   const [feedClass, setFeedClass] = useState([])
   const userContext = useContext(UserContext)
-  const {user, selectedClassId, setSelectedClassId} = userContext.data
+  console.log({userContext})
+  const {user, selectedClassId, setSelectedClassId, themeColor} = userContext.data
   const [showComment, setShowComment] = useState(Fade)
   const [refId, setRefId] = useState()
   const [typeId, setTypeId] = useState('')
@@ -52,7 +54,8 @@ function ClassFeed() {
   const subFolderDirectory = breedCrumbsItemClass?.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
   const [displayFolder, setDisplayFolder] = useState([]);
   const [courseId, setCourseId] = useState(null)
-  const classId = id
+  const classId = id;
+  const [loading, setLoading] = useState(false);
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -138,14 +141,17 @@ const getComment = (item, item1, item3) => {
 
   const getFeedClass = async () => {
     console.log(id, 'classssssssss')
+    setLoading(true);
     let response = await new ClassesAPI().getFeedClass(id)
     if(response.ok){
+    setLoading(false);
     setFeedClass(response.data)
       if(response.data?.feedInformations?.isLike === true){
         setCommentName(response.data?.feedInformations?.commentedBy)
       }
   }else{
-    alert(response.data.errorMessage)
+    toast.error(response.data.errorMessage)
+    setLoading(false);
    }
   }
 
@@ -317,6 +323,7 @@ const getComment = (item, item1, item3) => {
   return (
     <ClassSideNavigation>
       <ClassBreadcrumbs title='' clicked={() => console.log('')}/>
+      {loading && <FullScreenLoader />}
     <div>
       <SweetAlert
         warning
@@ -369,11 +376,20 @@ const getComment = (item, item1, item3) => {
         )}
     
     {}
+    <Card.Title>
+      <div className="col-md-10 pages-header fd-row">
+        <p className='title-header m-0'>Announcement </p>
+        <Button onClick={() => getFeedClass()} className='ml-3'>
+          <i className="fa fa-sync"></i>
+        </Button>
+      </div>
+    </Card.Title>
     {feedClass?.map(item => {
       return(
         <>
         <div className='post-date' style={{paddingButton:''}}>
         {/* <p>{moment(item?.dateUpdated).format('LL')}&nbsp;</p>  */}
+
          </div>
 
         {item?.feedInformations.map(feedItem =>{
@@ -382,6 +398,14 @@ const getComment = (item, item1, item3) => {
           <>
           <Card className='post-card'>
             <Card.Body>
+            <Card.Title>
+                <div className="col-md-10 pages-header fd-row">
+                  <p className='title-header m-0'>Announcement </p>
+                  <Button onClick={() => getFeedClass()} className='ml-3'>
+                    <i className="fa fa-sync"></i>
+                  </Button>
+                </div>
+              </Card.Title>
             {/* <div className='inline-flex'>
               <div>
               <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
@@ -405,6 +429,7 @@ const getComment = (item, item1, item3) => {
             </div> */}
               <Row>  
                 <Col className='icon-post'>
+
                   <div className='inline-flex' >
                     <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
                   </div>
@@ -495,10 +520,10 @@ const getComment = (item, item1, item3) => {
               <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
               </div>
               <div  className='inline-flex' style={{paddingTop:'12px', fontSize:'18px', color: "#7D7D7D"}}>
-                {(feedItem.type === 2)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color:'#EE9337'}} > <b>Assignment </b> </div></>):<></>}
-                {(feedItem.type === 3)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color:'#EE9337'}} > <b>Task </b> </div></>):<></>}
-                {(feedItem.type === 4)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color:'#EE9337'}} > <b>Exam </b> </div></>):<></>}
-                {(feedItem.type === 5)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color:'#EE9337'}} > <b>Interactive </b> </div> </>):<></>}
+                {(feedItem.type === 2)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color: themeColor}} > <b>Assignment </b> </div></>):<></>}
+                {(feedItem.type === 3)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color: themeColor}} > <b>Task </b> </div></>):<></>}
+                {(feedItem.type === 4)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color: themeColor}} > <b>Exam </b> </div></>):<></>}
+                {(feedItem.type === 5)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color: themeColor}} > <b>Interactive </b> </div> </>):<></>}
               
               </div>
             </div>
@@ -506,13 +531,10 @@ const getComment = (item, item1, item3) => {
               <Row>  
                 <Col className='icon-post' sm={1}>
                   {/* <i class="fas fa-file-alt" style={{color:'#EE9337', fontSize:'30px', paddingTop:'30px'}}></i> */}
-                  
                 </Col>
-                <Col sm={11} style={{fontSize:'16px', color:'#EE9337', paddingTop:'30px'}}>
-                  <p>{feedItem.title}</p>
-                  
+                <Col sm={11} style={{fontSize:'16px', color:'#EE9337', paddingTop:'30px', paddingBottom: '15px'}}>
+                  <div style={{color: themeColor}}><b>{feedItem.title}</b></div>
                 </Col>
-                
                 {/* <Col >
                 <div className='inline-flex' style={{paddingTop:'20px'}}>
                 <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>            
@@ -576,14 +598,20 @@ const getComment = (item, item1, item3) => {
                             placement="right"
                             delay={{ show: 10, hide: 25 }}
                             overlay={renderTooltipUnlike}>
-                              <Button onClick={() => likeComment(feedItem?.referenceId, feedItem.type)} className='btn-like' Button variant="link"><i class="fas fa-thumbs-up"></i>&nbsp;Liked&nbsp;<b style={{fontSize:'16px', position:"absolute" }}>{feedItem?.likes?.length}</b></Button>
+                              <Button onClick={() => likeComment(feedItem?.referenceId, feedItem.type)} className='btn-like' Button variant="link"><i class="fas fa-thumbs-up"></i> {feedItem?.likes?.length}&nbsp;Liked&nbsp;<b style={{fontSize:'16px', position:"absolute" }}></b></Button>
                         </OverlayTrigger>
                         </>:<>
                         <OverlayTrigger
                           placement="right"
                           delay={{ show: 10, hide: 25 }}
                           overlay={renderTooltipLike}>
-                            <Button onClick={() => likeComment(feedItem?.referenceId, feedItem.type, feedItem)} className='btn-like' Button variant="link"><i class="far fa-thumbs-up"></i>&nbsp;Like&nbsp;<b style={{fontSize:'16px', position:"absolute" }}>{feedItem?.likes?.length}</b></Button>
+                            <Button 
+                              onClick={() => likeComment(feedItem?.referenceId, feedItem.type, feedItem)} 
+                              className='btn-like' 
+                              Button 
+                              variant="link">
+                              <i class="far fa-thumbs-up"></i><b style={{fontSize:'16px', flexDirection: 'row' }} className='fd-row'> {feedItem?.likes?.length}<span style={{color: themeColor}}><b> {'Like'}</b></span></b>
+                            </Button>
                         </OverlayTrigger>
                         </>}
                       </div>

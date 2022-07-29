@@ -13,6 +13,8 @@ import StudentInteractive from './student/StudentInteractive';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import axios from 'axios';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
+import { toast } from 'react-toastify';
 
 function ClassInteractive() {
   const [module, setModule] = useState([])
@@ -33,6 +35,8 @@ function ClassInteractive() {
   const [schoolCode, setSchoolCode] = useState('')
   const [resultToken, setResultToken] = useState('')
   const subsType = user.subsType;
+  const [loading, setLoading] = useState(false);
+
   const onSearch = (item) => {
     setSearchTerm(item)
   }
@@ -40,16 +44,16 @@ function ClassInteractive() {
   
   
   const getClassInfo = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
+    setLoading(false)
       getModule(response.data.classInformation?.courseId)
       setClassInfo(response.data)
-      console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      toast.error('Something went wrong while fetching all interactives')
     }
-    // setLoading(false)
+    setLoading(false)
   }
   
   const getAccountInfo = async() => {
@@ -114,7 +118,7 @@ function ClassInteractive() {
         getIndteractive()
         )
       } 
-    if(subsType == 'Ebooks' || subsType == 'TeacherResources'){
+    if(subsType == 'Ebooks'){
       window.location.href = "/classes"
     }
   }, [])
@@ -480,6 +484,7 @@ function ClassInteractive() {
 
   return (
     <ClassSideNavigation>
+      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title='' clicked={() => console.log('')} />
       <ClassInteractiveHeader onSearch={onSearch} onRefresh={()=> handleRefresh()}/>
       <Accordion>

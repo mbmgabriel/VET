@@ -16,6 +16,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
   const [modulePages, setModulePages] = useState([])
 	const [assignmentName, setAssignmentName] = useState('')
 	const [instructions, setInstructions] = useState('')
+  const [rate, setRate] = useState(null)
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
   const [displayFiles, setDisplayFiles] = useState([]);
@@ -46,19 +47,8 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
 
 	const saveAssignmennt = async(e) => {
     e.preventDefault()
-    setIsButtonDisabled(true)
-    setTimeout(()=> setIsButtonDisabled(false), 1000)
-    setLoading(true)
-    let response = await new CoursesAPI().createAssignment(
-      sessionModule,
-      {assignmentName, instructions}
-    )
-    if(response.ok){
-			handleCloseModal(e)
-      getAssignmentInfo(sessionModule)
-      notifySaveAssignment()
-    }else{
-      toast.error(response.data.errorMessage, {
+    if(rate === null) {
+      toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -67,8 +57,42 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
         draggable: true,
         progress: undefined,
         });
+    }else if(rate <= 0) {
+            toast.error('Rate must be greater than to 0.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else {
+      setIsButtonDisabled(true)
+      setTimeout(()=> setIsButtonDisabled(false), 1000)
+      setLoading(true)
+      let response = await new CoursesAPI().createAssignment(
+        sessionModule,
+        {assignmentName, instructions, rate}
+      )
+      if(response.ok){
+        handleCloseModal(e)
+        getAssignmentInfo(sessionModule)
+        notifySaveAssignment()
+      }else{
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+      }
+      setLoading(false)
     }
-    setLoading(false)
+
   }
 
   const getCourseUnitPages = async(e, data, data1) => {
@@ -117,6 +141,20 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       onChange={(e) => setAssignmentName(e.target.value)}
                     />
 								</Form.Group>
+                <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Rate
+                  </Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Rate"
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setRate(e.target.value)}
+                  />
+              </Form.Group>
                 <div>
                   <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
                 </div>

@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 import CoursesAPI from '../../api/CoursesAPI'
 import CoursesExam from '../courses/pages/Exam/CoursesExam'
 import SchoolCourseExam from './component/SchoolCourseExam'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 function SchoolExam() {
   const userContext = useContext(UserContext)
@@ -36,6 +37,7 @@ function SchoolExam() {
 
   return (
   <MainContainer title="Exam" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
     <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Exam" />

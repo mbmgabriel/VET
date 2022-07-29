@@ -26,7 +26,7 @@ export default function MainContainer({children, headerVisible = true, fluid, lo
           </p>
         </div>
       </div>
-      {loading && <FullScreenLoader/>}
+      {/* {loading && <FullScreenLoader/>} */}
     </div>
   )
 }

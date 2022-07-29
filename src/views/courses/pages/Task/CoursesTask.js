@@ -12,17 +12,17 @@ import CourseContent from "../../CourseContent";
 import {useParams} from 'react-router';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
+import FullScreenLoader from "../../../../components/loaders/FullScreenLoader";
 
 export default function CoursesTask() {
-
-  const [loading, setLoading] = useState(false)
-
+  const [loading, setLoading] = useState(false);
   const [openCreateTaskModal, setCreateTaskModal] = useState(false)
   const [openEditTaskModal, setOpenEditTaskModal] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
   const [taskInfo, setTaskInfo] = useState([])
   const [sweetError, setSweetError] = useState(false)
   const [taskId, setTaskId] = useState("")
+  const [rate, setRate] = useState(null)
   const [localModuleId, setLocalModuleId] = useState("")
   const [filter, setFilter] = useState("");
   const [moduleInfo, setModuleInfo] = useState([]);
@@ -42,15 +42,14 @@ export default function CoursesTask() {
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
   const getCourseInformation = async() => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(courseid)
-    setLoading(false)
     if(response.ok){
+    setLoading(false)
       setCourseInfo(response.data)
     }else{
       toast.error('Something went wrong while fetching course information.')
@@ -71,11 +70,12 @@ export default function CoursesTask() {
     setCreateTaskModal(!openCreateTaskModal)
   }
 
-  const handleOpenEditTaskModal = (e, taskName, instructions, taskId) =>{
+  const handleOpenEditTaskModal = (e, taskName, instructions, taskId, rate) =>{
     e.preventDefault()
     setTaskName(taskName)
     setInstructions(instructions)
     setTaskId(taskId)
+    setRate(rate)
     setOpenEditTaskModal(!openEditTaskModal)
   }
 
@@ -98,7 +98,6 @@ export default function CoursesTask() {
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching course unit")
     }
@@ -171,6 +170,7 @@ export default function CoursesTask() {
 
   return (
     <CourseContent>
+      {loading && <FullScreenLoader />}
       <CourseBreadcrumbs title={taskName} clicked={() => clickedTab()}/>
      {showTask ?
         <ViewTask selectedTask={selectedTask} showTask={showTask} setShowTask={setShowTask} />
@@ -198,6 +198,8 @@ export default function CoursesTask() {
       taskId={taskId}
       setInstructions={setInstructions} 
       setTaskName={setTaskName}
+      rate={rate}
+      setRate={setRate}
       setTaskInfo={setTaskInfo} selectedTask={selectedTask} openEditTaskModal={openEditTaskModal} setOpenEditTaskModal={setOpenEditTaskModal}/>
       <CreateTask setTaskInfo={setTaskInfo} openCreateTaskModal={openCreateTaskModal} setCreateTaskModal={setCreateTaskModal}/>
       <Accordion defaultActiveKey="0">
@@ -219,7 +221,8 @@ export default function CoursesTask() {
                 ).map((ti, index) => (
                   <Row style={{margin:'10px'}}>
                     <Col className="lesson-header" md={9}>
-                      <span onClick={(e) => {viewTas(ti)}}>{ti?.taskName}</span>
+                      <span style={{cursor: 'pointer'}} onClick={(e) => {viewTas(ti)}}>{ti?.taskName}</span><br />
+                      <span style={{fontSize:'18px'}} > Rate: {ti?.rate}</span>
                     </Col>
                     {isContributor &&
                       <Col className="align-right-content" md={3}>
@@ -227,7 +230,7 @@ export default function CoursesTask() {
                           placement="bottom"
                           delay={{ show: 1, hide: 25 }}
                           overlay={renderTooltipEdit}>
-                          <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti?.taskName, ti?.instructions, ti?.id)}><i className="fa fa-edit"></i></Button>
+                          <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti?.taskName, ti?.instructions, ti?.id, ti?.rate)}><i className="fa fa-edit"></i></Button>
                       </OverlayTrigger>
                       <OverlayTrigger
                           placement="bottom"

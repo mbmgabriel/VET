@@ -8,6 +8,7 @@ import SchoolCoursesContent from './component/SchoolCoursesContent'
 import CoursesAPI from '../../api/CoursesAPI'
 import { useParams } from "react-router";
 import CourseBreadcrumbs from '../courses/components/CourseBreadcrumbs'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 function SchoolCourses() {
   const userContext = useContext(UserContext)
@@ -20,6 +21,7 @@ function SchoolCourses() {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(id)
     if(response.ok){
+    setLoading(false)
       setCourseInfos(response.data)
     }
     setLoading(false)
@@ -38,6 +40,7 @@ function SchoolCourses() {
 
   return (
     <MainContainer title="Courses" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
     <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Learn" />

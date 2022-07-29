@@ -15,6 +15,7 @@ import CourseContent from "../../CourseContent";
 import ExamCreation from "../../../exam-creation/ExamCreation";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
+import FullScreenLoader from "../../../../components/loaders/FullScreenLoader";
 
 
 export default function CoursesExam() {
@@ -43,7 +44,6 @@ export default function CoursesExam() {
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -81,11 +81,11 @@ export default function CoursesExam() {
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseUnit(id)
-    setLoading(false)
     if(response.ok){
+    setLoading(false)
       setModuleInfo(response.data)
     }else{
-      alert("Something went wrong while fetching all exam!!!!!!!!!!")
+      toast.error('Something went wrong while fetching all course info')
     }
   }
 
@@ -97,7 +97,7 @@ export default function CoursesExam() {
     if(response.ok){
       setExamInfo(response.data)
     }else{
-      alert("Something went wrong while fetching all exam")
+      toast.error('Something went wrong while fetching all exam info')
     }
   }
 
@@ -172,6 +172,7 @@ export default function CoursesExam() {
 
   return (
     <CourseContent>
+      {loading && <FullScreenLoader />}
       <CourseBreadcrumbs title={examName} clicked={() => clickTab()}/>
         <React.Fragment>
         <span className="content-pane-title col-md-10 pages-header fd-row">

@@ -186,7 +186,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
 
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>
-              Save
+            {exam.classTest == null ? 'Save Exam' :' Update Exam'}
             </Button>
           </span>
         </Form>

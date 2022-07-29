@@ -22,9 +22,6 @@ function ClassResources() {
   
   useEffect(() => {
     handleGetTeacherResources('')
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
   }, [])
 
   const handleRefetch = () => {

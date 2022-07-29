@@ -41,7 +41,17 @@ function EditTask({setRate, rate, moduleName, setTaskName, taskName, setInstruct
         draggable: true,
         progress: undefined,
         });
-    }else{
+    } else if(rate <= 0){
+      toast.error('Rate must be greater than to 0.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }  else{
       let id = taskId
       let response = await new ClassesAPI().updateTask(id, {taskName, instructions, rate, isShared})
         if(response.ok){

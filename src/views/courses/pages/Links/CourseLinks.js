@@ -9,6 +9,8 @@ import AccordionEdit from './components/AccordionEdit';
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import CourseContent from "../../CourseContent";
 import {UserContext} from '../../../../context/UserContext';
+import { toast } from 'react-toastify'
+import FullScreenLoader from '../../../../components/loaders/FullScreenLoader'
 function CourseLinks() {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [conference, setConference] = useState([])
@@ -25,6 +27,7 @@ function CourseLinks() {
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
   const subsType = user.subsType;
+  const [loading, setLoading] = useState(false);
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -58,7 +61,7 @@ function CourseLinks() {
     if(response.ok){
       setVidoes(response.data)
     }else{
-      alert("Something went wrong while fetching all Conference")
+      toast.error('Something went wrong while fetching all Conference')
     }
   }
 
@@ -67,13 +70,14 @@ function CourseLinks() {
   }, [])
 
   const getLinks = async() => {
+    setLoading(true)
     let typeId = '3'
     let response = await new CoursesAPI().getLink(id, typeId)
     if(response.ok){
-      console.log('haru' ,response.data)
+      setLoading(false)
       setLinks(response.data)
     }else{
-      alert("Something went wrong while fetching all Conference")
+      toast.error('Something went wrong while fetching all Conference')
     }
   }
 
@@ -83,6 +87,7 @@ function CourseLinks() {
 
   return (
    <CourseContent>
+    {loading && <FullScreenLoader />}
      <CourseBreadcrumbs title="Links"/>
       <HeaderLinks onSearch={onSearch} getConfe={getConfe} getVideos={getVideos} getLinks={getLinks}  />
       <div style={{paddingBottom:'10px'}}>
