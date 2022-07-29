@@ -11,7 +11,8 @@ export default function StudentLinks({activeHeader}) {
     return (
       <div className="header-links">
         {subsType == 'Ebooks' &&
-          <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
+          <Link to="/ebook_links">Ebooks</Link>
+          // <><p>{''}</p></>
         }
         {subsType == 'Interactives' &&
           <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
