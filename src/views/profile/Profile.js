@@ -52,7 +52,7 @@ function Profile() {
   }
   
   const getImage = async() =>{
-    let response = await new ProfileInfoAPI().getProfileImage(id)
+    let response = await new ProfileInfoAPI().getProfileImage(user.userId)
     if(response.ok){
       console.log(response.data)
       setprofileImage(response.data)
@@ -104,7 +104,7 @@ function Profile() {
     }
     
     const handleSaveProfile = async() => {
-      let response = await new ProfileInfoAPI().uploadProfile(id, profileDataImage)
+      let response = await new ProfileInfoAPI().uploadProfile(user.userId, profileDataImage)
       if(response.ok){
         setprofileImage(response.data.filePath);
         setUploadModal(false);
