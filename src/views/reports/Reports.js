@@ -89,7 +89,7 @@ export default function Reports({children}) {
       {/* <SideReport/> */}
       <Col style={{height: 100}} />
       <Row>
-        <Col sm={3}>
+        <Col className='report-sidenav' sm={3}>
           <ListGroup.Item className="list-group-item-o">
             <Form.Select value={classId} onChange={(e) => addClassIdOnParams(e.target.value)}>
               <option value="">-- Select Class Here --</option>
