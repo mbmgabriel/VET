@@ -300,22 +300,22 @@ function ClassDiscussion() {
                       }
                       </>
                     }
-                                {moduleitem?.discussionAssignment === null ? (<></>):(<>
-              <Col sm={7} className='due-date-discusstion' >
-                <p className='exam-instruction m-0'>
-                  <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
-                    Start:
-                  </span>
-                    &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.discussionAssignment?.startDate).format("MMMM Do YYYY")}, {moment(moduleitem?.discussionAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
-                </p>
-                <p className='exam-instruction m-0 mb-3'>
-                  <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
-                    End:
-                  </span>
-                    &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.discussionAssignment?.endDate).format("MMMM Do YYYY")}, {moment(moduleitem?.discussionAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
-                </p> 
-              </Col>
-             </>)}
+                    {moduleitem?.discussionAssignment === null ? (<></>):(<>
+                      <Col sm={7} className='due-date-discusstion' >
+                        <p className='exam-instruction m-0'>
+                          <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                            Start:
+                          </span>
+                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.discussionAssignment?.startDate).format("MMMM Do YYYY")}, {moment(moduleitem?.discussionAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                        </p>
+                        <p className='exam-instruction m-0 mb-3'>
+                          <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                            End:
+                          </span>
+                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.discussionAssignment?.endDate).format("MMMM Do YYYY")}, {moment(moduleitem?.discussionAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                        </p> 
+                      </Col>
+                    </>)}
                     {moduleitem.discussionAssignment?.startDate?(
                   <div>
                     {

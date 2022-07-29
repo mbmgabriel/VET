@@ -107,22 +107,22 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
                 }
               </>
                 }
-                        {item?.discussionAssignment === null ? (<></>):(<>
-                      <Col sm={7} className='due-date-discusstion' >
-                        <p className='exam-instruction m-0'>
-                          <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
-                            Start:
-                          </span>
-                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.discussionAssignment?.startDate).format("MMMM Do YYYY")}, {moment(item?.discussionAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
-                        </p>
-                        <p className='exam-instruction m-0 mb-3'>
-                          <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
-                            End:
-                          </span>
-                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.discussionAssignment?.endDate).format("MMMM Do YYYY")}, {moment(item?.discussionAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
-                        </p> 
-                      </Col>
-                    </>)}
+                {item?.discussionAssignment === null ? (<></>):(<>
+                  <Col sm={7} className='due-date-discusstion' >
+                    <p className='exam-instruction m-0'>
+                      <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                        Start:
+                      </span>
+                        &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.discussionAssignment?.startDate).format("MMMM Do YYYY")}, {moment(item?.discussionAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                    </p>
+                    <p className='exam-instruction m-0 mb-3'>
+                      <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                        End:
+                      </span>
+                        &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.discussionAssignment?.endDate).format("MMMM Do YYYY")}, {moment(item?.discussionAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                    </p> 
+                  </Col>
+                </>)}
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
