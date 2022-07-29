@@ -8,6 +8,7 @@ import SchoolCoursesContent from './component/SchoolCoursesContent'
 import { useParams } from "react-router";
 import CoursesAPI from '../../api/CoursesAPI'
 import SchoolCourseInteractive from './component/SchoolCourseInteractive'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 function SchoolInteractive() {
   const userContext = useContext(UserContext)
@@ -35,6 +36,7 @@ function SchoolInteractive() {
 
   return (
   <MainContainer title="Interactive" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
     <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Interactive" />
