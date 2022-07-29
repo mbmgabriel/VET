@@ -91,7 +91,7 @@ export default function Reports({children}) {
     let response = await new AcademicTermAPI().fetchAcademicTerm()
     if(response.ok){
       let data = response.data;
-      let obj = data.find(o => o.isCurrentTerm === true);
+      let obj = data.find(o => o.isCurrentTerm == true);
       setCurrentAcademicTerm(obj.academicTermName);
     }
   }

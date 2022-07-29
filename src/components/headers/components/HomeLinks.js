@@ -25,7 +25,7 @@ export default function HomeLinks() {
       let data = response.data;
       let temp = localStorage.getItem('academicTerm')
       if(temp == null) {
-        let obj = data.find(o => o.isCurrentTerm === true);
+        let obj = data.find(o => o.isCurrentTerm == true);
         setCurrentAcademicTerm(obj.academicTermName);
         localStorage.setItem('academicTerm', obj.academicTermName);
       }

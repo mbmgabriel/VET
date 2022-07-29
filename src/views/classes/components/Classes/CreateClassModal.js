@@ -21,6 +21,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
   const [academicTermId, setAcademicTermId] = useState('')
   const [validated, setValidated] = useState(false);
   const userContext = useContext(UserContext)
+
   const {user} = userContext.data
   const subsType = user.subsType;
 
@@ -73,6 +74,9 @@ function CreateClassModal({setModal, modal, getClasses}) {
     let response = await new AcademicTermAPI().fetchAcademicTerm()
     if(response.ok){
       setAcademicTerm(response.data)
+      let data = response.data;
+      let obj = data.find(o => o.isCurrentTerm == true);
+      setAcademicTermId(obj.id);
     }else{
       alert("Something went wrong while fetching all Academic Term")
     }
@@ -195,8 +199,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
             </Form.Group>
             <Form.Group className="mb-4">
             	<Form.Label>School Year</Form.Label>
-                <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
-                  <option>-- Select School Year HERE --</option>
+                <Form.Select value={academicTermId} onChange={(e) => setAcademicTermId(e.target.value)}>
                   {
                     academicTerm.map(item =>{
                       return(

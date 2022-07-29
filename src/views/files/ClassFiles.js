@@ -69,7 +69,7 @@ export default function FilesClass() {
     let response = await new AcademicTermAPI().fetchAcademicTerm()
     if(response.ok){
       let data = response.data;
-      let obj = data.find(o => o.isCurrentTerm === true);
+      let obj = data.find(o => o.isCurrentTerm == true);
       setCurrentAcademicTerm(obj.academicTermName);
     }else{
       toast.error("Something went wrong while fetching all Academic Term")
