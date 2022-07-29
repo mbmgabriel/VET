@@ -24,4 +24,19 @@ export default class EbooksAPI extends Base {
     })
   }
 
+  updateEbookLink = async(id, data) => {
+    return this.sendRequest({
+      path: `/api/UserEbook/${id}`,
+      method: 'PUT',
+      data
+    })
+  }
+
+  deleteEbookLink = async(id) => {
+    return this.sendRequest({
+      path: `/api/UserEbook/${id}`,
+      method: 'DELETE'
+    })
+  }
+
 }

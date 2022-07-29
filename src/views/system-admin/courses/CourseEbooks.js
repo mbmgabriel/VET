@@ -26,7 +26,6 @@ export default function SystemAdminCourses() {
 	const [description, setDescription] = useState('')
 	const [subjectAreaId, setSubjectArea] = useState('')
 	const [sarea, setSarea] = useState([])
-	const [locked, setLockStatus]= useState(false);
   const [selectedCourse, setSelectedCourse] = useState({});
   const [contributorModal, setContributorModal] = useState(false);
   const [teachersList, setTeachersList] = useState([]);
@@ -39,6 +38,10 @@ export default function SystemAdminCourses() {
   const [userType, setUserType] = useState('')
   const [showList, setShowList] = useState(false);
   const [ebookLinks, setEbookLinks] =useState([]);
+  const [ebookLinkId, setEbookLinkId] = useState('');
+  const [showEditLinkModal, setShowEditLinkModal] = useState(false);
+  const [linkDetails, setLinkDetails] = useState({});
+  const [linkToEdit, setLinkToEdit] = useState('');
 
 	useEffect(() => {
     viewSubjectArea()
@@ -47,12 +50,13 @@ export default function SystemAdminCourses() {
   }, [])
 
   const handleDeleteTeacher = async() => {
-    let response = await new CoursesAPI().deleteCourse(toDeleteId);
+    let response = await new EbooksAPI().deleteEbookLink(toDeleteId);
     if(response.ok){
-      toast.success("Course deleted successfully")
-      getCourses();
+      toast.success("Link deleted successfully")
+      // getCourses();
+      getEbooks(courseID)
     }else{
-      toast.error("Something went wrong while deleting course.")
+      toast.error("Something went wrong while deleting link.")
     }
     setDeleteNotify(false);
   }
@@ -62,7 +66,6 @@ export default function SystemAdminCourses() {
     setLoading(true);
     let response = await new CoursesAPI().getCourses();
     if(response.ok){
-      console.log(response.data);
       let temp = response.data;
       let filtered = temp.filter(i => i.status !== null && i.deleted !== true); //remove status == null and remove deleted course
       setTeachers(filtered)
@@ -155,7 +158,6 @@ export default function SystemAdminCourses() {
     let response = await new SubjectAreaAPI().getSubjectArea()
     if(response.ok){
       setSarea(response.data)
-			console.log(response.data)
     }else{
       toast.error("Something went wrong while fetching all subject area")
     }
@@ -209,7 +211,6 @@ export default function SystemAdminCourses() {
   }
 
   const handleUpdateStatus = async(data) => {
-    console.log(data);
     let response = await new CoursesAPI().editCourse(data.id, {...data, status: !data.status});
     if(response.ok){
       getCourses();
@@ -220,7 +221,6 @@ export default function SystemAdminCourses() {
   }
 
   const addContributor = async(item) => {
-    console.log(item)
     let data = {
       "courseId": courseID,
       "userAccountId": item.userAccountID,
@@ -235,7 +235,6 @@ export default function SystemAdminCourses() {
   }
 
   const handleRemoveContributor = async(data) => {
-    console.log(data)
     if(data.distributorInformation.userAccountId == authorId){
       toast.error("You can't remove the author of this course.")
     }else{
@@ -387,11 +386,9 @@ export default function SystemAdminCourses() {
   }
 
   const handleGetUploadedFile = (file) => {
-    console.log(file);
    if(file){ 
       getBase64(file).then(
         data => {
-          console.log(file.name)
           let toUpload = {
             "base64String": data,
             "fileName": file.name
@@ -407,7 +404,27 @@ export default function SystemAdminCourses() {
     getEbooks(item.id);
     setCourseInfo(item);
     setShowList(true)
-    console.log(item);
+  }
+
+  const handleEditLink = (data) => {
+    setLinkDetails(data);
+    setEbookLinkId(data.userEbook.id);
+    setShowEditLinkModal(true);
+    setLinkToEdit(data.userEbook.ebookLink);
+  }
+
+  const handleUpdateLink = async(e) => {
+    e.preventDefault();
+    setShowEditLinkModal(false);
+    let data = {
+      ebookLink: linkToEdit
+    }
+    let response = await new EbooksAPI().updateEbookLink(ebookLinkId, data);
+    if (response.ok) {
+      getEbooks(courseID);
+    } else {
+      toast.error("Something went wrong while updating ebook link.")
+    }
   }
 
   return (
@@ -461,21 +478,21 @@ export default function SystemAdminCourses() {
                   </div>
                 )
               },
-              // {
-              //   Header: 'Actions',
-              //   id: 'edit',
-              //   accessor: d => d.id,
-              //   Cell: row => (
-              //     <div className="d-flex justify-content-center align-items-center">
-              //       <button onClick={() => handleClickEdit(row.original)} className="btn btn-info btn-sm m-r-5" >
-              //         <i class="fas fa-edit"/>
-              //       </button>
-              //       <button onClick={() => handleClickContributor(row.original.id)} className="btn btn-danger btn-sm m-r-5" >
-              //         <i class="fas fa-trash" />
-              //       </button>
-              //     </div>
-              //   )
-              // },
+              {
+                Header: 'Actions',
+                id: 'edit',
+                accessor: d => d.id,
+                Cell: row => (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <button onClick={() => handleEditLink(row.original)} className="btn btn-info btn-sm m-r-5" >
+                      <i class="fas fa-edit"/>
+                    </button>
+                    <button onClick={() => handleClickDelete(row.original.userEbook.id)} className="btn btn-danger btn-sm m-r-5" >
+                      <i class="fas fa-trash" />
+                    </button>
+                  </div>
+                )
+              },
             ]
           }]}
         csv edited={teachers} defaultPageSize={10} className="-highlight" 
@@ -602,6 +619,24 @@ export default function SystemAdminCourses() {
             <p>.xslx</p>
             <Form.Group className='right-btn'>
               <Button className='tficolorbg-button' type='submit'>Upload</Button>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal size="lg" show={showEditLinkModal} onHide={() => setShowEditLinkModal(false)} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header className='class-modal-header' closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg" >
+            Edit Ebook links
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={(e) => handleUpdateLink(e)} >
+            <Form.Group className="mb-4">
+              <Form.Control value={linkToEdit} required type="text" onChange={(e) => setLinkToEdit(e.target.value)}/>
+            </Form.Group>
+            <Form.Group className='right-btn'>
+              <Button className='tficolorbg-button' type='submit'>Update Link</Button>
             </Form.Group>
           </Form>
         </Modal.Body>

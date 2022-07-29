@@ -8,7 +8,6 @@ export default function SystemAdminLinks({activeHeader}) {
   const subsType = user.subsType;
 
   if(user.isSystemAdmin){
-    console.log(subsType, '----')
     return (
       <div className="header-links">
         <Link className={activeHeader === "dashboard" && 'active'} to="/system-admin/dashboard">Dashboard</Link>
