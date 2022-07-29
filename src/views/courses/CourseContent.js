@@ -298,14 +298,16 @@ export default function CourseContent({children}) {
             }
             {
               subsType == 'TeacherResources' &&
-              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 1, hide: 25 }}
-                  overlay={renderTooltipTeacherResources}>
-                  <i className="fas fa-link" />
-                </OverlayTrigger>
-              </Link>
+              <ListGroup>
+                <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipTeacherResources}>
+                    <i className="fas fa-link" />
+                  </OverlayTrigger>
+                </Link>
+              </ListGroup>
             }
           </Col>
           }
