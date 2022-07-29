@@ -128,7 +128,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
                 return(
                   <tr key={item.fileName}>
                     <td>{item.fileName}</td>
-                    <td><ProgressBar variant="warning" now={uploadStatus()} /></td>
+                    <td><ProgressBar variant="" now={uploadStatus()} /></td>
                     <td>{item.size} B <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                   </tr>
                 );

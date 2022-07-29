@@ -9,6 +9,8 @@ import AccordionLinks from '../../classes/components/Links/AccordionLinks'
 import AccordionVideos from '../../classes/components/Links/AccordionVideos'
 import HeaderLinks from '../../classes/components/Links/HeaderLinks'
 import AccordionEdit from '../../classes/components/Links/AccordionEdit';
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader';
+import { toast } from 'react-toastify';
 
 export default function SchoolAdminLinks() {
   const [openEditModal, setOpenEditModal] = useState(false)
@@ -32,9 +34,10 @@ export default function SchoolAdminLinks() {
     let typeId = '1'
     let response = await new ClassesAPI().getLink(id, typeId)
     if(response.ok){
+      setLoading(false)
       setConference(response.data)
     }else{
-      alert("Something went wrong while fetching all Conference")
+      toast.error('Something went wrong while fetching all conference"')
     }
     setLoading(false)
   }
@@ -49,7 +52,7 @@ export default function SchoolAdminLinks() {
     if(response.ok){
       setVidoes(response.data)
     }else{
-      alert("Something went wrong while fetching all Conference")
+      toast.error('Something went wrong while fetching all conference"')
     }
   }
 
@@ -63,7 +66,7 @@ export default function SchoolAdminLinks() {
     if(response.ok){
       setLinks(response.data)
     }else{
-      alert("Something went wrong while fetching all Conference")
+      toast.error('Something went wrong while fetching all conference"')
     }
   }
 
@@ -73,6 +76,7 @@ export default function SchoolAdminLinks() {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="links"/>

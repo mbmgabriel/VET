@@ -23,10 +23,8 @@ function FileHeader(props) {
   const courseid = sessionStorage.getItem('courseid')
 
   const {id} = useParams();
-  console.log(props.id, '=====---');
 
   const getCourseInformation = async() => {
-    console.log(props.id, '=====---');
     let response = await new CoursesAPI().getCourseInformation(props.id);
     if(response.ok){
       setCourseInfo(response.data)
@@ -34,7 +32,6 @@ function FileHeader(props) {
       if(temp){
       //  setDisplayButtons(user?.teacher.positionID == 7 ? true : false)
       }
-      console.log(response.data, 'heheheheheh')
     }else{
       toast.error("Something went wrong while fetching course information.")
     }
@@ -45,7 +42,6 @@ function FileHeader(props) {
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setDisplayButtons(ifContri ? true : false);
     }
   }
@@ -68,7 +64,6 @@ function FileHeader(props) {
       Object.values(file).map((itm, index) => {
         let maxSize = 25000000;
         if(itm.size <= maxSize){
-          console.log(itm, index)
           let temp = []
           getBase64(itm).then(
             data => {
@@ -144,7 +139,6 @@ function FileHeader(props) {
     // class uploading
     if(props.type == 'Class'){
       files.map( async(item, index) => {
-        console.log(item)
         if(item.progress == 0){
           let tempData = {
             fileName: item.fileName,
@@ -313,7 +307,7 @@ function FileHeader(props) {
               return(
                 <tr key={item.fileName}>
                   <td>{item.fileName}</td>
-                  {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="warning" now={item.progress} /></td>}
+                  {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="" now={item.progress} /></td>}
                   {/* <td><ProgressBar variant="warning" now={item.progress} /></td> */}
                   <td>{item.size} B <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                 </tr>
@@ -366,7 +360,7 @@ function FileHeader(props) {
                 return(
                   <tr key={item.fileName}>
                     <td>{item.fileName}</td>
-                   {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="warning" now={item.progress} /></td>}
+                   {item.status == 'failed' ? <td style={{fontSize: 14, color: 'red'}}>Failed to upload.File already exist.</td> : <td><ProgressBar variant="" now={item.progress} /></td>}
                     <td>{item.size} B <i class="fas fa-times td-file-page" onClick={()=> handelRemoveSelectedFiles(index)}></i></td>
                   </tr>
                 );

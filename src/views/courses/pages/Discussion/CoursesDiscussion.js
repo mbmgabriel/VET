@@ -12,6 +12,7 @@ import CourseContent from "../../CourseContent";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
 import { useParams } from "react-router-dom";
+import FullScreenLoader from "../../../../components/loaders/FullScreenLoader";
 
 export default function CoursesDiscussion() {
   const [loading, setLoading] = useState(false)
@@ -42,7 +43,6 @@ export default function CoursesDiscussion() {
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -50,11 +50,11 @@ export default function CoursesDiscussion() {
   const getCourseInformation = async() => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(courseid)
-    setLoading(false)
     if(response.ok){
+    setLoading(false)
       setCourseInfo(response.data)
     }else{
-      alert("Something went wrong while fetching course information 111111111111")
+      toast.error('Something went wrong while fetching course information ')
     }
   }
 
@@ -85,7 +85,6 @@ export default function CoursesDiscussion() {
     setLoading(false)
     if(response.ok){
       setDiscussionInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all discussion")
     }
@@ -97,7 +96,6 @@ export default function CoursesDiscussion() {
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching course unit11111111111")
     }
@@ -120,7 +118,6 @@ export default function CoursesDiscussion() {
     if(response.ok){
       getDiscussionInfo(null, localModuleId)
       // setLessonInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all pages")
     }
@@ -133,13 +130,11 @@ export default function CoursesDiscussion() {
   const viewDis = (data) => {
     setSelectedDiscussion(data)
     setShowDiscussion(true)
-    console.log(data)
     setClickedDiscussion(data.discussion.discussionName)
   }
 
   useEffect(() => {
     getCourseUnitInformation();
-    console.log(moduleid)
   }, [])
 
   const notifyDeleteDiscussion= () => 
@@ -172,6 +167,7 @@ export default function CoursesDiscussion() {
 
   return (
     <CourseContent>
+      {loading && <FullScreenLoader />}
       <CourseBreadcrumbs title={clickedDiscussion} clicked={() => clickedTab()}/>
       {
       showDiscussion ?

@@ -6,6 +6,8 @@ import ClassAdminSideNavigation from './components/ClassAdminSideNavigation'
 import FilesContent from '../../files/FilesContent';
 import FileHeader from '../../files/FileHeader'
 import FilesAPI from '../../../api/FilesApi';
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader';
+import { toast } from 'react-toastify';
 
 export default function SchoolAdminFiles() {
   const {id} = useParams();
@@ -31,12 +33,12 @@ export default function SchoolAdminFiles() {
       "subFolderLocation": name
     }
     let response = await new FilesAPI().getClassFiles(id, data)
-    setLoading(false)
     if(response.ok){
+      setLoading(false)
       setFilesToDisplay(response.data.files);
       setFolderToDisplay(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files.")
+      toast.error('Something went wrong while fetching class files')
     }
   }
 
@@ -69,13 +71,21 @@ export default function SchoolAdminFiles() {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="files"/>
         </Col>
         <Col sm={9} className='scrollable vh-85'>
           <div className="row m-b-20 file-content">
-            <FileHeader type='Class'  title='Class Files' subFolder={subFolderDirectory.join('')} id={id} doneUpload={()=> handleRefetch()}/>
+            <div className='content-pane-title col-md-10 pages-header'>
+              <FileHeader type='Class'  title='Class Files' subFolder={subFolderDirectory.join('')} id={id} doneUpload={()=> handleRefetch()} />
+              <div>
+              <Button onClick={() => handleGetClassFiles()} className='ml-3'>
+                <i className="fa fa-sync"></i>
+              </Button>
+            </div>
+            </div>
             <div className="col-md-12 m-b-20">
               <InputGroup size="lg">
                 <FormControl onChange={(e) => setFilter(e.target.value)} aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search files here" type="search"/>

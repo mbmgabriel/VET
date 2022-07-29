@@ -29,6 +29,7 @@ export const ClassExam = () => {
     setLoading(true);
     let response = await new ExamAPI().getExams(id);
     if (response.ok) {
+      setLoading(false)
       const filteredExams = response.data.filter(
         (item) => user.isTeacher || item.classTest != null
       );
@@ -44,7 +45,7 @@ export const ClassExam = () => {
       setExams(filteredExams);
       
     } else {
-      alert("Something went wrong while fetching exams");
+      toast.error('Something went wrong while fetching exams')
     }
   };
 
@@ -55,10 +56,10 @@ export const ClassExam = () => {
     if(response.ok){
       setModules(response.data)
     }else{
-      alert("Something went wrong while fetching Modules");
+      alert("Something went wrong while fetching modules");
+      toast.error('Something went wrong while fetching modules')
     }
   }
-
   useEffect(() => {
     getModuleClass()
     if(subsType != 'LMS'){
@@ -92,9 +93,9 @@ export const ClassExam = () => {
 
   return (
     <ClassSideNavigation>
+      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title={''} clicked={() => console.log('')}/>
       <div className="class-container position-relative">
-        {/* {loading && <ActivityIndicator />} */}
         <ClassExamHeader onSearch={onSearch} modules={modules} fetchExams={fetchExams} onRefresh={() => fetchExams()}/>
         <Accordion defaultActiveKey="0">
           {modules.map((module, index) => {

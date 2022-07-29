@@ -69,11 +69,9 @@ function ClassTask() {
     setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
-      console.log({response})
       getModule(response.data.classInformation?.courseId)
       setClassInfo(response.data)
       setLoading(false)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all courses")
       setLoading(false)
@@ -134,7 +132,6 @@ function ClassTask() {
     let response = await new ClassesAPI().getTaskModule(id, item)
     if(response.ok){
       setTaskModule(response?.data);
-      console.log(response.data, '-----');
       setModuleId(item)
     }else{
       alert("Something went wrong while Deleting Deleting a getTaskModule")
@@ -186,10 +183,9 @@ function ClassTask() {
     </Tooltip>
   )
 
-  console.log('setTaskModulesetTaskModule:', taskModule)
-
   return (
     <ClassSideNavigation>
+        {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title='' clicked={()=> console.log('')} />
       <HeaderTask onSearch={onSearch} module={module} getTaskModule={getTaskModule} onRefresh={() => getClassInfo()}/>
         <Accordion>

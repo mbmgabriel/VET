@@ -17,6 +17,8 @@ import StudentAnswerAssignment from '../../classes/student/components/StudentAns
 import StudentSubmittedAssigment from '../../classes/student/components/StudentSubmittedAssigment'
 import ViewAssignment from '../../classes/components/Assignment/ViewAssignment';
 import ContentViewer from '../../../components/content_field/ContentViewer'
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader'
+import { toast } from 'react-toastify'
 
 export default function SchoolAdminAssignment() {
   const [submittedAssignment, setSubmittedAssignment] = useState(false)
@@ -60,17 +62,13 @@ export default function SchoolAdminAssignment() {
     setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
-      console.log({response})
+      setLoading(false)
       getModule(response.data.classInformation?.courseId)
-      // setClassInfo(response.data)
-      console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      toast.error('Something went wrong while fetching all courses')
     }
     setLoading(false)
   }
-
-  console.log('this is assignment:', assignment)
 
   const viewAssignmentToggle = (item, item1) => {
     setViewAssignmentItem(item)
@@ -155,7 +153,6 @@ export default function SchoolAdminAssignment() {
     }  
   }, [])
 
-  console.log('item?.id:', assignment)
   const renderTooltipView = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       View
@@ -185,6 +182,7 @@ export default function SchoolAdminAssignment() {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="assignment"/>

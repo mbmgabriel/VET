@@ -12,6 +12,8 @@ import { UserContext } from '../../../context/UserContext'
 import StudentInteractive from '../../classes/student/StudentInteractive';
 import MainContainer from '../../../components/layouts/MainContainer'
 import ClassAdminSideNavigation from './components/ClassAdminSideNavigation'
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader';
+import { toast } from 'react-toastify';
 
 export default function SchoolAdminInteractives() {
   const [module, setModule] = useState([])
@@ -42,12 +44,11 @@ const getClassInfo = async() => {
   setLoading(true)
   let response = await new DiscussionAPI().getClassInfo(id)
   if(response.ok){
-    console.log({response})
+    setLoading(false)
     getModule(response.data.classInformation?.courseId)
     setClassInfo(response.data)
-    console.log(response.data)
   }else{
-    alert("Something went wrong while fetching all courses")
+    toast.error('Something went wrong while fetching all class info')
   }
   setLoading(false)
 }
@@ -67,13 +68,9 @@ const getClassInfo = async() => {
     if(response.ok){
         setModule(response.data)
     }else{
-      alert('error')
+      toast.error('Something went wrong while fetching module')
     }
   }
-
-  console.log('interactive:', interactive)
-
-
 
   const getIndteractive = async (e, item) =>{
     let response = await new ClassesAPI().getInteractive(id, item)
@@ -81,7 +78,7 @@ const getClassInfo = async() => {
       setInteractive(response.data)
       setModuleId(item)
     }else{
-      alert('Error')
+      toast.error('Something went wrong while fetching module')
     }
   }
 
@@ -101,6 +98,7 @@ const getClassInfo = async() => {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="interactives"/>

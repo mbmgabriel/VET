@@ -15,6 +15,8 @@ import StudentTask from '../../classes/student/StudentTask'
 import { UserContext } from '../../../context/UserContext'
 import ViewTask from '../../classes/components/Task/ViewTask'
 import ContentViewer from '../../../components/content_field/ContentViewer'
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader';
+import { toast } from 'react-toastify';
 
 export default function SchoolAdminTask() {
   const [modal, setModal] = useState(false)
@@ -57,12 +59,11 @@ export default function SchoolAdminTask() {
     setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
-      console.log({response})
+      setLoading(false)
       getModule(response.data.classInformation?.courseId)
       setClassInfo(response.data)
-      console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      toast.error('Something went wrong while fetching class info')
     }
     setLoading(false)
   }
@@ -108,7 +109,7 @@ export default function SchoolAdminTask() {
     if(response.ok){
         setModule(response.data)
     }else{
-      alert("Something went wrong while fetching all Module")
+      toast.error('Something went wrong while fetching all module')
     }
   }
 
@@ -119,7 +120,7 @@ export default function SchoolAdminTask() {
       setTaskModule(response?.data)
       setModuleId(item)
     }else{
-      alert("Something went wrong while Deleting Deleting a getTaskModule")
+      toast.error('Something went wrong while fetching tasks')
     }
   }
   // useEffect(() => {
@@ -137,7 +138,7 @@ export default function SchoolAdminTask() {
       setDeleteNotify(false)
       // alert('Task Deleted')
     }else{
-      alert("Something went wrong while Deleting a task")
+      toast.error('Something went wrong while deleting a task')
     }
   }
 
@@ -170,6 +171,7 @@ export default function SchoolAdminTask() {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="task"/>

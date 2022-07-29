@@ -51,9 +51,11 @@ function ClassLinks() {
   }, [])
 
   const getVideos = async() => {
+    setLoading(true)
     let typeId = '2'
     let response = await new ClassesAPI().getLink(id, typeId)
     if(response.ok){
+      setLoading(false)
       setVidoes(response.data)
     }else{
       alert("Something went wrong while fetching all Conference")

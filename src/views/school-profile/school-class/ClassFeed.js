@@ -20,6 +20,7 @@ import ContentViewer from '../../../components/content_field/ContentViewer';
 import ContentRichText from '../../../components/content_field/ContentRichText';
 import MainContainer from '../../../components/layouts/MainContainer'
 import ClassAdminSideNavigation from './components/ClassAdminSideNavigation'
+import FullScreenLoader from '../../../components/loaders/FullScreenLoader';
 
 function ClassFeed() {
   const [content, setContent] = useState('')
@@ -33,7 +34,7 @@ function ClassFeed() {
   const [editAnnouncementItem, setEditAssignAssignmentItem] = useState()
   const [feedClass, setFeedClass] = useState([])
   const userContext = useContext(UserContext)
-  const {user, selectedClassId, setSelectedClassId} = userContext.data
+  const {user, selectedClassId, setSelectedClassId, themeColor} = userContext.data
   const [showComment, setShowComment] = useState(Fade)
   const [refId, setRefId] = useState()
   const [typeId, setTypeId] = useState('')
@@ -109,13 +110,13 @@ function ClassFeed() {
   }
 
   const getClassInformation = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new ClassesAPI().getClassInformation(id)
     if(response.ok){
+      setLoading(false)
       setCourseId(response?.data?.courseId)
-      console.log({response})
     }
-    // setLoading(false)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -126,7 +127,6 @@ function ClassFeed() {
     getClassInfo();
   }, [window.location.pathname])
 
-  console.log('classInfo:', classInfo)
 
 const getComment = (item, item1, item3) => {
   setRefId(item)
@@ -136,7 +136,6 @@ const getComment = (item, item1, item3) => {
 }
 
   const getFeedClass = async () => {
-    console.log(id, 'classssssssss')
     let response = await new ClassesAPI().getFeedClass(id)
     if(response.ok){
     setFeedClass(response.data)
@@ -148,7 +147,6 @@ const getComment = (item, item1, item3) => {
    }
   }
   useEffect(() => {
-    console.log("Selecting class: " + id)
     setSelectedClassId(id)
     getFeedClass();
     if(subsType != 'LMS'){
@@ -321,6 +319,7 @@ const getComment = (item, item1, item3) => {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
     <Row className="mt-4">
       <Col sm={3}>
         <ClassAdminSideNavigation active="feed"/>
@@ -341,7 +340,16 @@ const getComment = (item, item1, item3) => {
         </SweetAlert>
         <Card className='calendar-card'>
           <Card.Body>
-          <Card.Title><div className="col-md-10 pages-header"><p className='title-header'>Announcement </p></div></Card.Title>
+          <Card.Title>
+            <div className="col-md-10 pages-header">
+              <p className='title-header'>Announcement </p>
+              <div>
+                <Button onClick={()=> getClassInformation()} className='ml-3'>
+                  <i className="fa fa-sync"></i>
+                </Button>
+              </div>
+            </div>
+          </Card.Title>
           <Form onSubmit={createAnnouncementClass}>
           <div className={showFiles ? 'mb-3' : 'd-none'}>
           {displayType == 'Class' ?
@@ -364,7 +372,6 @@ const getComment = (item, item1, item3) => {
             <>
             {
               displayFiles.map( (item,ind) => {
-                console.log(item)
                   return(
                     <OverlayTrigger
                       placement="bottom"
@@ -460,10 +467,10 @@ const getComment = (item, item1, item3) => {
                     </Col>
                     <Col md={3}>
                       <div className='inline-flex' style={{paddingTop:'20px', paddingTop:'6px', float:'right', }}>
-                        <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}>
+                        <div style={{color: themeColor, fontSize:'18px',paddingTop:'4px'}}>
                           <Button onClick={() => openEditAnnouncementToggle(feedItem, feedItem.description)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-pencil-alt"></i>&nbsp; </Button>
                           </div>
-                          <div style={{color:'#EE9337', fontSize:'18px',paddingTop:'4px'}}> 
+                          <div style={{color: themeColor, fontSize:'18px',paddingTop:'4px'}}> 
                           <Button onClick={() => handleDeleteNotify(feedItem?.referenceId)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="far fa-trash-alt"></i>&nbsp; </Button>
                         </div> 
                       </div>
@@ -492,7 +499,7 @@ const getComment = (item, item1, item3) => {
                     <hr />
                     <Col style={{textAlign:'center'}}>
                       <div className='inline-flex' >
-                        <div style={{color:'#EE9337', }}>
+                        <div style={{color: themeColor, }}>
                           </div>
           
                           <div > 
@@ -536,17 +543,17 @@ const getComment = (item, item1, item3) => {
                   <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
                   </div>
                   <div  className='inline-flex' style={{paddingTop:'12px', fontSize:'18px', color: "#7D7D7D"}}>
-                    {(feedItem.type === 2)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color:'#EE9337'}} > <b>Assignment </b> </div></>):<></>}
-                    {(feedItem.type === 3)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color:'#EE9337'}} > <b>Task </b> </div></>):<></>}
-                    {(feedItem.type === 4)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color:'#EE9337'}} > <b>Exam </b> </div></>):<></>}
-                    {(feedItem.type === 5)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color:'#EE9337'}} > <b>Interactive </b> </div> </>):<></>}
+                    {(feedItem.type === 2)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color: themeColor}} > <b>Assignment </b> </div></>):<></>}
+                    {(feedItem.type === 3)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color: themeColor}} > <b>Task </b> </div></>):<></>}
+                    {(feedItem.type === 4)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color: themeColor}} > <b>Exam </b> </div></>):<></>}
+                    {(feedItem.type === 5)?(<><b>{feedItem?.updatedBy}</b> &nbsp; posted a new &nbsp; <div style={{color: themeColor}} > <b>Interactive </b> </div> </>):<></>}
                   
                   </div>
                 </div>
                 <p style={{marginLeft:58}}><small><i className="fas fa-clock"></i> {moment(item?.dateUpdated).format('LL')}&nbsp;</small></p>
                   <Row>  
                     <Col className='icon-post' sm={1} />
-                    <Col sm={11} style={{fontSize:'16px', color:'#EE9337', paddingTop:'30px'}}>
+                    <Col sm={11} style={{fontSize:'16px', color: themeColor, paddingTop:'30px'}}>
                       <p>{feedItem.title}</p>
                     </Col>
                   </Row>
@@ -594,7 +601,7 @@ const getComment = (item, item1, item3) => {
                     <Row>
                     <Col style={{textAlign:'center'}}>
                       <div className='inline-flex' >
-                        <div style={{color:'#EE9337', fontSize:'25px',}}>
+                        <div style={{color: themeColor, fontSize:'25px',}}>
                           </div>
                           <div>
                           {feedItem?.isLike === true ? <>

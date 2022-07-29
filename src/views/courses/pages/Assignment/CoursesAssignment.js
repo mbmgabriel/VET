@@ -13,11 +13,10 @@ import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
 import { set } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import FullScreenLoader from "../../../../components/loaders/FullScreenLoader";
 
 export default function CoursesAssignment() {
-
-  const [loading, setLoading] = useState(false)
-
+  const [loading, setLoading] = useState(false);
   const [openCreateUnitModal, setOpenCreateUnitModal] = useState(false)
   const [openCreateAssignmentModal, setOpenCreateAssignmentModal] = useState(false)
   const [openEditAssignmentModal, setOpenEditAssignmentModal] = useState(false)
@@ -30,6 +29,7 @@ export default function CoursesAssignment() {
   const [moduleInfo, setModuleInfo] = useState([])
   const [showAssignment, setShowAssignment] = useState(false);
   const [assignmmentName, setAssignmentName] = useState('')
+  const [rate, setRate] = useState(null)
   const [instructions, setInstructions] = useState('')
   const [courseInfo, setCourseInfo] = useState("")
   const userContext = useContext(UserContext);
@@ -45,7 +45,6 @@ export default function CoursesAssignment() {
     if(response.ok){
       let temp = response.data;
       let ifContri = temp.find(i => i.userInformation?.userId == user.userId);
-      console.log(ifContri, user.userId)
       setIsContributor(ifContri ? true : false);
     }
   }
@@ -76,11 +75,12 @@ export default function CoursesAssignment() {
     setOpenCreateAssignmentModal(!openCreateAssignmentModal)
   }
 
-  const handleOpenEditAssignmentModal = (e, assignmentName, instructions, assignmentId) =>{
+  const handleOpenEditAssignmentModal = (e, assignmentName, instructions, assignmentId, rate) =>{
     e.preventDefault()
     setAssignmentName(assignmentName)
     setInstructions(instructions)
     setAssignmentId(assignmentId)
+    setRate(rate)
     setOpenEditAssignmentModal(!openEditAssignmentModal)
   }
 
@@ -92,7 +92,6 @@ export default function CoursesAssignment() {
     setLoading(false)
     if(response.ok){
       setAssignmentInfo(response.data)
-      console.log(response.data)
     }else{
       alert(response.data.errorMessage)
     }
@@ -105,19 +104,18 @@ export default function CoursesAssignment() {
     if(response.ok) {
       setAssignmentInfo(response.data.filter(item => item != null))
     }else{
-      alert("Something went wrong while fetching assignment")
+      toast.error('Something went wrong while fetching assignment')
     }
   }
 
   const getCourseUnitInformation = async(e) => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseUnit(id)
-    setLoading(false)
     if(response.ok){
+    setLoading(false)
       setModuleInfo(response.data)
-      console.log(response.data)
     }else{
-      alert("Something went wrong while fetching course unit1111111111")
+      toast.error('Something went wrong while fetching course unit')
     }
   }
 
@@ -138,7 +136,6 @@ export default function CoursesAssignment() {
     setLoading(false)
     if(response.ok){
       getAssignmentInfo(null, localModuleId)
-      console.log(response.data)
     }else{
       alert(response.data.errorMessage)
     }
@@ -149,7 +146,6 @@ export default function CoursesAssignment() {
   }
 
   const viewAss = (data) => {
-    console.log(data)
     setAssignmentName(data.assignmentName);
     setSelectedAssignment(data)
     setShowAssignment(true)
@@ -188,6 +184,7 @@ export default function CoursesAssignment() {
 
   return (
     <CourseContent>
+      {loading && <FullScreenLoader />}
       <CourseBreadcrumbs title={assignmmentName} clicked={() => clickedTab()}/>
       {
         showAssignment ?
@@ -219,6 +216,8 @@ export default function CoursesAssignment() {
         assignmentId={assignmentId}
         setAssignmentName={setAssignmentName}
         setInstructions={setInstructions}
+        rate={rate}
+        setRate={setRate}
         setAssignmentInfo={setAssignmentInfo} selectedAssignment={selectedAssignment} openEditAssignmentModal={openEditAssignmentModal} setOpenEditAssignmentModal={setOpenEditAssignmentModal}/>
         <Accordion defaultActiveKey="0">
           {moduleInfo.map((item, index) => {
@@ -239,7 +238,8 @@ export default function CoursesAssignment() {
                     ).map((as, index) => (
                       <Row>
                         <Col className="lesson-header" md={9} >
-                          <span onClick={(e) => {viewAss(as)}}>{as?.assignmentName}</span>
+                          <span style={{cursor: 'pointer'}} onClick={(e) => {viewAss(as)}}>{as?.assignmentName}</span><br />
+                          <span style={{fontSize:'18px'}} > Rate: {as?.rate}</span>
                         </Col>
                         {isContributor &&
                           <>
@@ -248,7 +248,7 @@ export default function CoursesAssignment() {
                                 placement="bottom"
                                 delay={{ show: 1, hide: 25 }}
                                 overlay={renderTooltipEdit}>
-                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id)}><i className="fa fa-edit"></i></Button>
+                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id, as?.rate)}><i className="fa fa-edit"></i></Button>
                               </OverlayTrigger>
                               <OverlayTrigger
                                 placement="bottom"

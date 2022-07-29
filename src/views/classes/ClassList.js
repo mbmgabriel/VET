@@ -44,10 +44,10 @@ function ClassList() {
     let response = await new ClassesAPI().getStudentList(id, isAccepted)
     if(response.ok){
       setWaitingStudent(response.data)
-      setLoading(true);
+      setLoading(false);
     }else{
-      alert("Something went wrong while fetching all Waiting Student")
-      setLoading(true);
+      toast.error('Something went wrong while fetching all Waiting Student')
+      setLoading(false);
     }
     
   }
@@ -69,7 +69,7 @@ function ClassList() {
       setEnrolledStudent(response.data)
       setLoading(false);
     }else{
-      alert("Something went wrong while fetching all Waiting Student")
+      toast.error('Something went wrong while fetching all errolled Student')
       setLoading(false);
     }
   } 
@@ -142,6 +142,7 @@ function ClassList() {
 
   return (
     <ClassSideNavigation>
+      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title='' clicked={() => console.log('')}/>
       <Row style={{paddingTop:'15px'}}>
           <div className="col-md-12 pages-header fd-row ai-c"><p className='title-header m-0'>Class List </p>

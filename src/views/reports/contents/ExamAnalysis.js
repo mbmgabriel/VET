@@ -279,8 +279,10 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                                   <Form.Check
                                   label="Unconsider"
                                   name={"answerid" + ad.id}
+                                  // className='progress-bar'
                                   type="checkbox"
                                   checked={ad.isConsider}
+                                  style={{}}
                                   onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
                                   /> 
                                 </Form.Group>

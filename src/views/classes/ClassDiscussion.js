@@ -53,14 +53,15 @@ function ClassDiscussion() {
   const subsType = user.subsType;
 
   const getClassInfo = async() => {
+    setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
-      console.log({response})
+      setLoading(false)
       getModule(response.data.classInformation?.courseId)
       setClassInfo(response.data)
-      console.log(response.data)
     }else{
-      alert("Something went wrong while fetching all courses")
+      setLoading(false)
+      toast.error('Something went wrong while fetching all courses')
     }
   }
 

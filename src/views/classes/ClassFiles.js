@@ -2,13 +2,15 @@ import React, {useEffect, useState, useContext} from 'react'
 import ClassFilesContent from './components/ClassFileContent';
 import { useParams } from 'react-router';
 import ClassFileHeader from './components/ClassFileHeader'
-import { InputGroup, FormControl, Table } from 'react-bootstrap';
+import { InputGroup, FormControl, Table, Button } from 'react-bootstrap';
 import FilesAPI from '../../api/FilesApi';
 import ClassesAPI from '../../api/ClassesAPI';
 import CoursesAPI from '../../api/CoursesAPI'
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
+import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 
 function ClassFiles() {
   const {id} = useParams();
@@ -24,6 +26,7 @@ function ClassFiles() {
   const [displayType, setDisplayType] = useState('');
   const [courseId, setCourseId] = useState(null)
   const [isContributor, setIsContributor] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getClassInfo();
@@ -33,26 +36,25 @@ function ClassFiles() {
   }, [])
 
   const getClassInfo = async() => {
-    // setLoading(true)
+    setLoading(true)
     let response = await new ClassesAPI().getClassInformation(id)
     if(response.ok){
+    setLoading(false)
       setCourseId(response?.data?.courseId);
       getCourseInformation(response?.data?.courseId);
-      console.log({response})
     }
-    // setLoading(false)
+    setLoading(false)
   }
 
   const getCourseInformation = async(cId) => {
+    setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(cId);
     if(response.ok){
+    setLoading(false)
       let TFICourse = response.data.isTechfactors;
-      console.log(response.data, 'infoooooooooooooooooo', TFICourse);
       if(TFICourse){
         let contriList = await new CoursesAPI().getContributor(cId)
-        console.log(contriList, "--------------------------------");
         let ifContri = contriList.data.find(i => i.userInformation?.userId == user.userId);
-        console.log(ifContri, user.userId, '-=-=-=')
         setIsContributor(ifContri ? true : false);
       }
     }
@@ -67,17 +69,17 @@ function ClassFiles() {
   }
 
   const handleGetClassFiles = async(name) => {
-    // setLoading(true)
+    setLoading(true)
     let data = {
       "subFolderLocation": name
     }
     let response = await new FilesAPI().getClassFiles(id, data)
-    // setLoading(false)
     if(response.ok){
+    setLoading(false)
       setFilesToDisplay(response.data.files);
       setFolderToDisplay(response.data.folders)
     }else{
-      alert("Something went wrong while fetching class files.")
+      toast.error('Something went wrong while fetching class files')
     }
   }
 
@@ -114,17 +116,17 @@ function ClassFiles() {
   }
 
   const handleGetCourseFiles = async(name) => {
-    // setLoading(true)
+    setLoading(true)
     let data = {
       "subFolderLocation": name
     }
     let response = await new FilesAPI().getCourseFiles(courseId, data)
-    // setLoading(false)
     if(response.ok){
+      setLoading(false)
       setFilesToDisplay(response.data.files);
       setFolderToDisplay(response.data.folders);
     }else{
-      alert("Something went wrong while fetching Course files.")
+      toast.error('Something went wrong while fetching Course files')
     }
   }
 
@@ -140,10 +142,22 @@ function ClassFiles() {
 
   return (
     <ClassSideNavigation>
+      {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title={ displayClassCourse ? `${displayType} Files` : ''} clicked={() => {setDisplayClassCourse(false); setDisplayType('');}} />
       {displayClassCourse ?
         <div className="row m-b-20 file-content">
-          <ClassFileHeader type={displayType}  title={`${displayType} Files`} subFolder={subFolderDirectory.join('')} id={id} doneUpload={()=> handleRefetch()}/>
+          <div className='content-pane-title col-md-10 pages-header'>
+            <ClassFileHeader type={displayType}  title={`${displayType} Files`} subFolder={subFolderDirectory.join('')} id={id} doneUpload={()=> handleRefetch()}/>
+              <div>
+              <Button onClick={() => {
+                getClassInfo();
+              }} 
+                className='ml-3'
+                >
+                <i className="fa fa-sync"></i>
+              </Button>
+            </div>
+          </div>
           <div className="col-md-12 m-b-20">
             <InputGroup size="lg">
               <FormControl onChange={(e) => setFilter(e.target.value)} aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Search Class Files Here" type="search"/>

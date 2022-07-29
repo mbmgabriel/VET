@@ -64,7 +64,17 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
         draggable: true,
         progress: undefined,
         });
-    }else{
+    }else if(rate <= 0){
+      toast.error('Rate must be greater than to 0.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    } else{
       let response = await new ClassesAPI().creatTask(moduleId, id, {task:{taskName, instructions, rate}, taskAssignment:{allowLate}} )
       if(response.ok){
         setModuleId("")

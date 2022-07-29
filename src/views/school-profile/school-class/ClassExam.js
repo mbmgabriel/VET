@@ -86,13 +86,13 @@ function ClassAdminExam() {
 
   return (
     <MainContainer title="School" activeHeader={"classes"} style='not-scrollable'>
+        {loading && <FullScreenLoader />}
       <Row className="mt-4">
         <Col sm={3}>
           <ClassAdminSideNavigation active="exam"/>
         </Col>
         <Col sm={9} className='scrollable vh-85'>
         <div className="class-container position-relative">
-        {loading && <FullScreenLoader />}
         <ClassExamHeader onSearch={onSearch} modules={modules} fetchExams={fetchExams} onRefresh={() => fetchExams()}/>
         <Accordion defaultActiveKey="0">
           {modules.map((module, index) => {

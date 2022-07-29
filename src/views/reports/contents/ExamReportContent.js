@@ -26,7 +26,7 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
   const [testReport, setTestReport] = useState([])
   const [sorted, setSorted] = useState([])
   const [alphabetical, setAlphabetical] = useState(true);
-  const {user} = userContext.data
+  const {user,themeColor} = userContext.data
   const [dataDownload, setDataDownload] = useState({});
   const pageURL = new URL(window.location.href);
   let sessionClass = pageURL.searchParams.get("classId")
@@ -334,7 +334,8 @@ const handleClickIcon = () =>{
                   </td>
                   <td>
                     {st.isSubmitted === false ? <spam></spam>: 
-                    <Button style={{color:"white"}} variant="warning" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
+                    <Button style={{color:"white" }} className='tficolorbg-button' variant="" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
+
                     }
                     
                     <SweetAlert
