@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Tab, Row, Col, Button, InputGroup, FormControl, Accordion } from 'react-bootstrap';
 import CoursesAPI from "../../../../api/CoursesAPI";
+import DOMPurify from "dompurify";
 
 export default function CoursesLearnContent({courseInfo, setCourseInfo, moduleInfo, setModuleInfo, lessonContent, setLessonContent}) {
 
@@ -29,7 +30,7 @@ export default function CoursesLearnContent({courseInfo, setCourseInfo, moduleIn
       <br></br>
       <span className="course-subtitle"><small>{modulename}</small></span>
       <hr></hr>
-      <div style={{position:"relative"}} dangerouslySetInnerHTML={{__html: lessonContent?.content?.replace(/\n/g, '<br />')}} />
+      <div className="dangerously-learn-content" style={{position:"relative"}} dangerouslySetInnerHTML={{__html: lessonContent?.content}} />
       </>
       
   )
