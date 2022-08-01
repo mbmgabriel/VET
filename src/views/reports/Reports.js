@@ -106,7 +106,7 @@ export default function Reports({children}) {
             </Form.Select>
             </Form>
           </ListGroup.Item>
-          <ListGroup style={{paddingLeft:'15px'}}>
+          <ListGroup className="list-group-item-o" style={{paddingLeft:'15px', paddingRight: '15px'}}>
           {subsType == 'Interactives' ?
               <Link className={currentLoc.includes('reports/interactive') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/interactive?classId=${classId}` : '/reports'}>
                 Interactive
