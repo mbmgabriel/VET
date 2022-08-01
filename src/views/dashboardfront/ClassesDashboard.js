@@ -37,8 +37,8 @@ export default function ClassesDashboard({studentClasses, teacherClasses}) {
       let temp = localStorage.getItem('academicTerm')
       let obj = data.find(o => o.isCurrentTerm === true);
       if(temp === null) {
-        setCurrentAcademicTerm(temp ? temp : obj.academicTermName);
-        localStorage.setItem('academicTerm', obj.academicTermName);
+        setCurrentAcademicTerm(temp ? temp : obj?.academicTermName);
+        localStorage.setItem('academicTerm', obj?.academicTermName);
       }
     }
   }
