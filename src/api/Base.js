@@ -10,7 +10,7 @@ export default class Base {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'X-LMS-KEY': `Web|${subdomain.includes("localhost") ? 'dev' : subdomain }.tekteachlms.com`,
+        'X-LMS-KEY': `Web|${subdomain.includes("localhost") ? 'content' : subdomain }.tekteachlms.com`,
         Authorization: `Bearer ${await window.localStorage.getItem("token")}`,
       },
       method: method,

@@ -271,27 +271,23 @@ export default function CourseLearn() {
               </InputGroup>
             </div>
           </div>
-          {
-            console.log(courseInfo, '--////./.')
-          }
-          {
-            <EditLesson
-              isTFI={courseInfo?.isTechfactors}
-              sequenceNo={sequenceNo} 
-              pageName={pageName} 
-              content={content} 
-              lessonId={lessonId}
-              setContent={setContent}
-              setPageName={setPageName}
-              setSequenceNo={setSequenceNo}
-              setSelectedLesson={setSelectedLesson}
-              selectedLesson={selectedLesson}
-              setLessonInfo={setLessonInfo}
-              openEditLessonModal={openEditLessonModal}
-              setOpenEditLessonModal={setOpenEditLessonModal}
-            />
-          }
-          <CreateLesson 
+          <EditLesson
+            isTFI={courseInfo?.isTechfactors}
+            sequenceNo={sequenceNo} 
+            pageName={pageName} 
+            content={content} 
+            lessonId={lessonId}
+            setContent={setContent}
+            setPageName={setPageName}
+            setSequenceNo={setSequenceNo}
+            setSelectedLesson={setSelectedLesson}
+            selectedLesson={selectedLesson}
+            setLessonInfo={setLessonInfo}
+            openEditLessonModal={openEditLessonModal}
+            setOpenEditLessonModal={setOpenEditLessonModal}
+          />
+          <CreateLesson
+            isTFI={courseInfo?.isTechfactors}
             openCreateLessonModal={openCreateLessonModal} 
             setCreateLessonModal={setCreateLessonModal} 
             selectedLesson={selectedLesson} 

@@ -5,6 +5,7 @@ import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { toast } from 'react-toastify';
 import ContentFieldWithTextArea from "../../../components/content_field/ContentFieldWithTextArea";
+import ContentFieldForTFICourses from "../../../components/content_field/ContentFieldForTFICourses";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
 import CourseFileLibrary from "./CourseFileLibrary";
@@ -53,7 +54,6 @@ export default function EditLesson({isTFI, lessonId, setSequenceNo, setPageName,
           progress: undefined,
           });
         getCourseUnitPages()
-        console.log(getCourseUnitPages())
       getCourseLessons(sessionCourse, sessionModule)
   
       setOpenEditLessonModal(false)
@@ -81,7 +81,6 @@ export default function EditLesson({isTFI, lessonId, setSequenceNo, setPageName,
     setLoading(false)
     if(response.ok){
       setLessonInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all pages")
     }
@@ -93,13 +92,11 @@ export default function EditLesson({isTFI, lessonId, setSequenceNo, setPageName,
     setLoading(false)
     if(response.ok){
       setModulePages(response.data)
-      console.log(response.data, "=====================")
     }else{
       alert("Something went wrong while fetching all pages")
     }
   }
 
-  console.log('displayFiles', displayFiles)
 
 	return (
 		<div>
@@ -144,7 +141,12 @@ export default function EditLesson({isTFI, lessonId, setSequenceNo, setPageName,
                 </div>
                 <Form.Group className="m-b-20">
                   <Form.Label>Content</Form.Label>
-                    <ContentFieldWithTextArea isTFI={isTFI} value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
+                  {    
+                  isTFI ?
+                  <ContentFieldForTFICourses value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
+                  :                
+                  <ContentFieldWithTextArea value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
+                  }
                 </Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
