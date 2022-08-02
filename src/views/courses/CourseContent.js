@@ -167,7 +167,7 @@ export default function CourseContent({children}) {
                   isContributor && 
                   <>
                   <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
-                    Interactive
+                    Interactive Exercises
                   </Link>
                   <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
                     Files 
