@@ -120,7 +120,7 @@ export default function ContentField(props) {
     return RICH_TEXT
   }
 
-  const [inputType, setInputType] = useState(setDefaultType());
+  const [inputType, setInputType] = useState('');
   
   
   const updateInputType = (type) => {
@@ -139,6 +139,7 @@ export default function ContentField(props) {
     
     setInputType(type)
   }
+  console.log(props.value);
 
   useEffect(() => {
     if(props.value.includes(EQUATION_TAG))
@@ -151,7 +152,7 @@ export default function ContentField(props) {
       <div key={`inline-radio`} className="mb-3" >
         <Form.Check
           inline
-          label="Text Editor"
+          label="HTML Editor"
           type={"radio"}
           value=""
           checked={inputType === ""}
