@@ -43,7 +43,6 @@ const CONFIG = {
 
 const Field = (props) => {
   const {inputType, value, placeholder, onChange} = props
-  console.log(inputType);
   switch (inputType) {
     case EQUATION:
       return (
@@ -102,7 +101,7 @@ const Field = (props) => {
         toolbarButtonsSM: CONFIG,
         toolbarButtonsXS: CONFIG,
       }}
-      onModelChange={onChange}/>;
+      onModelChange={props.isTFI ? onChange(props.value) : onChange}/>;
       default:
         return (
           <div class="form-group">
@@ -113,7 +112,7 @@ const Field = (props) => {
 }
 
 export default function ContentField(props) {
-
+  const [richTextValue, setRichTextValue] = useState(props.value) //use only if course is TFI, Rich text is used for viewing only
   const setDefaultType = () => {
     if(props.value.includes(EQUATION_TAG))
       return props.value
@@ -126,7 +125,6 @@ export default function ContentField(props) {
   const updateInputType = (type) => {
     switch (type) {
       case EQUATION:
-        console.log({type})
         props.onChange(props.value);
         break;
       case RICH_TEXT:
@@ -139,14 +137,12 @@ export default function ContentField(props) {
     
     setInputType(type)
   }
-  console.log(props.value);
 
   useEffect(() => {
     if(props.value.includes(EQUATION_TAG))
     return setInputType(EQUATION)
   },[])
 
-  console.log(inputType, '----')
   return (
     <div className={props.className}>
       <div key={`inline-radio`} className="mb-3" >

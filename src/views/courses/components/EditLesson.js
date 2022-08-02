@@ -9,7 +9,7 @@ import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from '../../../api/FilesApi'
 import CourseFileLibrary from "./CourseFileLibrary";
 
-export default function EditLesson({lessonId, setSequenceNo, setPageName, setContent, content, pageName, sequenceNo, openEditLessonModal, setOpenEditLessonModal, selectedLesson, setLessonInfo}){
+export default function EditLesson({isTFI, lessonId, setSequenceNo, setPageName, setContent, content, pageName, sequenceNo, openEditLessonModal, setOpenEditLessonModal, selectedLesson, setLessonInfo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
@@ -139,28 +139,12 @@ export default function EditLesson({lessonId, setSequenceNo, setPageName, setCon
                       onChange={(e) => setSequenceNo(e.target.value)}
                     />
 								</Form.Group>
-
-                {/* <Form.Group className="m-b-20">
-                  <Form.Label for="description">
-                      Content
-                  </Form.Label>
-                  <Form.Control 
-                    defaultValue={selectedLesson?.content}
-                    // value={selectedLesson?.content}
-                    className="custom-input" 
-                    size="lg" 
-                    as="textarea"
-                    placeholder="Enter lesson content"
-                    rows={5}
-                    onChange={(e) => setContent(e.target.value)}
-                  />
-                </Form.Group> */}
                 <div>
                   <Button className='float-right my-2 tficolorbg-button' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
                 </div>
                 <Form.Group className="m-b-20">
-                  <Form.Label >Content</Form.Label>
-                    <ContentFieldWithTextArea value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
+                  <Form.Label>Content</Form.Label>
+                    <ContentFieldWithTextArea isTFI={isTFI} value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
                 </Form.Group>
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
