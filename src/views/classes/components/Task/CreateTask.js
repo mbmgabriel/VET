@@ -14,7 +14,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
   const [moduleId, setModuleId] = useState('')
   const [taskName, setTaskName] = useState('')
   const [instructions, setInstructions] = useState('')
-  const [rate, setRate] = useState('')
+  const [rate, setRate] = useState(100)
   const [addNotify, setAddNotity] = useState(false);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -36,6 +36,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
     setModuleId('')
     setTaskName('') 
     setInstructions('')
+    setRate(100)
   }
 
   const success = () => {
@@ -130,7 +131,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
                 </Form.Group>
                 <Form.Group className="mb-4">
                 <Form.Label>Rate</Form.Label>
-                  <Form.Control  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
+                  <Form.Control defaultValue={rate}  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
                 </Form.Group>
                 <Form.Group className="mb-4">
                   <Form.Label >Instruction</Form.Label>

@@ -16,7 +16,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
   const [modulePages, setModulePages] = useState([])
 	const [taskName, setTaskName] = useState('')
 	const [instructions, setInstructions] = useState('')
-  const [rate, setRate] = useState(null)
+  const [rate, setRate] = useState(100)
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
@@ -31,11 +31,12 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
     setCreateTaskModal(false)
     setTaskName('')
     setInstructions('')
+    setRate(100)
   }
 
 	const saveTask = async(e) => {
     e.preventDefault()
-    if(rate === null) {
+    if(rate === '') {
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -161,6 +162,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
                       Rate
                   </Form.Label>
                   <Form.Control 
+                    defaultValue={rate}
                     className="custom-input" 
                     size="lg" 
                     type="number" 

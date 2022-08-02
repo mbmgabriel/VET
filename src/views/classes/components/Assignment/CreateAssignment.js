@@ -14,7 +14,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   const [moduleId, setModuleId] = useState('')
   const [assignmentName, setAssignmentName] = useState('')
   const [instructions, setInstructions] = useState('')
-  const [rate, setRate] = useState('')
+  const [rate, setRate] = useState(100)
   const [addNotify, setAddNotity] = useState(false)
   const [displayFiles, setDisplayFiles] = useState([]);
   const [showFiles, setShowFiles] = useState(false);
@@ -61,7 +61,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
         setModuleId('')
         setAssignmentName('')
         setInstructions('')
-        setRate('')
+        setRate(100)
         // alert('Save Assingment')
         // setAddNotity(true)
         getAssignmentList(null, moduleId)
