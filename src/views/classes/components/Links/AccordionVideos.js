@@ -123,6 +123,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
               </>
               ):(
               <>
+              {(item?.classLink === null)?(<></>):(<>
                 <Col sm={3} className='icon-exam'>
                   <OverlayTrigger
                     placement="bottom"
@@ -137,6 +138,7 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
                       <Button onClick={() => handleDeleteNotify(item?.classLink.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
                   </OverlayTrigger>
                 </Col>
+              </>)}
               </>
               )}
               <Col sm={6}>
