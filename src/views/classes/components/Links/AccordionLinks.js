@@ -118,14 +118,15 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
                     </div>
                   </div>
               </Col>
-              <Col sm={9}>
+              {/* <Col sm={9}>
                 {item?.classLink == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Class</Status></div>)}
-              </Col>
+              </Col> */}
               {(user.teacher === null)?(
               <>
               </>
               ):(
               <>
+              {(item?.classLink === null)?(<></>):(<>
                 <Col sm={3} className='icon-exam'>
                 <OverlayTrigger
                     placement="bottom"
@@ -143,6 +144,7 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
                 <Col sm={9}>
                   {item?.classLink == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Class</Status></div>)}
               </Col>
+              </>)}
               </>
               )}
               <Col sm={6}>

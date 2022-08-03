@@ -14,7 +14,7 @@ export default function FloatingOptions() {
   const subsType = user.subsType;
 
   const getImage = async() =>{
-    let tempId = user.isStudent ? user.student?.id : user.teacher?.id
+    let tempId = user.userId
     let response = await new ProfileInfoAPI().getProfileImage(tempId)
     if(response.ok){
       setprofileImage(response.data)
@@ -29,7 +29,7 @@ export default function FloatingOptions() {
 
   return (
     <div>
-      {subsType == 'Ebooks' || subsType == 'TeacherResources' ? 
+      {subsType == 'Ebooks' ? 
       <div className="floating-options">
         <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
           {profileImage ?
@@ -51,11 +51,11 @@ export default function FloatingOptions() {
         </Link>
         <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
           {profileImage ?
-          <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
-          :
-          <div>
-            <i class="fas fa-user"></i>
-          </div>
+            <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
+            :
+            <div>
+              <i class="fas fa-user"></i>
+            </div>
           }
         </Link>
       </div>

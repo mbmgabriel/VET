@@ -16,6 +16,7 @@ import ExamCreation from "../../../exam-creation/ExamCreation";
 import CourseBreadcrumbs from "../../components/CourseBreadcrumbs";
 import { UserContext } from '../../../../context/UserContext';
 import FullScreenLoader from "../../../../components/loaders/FullScreenLoader";
+import ContentViewer from "../../../../components/content_field/ContentViewer";
 
 
 export default function CoursesExam() {
@@ -216,9 +217,11 @@ export default function CoursesExam() {
                           <Link className="lesson-header" to={`/course/${id}/exam/${ei.id}`}>
                               {ei?.testName}
                             </Link>
-                            <div>
+                            <ContentViewer className='mb-2'>{ei?.testInstructions}</ContentViewer>
+
+                            {/* <div>
                              <p dangerouslySetInnerHTML={{__html:ei?.testInstructions }} />
-                            </div>
+                            </div> */}
                           </Col>
                           {isContributor &&
                             <Col className="align-right-content" md={3}>

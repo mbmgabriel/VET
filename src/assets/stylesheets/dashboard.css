@@ -1,7 +1,7 @@
 
-*:not(.fas, .far, .fa) {
+span :not(.fas, .far, .fa, .dangerously-learn-content) {
   font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
-    "Helvetica Neue", Arial, sans-serif, Garamond !important;
+    "Helvetica Neue", Arial, sans-serif !important;
 } 
 
 code {

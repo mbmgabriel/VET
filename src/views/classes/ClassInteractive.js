@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ClassInteractiveHeader from './components/Interactive/ClassInteractiveHeader'
-import { Row, Col, Accordion, Button, OverlayTrigger, Tooltip} from 'react-bootstrap'
+import { Row, Col,Card, Accordion, Button, OverlayTrigger, Tooltip} from 'react-bootstrap'
 import ClassesAPI from '../../api/ClassesAPI'
 import DiscussionAPI from '../../api/DiscussionAPI';
 import { useParams } from 'react-router'
@@ -37,6 +37,9 @@ function ClassInteractive() {
   const [resultToken, setResultToken] = useState('')
   const subsType = user.subsType;
   const [loading, setLoading] = useState(false);
+  const [cName, setCname] = useState("")
+  const [tMiranda, setTMiranda] = useState({});
+  const [sMiranda, setSMiranda] = useState({});
 
   const onSearch = (item) => {
     setSearchTerm(item)
@@ -119,7 +122,7 @@ function ClassInteractive() {
         getIndteractive()
         )
       } 
-    if(subsType == 'Ebooks' || subsType == 'TeacherResources'){
+    if(subsType == 'Ebooks'){
       window.location.href = "/classes"
     }
   }, [])
@@ -128,6 +131,8 @@ function ClassInteractive() {
     getClassInfo()
     getAccountInfo()
     getSchoolCode()
+    getTeacherMiranda()
+    getStudentMiranda()
   }, [])
 
   const handleRefresh = () => {
@@ -147,6 +152,37 @@ function ClassInteractive() {
       Assign
     </Tooltip>
   )
+
+  const getTeacherMiranda = async() => {
+    let response = await new ClassesAPI().teacherMiranda()
+    if(response.ok){
+      setTMiranda(response.data)
+      console.log(response.data)
+    }else{
+      // alert("Teacher Miranda Error")
+    }
+  }
+
+  const getStudentMiranda = async() => {
+    let response = await new ClassesAPI().studentMiranda()
+    if(response.ok){
+      setSMiranda(response.data)
+    }else{
+      // alert("Student Miranda Error")
+    }
+  }
+
+  const goToMirandaTeacher = async(tCode, tUser, tPass) => {
+    window.open('https://irai2.com/mir2021.1.2/?'+ tCode +','+ tUser +','+ tPass) 
+}
+
+const goToMirandaStudent = async(sCode, sRoom, sUser, sPass) => {
+  window.open('https://irai2.com/mir2021.1.2/?'+sCode+','+sRoom+':'+sUser+','+sPass ) 
+}
+
+          let subdomain1 =  /:\/\/([^\/]+)/.exec(window.location.href)[1]
+          let subdomain2 = window.location.pathname;
+          let subdomain =  window.location.host.split('.')[1] ? window.location.host.split('.')[0] : false;
 
   const gParkStartGame = (tokenData1, path) => {
 
@@ -490,6 +526,19 @@ console.log('interactive:', interactive)
       {loading && <FullScreenLoader />}
       <ClassBreadcrumbs title='' clicked={() => console.log('')} />
       <ClassInteractiveHeader onSearch={onSearch} onRefresh={()=> handleRefresh()}/>
+          {subdomain1 === 'ama' &&
+            <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+              {user?.teacher ?
+              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                <i class="fas fa-tv"></i> Robotics Simulator T
+              </Link>
+              :
+              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                <i class="fas fa-tv"></i> Robotics Simulator S
+              </Link>
+              }
+            </Card>
+          }
       <Accordion>
         {module.map((item, index) => {
           return ( <Accordion.Item eventKey={index} onClick={(e) => getIndteractive(e, item?.id)} >

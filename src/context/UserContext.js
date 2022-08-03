@@ -61,6 +61,7 @@ export class UserContextProvider extends Component {
           case "System Admin":
             user.name = `System Admin`
             user.isSystemAdmin = true
+            user.subsType = window.localStorage.getItem('subsType');
             break;
         default:
           user.name = 'No name'

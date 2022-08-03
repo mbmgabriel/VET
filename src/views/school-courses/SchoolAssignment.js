@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AdminSideNavigation from '../../components/side-navigation/AdminSideNavigation'
 import MainContainer from '../../components/layouts/MainContainer'
 import { Col, Row } from 'react-bootstrap'
@@ -8,18 +8,20 @@ import SchoolCoursesContent from './component/SchoolCoursesContent'
 import { useParams } from "react-router";
 import CoursesAPI from '../../api/CoursesAPI'
 import SchoolCourseAssignment from './component/SchoolCourseAssignment'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 function SchoolAssignment() {
   const userContext = useContext(UserContext)
-  const {user} = userContext.data
-  const {id} = useParams()
+  const { user } = userContext.data
+  const { id } = useParams()
   const [courseInfos, setCourseInfos] = useState([])
   const [loading, setLoading] = useState(true)
-  
-  const getCourseInformation = async () =>{
+
+  const getCourseInformation = async () => {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(id)
-    if(response.ok){
+    if (response.ok) {
+    setLoading(false)
       setCourseInfos(response.data)
     }
     setLoading(false)
@@ -34,16 +36,17 @@ function SchoolAssignment() {
   }, []);
 
   return (
-        <MainContainer title="Assignment" activeHeader={"courses"} style='not-scrollable' loading={loading}>
-    <Row className="mt-4 not-scrollable">
-      <Col sm={3}>
-        <CourseSideNav courseInfos={courseInfos} active="Assignment" />
-      </Col>
-      <Col sm={9} className='scrollable vh-85'>
-        <SchoolCourseAssignment setLoading={setLoading} onRefresh={() => getCourseInformation()} />
-      </Col>
-    </Row>
-  </MainContainer>
+    <MainContainer title="Assignment" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
+      <Row className="mt-4 not-scrollable">
+        <Col sm={3}>
+          <CourseSideNav courseInfos={courseInfos} active="Assignment" />
+        </Col>
+        <Col sm={9} className='scrollable vh-85'>
+          <SchoolCourseAssignment setLoading={setLoading} onRefresh={() => getCourseInformation()} />
+        </Col>
+      </Row>
+    </MainContainer>
   )
 }
 

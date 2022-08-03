@@ -4,6 +4,7 @@ import Status from "../../../components/utilities/Status";
 import { integerToRoman } from "../../../utils/integerToRoman";
 import QuestionInput from "./QuestionInput";
 import SweetAlert from "react-bootstrap-sweetalert";
+import ContentViewer from "../../../components/content_field/ContentViewer";
 
 export default function ExamForm({
   exam,
@@ -23,9 +24,10 @@ export default function ExamForm({
           <Accordion.Item eventKey='0'>
             <Accordion.Header>
               <div>
-                <p className='primary-title' style={{ fontSize: 24 }}
+                <ContentViewer className="mb-2">{part.questionPart.instructions}</ContentViewer>
+                {/* <p className='primary-title' style={{ fontSize: 24 }}
                   dangerouslySetInnerHTML={{__html:part.questionPart.instructions }}
-                />
+                /> */}
                 <p
                   className='secondary-title'
                   style={{ fontSize: 16 }}

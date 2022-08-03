@@ -10,7 +10,7 @@ function FrequencyOferror({frequencyItem}) {
         <>
         <div style={{display:'flex', paddingRight:'20px'}}> 
             <div style={{float:'right', paddingTop:'65px'}}>
-            <div className='analytics-exam-header'><b>{item?.questionPart?.instructions}</b></div> 
+            <div className='analytics-exam-header'><ContentViewer>{item?.questionPart?.instructions}</ContentViewer></div> 
             </div>
         </div>
          

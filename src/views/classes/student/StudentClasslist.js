@@ -19,6 +19,8 @@ function StudentClasslist({item}) {
     if(subsType == 'Interactives' && user.isStudent){
       return `/classes/${id}/interactives`
     }
+    if(subsType == 'TeacherResources') return `/classes/${id}/interactives`;
+
   }
 
   return (

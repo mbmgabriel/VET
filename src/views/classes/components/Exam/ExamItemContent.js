@@ -2,6 +2,7 @@ import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import ContentViewer from "../../../../components/content_field/ContentViewer";
 
 export default function ExamItemContent({
   id,
@@ -24,7 +25,8 @@ export default function ExamItemContent({
        <span dangerouslySetInnerHTML={{__html:exam.test.testName }} /> 
       </Link>
       <p className='exam-course-name'>{exam.module?.moduleName}</p>
-      <p className='exam-instruction 'dangerouslySetInnerHTML={{__html:exam.test.testInstructions }} />
+      <ContentViewer className='mb-2'>{exam.test.testInstructions}</ContentViewer>
+      {/* <p className='exam-instruction 'dangerouslySetInnerHTML={{__html:exam.test.testInstructions }} /> */}
       {startDate && (
         <p className='exam-instruction m-0'>
           <span className='d-inline-block' style={{ width: 40 }}>

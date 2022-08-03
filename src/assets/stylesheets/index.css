@@ -1,13 +1,10 @@
-
-* {
-
+/* * {
   font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
-  
+  Garamond,serif,
   "Helvetica Neue", Arial, sans-serif;
-  
-  }
+  } */
 
-span, input::placeholder {
+input::placeholder {
   font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans",
     "Helvetica Neue", Arial, sans-serif !important;
 }
@@ -346,7 +343,7 @@ color:#BCBCBC !important;
   border: 0px !important;
   height: 308px;
   width: 300px;
-  margin-top: 50px !important;
+  margin-top: 10px !important;
   border-radius: 10px;
   opacity: 1;
   top: 178px;
@@ -384,6 +381,7 @@ background-color:var(--primary-color) !important;
 border: 0 !important;
 color: white !important;
 border-radius: 10px 10px 10px 10px !important;
+width: 150px !important;
 
 }
 
@@ -1091,6 +1089,8 @@ border-top-right-radius: 0px !important;
   text-decoration: none!important
 }
 .btn-like{
+  /* color: var(--primary-color)!important; */
+  color: var(--primary-color)!important;
   color: var(--primary-color)!important;
   /* color: #EE9337!important; */
   font-size: 16px!important;

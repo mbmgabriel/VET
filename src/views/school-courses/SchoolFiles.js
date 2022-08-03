@@ -33,10 +33,9 @@ function SchoolFiles() {
     if (user.isStudent) return (window.location.href = "/404");
   }, []);
 
-  console.log('courseInfoscourseInfoscourseInfos:', courseInfos)
-
   return (
   <MainContainer title="Files" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+
     <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Files" />
