@@ -5,11 +5,13 @@ import { UserContext } from "../../../context/UserContext";
 import getStartAndEndDateFromClassTest from "../../../utils/getStartAndEndDateFromClassTest";
 import ExamStatuses from "../../classes/components/Exam/ExamStatuses";
 import ExamTimer from "./ExamTimer";
+import ContentViewer from "../../../components/content_field/ContentViewer";
 
 const ExamParts = ({ exam }) => {
   return exam.questionPartDto.map((part, index) => (
     <div className='exam-parts-container default-item-container' key={index}>
-      <p className='primary-title' style={{ fontSize: 24 }} dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} />
+      <ContentViewer className='mb-2'>{part.questionPart.instructions}</ContentViewer>
+      {/* <p className='primary-title' style={{ fontSize: 24 }} dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} /> */}
       <p
         className='secondary-title'
         style={{ fontSize: 16 }}

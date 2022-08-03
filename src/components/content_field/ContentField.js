@@ -1,5 +1,5 @@
 import EquationEditor from "equation-editor-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import FroalaEditor from "react-froala-wysiwyg";
 import config from "../../config/application";
@@ -106,15 +106,18 @@ const Field = (props) => {
 }
 
 export default function ContentField(props) {
-
+  console.log(props.value.includes(EQUATION_TAG), 'wwwwww')
   const setDefaultType = () => {
-    if(props.value.includes(EQUATION_TAG))
+    if(props?.value.includes(EQUATION_TAG))
       return EQUATION
     return ""
   }
 
   const [inputType, setInputType] = useState(setDefaultType());
   
+  useEffect(() => {
+    setInputType(setDefaultType())
+  },[props.value])
   
   const updateInputType = (type) => {
     switch (type) {

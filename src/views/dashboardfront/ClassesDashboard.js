@@ -37,7 +37,6 @@ export default function ClassesDashboard({studentClasses, teacherClasses}) {
       return(
         getClasses()
       )
-   
   }, [])
 
   return (
@@ -54,7 +53,6 @@ export default function ClassesDashboard({studentClasses, teacherClasses}) {
       </Row>
       {user?.isTeacher &&
       <>
-      {console.log(teacherClasses, '-------')}
         {teacherClasses.length?
           teacherClasses.slice(0, 8).map(item => {
             return(

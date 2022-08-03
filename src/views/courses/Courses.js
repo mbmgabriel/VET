@@ -7,7 +7,7 @@ import CourseEdit from "./components/CourseEdit";
 import CoursesAPI from "../../api/CoursesAPI";
 import { UserContext } from './../../context/UserContext'
 import InactiveCourses from "./components/InactiveCourses";
-
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 export default function Courses() {
 
@@ -140,6 +140,7 @@ export default function Courses() {
   
   return (
     <MainContainer loading={loading} activeHeader={'courses'}>
+      {loading && <FullScreenLoader/>}
       <div className="page-container">
         <div className="containerpages">
           {user.isTeacher &&

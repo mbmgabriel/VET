@@ -8,6 +8,7 @@ import ClassesAPI from './../../api/ClassesAPI'
 import AcademicTermAPI from './../../api/AcademicTermAPI';
 
 import FullScreenLoader from '../../components/loaders/FullScreenLoader'
+import { toast } from 'react-toastify'
 import { set } from 'react-hook-form'
 
 export default function Reports({children}) {
@@ -75,16 +76,21 @@ export default function Reports({children}) {
   }
 
   const addClassIdOnParams = (id) => {
-    setLoading(true)
-    let newURL = new URL(window.location);
-    newURL.searchParams.set('classId', id);
-    window.history.pushState(null, '', newURL.toString());
-    setClassId(id);
-    setLoading(false);
-    if(window.location.pathname !== '/reports'){
-      window.location.reload();
-    setLoading(false);
+    if(id == ''){
+      toast.error('Please Select Class')
+    }else{
+      setLoading(true)
+      let newURL = new URL(window.location);
+      newURL.searchParams.set('classId', id);
+      window.history.pushState(null, '', newURL.toString());
+      setClassId(id);
+      setLoading(false);
+      if(window.location.pathname !== '/reports'){
+        window.location.reload();
+      setLoading(false);
+      }
     }
+
   }
 
   const getAcademicTerm = async () =>{
@@ -102,16 +108,18 @@ export default function Reports({children}) {
       {/* <SideReport/> */}
       <Col style={{height: 100}} />
       <Row>
-        <Col sm={3}>
+        <Col className='report-sidenav' sm={3}>
           <ListGroup.Item className="list-group-item-o">
+            <Form>
             <Form.Select value={classId} onChange={(e) => addClassIdOnParams(e.target.value)}>
               <option value="">-- Select Class Here --</option>
               {classes.map(item =>{
                 return (currentAcademicTerm == item.termName && <option value={item?.classId} > {item?.className}</option>)
               })}
             </Form.Select>
+            </Form>
           </ListGroup.Item>
-          <ListGroup style={{paddingLeft:'15px'}}>
+          <ListGroup className="list-group-item-o" style={{paddingLeft:'15px', paddingRight: '15px'}}>
           {subsType == 'Interactives' ?
               <Link className={currentLoc.includes('reports/interactive') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/interactive?classId=${classId}` : '/reports'}>
                 Interactive

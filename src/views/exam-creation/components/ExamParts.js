@@ -6,6 +6,7 @@ import { useContext } from "react";
 import Questions from "./questions/Questions";
 import { UserContext } from "../../../context/UserContext";
 import CoursesAPI from "../../../api/CoursesAPI";
+import ContentViewer from "../../../components/content_field/ContentViewer";
 
 export default function ExamParts({
   exam,
@@ -98,7 +99,8 @@ export default function ExamParts({
           <Accordion.Header title="">
             <div className='accordion-block-header'>
               <div className='header-content'>
-                <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} title='' />
+                <ContentViewer className='fa-2x font-weight-bolder mb-2'>{part.questionPart.instructions}</ContentViewer>
+                {/* <h3 dangerouslySetInnerHTML={{__html:part.questionPart.instructions }} title='' /> */}
                 <p>{displayQuestionType(part.questionPart.questionTypeId)}</p>
                 <span title=''>{`${part.questionDtos.length} Question(s)`}</span>
               </div>

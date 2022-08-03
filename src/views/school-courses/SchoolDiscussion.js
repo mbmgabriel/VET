@@ -8,6 +8,7 @@ import SchoolCoursesContent from './component/SchoolCoursesContent'
 import { useParams } from "react-router";
 import CoursesAPI from '../../api/CoursesAPI'
 import SchoolCoursesDiscussionContent from './component/SchoolCoursesDiscussionContent'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 function SchoolDiscussion() {
   const userContext = useContext(UserContext)
@@ -20,6 +21,7 @@ function SchoolDiscussion() {
     setLoading(true)
     let response = await new CoursesAPI().getCourseInformation(id)
     if(response.ok){
+    setLoading(false)
       setCourseInfos(response.data)
     }
     setLoading(false)
@@ -34,6 +36,7 @@ function SchoolDiscussion() {
   }, []);
   return (
     <MainContainer title="Courses" activeHeader={"courses"} style='not-scrollable' loading={loading}>
+      {loading && <FullScreenLoader />}
     <Row className="mt-4 not-scrollable">
       <Col sm={3}>
         <CourseSideNav courseInfos={courseInfos} active="Discussion" />
