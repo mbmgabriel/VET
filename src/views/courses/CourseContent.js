@@ -165,9 +165,16 @@ export default function CourseContent({children}) {
                 </Link>
                 {
                   isContributor && 
-                  <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
-                    Files
+                  <>
+                  <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
+                    Interactive Exercises
                   </Link>
+                  <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
+                    Files 
+                  </Link>
+                  </>
+
+                  
                 }
                 <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
                   Links
@@ -175,7 +182,7 @@ export default function CourseContent({children}) {
                 {
                   courseInfo.isTechfactors && 
                   <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
-                    Videos Upload
+                    Videos Upload 
                   </Link>
                 }
               </ListGroup>

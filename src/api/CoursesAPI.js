@@ -283,6 +283,29 @@ export default class CoursesAPI extends Base {
     })
   }
 
+  createInterActive = async (moduleId, data) =>{
+    return this.sendRequest({
+      path:`/api/Interactive/module/${moduleId}`,
+      method: 'POST',
+      data
+    })
+  }
+
+  updateInterActive = async (id, data) => {
+    return this.sendRequest({
+      path: `/api/Interactive/${id}`,
+      method: 'PUT',
+      data
+    })
+  }
+
+  deleteInterActive = async (id) => {
+    return this.sendRequest({
+      path:`/api/Interactive/${id}`,
+      method: 'DELETE'
+    })
+  }
+
   getFiles = async (id) => {
     return this.sendRequest({
       path: `/api/Course/${id}/files`,

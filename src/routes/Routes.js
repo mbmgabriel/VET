@@ -23,6 +23,7 @@ import CourseLinks from "../views/courses/pages/Links/CourseLinks";
 import CoursesVideos from "../views/courses/pages/Videos/CoursesVideo";
 import CoursesResources from "../views/courses/pages/Resources/CoursesResources";
 import CourseExamCreation from "../views/courses/pages/Exam/CourseExamCreation";
+import CourseInterActive from '../views/courses/pages/InterActive/InterActive'
 
 import ClassExamCreation from '../views/classes/ClassExamCreation';
 import ClassAssignment from '../views/classes/ClassAssignment'
@@ -143,6 +144,7 @@ export default function Routes() {
             <PrivateRoute path='/courses/:id/videos' exact component={CoursesVideos}/>
             <PrivateRoute path='/courses/:id/resources' exact component={CoursesResources}/>
             <PrivateRoute path='/courses/:id/links' exact component={CourseLinks}/>
+            <PrivateRoute path='/courses/:id/interactive' exact component={CourseInterActive}/>
 
             <PrivateRoute path='/classes' exact component={Classes}/>
             <PrivateRoute path='/classescontent/:id/feed' exact component={ClassFeed}/>
