@@ -398,14 +398,14 @@ const getComment = (item, item1, item3) => {
           <>
           <Card className='post-card'>
             <Card.Body>
-            <Card.Title>
+            {/* <Card.Title>
                 <div className="col-md-10 pages-header fd-row">
-                  <p className='title-header m-0'>Announcement </p>
+                  <p className='title-header m-0'>Announcement 1 </p>
                   <Button onClick={() => getFeedClass()} className='ml-3'>
                     <i className="fa fa-sync"></i>
                   </Button>
                 </div>
-              </Card.Title>
+              </Card.Title> */}
             {/* <div className='inline-flex'>
               <div>
               <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>
