@@ -130,7 +130,6 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
               <></>
               ):(
               <>
-              {(item?.classLink === null)?(<></>):(<>
                 <Col sm={3} className='icon-exam'>
                   <OverlayTrigger
                     placement="bottom"
@@ -145,8 +144,6 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
                     <Button onClick={() => handleDeleteNotify(item?.classLink.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
                   </OverlayTrigger>
                 </Col>
-              </>)}
-
               </>
               )}
 

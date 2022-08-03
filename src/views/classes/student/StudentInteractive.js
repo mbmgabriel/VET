@@ -477,16 +477,18 @@ const renderTooltipPlay1 = (props) => (
                           classInfo?.classInformation?.courseName === "God's Park" || classInfo?.classInformation?.courseName === "God's Park 1" || classInfo?.classInformation?.courseName === "God's Park 2" ||
                           classInfo?.classInformation?.courseName === "God's Park 3" || classInfo?.classInformation?.courseName === "God's Park 4" ||
                           classInfo?.classInformation?.courseName === "God's Park 5" || classInfo?.classInformation?.courseName === "God's Park 6" ?
-                          <Button onClick={(e) => goLinkGodsPark(item?.interactive?.path)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          // <Button onClick={(e) => goLinkGodsPark(item?.interactive?.path)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          <></>
                           :
-                          <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          // <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          <></>
                         }
                       </OverlayTrigger>
                       </Col>
                     }
                     </>
                     }
-                                    {item?.classInteractiveAssignment === null ? (<></>):(<>
+                {item?.classInteractiveAssignment === null ? (<></>):(<>
                   <Col sm={7} className='due-date-discusstion' >
                     <p className='exam-instruction m-0'>
                       <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
@@ -502,6 +504,9 @@ const renderTooltipPlay1 = (props) => (
                     </p> 
                   </Col>
                 </>)}
+                <>
+                  <div className='inline-flex' >
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classInteractiveAssignment?.startDate + ' ' + item?.classInteractiveAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.classInteractiveAssignment?.endDate + ' ' + item?.classInteractiveAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
@@ -511,6 +516,8 @@ const renderTooltipPlay1 = (props) => (
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classInteractiveAssignment?.endDate + ' ' + item?.classInteractiveAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status>&nbsp;</div>  
                     }
+                  </div>
+                </>
                     {/* <Col sm={6} className='due-date-discusstion' >
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
