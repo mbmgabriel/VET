@@ -21,6 +21,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
   const [academicTermId, setAcademicTermId] = useState('')
   const [validated, setValidated] = useState(false);
   const userContext = useContext(UserContext)
+
   const {user} = userContext.data
   const subsType = user.subsType;
 
@@ -28,15 +29,12 @@ function CreateClassModal({setModal, modal, getClasses}) {
     setAddNotity(false)
   }
 
-  console.log('course12312:', course)
-
   const toggle = () =>{
     setModal(!modal)
     setGetCode('')
     setGetGradeLevel('')
     setGetCourseId('')
     setClassName('')
-    setAcademicTermId('')
     setValidated(false)
   }
 
@@ -58,8 +56,6 @@ function CreateClassModal({setModal, modal, getClasses}) {
       });
   }
 
-  console.log(classCode)
-
   const getGrade = async() =>{
     let response = await new GradeAPI().getGrade()
     if(response.ok){
@@ -77,6 +73,9 @@ function CreateClassModal({setModal, modal, getClasses}) {
     let response = await new AcademicTermAPI().fetchAcademicTerm()
     if(response.ok){
       setAcademicTerm(response.data)
+      let data = response.data;
+      let obj = data.find(o => o.isCurrentTerm == true);
+      setAcademicTermId(obj.id);
     }else{
       alert("Something went wrong while fetching all Academic Term")
     }
@@ -154,7 +153,6 @@ function CreateClassModal({setModal, modal, getClasses}) {
   }
 
   const handleGetSelected = (data) => {
-    console.log(data)
     let selected = course.find(e => e.courseName == data);
     setGetCourseId(selected?.id.toString());
   }
@@ -191,7 +189,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
                 </Form.Select> */}
                 {/* <Form.Control autoComplete='off' list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" /> */}
                 <Form.Control autoComplete='off' required list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
-                <datalist id="courses" onChange={(e) => console.log(e, 'sample')}>
+                <datalist id="courses">
                   {course.map(item =>{
                       return <option value={item.courseName} />
                       })
@@ -200,14 +198,13 @@ function CreateClassModal({setModal, modal, getClasses}) {
             </Form.Group>
             <Form.Group className="mb-4">
             	<Form.Label>School Year</Form.Label>
-                <Form.Select onChange={(e) => setAcademicTermId(e.target.value)}>
-                  <option>-- Select School Year HERE --</option>
+                <Form.Select value={academicTermId} onChange={(e) => setAcademicTermId(e.target.value)}>
                   {
                     academicTerm.map(item =>{
                       return(
-                        subsType == 'LMS' ?
-                      <option value={item.id}>{item.academicTermName}</option>
-                      :
+                      //   subsType == 'LMS' ?
+                      // <option value={item.id}>{item.academicTermName}</option>
+                      // :
                       item.isCurrentTerm && <option value={item.id}>{item.academicTermName}</option>
                       )
                     })

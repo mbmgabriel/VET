@@ -71,22 +71,9 @@ export default function Classes() {
       }
   }
 
-  const getAcademicTerm = async () =>{
-    let response = await new AcademicTermAPI().fetchAcademicTerm()
-    if(response.ok){
-      let data = response.data;
-      let temp = localStorage.getItem('academicTerm')
-      let obj = data.find(o => o.isCurrentTerm === true);
-      if(temp === null) {}
-        setCurrentAcademicTerm(temp ? temp : obj.academicTermName);
-        localStorage.setItem('academicTerm', obj.academicTermName);
-    }
-  }
-
   useEffect(() => {
     let temp = localStorage.getItem('academicTerm')
     setCurrentAcademicTerm(temp)
-    getAcademicTerm();
     if(user?.teacher === null)
     return(
       getClassesStudent(),
@@ -97,7 +84,6 @@ export default function Classes() {
   useEffect(() => {
     let temp = localStorage.getItem('academicTerm')
     setCurrentAcademicTerm(temp)
-    getAcademicTerm();
     if(user?.student === null)
       return(
         getClasses()

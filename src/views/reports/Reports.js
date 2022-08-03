@@ -5,6 +5,8 @@ import { UserContext } from './../../context/UserContext'
 import {Form,ListGroup, Row, Col} from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import ClassesAPI from './../../api/ClassesAPI'
+import AcademicTermAPI from './../../api/AcademicTermAPI';
+
 import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 import { toast } from 'react-toastify'
 import { set } from 'react-hook-form'
@@ -18,6 +20,7 @@ export default function Reports({children}) {
   const currentLoc = window.location.pathname;
   const [loading, setLoading] = useState(false);
   const subsType = user.subsType;
+  const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
 
   useEffect(() => {
     const pageURL = new URL(window.location.href);
@@ -28,6 +31,7 @@ export default function Reports({children}) {
   }, []);
 
   useEffect(() => {
+    getAcademicTerm();
     if(user.role === "Teacher"){
       getClasses()
     }else if(user.role === "Student"){
@@ -89,6 +93,15 @@ export default function Reports({children}) {
 
   }
 
+  const getAcademicTerm = async () =>{
+    let response = await new AcademicTermAPI().fetchAcademicTerm()
+    if(response.ok){
+      let data = response.data;
+      let obj = data.find(o => o.isCurrentTerm == true);
+      setCurrentAcademicTerm(obj.academicTermName);
+    }
+  }
+
   return (
     <MainContainer activeHeader={'reports'} fluid style=''> 
       {loading && <FullScreenLoader />}
@@ -101,7 +114,7 @@ export default function Reports({children}) {
             <Form.Select value={classId} onChange={(e) => addClassIdOnParams(e.target.value)}>
               <option value="">-- Select Class Here --</option>
               {classes.map(item =>{
-                return (<option value={item?.classId} > {item?.className}</option>)
+                return (currentAcademicTerm == item.termName && <option value={item?.classId} > {item?.className}</option>)
               })}
             </Form.Select>
             </Form>
