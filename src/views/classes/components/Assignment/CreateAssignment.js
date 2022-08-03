@@ -137,7 +137,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
               </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label>Rate</Form.Label>
-                  <Form.Control  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
+                  <Form.Control defaultValue={rate}  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
                 </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label >Instruction</Form.Label>
