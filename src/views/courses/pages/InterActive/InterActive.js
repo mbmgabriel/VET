@@ -185,8 +185,8 @@ function InterActive() {
 
             <Row>
                     <Col className="lesson-header" md={9}>
-                    <a target="_blank" className='class-links' href={item?.path}>{item?.interactiveName}</a><br />
-                      <span style={{fontSize:'18px'}} > Rate: {item?.rate}</span>
+                    <a target="_blank" className='class-links' href={item?.path}>{item?.interactiveName}</a>
+                      {/* <span style={{fontSize:'18px'}} > Rate: {item?.rate}</span> */}
                     </Col>
                     {isContributor && 
                       <>

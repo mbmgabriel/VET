@@ -29,18 +29,8 @@ function EditInteractive({
 
   const editInteractive = async(e) => {
     e.preventDefault()
-    if(interactiveName === '' || path === '' || rate === null){
+    if(interactiveName === '' || path === ''){
       toast.error('Please input all the required fields.', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        });
-    }else if(rate <= 0) {
-      toast.error('Rate must be greater than to 0.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -93,10 +83,10 @@ function EditInteractive({
               />
           </Form.Group>
           <Form.Group className="m-b-20">
-              <Form.Label for="courseName">
+              {/* <Form.Label for="courseName">
                   Rate
-              </Form.Label>
-              <Form.Control 
+              </Form.Label> */}
+              {/* <Form.Control 
                 defaultValue={rate}
                 className="custom-input" 
                 size="lg" 
@@ -105,7 +95,7 @@ function EditInteractive({
                 // min="0"
                 // step="1" 
                onChange={(e) => setRate(e.target.value)}
-              />
+              /> */}
           </Form.Group>
           <Form.Group className="m-b-20">
               <Form.Label for="description">

@@ -12,7 +12,7 @@ function CreateInterActive({openCreateInterModal, setOpenCreateInteractive, modu
 
   const CreateInterActive = async (e) => {
     e.preventDefault()
-    if(rate === null || interactiveName === '' || path === ''){
+    if( interactiveName === '' || path === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -22,17 +22,7 @@ function CreateInterActive({openCreateInterModal, setOpenCreateInteractive, modu
         draggable: true,
         progress: undefined,
         });
-    }else if(rate <= 0){
-      toast.error('Rate must be greater than to 0.', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        });
-    } else {
+    }else{
       let response = await new CoursesAPI().createInterActive( moduleId, {interactiveName, path, rate})
       if(response.ok){
         handleCloseCreateInterActiveModal()
@@ -81,7 +71,7 @@ function CreateInterActive({openCreateInterModal, setOpenCreateInteractive, modu
                 
               />
           </Form.Group>
-          <Form.Group className="m-b-20">
+          {/* <Form.Group className="m-b-20">
               <Form.Label for="courseName">
                   Rate
               </Form.Label>
@@ -94,7 +84,7 @@ function CreateInterActive({openCreateInterModal, setOpenCreateInteractive, modu
                 // step="1" 
                onChange={(e) => setRate(e.target.value)}
               />
-          </Form.Group>
+          </Form.Group> */}
           <Form.Group className="m-b-20">
               <Form.Label for="description">
                   Path
