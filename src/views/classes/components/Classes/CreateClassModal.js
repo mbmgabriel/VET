@@ -35,7 +35,6 @@ function CreateClassModal({setModal, modal, getClasses}) {
     setGetGradeLevel('')
     setGetCourseId('')
     setClassName('')
-    setAcademicTermId('')
     setValidated(false)
   }
 
