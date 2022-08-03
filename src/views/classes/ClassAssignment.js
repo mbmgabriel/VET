@@ -375,6 +375,7 @@ function ClassAssignment() {
             {assigItem?.classAssignment?(
               <Row>
                 <div className='inline-flex' >
+                  {assigItem?.assignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
                   {
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
@@ -392,7 +393,7 @@ function ClassAssignment() {
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                   } 
-                  {assigItem?.classAssignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
+                  
                 </div>
                 {/* <Col sm={7} className='due-date-discusstion' >
                 <div className='inline-flex'>
@@ -430,8 +431,8 @@ function ClassAssignment() {
             </Row>):
               <div>                      
                 <div className='inline-flex' >
+                {assigItem?.assignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
                 <Status>Unassigned</Status>
-                {assigItem?.classAssignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
                 </div>
               <hr />
             </div>

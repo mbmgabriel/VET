@@ -15,6 +15,7 @@ import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import axios from 'axios';
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import { toast } from 'react-toastify';
+import Status from '../../components/utilities/Status';
 
 function ClassInteractive() {
   const [module, setModule] = useState([])
@@ -482,6 +483,8 @@ function ClassInteractive() {
 
 }
 
+console.log('interactive:', interactive)
+
   return (
     <ClassSideNavigation>
       {loading && <FullScreenLoader />}
@@ -560,26 +563,45 @@ function ClassInteractive() {
                     </>}
                     
                   </Col>
+                  {interItem?.classInteractiveAssignment === null ? (<></>):(<>
+                      <Col sm={7} className='due-date-discusstion' >
+                        <p className='exam-instruction m-0'>
+                          <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                            Start:
+                          </span>
+                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(interItem?.classInteractiveAssignment?.startDate).format("MMMM Do YYYY")}, {moment(interItem?.classInteractiveAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                        </p>
+                        <p className='exam-instruction m-0 mb-3'>
+                          <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                            End:
+                          </span>
+                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(interItem?.classInteractiveAssignment?.endDate).format("MMMM Do YYYY")}, {moment(interItem?.classInteractiveAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                        </p> 
+                      </Col>
+                      </>)}
                   {interItem?.classInteractiveAssignment?(
                     <>
+                    <div className='inline-flex' >
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(interItem?.classInteractiveAssignment?.startDate + ' ' + interItem?.classInteractiveAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
-                          <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
+                          <div style={{color:'#EE9337', fontSize:'15px'}}><b></b><Status>Upcoming</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(interItem?.classInteractiveAssignment?.endDate + ' ' + interItem?.classInteractiveAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                          <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b></div>
+                          <div style={{color:'#EE9337', fontSize:'15px'}}><b></b><Status>Ended</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(interItem?.classInteractiveAssignment?.startDate + ' ' + interItem?.classInteractiveAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                          <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                          <div style={{color:'#EE9337', fontSize:'15px'}}><b></b><Status>Ongoing</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(interItem?.classInteractiveAssignment?.startDate + ' ' + interItem?.classInteractiveAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(interItem?.classInteractiveAssignment?.endDate + ' ' + interItem?.classInteractiveAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                          <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
-                      } 
-                      <Col sm={7} className='due-date-discusstion' >
+                          <div style={{color:'#EE9337', fontSize:'15px'}}><b></b><Status>Ongoing</Status></div>
+                      }
+                      </div> 
+                      {/* <Col sm={7} className='due-date-discusstion' >
                       <div className='inline-flex'>
                         <div className='text-color-bcbcbc'>
                           Start Date:&nbsp;
@@ -611,15 +633,16 @@ function ClassInteractive() {
                           
                         </div>
                       </div>
-                    </Col>
+                    </Col> */}
                     <div className='text-color-bcbcbc' >
                     <hr></hr>
                     </div>
                     </>
                   ):
                   <>
-                    <div style={{color:'red'}}>
-                      <b>Not Assigned</b>
+                    <div className='inline-flex' style={{color:'red'}}>
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>
+                    <Status>Unassigned</Status>
                     </div>
                     <div className='text-color-bcbcbc' >
                     <hr></hr>

@@ -92,19 +92,21 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
               </>
               ):
               <>
-                {
+                {/* {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <Col sm={3} className='icon-exam'>
-                    <Button onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{item.responseCount}</Button>
-                  </Col>
+                  <></>
+                  // <Col sm={3} className='icon-exam'>
+                  //   <Button onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{item.responseCount}</Button>
+                  // </Col>
                 }
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <Col sm={3} className='icon-exam'>
-                    <Button onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{item.responseCount}</Button>
-                  </Col>
-                }
+                  <></>
+                  // <Col sm={3} className='icon-exam'>
+                  //   <Button onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{item.responseCount}</Button>
+                  // </Col>
+                } */}
               </>
                 }
                 {item?.discussionAssignment === null ? (<></>):(<>
@@ -123,23 +125,34 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
                     </p> 
                   </Col>
                 </>)}
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status>&nbsp;</div>  
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
-                }
+                <>
+                <div className='inline-flex' >
+                {item?.discussion?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Class</Status></div>)}
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
+                    <>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
+                      <span className='commet-btn' onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} style={{cursor:'pointer'}} ><Status>Comments</Status> </span>
+                    </>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
+                  <>
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status>&nbsp;</div> 
+                    <span className='commet-btn' onClick={(e) => getDiscussionComments(e, item.discussion?.id)} style={{cursor:'pointer'}} ><Status>Comments</Status> </span>  
+                  </>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
+                  }
+                </div>
+                </>
               {/* <Col sm={6} className='due-date-discusstion' >
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>

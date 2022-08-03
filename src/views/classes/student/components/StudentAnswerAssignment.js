@@ -7,7 +7,7 @@ import { UserContext } from '../../../../context/UserContext'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 
-function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}) {
+function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId, getStudentAssignmentAnswer, setAnswerModal}) {
   const {id} = useParams();
   const userContext = useContext(UserContext)
   const {user} = userContext.data
@@ -45,7 +45,8 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
           setAssignmentAnswer('');
           setUploadingFiles('done');
           setFiles([]);
-          answerAnswerToggle()
+          setAnswerModal(false)
+          getStudentAssignmentAnswer(assignmentId)
         }else{
           alert(response.data.errorMessage)
         }
@@ -108,7 +109,7 @@ function StudentAnswerAssignment({answerAnswerToggle, answerModal, assignmentId}
 
   return (
     <div>
-       <Modal  size="lg" show={answerModal} onHide={answerAnswerToggle} aria-labelledby="example-modal-sizes-title-lg">
+       <Modal  size="lg" show={answerModal} onHide={() => setAnswerModal(false)} aria-labelledby="example-modal-sizes-title-lg">
           <Modal.Header className='class-modal-header' closeButton>
             <Modal.Title id="example-modal-sizes-title-lg" >
               Answer Assignment

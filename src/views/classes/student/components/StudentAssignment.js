@@ -52,11 +52,15 @@ function StudentAssignment({assignment, searchTerm, getAssignmentList, moduleId}
     let response = await new ClassesAPI().getStudentAssignmentAnswer(studentId, classId, item)
       if(response.ok){
         setStudentAnswer(response.data)
-        submittedAssignmentToggle()
         getAssignmentList(id, moduleId)
       }else{
        alert('ERROR getStudentAssignmentAnswer')
       }
+  }
+
+  const handleGetStudentAnswer = (item) => {
+    getStudentAssignmentAnswer(item)
+    setSubmittedAssignment(true)
   }
 
   useEffect(() => {
@@ -118,7 +122,7 @@ function StudentAssignment({assignment, searchTerm, getAssignmentList, moduleId}
                       {(item.isLoggedUserDone === true)?(
                     <>
                       <Col sm={3} className='icon-exam'>
-                      <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Submitted</Button>
+                      {/* <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Submitted</Button> */}
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 1 }}
@@ -129,7 +133,7 @@ function StudentAssignment({assignment, searchTerm, getAssignmentList, moduleId}
                         placement="bottom"
                         delay={{ show: 1, hide: 1 }}
                         overlay={renderTooltipGrade}>
-                          <Button onClick={() => getStudentAssignmentAnswer(item?.assignment?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
+                          <Button onClick={() => handleGetStudentAnswer(item?.assignment?.id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
                       </OverlayTrigger>
                     </Col>
                       {
@@ -160,7 +164,7 @@ function StudentAssignment({assignment, searchTerm, getAssignmentList, moduleId}
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classAssignment?.endDate + ' ' + item?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                         <Col sm={3} className='icon-exam'>
-                        {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Not Submitted</Button>}
+                        {/* {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Not Submitted</Button>} */}
                         <OverlayTrigger
                           placement="right"
                           delay={{ show: 1, hide: 1 }}
@@ -198,6 +202,9 @@ function StudentAssignment({assignment, searchTerm, getAssignmentList, moduleId}
                         </p> 
                       </Col>
                   </>)}
+                  <>
+                  <div className='inline-flex' >
+                    {item?.assignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classAssignment?.startDate + ' ' + item?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.classAssignment?.endDate + ' ' + item?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
@@ -215,6 +222,14 @@ function StudentAssignment({assignment, searchTerm, getAssignmentList, moduleId}
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.classAssignment?.startDate + ' ' + item?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                     }
+                    {(item?.isLoggedUserDone === true ?(<>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Completed</Status></div>
+                      </>):(<>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Not Completed</Status></div>
+                     </>))}
+                     </div>
+                    </>    
+
                     {/* <Col sm={6} className='due-date-discusstion' >
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
@@ -256,9 +271,9 @@ function StudentAssignment({assignment, searchTerm, getAssignmentList, moduleId}
           </>
         )
       })}
-      <StudentAnswerAssignment assignmentId={assignmentId} answerAnswerToggle={answerAnswerToggle} answerModal={answerModal} />
+      <StudentAnswerAssignment setAnswerModal={setAnswerModal} getStudentAssignmentAnswer={getStudentAssignmentAnswer} assignmentId={assignmentId} answerAnswerToggle={answerAnswerToggle} answerModal={answerModal} />
       <StudentViewAssignment setViewAssignmentModal={setViewAssignmentModal} startDate={startDate} startTime={startTime} endDate={endDate} endTime={endTime} viewAssignmentItem={viewAssignmentItem} viewAssignmentToggle={viewAssignmentToggle} viewAssignmentModal={viewAssignmentModal} />
-      <StudentSubmittedAssigment studentAnswer={studentAnswer} submittedAssignmentToggle={submittedAssignmentToggle} submittedAssignment={submittedAssignment} />
+      <StudentSubmittedAssigment  studentAnswer={studentAnswer} submittedAssignmentToggle={submittedAssignmentToggle} submittedAssignment={submittedAssignment} />
     </div>
   )
 }

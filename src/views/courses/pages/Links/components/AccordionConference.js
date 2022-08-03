@@ -152,15 +152,14 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
               </>
               )}
 
-              <Col sm={9}>
-              </Col>
-                <Col sm={3} style={{textAlign:'right'}} className='due-date-discusstion' >
+
+                <Col sm={3} className='due-date-discusstion' >
                   <div className='inline-flex'>
                       {
                       item.classLink === null ?
-                      <span>Post Date {moment(item?.createdDate).format('ll')}</span>
+                      <span className='text-color-bcbcbc' style={{fontSize: '18px'}} >Post Date {moment(item?.createdDate).format('ll')}</span>
                       :
-                      <span>Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
+                      <span className='text-color-bcbcbc' style={{fontSize: '18px'}} >Post Date {moment(item?.classLink?.createdDate).format('ll')}</span>
                       }
                   </div>
                 </Col>

@@ -347,6 +347,7 @@ function ClassTask() {
                     {moduleitem?.taskAssignment?(
                     <>
                     <div className='inline-flex' >
+                      {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.startDate + ' ' + moduleitem?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
@@ -364,7 +365,7 @@ function ClassTask() {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                         <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
-                      {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
+                      
                       </div>   
                       {/* <Col sm={7} className='due-date-discusstion' >
                         <div className='inline-flex'>
@@ -417,8 +418,8 @@ function ClassTask() {
                     ):
                     <>
                       <div className='inline-flex' >
-                       <Status>Unassigned</Status>
                        {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
+                       <Status>Unassigned</Status>
                       </div>
                       <div className='text-color-bcbcbc' >
                       <hr></hr>

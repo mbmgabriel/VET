@@ -45,7 +45,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
 
 
   const submittedTaskToggle = () => {
-    setSubmittedTaskModal(!submittedTaskModal)
+    setSubmittedTaskModal(true)
   }
 
   const getStudentTaskAnwswer = async(item) =>{
@@ -54,11 +54,15 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
     let response = await new ClassesAPI().getStudentTaskAnwswer(studentId, classId, item)
     if(response.ok){
       setTaskAnswerItem(response.data)
-      setSubmittedTaskModal(!submittedTaskModal)
       getTaskModule(id, moduleId)
     }else{
       alert('ERROR')
     }
+  }
+
+  const handleGetStudentAnswer = (item) => {
+    setSubmittedTaskModal(true)
+    getStudentTaskAnwswer(item)
   }
   
   useEffect(() => {
@@ -120,7 +124,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                       {(item.isLoggedUserDone === true)?(
                     <>
                       <Col sm={3} className='icon-exam'>
-                      <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Submitted</Button>
+                      {/* <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Submitted</Button> */}
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 1}}
@@ -131,7 +135,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                         placement="bottom"
                         delay={{ show: 1, hide: 1 }}
                         overlay={renderTooltipGrade}> 
-                         <Button onClick={() => getStudentTaskAnwswer(item?.task?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
+                         <Button onClick={() => handleGetStudentAnswer(item?.task?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-book-reader"></i></Button>
                       </OverlayTrigger>
                     </Col>
                       {
@@ -162,7 +166,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.taskAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <Col sm={3} className='icon-exam'>
-                      {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Not Submitted</Button>}
+                      {/* {!user.isSchoolAdmin && <Button  className="m-r-5 color-white tficolorbg-button" size="sm">Not Submitted</Button>} */}
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 1 }}
@@ -184,7 +188,7 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                     }
                     </>
                     }
-                                        {item?.taskAssignment === null ? (<></>):(<>
+                    {item?.taskAssignment === null ? (<></>):(<>
                       <Col sm={7} className='due-date-discusstion' >
                         <p className='exam-instruction m-0'>
                           <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
@@ -200,6 +204,9 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                         </p> 
                       </Col>
                       </>)}
+                  <>
+                  <div className='inline-flex' >
+                    {item?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.taskAssignment?.startDate + ' ' + item?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.taskAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
@@ -217,6 +224,13 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.taskAssignment?.startDate + ' ' + item?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                     }
+                    {(item.isLoggedUserDone === true ?(<>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Completed</Status></div>
+                    </>):(<>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Not Completed</Status></div>
+                    </>))}
+                  </div>
+                  </>
                     {/* <Col sm={6} className='due-date-discusstion' >
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
@@ -258,9 +272,9 @@ function StudentTask({taskModule, searchTerm, moduleId, getTaskModule}) {
           </>
         )
       })}
-      <StundentAnswerTask taskId={taskId} answerTaskToggle={answerTaskToggle} answerTaskModal={answerTaskModal} />
+      <StundentAnswerTask getStudentTaskAnwswer={getStudentTaskAnwswer} taskId={taskId} answerTaskToggle={answerTaskToggle} answerTaskModal={answerTaskModal} />
       <StudentViewTask startDate={startDate} startTime={startTime} endDate={endDate} endTime={endTime} viewTaskItem={viewTaskItem} viewTaskToggle={viewTaskToggle} setViewTaskModal={setViewTaskModal} viewTaskMotal={viewTaskMotal} />
-      <StudentSubmittedTask taskAnswerItem={taskAnswerItem} submittedTaskToggle={submittedTaskToggle} submittedTaskModal={submittedTaskModal} />
+      <StudentSubmittedTask setSubmittedTaskModal={setSubmittedTaskModal} taskAnswerItem={taskAnswerItem} submittedTaskToggle={submittedTaskToggle} submittedTaskModal={submittedTaskModal} />
     </div>
   )
 }
