@@ -5,12 +5,13 @@ import CoursesAPI from "../../../api/CoursesAPI";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ContentFieldWithTextArea from "../../../components/content_field/ContentFieldWithTextArea";
+import ContentFieldForTFICourses from "../../../components/content_field/ContentFieldForTFICourses";
 import FileHeader from "../../classes/components/Task/TaskFileHeader";
 import FilesAPI from "../../../api/FilesApi"
 import { useParams } from "react-router";
 import CourseFileLibrary from '../components/CourseFileLibrary';
 
-export default function CreateLesson({openCreateLessonModal, setCreateLessonModal, setLessonInfo}){
+export default function CreateLesson({isTFI, openCreateLessonModal, setCreateLessonModal, setLessonInfo}){
 
 	const [loading, setLoading] = useState(false)
 	const [pageName, setPageName] = useState('')
@@ -26,7 +27,6 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
-  console.log('courseId:', id)
 
 	const handleCloseModal = e => {
     setCreateLessonModal(false)
@@ -38,7 +38,6 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
     setLoading(false)
     if(response.ok){
       setLessonInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all pages")
     }
@@ -100,7 +99,6 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
 
   useEffect(() => {
     handleGetClassFiles()
-    // console.log(module, '-----------')
   }, [])
 
   // useEffect(() =>{
@@ -178,10 +176,14 @@ export default function CreateLesson({openCreateLessonModal, setCreateLessonModa
                 </div>
                 <Form.Group className="m-b-20">
                   <Form.Label >Content</Form.Label>
+                  {    
+                    isTFI ?
+                    <ContentFieldForTFICourses value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
+                    :                
                     <ContentFieldWithTextArea value={content}  placeholder='Enter content here'  onChange={value => setContent(value)} />
-                </Form.Group>
+                  }                
+                  </Form.Group>
                 {' '}
-    
 								<span style={{float:"right"}}>
 										<Button disabled={isButtonDisabled} className="tficolorbg-button" type="submit">
 												Save Lesson

@@ -13,6 +13,7 @@ import StudentClassListHeader from './student/components/StudentClassListHeader'
 import StudentClassListPending from './student/StudentClassListPending'
 import StudentJoinClass from './student/StudentJoinClass'
 import ClassCoverPhoto from './components/Classes/ClassCoverPhoto'
+import FullScreenLoader from '../../components/loaders/FullScreenLoader'
 
 export default function Classes() {
   const [loading, setLoading] = useState(true)
@@ -106,6 +107,7 @@ export default function Classes() {
 
   return (
     <MainContainer activeHeader={'classes'} loading={loading}>
+      {loading && <FullScreenLoader/>}
       <div className='page-container'>
         <div className='containerpages'>
           {user.isStudent &&
