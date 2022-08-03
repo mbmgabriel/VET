@@ -16,7 +16,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
   const [modulePages, setModulePages] = useState([])
 	const [assignmentName, setAssignmentName] = useState('')
 	const [instructions, setInstructions] = useState('')
-  const [rate, setRate] = useState(null)
+  const [rate, setRate] = useState(100)
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
   const [displayFiles, setDisplayFiles] = useState([]);
@@ -31,6 +31,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
     setAssignmentName('')
     setInstructions('')
     setOpenCreateAssignmentModal(false)
+    setRate(100)
   }
 
   const getAssignmentInfo = async(e, data) => {
@@ -146,6 +147,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                       Rate
                   </Form.Label>
                   <Form.Control 
+                    defaultValue={rate}
                     className="custom-input" 
                     size="lg" 
                     type="number" 
