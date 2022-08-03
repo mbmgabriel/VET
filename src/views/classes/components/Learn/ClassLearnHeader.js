@@ -38,7 +38,7 @@ export default function ClassLearnHeader({content}) {
       </Row> */}
       {content.content?(
         <div style={{position:'relative', paddingTop:'1px', }}>
-          <span style={{marginTop:"300px !important"}} dangerouslySetInnerHTML={{__html:content.content + '<br>' }} />
+          <div className="dangerously-learn-content" style={{position:"relative"}} dangerouslySetInnerHTML={{__html: content.content}} />
         </div>
       ):<span></span>
       }

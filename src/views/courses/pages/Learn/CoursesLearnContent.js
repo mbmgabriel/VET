@@ -29,7 +29,7 @@ export default function CoursesLearnContent({courseInfo, setCourseInfo, moduleIn
       <br></br>
       <span className="course-subtitle"><small>{modulename}</small></span>
       <hr></hr>
-      <div style={{position:"relative"}} dangerouslySetInnerHTML={{__html: lessonContent?.content?.replace(/\n/g, '<br />')}} />
+      <div className="dangerously-learn-content" style={{position:"relative"}} dangerouslySetInnerHTML={{__html: lessonContent?.content}} />
       </>
       
   )

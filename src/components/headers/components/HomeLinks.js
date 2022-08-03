@@ -26,8 +26,8 @@ export default function HomeLinks() {
       let temp = localStorage.getItem('academicTerm')
       let obj = data.find(o => o.isCurrentTerm === true);
       if(temp === null) {
-        setCurrentAcademicTerm(temp ? temp : obj.academicTermName);
-        localStorage.setItem('academicTerm', obj.academicTermName);
+        setCurrentAcademicTerm(temp ? temp : obj?.academicTermName);
+        localStorage.setItem('academicTerm', obj?.academicTermName);
       }
     }else{
       toast.error("Something went wrong while fetching all Academic Term")
