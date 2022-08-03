@@ -203,9 +203,9 @@ function CreateClassModal({setModal, modal, getClasses}) {
                   {
                     academicTerm.map(item =>{
                       return(
-                        subsType == 'LMS' ?
-                      <option value={item.id}>{item.academicTermName}</option>
-                      :
+                      //   subsType == 'LMS' ?
+                      // <option value={item.id}>{item.academicTermName}</option>
+                      // :
                       item.isCurrentTerm && <option value={item.id}>{item.academicTermName}</option>
                       )
                     })
