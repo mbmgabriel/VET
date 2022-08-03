@@ -131,21 +131,6 @@ function ClassLearn() {
           <Col className='scrollable vh-80 pb-5' style={{marginLeft:'15px'}} >
             <ClassLearnHeader content={content}  classInfo={classInfo}/> 
 
-            {cName === 'Innovators 1 (Second Edition)' && pageName === 'Lesson 3- Introduction to Miranda Simulator' &&
-            <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
-              {user?.teacher ?
-              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
-                <i class="fas fa-tv"></i> Robotics Simulator T
-              </Link>
-              :
-              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
-                <i class="fas fa-tv"></i> Robotics Simulator S
-              </Link>
-              }
-            </Card>
-            }
-
-
             {subdomain1 === 'ama' &&
             <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
               {user?.teacher ?
@@ -160,22 +145,6 @@ function ClassLearn() {
             </Card>
             }
 
-
-
-            
-            {cName === 'Creators 1 (Second Edition)' && pageName === 'Lesson 10' &&
-            <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
-              {user?.teacher ?
-              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
-                <i class="fas fa-tv"></i> Robotics Simulator T
-              </Link>
-              :
-              <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
-                <i class="fas fa-tv"></i> Robotics Simulator
-              </Link>
-              }
-            </Card>
-            }
            
             
           </Col>
@@ -188,6 +157,281 @@ function ClassLearn() {
                   Table of Content
                   </div>
                 </div>
+
+                {/* Miranda Link Per Course */}
+
+                {/* Test of miranda link */}
+                {/* {cName === 'TFI Sample Course' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                } */}
+
+                {cName === 'mBot Beginner' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'mBot Advanced' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Ranger Beginner' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Ranger Advance' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+            
+                {/* Creators */}
+                {cName === 'Creators 1 (First Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+                
+                {cName === 'Creators 1 (Second Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Creators 2 (First Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Creators 2 (Second Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+                
+
+                {/* Innovators */}
+                {cName === 'Innovators 1 (Second Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Innovators 2 (Second Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Innovators 3 (Second Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }   
+
+                {cName === 'Innovators 4 (Second Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }   
+
+                {cName === 'Innovators 5 (Second Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Innovators 1 (First Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Innovators 2 (First Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Innovators 3 (First Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }   
+
+                {cName === 'Innovators 4 (First Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }   
+
+                {cName === 'Innovators 5 (First Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Student Link
+                    </Link>
+                    }
+                  </Card>
+                }          
+          
+
+
                 <div className="row calendar-subtitle">
                   <div>
                   <Form.Select onChange={onModuleChange} aria-label="Default select example">
