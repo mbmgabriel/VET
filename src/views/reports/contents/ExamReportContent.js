@@ -242,7 +242,7 @@ const handleClickIcon = () =>{
         <Col sm={4}>
         <Card>
           <Card.Body>
-            <Card.Title><div className='header-analysis-card'><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div></Card.Title>
+            <Card.Title><div><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div></Card.Title>
             <Card.Text>
               <hr></hr>
               <p><b>0</b></p>
@@ -253,7 +253,7 @@ const handleClickIcon = () =>{
         <Col sm={4}>
         <Card>
           <Card.Body>
-            <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div></Card.Title>
+            <Card.Title><div><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div></Card.Title>
             <Card.Text>
               <div>
               <hr></hr>
@@ -266,7 +266,7 @@ const handleClickIcon = () =>{
         <Col sm={4}>
         <Card>
           <Card.Body>
-            <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div></Card.Title>
+            <Card.Title><div><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div></Card.Title>
             <Card.Text>
               <hr></hr>
               <p><b>0</b></p>
