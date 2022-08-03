@@ -1086,6 +1086,8 @@ border-top-right-radius: 0px !important;
   text-decoration: none!important
 }
 .btn-like{
+  /* color: var(--primary-color)!important; */
+  color: var(--primary-color)!important;
   color: var(--primary-color)!important;
   /* color: #EE9337!important; */
   font-size: 16px!important;
