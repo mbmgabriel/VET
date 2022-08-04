@@ -109,6 +109,7 @@ function ReportHeader() {
           {
             display == 'accordion' ?
               <>
+              <div>
                 <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Exam </p>
                   <div>
                     <Button onClick={() => {
@@ -126,6 +127,7 @@ function ReportHeader() {
                     </InputGroup>
                   </div>
                 </div>
+              </div>
               </>
               :
               <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>{testname}</p>
