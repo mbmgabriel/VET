@@ -154,6 +154,7 @@ function Profile() {
         }else{
           toast.error(response.data.errorMessage);
         }
+        handleCancel();
       }else{
         toast.error("Password didn't match.")
       }
