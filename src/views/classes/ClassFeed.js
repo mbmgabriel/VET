@@ -367,7 +367,7 @@ const getComment = (item, item1, item3) => {
                   <ContentRichText value={content}  placeholder='Enter Announcement here'  onChange={value => setContent(value)} />
               <div style={{textAlign:'right', paddingTop:'15px'}}>
               <Button onClick={()=> setShowFiles(!showFiles)}>File Library</Button>&nbsp;
-              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >POST</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Post</Button>
               </div>
             </Form>
           </Card.Body>
