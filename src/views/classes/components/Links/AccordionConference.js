@@ -129,8 +129,8 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
               {(user.teacher === null)?(
               <></>
               ):(
-              <>
-                <Col sm={3} className='icon-exam'>
+              <>{item?.classLink == null ?(<></>):(<>
+                  <Col sm={3} className='icon-exam'>
                   <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
@@ -144,6 +144,7 @@ function AccordionConference({conference, getConfe, setOpenEditModal, setEditLin
                     <Button onClick={() => handleDeleteNotify(item?.classLink.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
                   </OverlayTrigger>
                 </Col>
+              </>)}
               </>
               )}
 
