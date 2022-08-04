@@ -2,7 +2,7 @@
 import React, {useContext, useState, useEffect} from 'react'
 import MainContainer from '../../components/layouts/MainContainer'
 import { UserContext } from '../../context/UserContext'
-import { Row, Col, Button, Image, Modal, Form } from 'react-bootstrap'
+import { Row, Col, Button, Image, Modal, Form, InputGroup } from 'react-bootstrap'
 import moment from 'moment';
 import { useParams } from "react-router-dom";
 import ProfileInfoAPI from '../../api/ProfileInfoAPI';
@@ -25,6 +25,10 @@ function Profile() {
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
+  const [showCurrentPass, setShowCurrentPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+
 
   console.log('useruseruseruser:', user )
   console.log('openTeacherInfoModal:', openTeacherInfoModal )
@@ -153,6 +157,16 @@ function Profile() {
       }else{
         toast.error("Password didn't match.")
       }
+    }
+
+    const handleCancel = () => {
+      setShowCurrentPass(false);
+      setShowNewPass(false);
+      setShowConfirmPass(false);
+      setCurrentPass(null);
+      setNewPass(null);
+      setConfirmPass(null);
+      setShowChangePassModal(false)
     }
 
   return (
@@ -286,17 +300,26 @@ function Profile() {
           {/* <Form onSubmit={''}> */}
             <Form.Group className="mb-4">
               <Form.Label className='font-20'>Current Password <span className='text-danger'>*</span></Form.Label>
-              <Form.Control value={currentPass} onChange={(e)=> setCurrentPass(e.target.value)} type="password" required placeholder='Enter current password here..'/>
+              <InputGroup>
+                <Form.Control value={currentPass} onChange={(e)=> setCurrentPass(e.target.value)} type={showCurrentPass ? 'text' : "password"} required placeholder='Enter confirm new password here..'/>
+                <InputGroup.Text><i className={showCurrentPass ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowCurrentPass(!showConfirmPass)}/></InputGroup.Text>
+              </InputGroup>
             </Form.Group>
             <Form.Group className="mb-4">
               <Form.Label className='font-20'>New Password <span className='text-danger'>*</span></Form.Label>
-              <Form.Control value={newPass} onChange={(e)=> setNewPass(e.target.value)} type="password" required placeholder='Enter new password here..'/>
+              <InputGroup>
+                <Form.Control value={newPass} onChange={(e)=> setNewPass(e.target.value)} type={showNewPass ? 'text' : "password"} required placeholder='Enter confirm new password here..'/>
+                <InputGroup.Text><i className={showNewPass ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowNewPass(!showConfirmPass)}/></InputGroup.Text>
+              </InputGroup>
             </Form.Group>
             <Form.Group className="mb-4">
               <Form.Label className='font-20'>Confirm New Password <span className='text-danger'>*</span></Form.Label>
-              <Form.Control value={confirmPass} onChange={(e)=> setConfirmPass(e.target.value)} type="password" required placeholder='Enter confirm new password here..'/>
+              <InputGroup>
+                <Form.Control value={confirmPass} onChange={(e)=> setConfirmPass(e.target.value)} type={showConfirmPass ? 'text' : "password"} required placeholder='Enter confirm new password here..'/>
+                <InputGroup.Text><i className={showConfirmPass ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowConfirmPass(!showConfirmPass)}/></InputGroup.Text>
+              </InputGroup>
             </Form.Group>
-            <Button size="lg" variant="outline-warning" className='btn-danger color-white float-right ml-3' onClick={() => setShowChangePassModal(false)}>Cancel</Button>
+            <Button size="lg" variant="outline-warning" className='btn-danger color-white float-right ml-3' onClick={() => handleCancel()}>Cancel</Button>
             <Button size="lg" variant="outline-warning" type='submit' onClick={()=> UpdatePassword()} className='tficolorbg-button color-white float-right'>Update Password</Button>
           {/* </Form> */}
         </Modal.Body>
