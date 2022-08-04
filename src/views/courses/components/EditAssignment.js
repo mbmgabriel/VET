@@ -9,7 +9,7 @@ import FilesAPI from '../../../api/FilesApi'
 import { useParams } from "react-router-dom";
 import CourseFileLibrary from './CourseFileLibrary';
 
-export default function EditAssignment({rate, setRate, setInstructions, setAssignmentName, assignmentId, instructions, assignmentName, openEditAssignmentModal, setOpenEditAssignmentModal, selectedAssignment, setAssignmentInfo}){
+export default function EditAssignment({setSequenceNo, sequenceNo, rate, setRate, setInstructions, setAssignmentName, assignmentId, instructions, assignmentName, openEditAssignmentModal, setOpenEditAssignmentModal, selectedAssignment, setAssignmentInfo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
@@ -29,7 +29,7 @@ export default function EditAssignment({rate, setRate, setInstructions, setAssig
 	const saveEditAssignment = async(e) => {
     e.preventDefault()
     setLoading(true)
-    if(rate <= 0){
+    if(rate <= 0 || sequenceNo === null){
       toast.error('Rate must be greater than to 0.', {
         position: "top-right",
         autoClose: 5000,
@@ -42,7 +42,7 @@ export default function EditAssignment({rate, setRate, setInstructions, setAssig
     }else{
       let response = await new CoursesAPI().editAssignment(
         assignmentId,
-        {assignmentName, instructions, rate}
+        {assignmentName, instructions, rate, sequenceNo}
       )
       if(response.ok){
         handleCloseModal(e)
@@ -164,6 +164,21 @@ export default function EditAssignment({rate, setRate, setInstructions, setAssig
                     // min="0"
                     // step="1" 
                     onChange={(e) => setRate(e.target.value)}
+                  />
+              </Form.Group>
+              <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control 
+                    defaultValue={sequenceNo}
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
                   />
               </Form.Group>
             <div>

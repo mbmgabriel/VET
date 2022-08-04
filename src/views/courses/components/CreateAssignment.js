@@ -26,6 +26,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
   const [displayFolder, setDisplayFolder] = useState([])
   const [breedCrumbsItemClass, setBreedCrumbsItemClass] = useState([])
   const subFolderDirectory = breedCrumbsItemClass?.map(item => { return `/${item.value}`}) //to get sub directory based on breedcrumbs
+  const [sequenceNo, setSequenceNo] = useState(null)
 
 	const handleCloseModal = e => {
     setAssignmentName('')
@@ -48,7 +49,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
 
 	const saveAssignmennt = async(e) => {
     e.preventDefault()
-    if(rate === null) {
+    if(rate === null || sequenceNo === null) {
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -74,7 +75,7 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
       setLoading(true)
       let response = await new CoursesAPI().createAssignment(
         sessionModule,
-        {assignmentName, instructions, rate}
+        {assignmentName, instructions, rate, sequenceNo}
       )
       if(response.ok){
         handleCloseModal(e)
@@ -155,6 +156,20 @@ export default function CreateAssignment({openCreateAssignmentModal, setOpenCrea
                     // min="0"
                     // step="1" 
                     onChange={(e) => setRate(e.target.value)}
+                  />
+              </Form.Group>
+              <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
                   />
               </Form.Group>
                 <div>

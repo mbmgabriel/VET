@@ -10,7 +10,7 @@ import FilesAPI from '../../../../api/FilesApi';
 import { useParams } from 'react-router'
 import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
-function EditTask({setRate, rate, moduleName, setTaskName, taskName, setInstructions, instructions, taskId, modal, toggle, module, editTask, getTaskModule, moduleId, setModal}){
+function EditTask({sequenceNo, setSequenceNo, setRate, rate, moduleName, setTaskName, taskName, setInstructions, instructions, taskId, modal, toggle, module, editTask, getTaskModule, moduleId, setModal}){
   const isShared = null
   const [editNotufy, setEditNotify] = useState(false)
   const [showFiles, setShowFiles] = useState(false);
@@ -31,7 +31,7 @@ function EditTask({setRate, rate, moduleName, setTaskName, taskName, setInstruct
 
   const updateTask = async (e) =>{
     e.preventDefault()
-    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || taskName === ''){
+    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || taskName === '' || sequenceNo === null){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -53,7 +53,7 @@ function EditTask({setRate, rate, moduleName, setTaskName, taskName, setInstruct
         });
     }  else{
       let id = taskId
-      let response = await new ClassesAPI().updateTask(id, {taskName, instructions, rate, isShared})
+      let response = await new ClassesAPI().updateTask(id, {taskName, instructions, rate, sequenceNo, isShared})
         if(response.ok){
           // alert('Task Updated')
           // setEditNotify(true)
@@ -217,6 +217,21 @@ function EditTask({setRate, rate, moduleName, setTaskName, taskName, setInstruct
                 <Form.Label>Rate</Form.Label>
                   <Form.Control  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here' defaultValue={rate}/>
                 </Form.Group>
+                <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control
+                    defaultValue={sequenceNo} 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
+                  />
+                  </Form.Group>
                 <Form.Group className="mb-4">
                   <Form.Label >Instruction</Form.Label>
                   <ContentField value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />
