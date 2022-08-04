@@ -303,14 +303,14 @@ function Profile() {
               <Form.Label className='font-20'>Current Password <span className='text-danger'>*</span></Form.Label>
               <InputGroup>
                 <Form.Control value={currentPass} onChange={(e)=> setCurrentPass(e.target.value)} type={showCurrentPass ? 'text' : "password"} required placeholder='Enter confirm new password here..'/>
-                <InputGroup.Text><i className={showCurrentPass ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowCurrentPass(!showConfirmPass)}/></InputGroup.Text>
+                <InputGroup.Text><i className={showCurrentPass ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowCurrentPass(!showCurrentPass)}/></InputGroup.Text>
               </InputGroup>
             </Form.Group>
             <Form.Group className="mb-4">
               <Form.Label className='font-20'>New Password <span className='text-danger'>*</span></Form.Label>
               <InputGroup>
                 <Form.Control value={newPass} onChange={(e)=> setNewPass(e.target.value)} type={showNewPass ? 'text' : "password"} required placeholder='Enter confirm new password here..'/>
-                <InputGroup.Text><i className={showNewPass ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowNewPass(!showConfirmPass)}/></InputGroup.Text>
+                <InputGroup.Text><i className={showNewPass ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowNewPass(!showNewPass)}/></InputGroup.Text>
               </InputGroup>
             </Form.Group>
             <Form.Group className="mb-4">
