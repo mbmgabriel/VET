@@ -216,7 +216,7 @@ export default function SystemAdminCourses() {
       getCourses();
       toast.success('Course status updated successfully.')
     }else{
-      toast.error("Something went wrong while fetching exam information")
+      toast.error("Something went wrong while updating course status")
     }
   }
 
@@ -361,7 +361,7 @@ export default function SystemAdminCourses() {
         setUserType('');
         toast.success("Successfully uploaded Ebook links.")
       } else {
-        toast.error("Something went wrong while uploading teacher list.")
+        toast.error("Something went wrong while uploading Ebook links.")
       }
       setLoading(false);
     }else{
