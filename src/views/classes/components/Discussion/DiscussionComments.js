@@ -113,7 +113,7 @@ function DiscussionComments({getDiscussionComments, getComments, discussionComme
       onCancel={cancelSweetAlert}
       focusCancelBtn
       >
-        You will not be able to recover this imaginary file!
+        You will not be able to recover your comment!
     </SweetAlert>
       <Modal  size="lg" show={discussionCommentModal} onHide={discussionCommentToggle} aria-labelledby="example-modal-sizes-title-lg">
       <Modal.Header className='class-modal-header' closeButton>
