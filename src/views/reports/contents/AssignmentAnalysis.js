@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, Col, Button, Form, Modal } from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {UserContext} from '../../../context/UserContext';
 
 function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
-  console.log({assignmentAnalysis})
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
   const [openModal, setOpenModal] = useState(false)
   const [assignmentGrade, setAssignmentGrade] = useState("")
   const [feedback, setFeedback] = useState("")
@@ -56,7 +58,6 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
   }
 
   const addScoreAssignment = async (e) => {
-    console.log({assignmentGrade})
     e.preventDefault()
     if( (assignmentGrade == '') || (assignmentGrade < 0) || (assignmentGrade == null)){
       toast.error('Points cannot be empty!')
@@ -124,13 +125,12 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
           <Col md={12}>No Answer Yet</Col>
           :
           <>
-            <Col md={12}>Assignment Name: {assignmentAnalysis.assignment?.assignmentName}</Col>
             <hr></hr>
-            <Col md={12}>{assignmentAnalysis.studentAssignment?.assignmentAnswer}</Col>
+            <Col md={12}>Answer: {assignmentAnalysis.studentAssignment?.assignmentAnswer}</Col>
             <hr></hr>
             <Col md={12}>
-              {assignmentAnalysis.studentAssignment?.assignmentGrade}
-              {assignmentAnalysis.studentAssignment?.assignmentGrade === null ?
+              Grade: {assignmentAnalysis.studentAssignment?.assignmentGrade}
+              {user.isTeacher &&
                 <Button
                   variant="outline-warning"
                   size="sm"
@@ -145,22 +145,7 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
                       assignmentAnalysis.studentAssignment.feedback
                     )}
                     >
-                  <i class="fas fa-redo" style={{ paddingRight: '10px' }} />Add Points
-                </Button>
-                :
-                <Button
-                  variant="outline-warning"
-                  size="sm"
-                  className='mx-3 mb-2'
-                  onClick={(e) => handleOpenModal(
-                    e,
-                    assignmentAnalysis.student.id,
-                    assignmentAnalysis.assignment.id,
-                    assignmentAnalysis.studentAssignment.id,
-                    assignmentAnalysis.studentAssignment.assignmentGrade,
-                    assignmentAnalysis.studentAssignment.feedback
-                  )}>
-                  <i class="fas fa-redo" style={{ paddingRight: '10px' }} ></i>Update Points
+                  <i class="fas fa-redo" style={{ paddingRight: '10px' }} />{assignmentAnalysis.studentAssignment?.assignmentGrade === null ? 'Add Points' : 'Update Points'}
                 </Button>
               }
             </Col>
@@ -180,7 +165,7 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
               </Row>
             </Col>
             <hr></hr>
-            <Col md={12}>{assignmentAnalysis.studentAssignment?.feedback}</Col>
+            <Col md={12}>Feedback: {assignmentAnalysis.studentAssignment?.feedback}</Col>
           </>
         }
       </Row>

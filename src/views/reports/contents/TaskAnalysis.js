@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { Row, Col, Button, Form, Modal} from 'react-bootstrap'
 import ClassesAPI from '../../../api/ClassesAPI'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {UserContext} from '../../../context/UserContext'
 
 function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
   const [showTaskAnalysis, setShowTaskAnalysis] = useState([])
   const [sweetError, setSweetError] = useState(false)
   const [show, setShow] = useState(false);
@@ -141,28 +144,21 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
         :
         <>
           <hr></hr>
-            <Col md={12}>Task Name : {taskAnalysis.task?.taskName}</Col>
+            {/* <Col md={12}>Task Name : {taskAnalysis.task?.taskName}</Col> */}
+            <Col md={12}>Answer: {taskAnalysis.studentTask?.taskAnswer}</Col>
             <hr></hr>
-            <Col md={12}>{taskAnalysis.studentTask?.taskAnswer}</Col>
-            <hr></hr>
-            <Col md={12}>{taskAnalysis.studentTask?.taskGrade}
-            {taskAnalysis.studentTask?.taskGrade === null ? 
-                          <Button variant="outline-warning" className='mb-2 mx-3' size="sm"
-                          onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, paramsId, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
-                        >
-                          <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>
-                          Add Points
-                        </Button>
-                        :
-                        <Button variant="outline-warning" className='mb-2 mx-3' size="sm"
-                        onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, paramsId, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
-                      >
-                        <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>
-                        Update Points
-                      </Button>  
-          }
-
+            <Col md={12}>Grade: {taskAnalysis.studentTask?.taskGrade}
+            {
+            user.isTeacher &&
+              <Button variant="outline-warning" className='mb-2 mx-3' size="sm"
+                onClick={(e) => handleOpenModal(e, taskAnalysis.student.id, paramsId, taskAnalysis.task.id, taskAnalysis.studentTask.id, taskAnalysis.studentTask.taskGrade, taskAnalysis.studentTask.feedback )}
+              >
+                <i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>
+                {taskAnalysis.studentTask?.taskGrade === null ? 'Add Points' : 'Update Points'}
+              </Button>
+            }
             </Col>
+            <hr></hr>
             <Col className='mb-3'>
               <Row>
                 {
@@ -184,7 +180,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
                 }
               </Row>
             </Col>
-            <Col md={12}>{taskAnalysis.studentTask?.feedback}</Col>
+            <Col md={12}>Feedback: {taskAnalysis.studentTask?.feedback}</Col>
           </>
         }
       </Row>
