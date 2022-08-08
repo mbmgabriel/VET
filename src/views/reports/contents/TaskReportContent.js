@@ -108,22 +108,69 @@ const arrageAlphabetical = (data) => {
   return(
     <>
     {user.student === null ?
-    <>
-      <Col className='d-flex justify-content-end'>
-        <Button onClick={() => downloadxls()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Export </b></Button>
-      </Col>
+      <>
+        <Col className='d-flex justify-content-end'>
+          <Button onClick={() => downloadxls()} className='btn-showResult'  size='lg' variant="outline-warning"><b> Export </b></Button>
+        </Col>
+        <Table hover size="lg" responsive>
+          <thead>
+            <tr>
+            <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
+              <th>Grade </th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          {taskReport.map(item =>{
+              return (
+                <tr>
+                  {item.studentTasks.map(st =>{
+                    return (
+                    <>
+                      <td><i class="fas fa-user-circle td-icon-report-person"></i> 
+                        <span style={{cursor: 'pointer'}} onClick={(e) => getTaskAnalysis(e, item.student.id, st.task.classId, st.task.id, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
+                      </td>
+                      <td>
+                        {
+                          st.score === 0 
+                            ? <Badge bg="danger">No Grade</Badge>
+                            : `${st.score} / ${st?.task?.rate}`
+                        }
+                      </td>
+                      <td>         
+                      {st?.studentAnswer === null ? <Badge bg="danger">Not Submitted</Badge>:
+                        <Badge bg="success">Submitted</Badge>
+                      }</td>
+                    <td>
+                      {st?.studentAnswer === null ? <spam></spam>:
+                        <Button style={{color:"white"}} variant="warning" size="sm" onClick={(e) => reTakeTask(e, st?.task?.id, item?.student?.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
+                      }
+                    </td>
+                    </>
+                    )
+
+                })}
+                </tr>
+              )
+            })
+          }
+          </tbody>
+        </Table>
+      </>
+    :
       <Table hover size="lg" responsive>
         <thead>
           <tr>
           <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
             <th>Grade </th>
             <th>Status</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
         {taskReport.map(item =>{
             return (
+              item.student.id == user.student.id &&
               <tr>
                 {item.studentTasks.map(st =>{
                   return (
@@ -142,25 +189,15 @@ const arrageAlphabetical = (data) => {
                     {st?.studentAnswer === null ? <Badge bg="danger">Not Submitted</Badge>:
                       <Badge bg="success">Submitted</Badge>
                     }</td>
-                  <td>
-                    {st?.studentAnswer === null ? <spam></spam>:
-                      <Button style={{color:"white"}} variant="warning" size="sm" onClick={(e) => reTakeTask(e, st?.task?.id, item?.student?.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
-                    }
-                  </td>
                   </>
                   )
-
               })}
               </tr>
             )
           })
         }
         </tbody>
-      </Table>
-    </>
-    :
-    <div onClick={(e) => getTaskAnalysis(e, user.student.id, sessionClass, sessionTaskId, user.student.lname, user.student.fname)}>{user.student.lname}</div>
-    }
+      </Table>}
     </>
   )}else{
     return(

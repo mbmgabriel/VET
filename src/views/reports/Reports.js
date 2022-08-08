@@ -26,8 +26,6 @@ export default function Reports({children}) {
     const pageURL = new URL(window.location.href);
     let currentClassId = pageURL.searchParams.get("classId");
     setClassId(currentClassId)
-
-    if (user.isStudent) return (window.location.href = "/404");
   }, []);
 
   useEffect(() => {
@@ -37,7 +35,6 @@ export default function Reports({children}) {
     }else if(user.role === "Student"){
       getClassesStudent()
     }
-
   }, [])
 
   const getClasses = async() => {
@@ -54,12 +51,12 @@ export default function Reports({children}) {
 
   const getClassesStudent = async() => {
     setLoading(true)
-    let response = await new ClassesAPI().getClasses(user.student.id)
+    let response = await new ClassesAPI().getClassesStudent(user.student.id)
     if(response.ok){
       setClasses(response.data)
     setLoading(false);
     }else{
-      alert("Something went wrong while fetching all courses")
+      alert("Something went wrong while fetching all classes")
       setLoading(false);
     }
   }
@@ -120,7 +117,7 @@ export default function Reports({children}) {
             </Form>
           </ListGroup.Item>
           <ListGroup className="list-group-item-o" style={{paddingLeft:'15px', paddingRight: '15px'}}>
-          {subsType == 'Interactives' ?
+          {subsType == 'Interactives' || subsType == 'TeacherResources' ?
               <Link className={currentLoc.includes('reports/interactive') ? "active-nav-item" : 'nav-item'} to={classId ? `/reports/interactive?classId=${classId}` : '/reports'}>
                 Interactive
               </Link>

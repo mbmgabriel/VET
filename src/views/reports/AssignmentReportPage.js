@@ -21,13 +21,13 @@ function AssignmentReportPage() {
   const [assignmentAnalysis, setAssignmentAnalysis] = useState([])
   const [studentName, setStudentName] = useState('')
   const [loading, setLoading] = useState(false);
-  const { id } = useParams();
+  // const { id } = useParams();
 
   const onSearch = (text) => {
     setFilter(text)
   }
 
-  console.log('classId', id)
+  // console.log('classId', id)
 
   const pageURL = new URL(window.location.href);
   const paramsId = pageURL.searchParams.get("classId");
