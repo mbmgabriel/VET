@@ -34,6 +34,7 @@ export default function ExamItemContent({
           </span>
           <b>{moment(startDate).format("MMMM Do YYYY, h:mm:ss a")}</b>
         </p>
+        
       )}
       {endDate && (
         <p className='exam-instruction m-0 mb-3'>

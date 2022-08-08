@@ -18,6 +18,7 @@ import ClassBreadcrumbs from './components/ClassBreedCrumbs';
 import ClassSideNavigation from './components/ClassSideNavigation';
 import ContentViewer from '../../components/content_field/ContentViewer'
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
+import Status from '../../components/utilities/Status';
 
 function ClassTask() {
   const [modal, setModal] = useState(false)
@@ -51,6 +52,7 @@ function ClassTask() {
   const [selectedTaskName, setSelectedTaskName] = useState("")
   const [loading, setLoading] = useState(false);
   const subsType =  user.subsType;
+  const [startDate, setStartDate] = useState('')
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -91,6 +93,8 @@ function ClassTask() {
     setRate(item4)
     setModal(!modal)
   }
+
+  console.log('taskModule:', taskModule)
 
 
   const editAssignTaskToggle = (e, item) => {
@@ -324,27 +328,46 @@ function ClassTask() {
                       }
                       </>
                     }
-               
+                    {moduleitem?.taskAssignment === null ? (<></>):(<>
+                      <Col sm={7} className='due-date-discusstion' >
+                        <p className='exam-instruction m-0'>
+                          <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                            Start:
+                          </span>
+                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.taskAssignment?.startDate).format("MMMM Do YYYY")}, {moment(moduleitem?.taskAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                        </p>
+                        <p className='exam-instruction m-0 mb-3'>
+                          <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                            End:
+                          </span>
+                            &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.taskAssignment?.endDate).format("MMMM Do YYYY")}, {moment(moduleitem?.taskAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                        </p> 
+                      </Col>
+                      </>)}
                     {moduleitem?.taskAssignment?(
                     <>
+                    <div className='inline-flex' >
+                      {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.startDate + ' ' + moduleitem?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b></div>
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(moduleitem?.taskAssignment?.startDate + ' ' + moduleitem?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
                       {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(moduleitem?.taskAssignment?.startDate + ' ' + moduleitem?.taskAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                        <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
-                      <Col sm={7} className='due-date-discusstion' >
+                      
+                      </div>   
+                      {/* <Col sm={7} className='due-date-discusstion' >
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc font-16'>
                             Start Date:&nbsp;
@@ -359,8 +382,20 @@ function ClassTask() {
                             {moduleitem?.taskAssignment?.startTime}
                           </div>
                       </div>
-                      </Col>
-                      <Col className='posted-date-discusstion'>
+                              <p className='exam-instruction m-0'>
+                              <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                                         Start:
+                                     </span>
+                                     &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.taskAssignment?.startDate).format("MMMM Do YYYY, h:mm:ss a")}</b>
+                                  </p>
+                                  <p className='exam-instruction m-0 mb-3'>
+                                        <span className='d-inline-block' style={{ width: 40 }}>
+                                                      End:
+                                           </span>
+                                           &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.taskAssignment?.endDate).format("MMMM Do YYYY, h:mm:ss a")}</b>
+        </p>
+                      </Col> */}
+                      {/* <Col className='posted-date-discusstion'>
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc font-16'>
                             End Date:&nbsp;
@@ -375,15 +410,16 @@ function ClassTask() {
                             {moduleitem?.taskAssignment?.endTime}
                           </div>
                         </div>
-                      </Col>
+                      </Col> */}
                       <div className='text-color-bcbcbc' >
                       <hr></hr>
                       </div>
                     </>
                     ):
                     <>
-                      <div style={{color:'red'}}>
-                        <b>Not Assigned</b>
+                      <div className='inline-flex' >
+                       {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
+                       <Status>Unassigned</Status>
                       </div>
                       <div className='text-color-bcbcbc' >
                       <hr></hr>

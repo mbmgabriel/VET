@@ -34,6 +34,12 @@ export default function Status({children}) {
     case "Not Shared":
       color = "#007BFF";
       break
+      case "Not Submitted":
+        color = "#DC3545";
+        break
+        case "Comments":
+          color = "#007BFF";
+          break
     default:
       break;
   }

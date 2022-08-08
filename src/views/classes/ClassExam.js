@@ -89,6 +89,7 @@ export const ClassExam = () => {
     fetchExams();
   }, []);
 
+  console.log('exams:', exams)
 
   return (
     <ClassSideNavigation>

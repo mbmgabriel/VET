@@ -7,7 +7,7 @@ import { UserContext } from '../../../../context/UserContext'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
 
-function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
+function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId, getStudentTaskAnwswer}) {
   const {id} = useParams();
   const userContext = useContext(UserContext)
   const {user} = userContext.data
@@ -36,6 +36,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId}) {
         setFiles([]);
         answerTaskToggle(false)
         setFiles([])
+        getStudentTaskAnwswer(taskId)
       }else{
         alert(response.data.errorMessage)
       }
