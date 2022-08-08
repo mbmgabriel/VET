@@ -12,7 +12,7 @@ export default function SchoolAcademicTerms() {
         <Col sm={3}>
           <AdminSideNavigation active="academicTerm"/>
         </Col>
-        <Col sm={9} className='rounded-white-container px-4'>
+        <Col sm={9} className='px-4 vh-85 scrollable'>
           <AcademicTermTable />
         </Col>
       </Row>
