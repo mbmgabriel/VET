@@ -237,7 +237,7 @@ export default function ClassSideNavigation({children}) {
       :
       <Col className='row-course-bg course-widget-font' sm={1}>
         <Col className="text-align-right mb-2">
-          <i className="fas fa-chevron-right" style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
+          <i className="fas fa-chevron-right cursor-pointer " style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
         </Col>
         {subsType == 'LMS' &&
           <ListGroup>
