@@ -25,21 +25,41 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId, getStude
 
   const submitStudentTaskAnswer = async (e) =>{
     e.preventDefault()
-    setUploadingFiles('uploading');
-    let studentId = user?.student?.id
-    let response = await new ClassesAPI().submitStudentTaskAnswer(studentId, id, taskId, {taskAnswer, fileDetails: files})
-      if(response.ok){
-        setTaskAnswer('')
-        // setAssignNotify(true)
-        toast.success('Successfully submitted task answer.');
-        setUploadingFiles('done');
-        setFiles([]);
-        answerTaskToggle(false)
-        setFiles([])
-        getStudentTaskAnwswer(taskId)
-      }else{
-        alert(response.data.errorMessage)
-      }
+    if(taskAnswer === ''){
+      toast.error('Please fill out the field!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else{
+      setUploadingFiles('uploading');
+      let studentId = user?.student?.id
+      let response = await new ClassesAPI().submitStudentTaskAnswer(studentId, id, taskId, {taskAnswer, fileDetails: files})
+        if(response.ok){
+          setTaskAnswer('')
+          // setAssignNotify(true)
+          toast.success('Successfully submitted task answer.');
+          setUploadingFiles('done');
+          setFiles([]);
+          answerTaskToggle(false)
+          setFiles([])
+          getStudentTaskAnwswer(taskId)
+        }else{
+          toast.error(response.data.errorMessage, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        }
+    }
   }
 
   const handlefilesUpload = (file) => {
