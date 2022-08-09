@@ -356,26 +356,46 @@ function ClassAssignment() {
             }
               </>
             }
+            {assigItem?.classAssignment === null ? (<></>):(<>
+              <Col sm={7} className='due-date-discusstion' >
+                <p className='exam-instruction m-0'>
+                  <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                    Start:
+                  </span>
+                    &nbsp;<b style={{ fontSize: '16px' }}>{moment(assigItem?.classAssignment?.startDate).format("MMMM Do YYYY")}, {moment(assigItem?.classAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                </p>
+                <p className='exam-instruction m-0 mb-3'>
+                  <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                    End:
+                  </span>
+                    &nbsp;<b style={{ fontSize: '16px' }}>{moment(assigItem?.classAssignment?.endDate).format("MMMM Do YYYY")}, {moment(assigItem?.classAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                </p> 
+              </Col>
+             </>)}
             {assigItem?.classAssignment?(
               <Row>
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
-                    <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                    <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b></div>
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                    <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
-                } 
-                <Col sm={7} className='due-date-discusstion' >
+                <div className='inline-flex' >
+                  {assigItem?.assignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&  
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status></div>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
+                  } 
+                  
+                </div>
+                {/* <Col sm={7} className='due-date-discusstion' >
                 <div className='inline-flex'>
                   <div className='text-color-bcbcbc font-16'>
                     Start Date:&nbsp;
@@ -406,12 +426,13 @@ function ClassAssignment() {
                     {assigItem?.classAssignment?.endTime}
                   </div>
                 </div>
-              </Col>
+              </Col> */}
               <hr />
             </Row>):
               <div>                      
-                <div style={{color:'red'}}>
-                    <b>Not Assigned</b>
+                <div className='inline-flex' >
+                {assigItem?.assignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
+                <Status>Unassigned</Status>
                 </div>
               <hr />
             </div>

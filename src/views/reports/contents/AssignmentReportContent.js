@@ -77,7 +77,6 @@ function AssignmentReportContent({getAssignmentReport, getAssignmentAnalysis, as
     }
   }
 
-  console.log('assignmentReportassignmentReportassignmentReportassignmentReport:', assignmentReport)
 
   const arrageAlphabetical = (data) => {
     let temp = data?.sort(function(a, b){
@@ -111,20 +110,6 @@ const arrageNoneAlphabetical = (data) => {
         <thead>
           <tr>
           <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
-            {/* {assignmentReport.map(item =>{
-              return(
-              item.columnAssignments.map(as =>{
-                  return(
-                  <th>{as.assignmentName}</th>
-                  )
-                })
-              )
-            })} */}
-            {/* {assignmentColumns.map((item, index) => {
-              return (
-                <th key={index}>{item}</th>
-              )
-            })} */}
             <th>Grade</th>
             <th>Status</th>
             <th>Action</th>
@@ -168,8 +153,46 @@ const arrageNoneAlphabetical = (data) => {
       </Table>
     </>
       :
-      <div onClick={(e) => getAssignmentAnalysis(e, user.student.id, sessionClass, sessionAssignmentId, user.student.lname, user.student.fname)}>{user.student.lname}</div>
-    }
+      <Table hover size="lg" responsive>
+        <thead>
+          <tr>
+          <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
+            <th>Grade</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+        {assignmentReport.map(item =>{
+            return (
+              item.student.id == user.student.id &&
+              <tr>
+                {item.studentAssignments.map(st =>{
+                return (
+                  <>
+                  <td><i class="fas fa-user-circle td-icon-report-person"></i> 
+                    <span style={{cursor:'pointer'}} onClick={(e) => getAssignmentAnalysis(e, item.student.id, sessionClass, sessionAssignmentId, item.student.lname, item.student.fname)}>{item.student.lname}, {item.student.fname}</span>
+                  </td>
+                  <td>
+                    {
+                      st.score === 0 
+                        ? <Badge bg="danger">No Grade</Badge>
+                        : `${st.score} / ${st?.assignment?.rate}`
+                    }
+                  </td>
+                  <td>         
+                    {st?.studentAnswer === null ? <Badge bg="danger">Not Submitted</Badge>:
+                      <Badge bg="success">Submitted</Badge>
+                    }</td>
+                  </>
+                  )
+
+              })}
+              </tr>
+            )
+          })
+        }
+        </tbody>
+      </Table>    }
     </>
   )
   // )}else{

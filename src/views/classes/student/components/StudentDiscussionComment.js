@@ -79,9 +79,22 @@ function StudentDiscussionComment({getDiscussionComments, getComments, studentCo
       console.log('moduleId:', moduleId)
       getDiscussionComments(null, discussionId, startDate, startTime, endDate, endTime)
       setDeleteNotify(false)
+      deleteToast()
     } else {
       alert(response.data.errorMessage)
     }
+  }
+
+  const deleteToast = () => {
+    toast.success('Successfully removed comment!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   return (

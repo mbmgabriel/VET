@@ -83,7 +83,6 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
       temp.Status = status;
       tempData.push(temp);
     })
-    console.log(tempData, '-0-0-0-=0-0')
     setDataDownload(tempData);
   }
 
@@ -97,14 +96,12 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
   
   const arrageAlphabetical = (data) => {
     let temp = data?.sort(function(a, b){
-      console.log(a, 'herererereherererereherererere TRUE')
       let nameA = a.student.lname.toLocaleLowerCase();
       let nameB = b.student.lname.toLocaleLowerCase();
       if (nameA < nameB) {
           return -1;
       }
     });
-    console.log(temp, '2222')
     setSorted(temp)
 }
 
@@ -116,7 +113,6 @@ const arrageNoneAlphabetical = (data) => {
         return -1;
     }
   });
-  console.log(temp, '111111')
   setSorted(temp)
 }
 
@@ -242,7 +238,7 @@ const handleClickIcon = () =>{
         <Col sm={4}>
         <Card>
           <Card.Body>
-            <Card.Title><div className='header-analysis-card'><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div></Card.Title>
+            <div className='header-analysis-card' ><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div>
             <Card.Text>
               <hr></hr>
               <p><b>0</b></p>
@@ -253,7 +249,7 @@ const handleClickIcon = () =>{
         <Col sm={4}>
         <Card>
           <Card.Body>
-            <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div></Card.Title>
+              <div className='header-analysis-card' ><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div>
             <Card.Text>
               <div>
               <hr></hr>
@@ -266,7 +262,7 @@ const handleClickIcon = () =>{
         <Col sm={4}>
         <Card>
           <Card.Body>
-            <Card.Title><div className='header-analysis-card'><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div></Card.Title>
+            <div className='header-analysis-card' ><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div>
             <Card.Text>
               <hr></hr>
               <p><b>0</b></p>
@@ -301,44 +297,49 @@ const handleClickIcon = () =>{
           }
         </div>
         </div>
-    <Table striped hover size="sm">
-      <thead>
-        <tr>
-        <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
-          <th>Grade</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sorted?.map(item =>{
-          return (
-            item.studentTests.map(st =>{
-              return (  
-                <tr>
-                  <td >
-                    <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
-                      <span style={{cursor:'pointer'}} onClick={(e) => {
-                        getExamAnalysis(item.student.id, sessionClass, st.test.id, item.student.lname, item.student.fname);
-                        sessionStorage.setItem('studentid', item.student.id)
-                        }}>
-                      { item.student.lname} { item.student.fname}
-                      {st.isSubmitted == true }
-                      </span> 
-                  </td>
-                  <td>{st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>: <>{st.score}/{st.rawScore}</>}</td>
-                  <td>
-                    {st.isSubmitted === false ? <Badge bg="danger">Not Submitted</Badge>:<>{st.rawScore/2 <= st.score && <><Badge bg="success">PASSED</Badge></>}
-                    {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }</>}
-                  
-                  </td>
-                  <td>
-                    {st.isSubmitted === false ? <spam></spam>: 
-                    <Button style={{color:"white" }} className='tficolorbg-button' variant="" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
-
-                    }
-                    
-                    <SweetAlert
+        <Table striped hover size="sm">
+          <thead>
+            <tr>
+            <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
+              <th>Grade</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted?.map(item =>{
+              return (
+                item.studentTests.map(st =>{
+                  return (  
+                    <tr>
+                      <td >
+                        <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
+                          <span style={{cursor:'pointer'}} onClick={(e) => {
+                            getExamAnalysis(item.student.id, sessionClass, st.test.id, item.student.lname, item.student.fname);
+                            sessionStorage.setItem('studentid', item.student.id)
+                            }}>
+                          { item.student.lname} { item.student.fname}
+                          {st.isSubmitted == true }
+                          </span> 
+                      </td>
+                      <td>{st.isSubmitted ? <>{st.score}/{st.rawScore}</> : <Badge bg="danger">Not Submitted</Badge>}</td>
+                      <td>
+                        {
+                          st.isSubmitted ?
+                          <>
+                          {st.rawScore/2 <= st.score && <><Badge bg="success">PASSED</Badge></>}
+                          {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }
+                          </>
+                          :
+                          <Badge bg="danger">Not Submitted</Badge>
+                        }
+                      </td>
+                      <td>
+                        {
+                          st.isSubmitted && 
+                          <Button style={{color:"white" }} className='tficolorbg-button' variant="" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
+                        }
+                        <SweetAlert
                           warning
                           showCancel
                           show={sweetError}
@@ -350,12 +351,66 @@ const handleClickIcon = () =>{
                           focusCancelBtn
                         >
                           Retake the exam?
-                      </SweetAlert>
+                        </SweetAlert>
+                      </td>
+                      <td>
+
+                      </td>
+                    </tr>
+                  )
+                })
+                )
+              })
+            }
+          </tbody>
+        </Table>
+      </>):<FrequencyOferror frequencyItem={frequencyItem} />}
+    </>
+    :
+    <Table striped hover size="sm">
+      <thead>
+        <tr>
+        <th><div className='class-enrolled-header'> Student Name</div></th>
+          <th>Grade</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sorted?.map(item =>{
+          return (
+            item.student.id == user.student.id &&
+            item.studentTests.map(st =>{
+              return (  
+                st.classTest.showAnalysis ? 
+                <tr>
+                  <td >
+                    <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
+                      <span style={{cursor:'pointer'}}
+                      // onClick={(e) => {
+                      //   getExamAnalysis(item.student.id, sessionClass, st.test.id, item.student.lname, item.student.fname);
+                      //   sessionStorage.setItem('studentid', item.student.id)
+                      //   }}
+                        >
+                      { item.student.lname} { item.student.fname}
+                      </span> 
+                  </td>
+                  <td>{st.isSubmitted ? <>{st.score}/{st.rawScore}</> : <Badge bg="danger">Not Submitted</Badge>}</td>
+                  <td>
+                    {
+                      st.isSubmitted ?
+                      <>
+                      {st.rawScore/2 <= st.score && <><Badge bg="success">PASSED</Badge></>}
+                      {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }
+                      </>
+                      :
+                      <Badge bg="danger">Not Submitted</Badge>
+                    }
                   </td>
                   <td>
-
                   </td>
                 </tr>
+                :
+                <td>Nothing to display.</td>
               )
             })
             )
@@ -363,22 +418,10 @@ const handleClickIcon = () =>{
         }
       </tbody>
     </Table>
-      </>):<FrequencyOferror frequencyItem={frequencyItem} />}
-    </>
-    :
-    <div onClick={(e) => getExamAnalysis(user.student.id, sessionClass, sessionTestId, user.student.lname, user.student.fname)}>{user.student.lname}</div>
     }
     <FrequencyError frequencyItem={frequencyItem} setFrequencyModal={setFrequencyModal} frequencyModal={frequencyModal} />
     
     </>
   )
-// }else{
-//     return(
-//       <>
-//         <ExamAnalysis examAnalysis={examAnalysis} setExamAnalysis={setExamAnalysis} testReport={testReport}/>
-//       </>
-//     )
-//   }
-
 }
 export default ExamReportContent

@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { Form, Button, } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
 
-function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnswerItem}) {
+function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnswerItem, setSubmittedTaskModal}) {
 
   const downloadImage = (url) => {
     fetch(url, {
@@ -22,7 +22,7 @@ function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnsw
 
   return (
     <div>
-        <Modal  size="lg" show={submittedTaskModal} onHide={submittedTaskToggle} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal  size="lg" show={submittedTaskModal} onHide={() => setSubmittedTaskModal(false)} aria-labelledby="example-modal-sizes-title-lg">
           <Modal.Header className='class-modal-header' closeButton>
             <Modal.Title id="example-modal-sizes-title-lg" >
              Task

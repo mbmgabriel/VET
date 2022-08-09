@@ -1,6 +1,6 @@
 import Button from '@restart/ui/esm/Button'
 import React, { useContext, useEffect, useState } from 'react'
-import { Col, Form, Row } from 'react-bootstrap'
+import { Col, Form, InputGroup, Row } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom'
 import Auth from '../../api/Auth'
 import MainContainer from '../../components/layouts/MainContainer'
@@ -14,6 +14,7 @@ export default function Login() {
   const {refreshUser, user} = userContext.data
   const urlParams = new URLSearchParams(window.location.search);
   const message = urlParams.get('message');
+  const [showPassword, setShowPassword] = useState(false);
 
   let history = useHistory()
 
@@ -58,13 +59,16 @@ export default function Login() {
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label className="custom-label">Password</Form.Label>
-                    <Form.Control 
-                      className="custom-input" 
-                      size="lg" 
-                      type="password" 
-                      placeholder="Enter password here"
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <InputGroup>
+                      <Form.Control 
+                        className="custom-input" 
+                        size="lg" 
+                        type={showPassword ? 'text' : "password"} 
+                        placeholder="Enter password here"
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <InputGroup.Text className='custom-input border-0'><i className={showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowPassword(!showPassword)}/></InputGroup.Text>
+                    </InputGroup>
                   </Form.Group>
                   <Link className="link-orange font-24 d-none" to="/forgot_password" >Forgot Password</Link>
                   <Button className="btn btn-lg btn-primary btn-auth w-100 d-block mt-5 mb-4" size="lg" variant="primary" type="submit">Log In</Button>

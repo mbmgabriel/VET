@@ -6,6 +6,7 @@ import StudentDiscussionComment from './components/StudentDiscussionComment'
 import ClassesAPI from '../../../api/ClassesAPI'
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { useParams } from 'react-router';
+import Status from '../../../components/utilities/Status'
 
 function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searchTerm}) {
   const [discussionId, setDiscussionId] = useState('')
@@ -91,39 +92,68 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
               </>
               ):
               <>
-                {
+                {/* {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <Col sm={3} className='icon-exam'>
-                    <Button onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{item.responseCount}</Button>
-                  </Col>
+                  <></>
+                  // <Col sm={3} className='icon-exam'>
+                  //   <Button onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{item.responseCount}</Button>
+                  // </Col>
                 }
                 {
                   moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <Col sm={3} className='icon-exam'>
-                    <Button onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{item.responseCount}</Button>
-                  </Col>
-                }
+                  <></>
+                  // <Col sm={3} className='icon-exam'>
+                  //   <Button onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} className="m-r-5 color-white tficolorbg-button" size="sm">Comments&nbsp;{item.responseCount}</Button>
+                  // </Col>
+                } */}
               </>
                 }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b>&nbsp;</div>  
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Upcoming</b></div>
-                }
-                {
-                  moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
-                  <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
-                }
-              <Col sm={6} className='due-date-discusstion' >
+                {item?.discussionAssignment === null ? (<></>):(<>
+                  <Col sm={7} className='due-date-discusstion' >
+                    <p className='exam-instruction m-0'>
+                      <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                        Start:
+                      </span>
+                        &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.discussionAssignment?.startDate).format("MMMM Do YYYY")}, {moment(item?.discussionAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                    </p>
+                    <p className='exam-instruction m-0 mb-3'>
+                      <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                        End:
+                      </span>
+                        &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.discussionAssignment?.endDate).format("MMMM Do YYYY")}, {moment(item?.discussionAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                    </p> 
+                  </Col>
+                </>)}
+                <>
+                <div className='inline-flex' >
+                {item?.discussion?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Class</Status></div>)}
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.endDate + ' ' + item?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
+                    <>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
+                      <span className='commet-btn' onClick={(e) => getDiscussionComments(e, item.discussion?.id, item?.discussionAssignment?.startDate, item?.discussionAssignment?.startTime, item?.discussionAssignment?.endDate, item?.discussionAssignment?.endTime)} style={{cursor:'pointer'}} ><Status>Comments</Status> </span>
+                    </>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.discussionAssignment?.endDate + ' ' + item?.discussionAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
+                  <>
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status>&nbsp;</div> 
+                    <span className='commet-btn' onClick={(e) => getDiscussionComments(e, item.discussion?.id)} style={{cursor:'pointer'}} ><Status>Comments</Status> </span>  
+                  </>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Upcoming</Status></div>
+                  }
+                  {
+                    moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isSame(moment(item?.discussionAssignment?.startDate + ' ' + item?.discussionAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
+                  }
+                </div>
+                </>
+              {/* <Col sm={6} className='due-date-discusstion' >
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>
                       Start Date:&nbsp;
@@ -138,8 +168,8 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
                       {item?.discussionAssignment?.startTime}
                     </div>
                 </div>
-                </Col>
-                <Col className='posted-date-discusstion'>
+                </Col> */}
+                {/* <Col className='posted-date-discusstion'>
                   <div className='inline-flex'>
                     <div className='text-color-bcbcbc'>
                       End Date:&nbsp;
@@ -154,7 +184,7 @@ function StudentDiscussion({discussionModule, getDiscussionUnit, moduleId, searc
                       {item?.discussionAssignment?.endTime}
                     </div>
                   </div>
-                </Col>
+                </Col> */}
           </Row>
           <hr />
             </>):(

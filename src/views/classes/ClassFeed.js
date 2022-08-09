@@ -367,7 +367,7 @@ const getComment = (item, item1, item3) => {
                   <ContentRichText value={content}  placeholder='Enter Announcement here'  onChange={value => setContent(value)} />
               <div style={{textAlign:'right', paddingTop:'15px'}}>
               <Button onClick={()=> setShowFiles(!showFiles)}>File Library</Button>&nbsp;
-              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >POST</Button>
+              <Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit' >Post</Button>
               </div>
             </Form>
           </Card.Body>
@@ -376,14 +376,14 @@ const getComment = (item, item1, item3) => {
         )}
     
     {}
-    <Card.Title>
+    {/* <Card.Title>
       <div className="col-md-10 pages-header fd-row">
-        <p className='title-header m-0'>Announcement </p>
+        <p className='title-header m-0'>Announcement 1</p>
         <Button onClick={() => getFeedClass()} className='ml-3'>
           <i className="fa fa-sync"></i>
         </Button>
       </div>
-    </Card.Title>
+    </Card.Title> */}
     {feedClass?.map(item => {
       return(
         <>
@@ -398,14 +398,14 @@ const getComment = (item, item1, item3) => {
           <>
           <Card className='post-card'>
             <Card.Body>
-            <Card.Title>
+            {/* <Card.Title>
                 <div className="col-md-10 pages-header fd-row">
-                  <p className='title-header m-0'>Announcement </p>
+                  <p className='title-header m-0'>Announcement 1 </p>
                   <Button onClick={() => getFeedClass()} className='ml-3'>
                     <i className="fa fa-sync"></i>
                   </Button>
                 </div>
-              </Card.Title>
+              </Card.Title> */}
             {/* <div className='inline-flex'>
               <div>
               <InputGroup.Text id="basic-addon2" className="feed-logo"><i class="fas fa-user-circle fas-1x" ></i></InputGroup.Text>

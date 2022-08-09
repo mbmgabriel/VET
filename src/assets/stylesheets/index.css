@@ -41,7 +41,7 @@ p.card-text{
   text-decoration: none !important;
   color: #707070;
   font-size: 20px;
-  font-style: normal normal normal 20px/27px Segoe UI;
+  /* font-style: normal normal normal 20px/27px Segoe UI; */
   margin: 0 !important;
   height: 100%;
   left: 30px;
@@ -65,7 +65,7 @@ p.card-text{
 }
 
 .font-class {
-  font: normal normal normal 36px/48px Segoe UI !important;
+  /* font: normal normal normal 36px/48px Segoe UI !important; */
 }
 
 .class-side-nav {
@@ -76,7 +76,7 @@ p.card-text{
 .font-side {
 color: var(--unnamed-color-ee9337);
 text-align: left;
-font: normal normal normal 16px/21px Segoe UI !important;
+/* font: normal normal normal 16px/21px Segoe UI !important; */
 letter-spacing: 0px;
 color: var(--primary-color);
 opacity: 1;
@@ -110,7 +110,7 @@ display:inline-flex;
 
 .modal-header {
 font-size: 24px;
-font-family: "Segou UI" Regular;
+/* font-family: "Segou UI" Regular; */
 color:#7D7D7D;
 box-shadow: 0px 3px 6px #00000029;
 }
@@ -149,6 +149,11 @@ border:1px solid var(--primary-color) !important;
 .tficolorbg-button:hover{
   background-color: var(--primary-color) !important;
   opacity: 0.7 !important;
+}
+
+.commet-btn:hover{
+  opacity: 0.7 !important;
+  cursor: pointer;
 }
 
 .btn-filter{
@@ -218,14 +223,14 @@ color:#BCBCBC !important;
 .title-header {
   font-size: 36px !important;
   color:#707070 !important;
-  font-style: 'normal normal normal 36px/48px Segoe UI' !important
+  /* font-style: 'normal normal normal 36px/48px Segoe UI' !important */
 }
 
 .search-classes {
-  font: 'normal normal normal 20px/27px Segoe UI' !important;
+  /* font: 'normal normal normal 20px/27px Segoe UI' !important; */
 }
 .search-discussion {
-  font: 'normal normal normal 20px/27px Segoe UI' !important;
+  /* font: 'normal normal normal 20px/27px Segoe UI' !important; */
 }
 .discussion-unit{
   background-color:#ffffff !important;
@@ -233,7 +238,7 @@ color:#BCBCBC !important;
   border-radius: 10px 10px 0px 0px !important;
   color: var(--bolder);
   text-align: left;
-  font: normal normal normal 24px/32px Segoe UI;
+  /* font: normal normal normal 24px/32px Segoe UI; */
   letter-spacing: 0px;
   color: #707070;
   opacity: 1;
@@ -423,7 +428,7 @@ background-color: transparent !important;
 
 .course-subtitle {
   font-size: 16px !important;
-  font-family: "Segou UI" Regular;
+  /* font-family: "Segou UI" Regular; */
   color:#7D7D7D;
 }
 
@@ -451,13 +456,13 @@ border-top-right-radius: 0px !important;
 
 .content-pane-title{
   font-size: 36px;
-  font-family: "Segou UI" Regular;
+  /* font-family: "Segou UI" Regular; */
   color:#7D7D7D;
 }
 
 .unit-title{
   font-size: 24px !important;
-  font-family: "Segou UI" Regular !important; 
+  /* font-family: "Segou UI" Regular !important;  */
   color:#7D7D7D;
 }
 
@@ -564,7 +569,7 @@ border-top-right-radius: 0px !important;
   cursor: pointer !important;
   font-size: 24px !important;
   color: #BCBCBC !important;
-  font-style: 'normal normal normal 20px/27px Segoe UI' !important;
+  /* font-style: 'normal normal normal 20px/27px Segoe UI' !important; */
 }
 
 .btn-portfolio:hover{
@@ -587,7 +592,7 @@ border-top-right-radius: 0px !important;
   cursor: pointer !important;
   font-size: 20px !important;
   color: var(--primary-color) !important;
-  font-style: 'normal normal normal 20px/27px Segoe UI' !important;
+  /* font-style: 'normal normal normal 20px/27px Segoe UI' !important; */
 }
 
 .btn-Enrolled:hover{
@@ -608,7 +613,7 @@ border-top-right-radius: 0px !important;
   cursor: pointer !important;
   font-size: 14px !important;
   color: var(--primary-color) !important;
-  font-style: 'normal normal normal 20px/27px Segoe UI' !important;
+  /* font-style: 'normal normal normal 20px/27px Segoe UI' !important; */
 }
 
 .btn-showResult:hover{
@@ -629,7 +634,7 @@ border-top-right-radius: 0px !important;
   cursor: pointer !important;
   font-size: 35px !important;
   color: var(--primary-color) !important;
-  font-style: 'normal normal normal 20px/27px Segoe UI' !important;
+  /* font-style: 'normal normal normal 20px/27px Segoe UI' !important; */
   padding-top: 10% !important;
   padding-bottom: 10% !important;
 }
@@ -647,7 +652,7 @@ border-top-right-radius: 0px !important;
   cursor: pointer !important;
   font-size: 35px !important;
   color: var(--primary-color) !important;
-  font-style: 'normal normal normal 20px/27px Segoe UI' !important;
+  /* font-style: 'normal normal normal 20px/27px Segoe UI' !important; */
   padding-top: 10% !important;
   padding-bottom: 10% !important;
 }
@@ -814,14 +819,14 @@ border-top-right-radius: 0px !important;
 
 .login-container .title{
   text-align: left;
-  font: normal normal normal 36px/48px Segoe UI;
+  /* font: normal normal normal 36px/48px Segoe UI; */
   letter-spacing: 0px;
   color: #707070
 }
 
 .login-container .subtitle{
   color: #BCBCBC;
-  font: normal normal normal 20px/27px Segoe UI;
+  /* font: normal normal normal 20px/27px Segoe UI; */
   letter-spacing: 0px;
   font-size: 20px;
   margin-top: 0 !important;
@@ -851,7 +856,7 @@ border-top-right-radius: 0px !important;
 .link-orange{
   text-decoration: none;
   color: var(--primary-color);
-  font: normal normal normal 24px/32px Segoe UI;
+  /* font: normal normal normal 24px/32px Segoe UI; */
   letter-spacing: 0px;
 }
 
@@ -908,7 +913,7 @@ border-top-right-radius: 0px !important;
 .login-with-qr-container .qr-text{
   color: #707070;
   text-decoration: none;
-  font: normal normal normal 24px/32px Segoe UI;
+  /* font: normal normal normal 24px/32px Segoe UI; */
   letter-spacing: 0px;
 }
 
@@ -917,7 +922,7 @@ border-top-right-radius: 0px !important;
 
 .course-unit-header {
   text-align: left !important;
-  font: normal normal normal 24px/32px Segoe UI !important;
+  /* font: normal normal normal 24px/32px Segoe UI !important; */
   letter-spacing: 0px !important;
   color: var(--primary-color) !important;
   opacity: 1 !important;
@@ -926,7 +931,7 @@ border-top-right-radius: 0px !important;
 
 .accordion-button {
   text-align: left !important;
-  font-family: "Segou UI" Regular !important; 
+  /* font-family: "Segou UI" Regular !important;  */
   letter-spacing: 0px !important;
   color: #707070 !important;
   opacity: 1  !important;
@@ -946,7 +951,7 @@ border-top-right-radius: 0px !important;
 
 .lesson-header {
   text-align: left !important;
-  font-family: "Segou UI" Regular !important; 
+  /* font-family: "Segou UI" Regular !important;  */
   letter-spacing: 0px !important;
   color: var(--primary-color) !important;
   opacity: 1 !important;
@@ -1308,14 +1313,14 @@ hr{
 }
 
 .exam-information-container .question-input-number{
-  font: normal normal normal 20px Segoe UI;
+  /* font: normal normal normal 20px Segoe UI; */
   letter-spacing: 0px;
   color: var(--primary-color);
   margin-right: 20px
 }
 
 .exam-information-container .question-input-content-title{
-  font: normal normal normal 20px Segoe UI;
+  /* font: normal normal normal 20px Segoe UI; */
   letter-spacing: 0px;
   color: #707070;
 }
@@ -1345,7 +1350,7 @@ hr{
 }
 
 .exam-information-container .question-choice-title{
-  font: normal normal normal 20px Segoe UI;
+  /* font: normal normal normal 20px Segoe UI; */
   letter-spacing: 0px;
   color: #707070;
 }
@@ -1445,7 +1450,7 @@ hr{
 .portfolio-name{
   text-align: center;
   color: #7D7D7D;
-  font: normal normal normal 36px Segoe UI;
+  /* font: normal normal normal 36px Segoe UI; */
 }
 
 .choice-delete{
@@ -1561,7 +1566,6 @@ input::-webkit-inner-spin-button {
 }
 
 .header-analysis-card{
-  border: 1px solid #EE9337 !important;
   padding: 20px 30px;
   border-radius: 10px;
   color: #E5E5E5;

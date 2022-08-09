@@ -7,6 +7,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment';
 import { UserContext } from '../../../../context/UserContext'
 import { toast } from 'react-toastify'
+import Status from '../../../../components/utilities/Status';
 
 function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, searchTerm}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
@@ -118,12 +119,15 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
                   </div>
               </Col>
               {(user.teacher === null)?(
-              <>
+              <>         
+                            <Col sm={9}>
+                {item?.classLink == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Class</Status></div>)}
+              </Col>  
               </>
               ):(
               <>
-              {(item?.classLink === null)?(<></>):(<>
-                <Col sm={3} className='icon-exam'>
+                {item?.classLink == null ? (<></>):(<>
+                  <Col sm={3} className='icon-exam'>
                 <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
@@ -137,7 +141,10 @@ function AccordionLinks({links, getLinks, setOpenEditModal, setEditLinks, search
                   <Button onClick={() => handleDeleteNotify(item?.classLink.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-trash-alt"></i> </Button>
                 </OverlayTrigger>
                 </Col>
-              </>)}
+                </>)}
+                <Col sm={9}>
+                  {item?.classLink == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Class</Status></div>)}
+              </Col>
               </>
               )}
               <Col sm={6}>

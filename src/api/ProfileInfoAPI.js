@@ -46,4 +46,12 @@ export default class ProfileInfoAPI extends Base {
     })
   }
 
+  updatePassword = async(id, data) => {
+    return this.sendRequest({
+      path:`/api/Account/${id}/password`,
+      method: 'PUT',
+      data
+    })
+  }
+
 }

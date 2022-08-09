@@ -5,6 +5,7 @@ import { UserContext } from '../../../context/UserContext'
 import {useParams} from 'react-router';
 import axios from 'axios';
 import ClassesAPI from '../../../api/ClassesAPI';
+import Status from '../../../components/utilities/Status';
 
 function StudentInteractive({interactive, searchTerm, classInfo}) {
   const dateCompareNow = moment().format("YYYY-MM-DD")
@@ -476,25 +477,48 @@ const renderTooltipPlay1 = (props) => (
                           classInfo?.classInformation?.courseName === "God's Park" || classInfo?.classInformation?.courseName === "God's Park 1" || classInfo?.classInformation?.courseName === "God's Park 2" ||
                           classInfo?.classInformation?.courseName === "God's Park 3" || classInfo?.classInformation?.courseName === "God's Park 4" ||
                           classInfo?.classInformation?.courseName === "God's Park 5" || classInfo?.classInformation?.courseName === "God's Park 6" ?
-                          <Button onClick={(e) => goLinkGodsPark(item?.interactive?.path)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          // <Button onClick={(e) => goLinkGodsPark(item?.interactive?.path)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          <></>
                           :
-                          <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          // <Button onClick={(e) => getInteractiveLink(e, item?.interactive?.path, user?.student?.id, item?.interactive?.id, id)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-play" ></i></Button>
+                          <></>
                         }
                       </OverlayTrigger>
                       </Col>
                     }
                     </>
                     }
+                {item?.classInteractiveAssignment === null ? (<></>):(<>
+                  <Col sm={7} className='due-date-discusstion' >
+                    <p className='exam-instruction m-0'>
+                      <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
+                        Start:
+                      </span>
+                        &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.classInteractiveAssignment?.startDate).format("MMMM Do YYYY")}, {moment(item?.classInteractiveAssignment?.startTime, 'HH:mm:ss').format('h:mm A')}</b>
+                    </p>
+                    <p className='exam-instruction m-0 mb-3'>
+                      <span className='d-inline-block' style={{ width: 40, fontSize: 16 }}>
+                        End:
+                      </span>
+                        &nbsp;<b style={{ fontSize: '16px' }}>{moment(item?.classInteractiveAssignment?.endDate).format("MMMM Do YYYY")}, {moment(item?.classInteractiveAssignment?.endTime, 'HH:mm:ss').format('h:mm A')}</b>
+                    </p> 
+                  </Col>
+                </>)}
+                <>
+                  <div className='inline-flex' >
+                    <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classInteractiveAssignment?.startDate + ' ' + item?.classInteractiveAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(item?.classInteractiveAssignment?.endDate + ' ' + item?.classInteractiveAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ongoing</b></div>
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                     }
                     {
                       moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(item?.classInteractiveAssignment?.endDate + ' ' + item?.classInteractiveAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
-                      <div style={{color:'#EE9337', fontSize:'15px'}}><b>Ended</b>&nbsp;</div>  
+                      <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ended</Status>&nbsp;</div>  
                     }
-                    <Col sm={6} className='due-date-discusstion' >
+                  </div>
+                </>
+                    {/* <Col sm={6} className='due-date-discusstion' >
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
                             Start Date:&nbsp;
@@ -509,8 +533,8 @@ const renderTooltipPlay1 = (props) => (
                             {item?.classInteractiveAssignment?.startTime}
                           </div>
                       </div>
-                      </Col>
-                      <Col className='posted-date-discusstion'>
+                      </Col> */}
+                      {/* <Col className='posted-date-discusstion'>
                         <div className='inline-flex'>
                           <div className='text-color-bcbcbc'>
                             End Date:&nbsp;
@@ -525,7 +549,7 @@ const renderTooltipPlay1 = (props) => (
                             {item?.classInteractiveAssignment?.endTime}
                           </div>
                         </div>
-                      </Col>
+                      </Col> */}
                 </Row>
                 <hr />
             </>

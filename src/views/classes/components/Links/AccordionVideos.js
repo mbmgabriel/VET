@@ -7,6 +7,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment';
 import { UserContext } from '../../../../context/UserContext'
 import { toast } from 'react-toastify'
+import Status from '../../../../components/utilities/Status';
 
 function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, searchTerm}) {
   const [deleteNotify, setDeleteNotify] = useState(false)
@@ -118,12 +119,15 @@ function AccordionVideos({videos, getVideos, setOpenEditModal, setEditLinks, sea
                     </div>
                   </div>
               </Col>
+              <Col sm={9}>
+                {item?.classLink == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Class</Status></div>)}
+              </Col>
               {(user.teacher === null)?(
               <>
               </>
               ):(
               <>
-              {(item?.classLink === null)?(<></>):(<>
+              {item?.classLink == null ? (<></>):(<>
                 <Col sm={3} className='icon-exam'>
                   <OverlayTrigger
                     placement="bottom"
