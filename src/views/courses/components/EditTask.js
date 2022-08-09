@@ -9,7 +9,7 @@ import FilesAPI from '../../../api/FilesApi'
 import { useParams } from "react-router";
 import CourseFileLibrary from './CourseFileLibrary';
 
-export default function EditTask({rate, setRate, setTaskName,setInstructions, taskId, instructions, taskName, openEditTaskModal, setOpenEditTaskModal, selectedTask, setTaskInfo}){
+export default function EditTask({rate, setRate, setTaskName,setInstructions, taskId, instructions, taskName, openEditTaskModal, setOpenEditTaskModal, selectedTask, setTaskInfo, sequenceNo, setSequenceNo}){
 
 	const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
@@ -45,7 +45,7 @@ export default function EditTask({rate, setRate, setTaskName,setInstructions, ta
     }else{
       let response = await new CoursesAPI().editTask(
         taskId,
-        {taskName, instructions, rate}
+        {taskName, instructions, rate, sequenceNo}
       )
       if(response.ok){
         handleCloseModal(e)
@@ -167,6 +167,21 @@ export default function EditTask({rate, setRate, setTaskName,setInstructions, ta
                     // min="0"
                     // step="1" 
                     onChange={(e) => setRate(e.target.value)}
+                  />
+              </Form.Group>
+              <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control 
+                    defaultValue={sequenceNo}
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no"
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
                   />
               </Form.Group>
             <div>
