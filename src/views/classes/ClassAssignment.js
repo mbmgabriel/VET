@@ -53,6 +53,7 @@ function ClassAssignment() {
   const [selectedAssignmentName, setSelectedAssignmentName] = useState("")
   const subsType = user.subsType;
   const [loading, setLoading] = useState(false);
+  const [sequenceNo, setSequenceNo] = useState('')
 
   const onSearch = (text) => {
     setSearchTerm(text)
@@ -93,14 +94,15 @@ function ClassAssignment() {
     setAnswerModal(!answerModal)
   }
 
-  const toggle = (e, item, item2, item3, item4, item5, item6) =>{
+  const toggle = (e, item, item2, item3, item4, item5, item6, item7) =>{
     setInstructions(item)
     setAssignmentName(item2)
     setUnit(item3)
     setAssignmentId(item4)
     setXModuleId(item5)
     setRate(item6)
-    setModal(!modal)
+    setSequenceNo(item7)
+    setModal(true)
   }
 
   const editAssignedAssignmentToggle = (e, item, name) => {
@@ -275,7 +277,7 @@ function ClassAssignment() {
                       placement="bottom"
                       delay={{ show: 1, hide: 0 }}
                       overlay={renderTooltipEdit}>
-                    <Button onClick={(e) => toggle(e, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, item?.moduleName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
+                    <Button onClick={(e) => toggle(e, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, item?.moduleName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate, assigItem?.assignment?.sequenceNo)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
                   </OverlayTrigger>
                 {assigItem?.classAssignment?(
                   <OverlayTrigger
@@ -448,7 +450,7 @@ function ClassAssignment() {
       <ViewAssignment setViewAssigmentModal={setViewAssigmentModal} viewAssignmentAssign={viewAssignmentAssign}  viewAssignmentItem={viewAssignmentItem} viewAssignmentToggle={viewAssignmentToggle} viewAssignmentModal={viewAssignmentModal} />
       <StudentSubmittedAssigment submittedAssignmentToggle={submittedAssignmentToggle} submittedAssignment={submittedAssignment}  />
       <StudentAnswerAssignment answerAnswerToggle={answerAnswerToggle} answerModal={answerModal} />
-      <EditAssignment setRate={setRate} rate={rate} xmoduleId={xmoduleId} assignmentId={assignmentId} unit={unit} setUnit={setUnit} setAssignmentName={setAssignmentName} assignmentName={assignmentName} setModal={setModal} instructions={instructions} setInstructions={setInstructions} toggle={toggle} modal={modal} editAssignment={editAssignment} getAssignmentList={getAssignmentList} moduleId={moduleId} />
+      <EditAssignment sequenceNo={sequenceNo} setSequenceNo={setSequenceNo} setRate={setRate} rate={rate} xmoduleId={xmoduleId} assignmentId={assignmentId} unit={unit} setUnit={setUnit} setAssignmentName={setAssignmentName} assignmentName={assignmentName} setModal={setModal} instructions={instructions} setInstructions={setInstructions} toggle={toggle} modal={modal} editAssignment={editAssignment} getAssignmentList={getAssignmentList} moduleId={moduleId} />
       <AssignAssignment selectedAssignmentName={selectedAssignmentName} moduleId={moduleId} assignmentId={assignmentId} assginModal={assginModal} assignAssignmentToggle={assignAssignmentToggle} getAssignmentList={getAssignmentList} />
       <EditAssignedAssignment selectedAssignmentName={selectedAssignmentName} moduleId={moduleId} getAssignmentList={getAssignmentList} editAssignAssignmentItem={editAssignAssignmentItem} editAssignedAssignmentModal={editAssignedAssignmentModal} editAssignedAssignmentToggle={editAssignedAssignmentToggle} />
     </ClassSideNavigation>

@@ -11,7 +11,7 @@ import { useParams } from 'react-router'
 import { toast } from 'react-toastify';
 import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
-function EditAssignment({setRate, rate, setModal, modal, editAssignment, getAssignmentList, moduleId, instructions, setInstructions, setAssignmentName, assignmentName, unit, assignmentId}) {
+function EditAssignment({sequenceNo, setSequenceNo, setRate, rate, setModal, modal, editAssignment, getAssignmentList, moduleId, instructions, setInstructions, setAssignmentName, assignmentName, unit, assignmentId}) {
   const [editNotufy, setEditNotify] = useState(false)
   const isShared = null
   const [qwert, setQwert] = useState(editAssignment?.assignment?.instructions)
@@ -33,7 +33,7 @@ function EditAssignment({setRate, rate, setModal, modal, editAssignment, getAssi
 
   const updateTask = async (e) =>{
     e.preventDefault()
-    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || assignmentName === ''){
+    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || assignmentName === '' || sequenceNo === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -216,6 +216,14 @@ function EditAssignment({setRate, rate, setModal, modal, editAssignment, getAssi
     }
   }
 
+  const handleCloseModalEdit = () =>{
+    setModal(false)
+    setSequenceNo('')
+    setRate('')
+    setAssignmentName('')
+    setInstructions('')
+  }
+
   return (
     <div>
         <Modal  size="lg" show={modal} onHide={() => setModal(false)} aria-labelledby="example-modal-sizes-title-lg">
@@ -246,6 +254,21 @@ function EditAssignment({setRate, rate, setModal, modal, editAssignment, getAssi
                 <Form.Label>Rate</Form.Label>
                   <Form.Control defaultValue={rate}  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
                 </Form.Group>
+                <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control
+                    defaultValue={sequenceNo} 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
+                  />
+              </Form.Group>
                   <Form.Group className="mb-4">
                     <Form.Label >Instruction</Form.Label>
                       <ContentField value={instructions} placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />

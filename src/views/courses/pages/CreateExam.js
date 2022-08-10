@@ -16,12 +16,13 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 	const [testInstructions, setTestInstructions] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [showFiles, setShowFiles] = useState(false);
+  const [sequenceNo, setSequenceNo] = useState(null)
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
 
 	const handleCloseModal = () => {
-
+    setSequenceNo(null)
     setOpenCreateExamModal(false)
     setTestName('')
     setTestInstructions('')
@@ -30,20 +31,8 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
 
 	const saveExam = async(e) => {
     e.preventDefault()
-    setIsButtonDisabled(true)
-    setTimeout(()=> setIsButtonDisabled(false), 1000)
-    setLoading(true)
-    let response = await new CoursesAPI().createExam(
-      sessionModule,
-      {testName, testInstructions}
-    )
-    if(response.ok){
-			handleCloseModal()
-      notifySaveExam()
-      getExamInfo()
-    }else{
-      // alert(response.data.errorMessage)
-      toast.error(response.data.errorMessage || "Something went wrong while updating the exam", {
+    if(sequenceNo === null){
+      toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -52,8 +41,32 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
         draggable: true,
         progress: undefined,
         });
+    }else{
+      setIsButtonDisabled(true)
+      setTimeout(()=> setIsButtonDisabled(false), 1000)
+      setLoading(true)
+      let response = await new CoursesAPI().createExam(
+        sessionModule,
+        {testName, testInstructions, sequenceNo}
+      )
+      if(response.ok){
+        handleCloseModal()
+        notifySaveExam()
+        getExamInfo()
+      }else{
+        // alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage || "Something went wrong while updating the exam", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+      }
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const getCourseUnitPages = async(e, data, data1) => {
@@ -118,6 +131,20 @@ export default function CreateExam({setCourse, openCreateExamModal, setOpenCreat
                       onChange={(e) => setTestName(e.target.value)}
                     />
 								</Form.Group>
+                <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
+                  />
+                </Form.Group>
                 <div>
                   <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
                 </div>

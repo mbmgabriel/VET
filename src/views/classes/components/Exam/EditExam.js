@@ -17,31 +17,40 @@ export default function EditExam({
   console.log({ exam });
   const [testInstructions, setTestInstructions] = useState(exam.test.testInstructions);
   const [testName, setTestName] = useState(exam.test.testName);
+  const [sequenceNo, setSequenceNo] = useState(exam?.test?.sequenceNo)
   const [showFiles, setShowFiles] = useState(false);
+
+  console.log('sequenceNo:', sequenceNo)
 
   useEffect(()=> {
     setTestInstructions(exam.test?.testInstructions)
     setTestName(exam.test?.testName)
+    setSequenceNo(exam?.test?.sequenceNo)
   }, [])
   
   const updateExam = async(e) => {
     e.preventDefault();
-    setLoading(true)
-    const data = {
-      isShared: false,
-      testInstructions,
-      testName,
-    }
-    console.log({data})
-    let response = await new ExamAPI().updateExam(exam.test.id, data)
-    if(response.ok){
-      toast.success("Successfully updated the exam!")
-      setShowEditModal(false)
-      setShowFiles(false)
-      fetchExams()
+    if(sequenceNo === ''){
+      alert('no good')
     }else{
-      toast.error(response?.data?.errorMessage || 'Please input all the required fields.')
-      setLoading(false)
+      setLoading(true)
+      const data = {
+        isShared: false,
+        testInstructions,
+        testName,
+        sequenceNo
+      }
+      console.log({data})
+      let response = await new ExamAPI().updateExam(exam.test.id, data)
+      if(response.ok){
+        toast.success("Successfully updated the exam!")
+        setShowEditModal(false)
+        setShowFiles(false)
+        fetchExams()
+      }else{
+        toast.error(response?.data?.errorMessage || 'Please input all the required fields.')
+        setLoading(false)
+      }
     }
   }
 
@@ -70,6 +79,21 @@ export default function EditExam({
               type='text'
               placeholder='Enter exam name'
               onChange={(e) => setTestName(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="m-b-20">
+            <Form.Label for="courseName">
+                Sequence no.
+            </Form.Label>
+            <Form.Control 
+              defaultValue={sequenceNo}
+              className="custom-input" 
+              size="lg" 
+              type="number" 
+              placeholder="Enter Sequence no."
+              // min="0"
+              // step="1" 
+              onChange={(e) => setSequenceNo(e.target.value)}
             />
           </Form.Group>
             <div>

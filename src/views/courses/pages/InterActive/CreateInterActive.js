@@ -7,12 +7,13 @@ function CreateInterActive({openCreateInterModal, setOpenCreateInteractive, modu
   const [interactiveName, setInteractiveName] = useState('')
   const [rate, setRate] = useState(null)
   const [path, setPath] = useState('')
+  const [sequenceNo, setSequenceNo] = useState('')
 
   console.log('moduleId:', moduleId)
 
   const CreateInterActive = async (e) => {
     e.preventDefault()
-    if( interactiveName === '' || path === ''){
+    if( interactiveName === '' || path === '' || sequenceNo === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -23,12 +24,20 @@ function CreateInterActive({openCreateInterModal, setOpenCreateInteractive, modu
         progress: undefined,
         });
     }else{
-      let response = await new CoursesAPI().createInterActive( moduleId, {interactiveName, path, rate})
+      let response = await new CoursesAPI().createInterActive( moduleId, {interactiveName, path, rate, sequenceNo})
       if(response.ok){
         handleCloseCreateInterActiveModal()
         notifySaveInteractive()
       }else{
-        alert('No good')
+        toast.error(response.data.errorMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
     }
   }
@@ -68,8 +77,21 @@ function CreateInterActive({openCreateInterModal, setOpenCreateInteractive, modu
                 type="text" 
                 placeholder="Enter Interactive Name"
                 onChange={(e) => setInteractiveName(e.target.value)}
-                
               />
+          </Form.Group>
+          <Form.Group className="m-b-20">
+            <Form.Label for="courseName">
+                Sequence no.
+            </Form.Label>
+            <Form.Control 
+              className="custom-input" 
+              size="lg" 
+              type="number" 
+              placeholder="Enter Sequence no."
+              // min="0"
+              // step="1" 
+              onChange={(e) => setSequenceNo(e.target.value)}
+            />
           </Form.Group>
           {/* <Form.Group className="m-b-20">
               <Form.Label for="courseName">
