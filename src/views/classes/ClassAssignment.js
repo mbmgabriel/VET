@@ -58,6 +58,62 @@ function ClassAssignment() {
     setSearchTerm(text)
   }
 
+  const updateShareAssignment = async (share, instructions, assignmentName, assignmentId, moduleId, rate) =>{
+    if(share === null){
+      let isShared = true
+      let response = await new ClassesAPI().updateAssignment(assignmentId, {
+        assignmentName,
+        instructions,
+        rate,
+        isShared
+      })
+      if(response.ok){
+        successShared()
+        getAssignmentList(null, moduleId)
+      }else{
+        alert('No good')
+      }
+    }else{
+      let isShared = null
+      let response = await new ClassesAPI().updateAssignment(assignmentId, {
+        assignmentName,
+        instructions,
+        rate,
+        isShared
+      })
+      if(response.ok){
+        successUnShared()
+        getAssignmentList(null, moduleId)
+      }else{
+        alert('No good')
+      }
+    }
+  }
+
+  const successShared = () =>{
+    toast.success('Successfully shared task!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
+  const successUnShared = () => {
+    toast.success('Successfully unshared task!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
   useEffect(() => {
     getClassInfo(); 
     if(subsType != 'LMS'){
@@ -192,6 +248,18 @@ function ClassAssignment() {
     </Tooltip>
   )
 
+  const renderTooltipUnShare = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Unshare
+    </Tooltip>
+  )
+
+  const renderTooltipShare = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Share
+    </Tooltip>
+  )
+
   return (
     <ClassSideNavigation>
       {loading && <FullScreenLoader />}
@@ -271,12 +339,6 @@ function ClassAssignment() {
                     overlay={renderTooltipView}>
                     <Button onClick={() => viewAssignmentToggle(assigItem?.assignment, assigItem?.classAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                   </OverlayTrigger>
-                  <OverlayTrigger
-                      placement="bottom"
-                      delay={{ show: 1, hide: 0 }}
-                      overlay={renderTooltipEdit}>
-                    <Button onClick={(e) => toggle(e, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, item?.moduleName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
-                  </OverlayTrigger>
                 {assigItem?.classAssignment?(
                   <OverlayTrigger
                     placement="bottom"
@@ -285,12 +347,27 @@ function ClassAssignment() {
                       <Button onClick={(e) => editAssignedAssignmentToggle(e, assigItem, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
                   </OverlayTrigger>
                 ):
-                <OverlayTrigger
-                  placement="bottom"
-                  delay={{ show: 1, hide: 0 }}
-                  overlay={renderTooltipAsign}>
-                    <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                </OverlayTrigger>
+                <>
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipAsign}>
+                     <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={renderTooltipEdit}>
+                      <Button onClick={(e) => toggle(e, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, item?.moduleName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 1, hide: 0 }}
+                    overlay={assigItem?.assignment?.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                      <Button onClick={() => updateShareAssignment(assigItem?.assignment?.isShared, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${assigItem?.assignment?.isShared && "rotate"}`}></i></Button>
+                  </OverlayTrigger>
+                </>
+
                 } 
                 <OverlayTrigger
                   placement="bottom"
@@ -347,11 +424,6 @@ function ClassAssignment() {
               </>
               )
               }
-              {/* <Col sm={3} className='icon-exam'>
-              <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                <Button onClick={() => viewAssignmentToggle(assigItem?.assignment, assigItem?.classAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
-                <Button onClick={(e) => editAssignedAssignmentToggle(e, assigItem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
-              </Col> */}
               </>
             }
               </>
@@ -392,50 +464,26 @@ function ClassAssignment() {
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
-                  } 
-                  
+                  }   
                 </div>
-                {/* <Col sm={7} className='due-date-discusstion' >
-                <div className='inline-flex'>
-                  <div className='text-color-bcbcbc font-16'>
-                    Start Date:&nbsp;
-                  </div>
-                <div className='text-color-707070 font-16'>
-                  {moment(assigItem?.classAssignment.startDate).format('LL')}&nbsp;
+                <div className='text-color-bcbcbc' >
+                  <hr></hr>
                 </div>
-                  <div className='text-color-bcbcbc font-16'>
-                    Start Time:&nbsp;
-                  </div>
-                  <div className='text-color-707070 font-16'>
-                    {assigItem?.classAssignment?.startTime}
-                  </div>
-                </div>
-              </Col>
-              <Col className='posted-date-discusstion'>
-                <div className='inline-flex'>
-                  <div className='text-color-bcbcbc font-16'>
-                    End Date:&nbsp;
-                  </div>
-                  <div className='text-color-707070 font-16'>
-                    {moment(assigItem?.classAssignment.endDate).format('LL')}&nbsp;
-                  </div>
-                  <div className='text-color-bcbcbc font-16'>
-                    End Time:&nbsp;
-                  </div>
-                  <div className='text-color-707070 font-16'>
-                    {assigItem?.classAssignment?.endTime}
-                  </div>
-                </div>
-              </Col> */}
-              <hr />
             </Row>):
-              <div>                      
-                <div className='inline-flex' >
-                {assigItem?.assignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
-                <Status>Unassigned</Status>
+            <>
+              <div className='inline-flex' >
+                {assigItem?.assignment?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status><Status>Unassigned</Status></div>) : (
+                  <>
+                    <Status>Created in Class</Status>
+                    <Status>Unassigned</Status>
+                    {assigItem?.assignment?.isShared == true?(<Status>Shared</Status>):(<Status>Not Shared</Status>)}  
+                  </>
+                )}                  
+              </div>
+              <div className='text-color-bcbcbc' >
+                <hr></hr>
                 </div>
-              <hr />
-            </div>
+            </>
             }
           </Row>)
         })}
