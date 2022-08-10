@@ -331,45 +331,70 @@ function ClassTask() {
                         </OverlayTrigger>
                         {moduleitem?.taskAssignment?(
                           <>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipReasign}>
-                              <Button onClick={(e) => editAssignTaskToggle(e,moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
+                            <OverlayTrigger
+                              placement="bottom"
+                              delay={{ show: 1, hide: 0 }}
+                              overlay={renderTooltipReasign}>
+                                <Button onClick={(e) => editAssignTaskToggle(e,moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                              placement="bottom"
+                              delay={{ show: 1, hide: 0 }}
+                              overlay={moduleitem.task.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                                <Button onClick={() => updateShareTask(moduleitem.task.isShared, moduleitem?.task?.taskName, moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo, moduleitem?.module?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${moduleitem.task.isShared && "rotate"}`}></i></Button>
                             </OverlayTrigger>
                           </>
                         ):
                           <>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipAsign}>
-                            <Button onClick={(e) => assignTaskToggle(e, moduleitem.task.id, moduleitem?.task?.taskName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipEdit}>
-                          <Button onClick={(e) => toggle(e, moduleitem?.task?.taskName,  moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.module?.moduleName, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo )} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
-                        </OverlayTrigger>
-                        <OverlayTrigger
-                          placement="bottom"
-                          delay={{ show: 1, hide: 0 }}
-                          overlay={moduleitem.task.isShared ? renderTooltipUnShare : renderTooltipShare}>
-                        <Button onClick={() => updateShareTask(moduleitem.task.isShared, moduleitem?.task?.taskName, moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo, moduleitem?.module?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${moduleitem.task.isShared && "rotate"}`}></i></Button>
-                        </OverlayTrigger>
-                        {/* <i class={`fas fa-share ${moduleitem.task.isShared && "rotate"}`}></i> */}
-                          </>
+                            {moduleitem.task.isShared === true? (
+                            <>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={renderTooltipAsign}>
+                                  <Button onClick={(e) => assignTaskToggle(e, moduleitem.task.id, moduleitem?.task?.taskName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                              </OverlayTrigger>
+                              {moduleitem.task.classId == id ?(<>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={moduleitem.task.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                                  <Button onClick={() => updateShareTask(moduleitem.task.isShared, moduleitem?.task?.taskName, moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo, moduleitem?.module?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${moduleitem.task.isShared && "rotate"}`}></i></Button>
+                              </OverlayTrigger>
+                              </>):(<></>)}
+                            </>
+                            ):(
+                            <>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={renderTooltipAsign}>
+                                <Button onClick={(e) => assignTaskToggle(e, moduleitem.task.id, moduleitem?.task?.taskName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                              </OverlayTrigger>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={renderTooltipEdit}>
+                                  <Button onClick={(e) => toggle(e, moduleitem?.task?.taskName,  moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.module?.moduleName, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo )} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
+                              </OverlayTrigger>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={moduleitem.task.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                                  <Button onClick={() => updateShareTask(moduleitem.task.isShared, moduleitem?.task?.taskName, moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo, moduleitem?.module?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${moduleitem.task.isShared && "rotate"}`}></i></Button>
+                              </OverlayTrigger>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={renderTooltipDelete}>
+                                  <Button onClick={() => handleDeleteNotify(moduleitem?.task?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
+                              </OverlayTrigger> 
+                            </>
+                            )}
+                        </>
                         }
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipDelete}>
-                              <Button onClick={() => handleDeleteNotify(moduleitem?.task?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
-                          </OverlayTrigger> 
                       </Col>
                       ):
-                 
                       <>
                       {moduleitem.taskAssignment?.startDate?(
                       <>
@@ -447,6 +472,7 @@ function ClassTask() {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                         <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
+                      {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}
                       </div>   
                       <div className='text-color-bcbcbc' >
                         <p></p>

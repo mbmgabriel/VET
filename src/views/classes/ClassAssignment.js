@@ -340,25 +340,12 @@ function ClassAssignment() {
                     <Button onClick={() => viewAssignmentToggle(assigItem?.assignment, assigItem?.classAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                   </OverlayTrigger>
                 {assigItem?.classAssignment?(
+                  <>
                   <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipReasign}>
                       <Button onClick={(e) => editAssignedAssignmentToggle(e, assigItem, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
-                  </OverlayTrigger>
-                ):
-                <>
-                  <OverlayTrigger
-                    placement="bottom"
-                    delay={{ show: 1, hide: 0 }}
-                    overlay={renderTooltipAsign}>
-                     <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    placement="bottom"
-                    delay={{ show: 1, hide: 0 }}
-                    overlay={renderTooltipEdit}>
-                      <Button onClick={(e) => toggle(e, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, item?.moduleName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
                   </OverlayTrigger>
                   <OverlayTrigger
                     placement="bottom"
@@ -366,15 +353,56 @@ function ClassAssignment() {
                     overlay={assigItem?.assignment?.isShared ? renderTooltipUnShare : renderTooltipShare}>
                       <Button onClick={() => updateShareAssignment(assigItem?.assignment?.isShared, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${assigItem?.assignment?.isShared && "rotate"}`}></i></Button>
                   </OverlayTrigger>
+                  </>  
+                ):
+                <>
+                {assigItem?.assignment?.isShared === true? (
+                  <>
+                    <OverlayTrigger
+                      placement="bottom"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={renderTooltipAsign}>
+                      <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                    </OverlayTrigger>
+                    {assigItem?.assignment?.classId == id ? (<>
+                      <OverlayTrigger
+                        placement="bottom"
+                        delay={{ show: 1, hide: 0 }}
+                        overlay={assigItem?.assignment?.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                          <Button onClick={() => updateShareAssignment(assigItem?.assignment?.isShared, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${assigItem?.assignment?.isShared && "rotate"}`}></i></Button>
+                      </OverlayTrigger>
+                    </>):(<></>)}
+                  </>
+                ):(
+                  <>
+                    <OverlayTrigger
+                      placement="bottom"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={renderTooltipAsign}>
+                        <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="bottom"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={renderTooltipEdit}>
+                        <Button onClick={(e) => toggle(e, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, item?.moduleName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="bottom"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={assigItem?.assignment?.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                        <Button onClick={() => updateShareAssignment(assigItem?.assignment?.isShared, assigItem?.assignment?.instructions, assigItem?.assignment?.assignmentName, assigItem?.assignment?.id, assigItem?.module?.id, assigItem?.assignment?.rate)}  className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${assigItem?.assignment?.isShared && "rotate"}`}></i></Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="bottom"
+                      delay={{ show: 1, hide: 0 }}
+                      overlay={renderTooltipDelete}>
+                        <Button onClick={() => handleDeleteNotify(assigItem?.assignment?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
+                    </OverlayTrigger>
+                  </>
+                )}
                 </>
-
                 } 
-                <OverlayTrigger
-                  placement="bottom"
-                  delay={{ show: 1, hide: 0 }}
-                  overlay={renderTooltipDelete}>
-                    <Button onClick={() => handleDeleteNotify(assigItem?.assignment?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
-                </OverlayTrigger>
               </Col>
               </>
             ):
@@ -464,7 +492,8 @@ function ClassAssignment() {
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
-                  }   
+                  }  
+                  {assigItem?.assignment?.isShared == true?(<Status>Shared</Status>):(<Status>Not Shared</Status>)} 
                 </div>
                 <div className='text-color-bcbcbc' >
                   <hr></hr>
