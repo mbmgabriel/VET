@@ -175,7 +175,8 @@ export default function SystemAdminCourses() {
         courseName,
         description,
         status,
-        subjectAreaId
+        subjectAreaId,
+        // gradeLevelId: 5
       }
       let response = await new CoursesAPI().editCourse(selectedCourse.id, data);
 			if(response.ok){
