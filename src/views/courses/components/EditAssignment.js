@@ -29,7 +29,7 @@ export default function EditAssignment({setSequenceNo, sequenceNo, rate, setRate
 	const saveEditAssignment = async(e) => {
     e.preventDefault()
     setLoading(true)
-    if(rate <= 0 || sequenceNo === null){
+    if(rate <= 0){
       toast.error('Rate must be greater than to 0.', {
         position: "top-right",
         autoClose: 5000,
@@ -39,6 +39,16 @@ export default function EditAssignment({setSequenceNo, sequenceNo, rate, setRate
         draggable: true,
         progress: undefined,
         });
+    }else if (sequenceNo === null || sequenceNo === '') {
+      toast.error('Please insert all the required fields', {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				});
     }else{
       let response = await new CoursesAPI().editAssignment(
         assignmentId,
