@@ -30,8 +30,8 @@ export default function EditExam({
   
   const updateExam = async(e) => {
     e.preventDefault();
-    if(sequenceNo === ''){
-      alert('no good')
+    if(sequenceNo === '' || sequenceNo === null){
+      toast.error('Please input all the required fields.')
     }else{
       setLoading(true)
       const data = {

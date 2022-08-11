@@ -25,8 +25,8 @@ function ClassExamHeader({ onSearch, modules = [], fetchExams, onRefresh },) {
 
   const submitForm = async (e) => {
     e.preventDefault()
-    if(sequenceNo === null){
-      alert('no good')
+    if(sequenceNo === null || sequenceNo === ''){
+      toast.error('Please input all the required fields.')
     }else{
       setIsButtonDisabled(true)
       setTimeout(() => setIsButtonDisabled(false), 2000)
