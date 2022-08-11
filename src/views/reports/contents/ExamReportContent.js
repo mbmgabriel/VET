@@ -29,6 +29,9 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
   const {user,themeColor} = userContext.data
   const [dataDownload, setDataDownload] = useState({});
   const pageURL = new URL(window.location.href);
+  const [perfect, setPerfect] = useState(0)
+  const [passed, setPassed] = useState(0)
+  const [failed, setFailed] = useState(0)
   let sessionClass = pageURL.searchParams.get("classId")
   let sessionTestId = sessionStorage.getItem("testid")
 
@@ -86,6 +89,39 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     setDataDownload(tempData);
   }
 
+  const getPerfectScore = (data) =>{ 
+    data.map(item =>{
+      let rawScore = item?.studentTests[0].rawScore
+      let score = item?.studentTests[0].score
+      let isSubmitted = item?.studentTests[0].isSubmitted
+        if(isSubmitted === true && rawScore === score){
+          return setPerfect(perfect+1)
+        }
+    })
+  }
+
+  const getPassedScore = (data) =>{
+     data.map(item =>{
+      let rawScore = item?.studentTests[0].rawScore/2
+      let score = item?.studentTests[0].score
+      let isSubmitted = item?.studentTests[0].isSubmitted
+        if(isSubmitted === true && rawScore <= score){
+          return setPassed(passed+1)
+        }
+    })
+  }
+
+  const getFailedScore = (data) => {
+    data.map(item =>{
+      let rawScore = item?.studentTests[0].rawScore/2
+      let score = item?.studentTests[0].score
+      let isSubmitted = item?.studentTests[0].isSubmitted
+        if(isSubmitted === true && rawScore > score){
+          return setFailed(failed+1)
+        }
+    })
+  }
+
   const downloadxls = () => {
     const ws =utils.json_to_sheet(dataDownload);
     const wb =utils.book_new();
@@ -116,9 +152,14 @@ const arrageNoneAlphabetical = (data) => {
   setSorted(temp)
 }
 
+console.log("testReport:", testReport)
+
 useEffect(()=>{
     arrageNoneAlphabetical(testReport);
     arrageAlphabetical(testReport);
+    getPerfectScore(testReport)
+    getPassedScore(testReport)
+    getFailedScore(testReport)
 }, [testReport])
 
 const handleClickIcon = () =>{
@@ -130,6 +171,13 @@ const handleClickIcon = () =>{
     arrageNoneAlphabetical(testReport);
   }
 }
+
+// useEffect(()=>{
+//   getPerfectScore(testReport)
+//   getPassedScore(testReport)
+//   getFailedScore(testReport)
+// }, [])
+
 
   const getTestReport = async(e, sessionClass,testid) => {
     setLoading(true)
@@ -241,7 +289,7 @@ const handleClickIcon = () =>{
             <div className='header-analysis-card' ><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div>
             <Card.Text>
               <hr></hr>
-              <p><b>0</b></p>
+              <p><b>{perfect}</b></p>
             </Card.Text> 
           </Card.Body>
         </Card>    
@@ -253,7 +301,7 @@ const handleClickIcon = () =>{
             <Card.Text>
               <div>
               <hr></hr>
-              <p><b>0</b></p>
+              <p><b> {passed} </b></p>
               </div>
             </Card.Text>
           </Card.Body>
@@ -265,7 +313,7 @@ const handleClickIcon = () =>{
             <div className='header-analysis-card' ><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div>
             <Card.Text>
               <hr></hr>
-              <p><b>0</b></p>
+              <p><b> {failed} </b></p>
             </Card.Text>
           </Card.Body>
         </Card>
@@ -327,8 +375,9 @@ const handleClickIcon = () =>{
                         {
                           st.isSubmitted ?
                           <>
-                          {st.rawScore/2 <= st.score && <><Badge bg="success">PASSED</Badge></>}
-                          {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }
+                          {st.rawScore/2 <= st.score && <Badge bg="success">PASSED</Badge>}&nbsp;
+                          {st.rawScore === st.score && <Badge bg="success">Perfect</Badge>}
+                          {st.rawScore/2 > st.score && <Badge bg="warning">FAILED</Badge>}
                           </>
                           :
                           <Badge bg="danger">Not Submitted</Badge>
