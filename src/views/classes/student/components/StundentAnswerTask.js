@@ -38,7 +38,7 @@ function StundentAnswerTask({answerTaskToggle, answerTaskModal, taskId, getStude
         setFiles([])
         getStudentTaskAnwswer(taskId)
       }else{
-        alert(response.data.errorMessage)
+        toast.error(response.data.errorMessage);
       }
   }
 
