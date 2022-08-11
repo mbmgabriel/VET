@@ -7,7 +7,7 @@ import SchoolTermTable from './components/SchoolTermTable'
 
 export default function SchoolTerms() {
   return (
-    <MainContainer title="School" activeHeader={"school"} style='not-scrollable'>
+    <MainContainer title="School" fluid activeHeader={"school"} style='not-scrollable'>
       <Row className="mt-4">
         <Col sm={3}>
           <AdminSideNavigation active="terms"/>

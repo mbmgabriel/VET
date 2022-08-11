@@ -16,16 +16,17 @@ export default function StudentsTable() {
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [toChangePassId, setToChangePassId] =  useState('');
+  const [studentListInfo, setStudentListInfo] = useState([])
   
 	useEffect(() => {
-    handleGetAllTeachers()
+    handleGetAllStudents()
   }, [])
 
   const handleResetPassword = async() => {
     let response = await new SchoolAPI().resetDefaultPassword(toResetId);
     if(response.ok){
       toast.success("Password reset!")
-      handleGetAllTeachers();
+      handleGetAllStudents();
     }else{
       toast.error("Something went wrong while reseting teacher's password.")
     }
@@ -38,11 +39,25 @@ export default function StudentsTable() {
     setToResetId(id)
   }
 
-  const handleGetAllTeachers = async() => {
+  const handleGetStudentsListInfo = async (data) => {
+    let response = await new SchoolAPI().getStudentsList();
+    if (response.ok) {
+      let temp = response.data;
+      const tempList = temp.map(t1 => ({...t1, ...data.find(t2 => t2.id === t1.userAccountID)}))
+      console.log(response.data, '=======', data, '===', tempList )
+      setTeachers(tempList)
+    } else {
+      toast.error("Something went wrong while fetching exam information")
+    }
+    console.log(response)
+  }
+
+  const handleGetAllStudents = async() => {
     let response = await new SchoolAPI().getAllStudents();
     if(response.ok){
-      setTeachers(response.data)
+      // setTeachers(response.data)
       console.log(response.data)
+      handleGetStudentsListInfo(response.data)
     }else{
       toast.error("Something went wrong while fetching exam information")
     }
@@ -59,7 +74,7 @@ export default function StudentsTable() {
       console.log(response.data);
       setShowEditModal(false);
       toast.success("Password updated!")
-      handleGetAllTeachers();
+      handleGetAllStudents();
       setCurrentPass('');
       setNewPass('');
       setShowEditModal(false);
@@ -94,6 +109,21 @@ export default function StudentsTable() {
           columns:
           [
             {
+              Header: 'Firstname',
+              id: 'fname',
+              accessor: d => d.fname,
+            },
+            {
+              Header: 'Lastname',
+              id: 'lname',
+              accessor: d => d.lname,
+            },
+            {
+              Header: 'Student No.',
+              id: 'sNo',
+              accessor: d => d.studentNo,
+            },
+            {
               Header: 'Username',
               id: 'username',
               accessor: d => d.username,
@@ -114,10 +144,10 @@ export default function StudentsTable() {
               Cell: row => (
                 <div className="">
                   <button onClick={() => handleClickedit(row.original.id)} className="btn btn-info btn-sm m-r-5" >
-                    Change Password
+                    Change
                   </button>
                   <button onClick={() => handleClikedReset(row.original.id)} className="btn btn-warning btn-sm m-r-5">
-                    Reset Password
+                    Reset
                   </button>
                 </div>
               )

@@ -13,7 +13,7 @@ export default function SystemAdminProfile() {
   
   if(user.isSystemAdmin){
     return (
-      <MainContainer title="Profile" activeHeader={"profile"}>
+      <MainContainer title="Profile" fluid activeHeader={"profile"}>
         <div className="container bg-white shadow  rounded px-3 py-4 mt-5">
           <h3 className="text-center">
             System Admin Profile Page

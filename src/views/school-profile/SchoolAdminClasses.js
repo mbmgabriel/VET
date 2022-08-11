@@ -86,7 +86,7 @@ export default function Classes() {
   console.log('searchTerm:', searchTerm)
 
   return (
-    <MainContainer activeHeader={'classes'} loading={loading}>
+    <MainContainer activeHeader={'classes'} fluid loading={loading}>
       <div className='page-container'>
         <div className='containerpages'>
           {user.isStudent &&
