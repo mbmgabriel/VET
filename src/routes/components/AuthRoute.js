@@ -14,7 +14,7 @@ export default function AuthRoute(props) {
       if(user.isSystemAdmin) return window.location.href = "/system-admin/dashboard"
       
       if(user.isTeacher && subsType == 'TeacherResources') return window.location.href = "/courses"
-      if(user.isStudent && subsType == 'TeacherResources') return window.location.href = "/classes"
+      if(user.isStudent && subsType == 'TeacherResources') return window.location.href = "/courses"
 
       if(user.isTeacher && subsType == 'Ebooks') return window.location.href = "/ebook_links"
       if(user.isStudent && subsType == 'Ebooks') return window.location.href = "/ebook_links"

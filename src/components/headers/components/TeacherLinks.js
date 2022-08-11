@@ -10,7 +10,7 @@ export default function TeacherLinks({activeHeader}) {
   if(user.isTeacher){
     return (
       <div className="header-links">
-        {subsType == 'LMS' && 
+        {subsType.includes('LMS') && 
           <>
             <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 
@@ -31,7 +31,7 @@ export default function TeacherLinks({activeHeader}) {
           subsType == 'TeacherResources' && 
           <>
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
-            <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
+            {/* <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link> */}
           </>
         }
         {

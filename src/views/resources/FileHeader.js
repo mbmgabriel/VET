@@ -239,7 +239,7 @@ function FileHeader(props) {
             ""
           :
         <>
-          {displayButtons &&  subsType == 'LMS' && <>
+          {displayButtons &&  subsType.includes('LMS') && <>
             <div>
               <OverlayTrigger
                 placement="right"
