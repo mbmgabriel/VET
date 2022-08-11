@@ -261,32 +261,32 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
         { subjectAreaName.filter(item =>
           item.courseName.toLowerCase().includes(filter.toLowerCase())).map
           ((item, index) => {
-            let ifSameGrade = item.gradeLevelid === user?.student?.gradeLevelid ? true : false;
-            let ifFilterByGradeId = subsType == 'TeacherResources' && user.isStudent ? ifSameGrade : true
-        return(
-          ifFilterByGradeId && 
-          <>
-          {item?.status?(<>
-          {/* user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}` */}
-            <Link to={handleReturnLink(item.id)} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
-              <CoursesItemCard 
-              courseCover={item.courseCover}
-              courseId={item.id}
-              courseName={item.courseName}
-              subjectAreaName={item.subjectArea.subjectAreaName}
-              description={item.description}
-              authorName={item.authorName}
-              courseInfo={item}
-              setOpenEditModal={setOpenEditModal}
-              setSelectedCourse={setSelectedCourse}
-              getCourses={getCourses}
-              uploadModalTrigger={handleClickedUploadModal}
-              handleClickContributor={handleClickContributor}
-            />
-            </Link>
-          </>):(<></>)}
-          </>
-        )
+          let ifSameGrade = item.gradeLevelid === user.student?.gradeLevelId ? true : false;
+          let ifFilterByGradeId = subsType == 'TeacherResources' && user.isStudent ? ifSameGrade : true
+          return(
+            ifFilterByGradeId && 
+            <>
+              {item?.status?(<>
+              {/* user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}` */}
+                <Link to={handleReturnLink(item.id)} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
+                  <CoursesItemCard 
+                  courseCover={item.courseCover}
+                  courseId={item.id}
+                  courseName={item.courseName}
+                  subjectAreaName={item.subjectArea.subjectAreaName}
+                  description={item.description}
+                  authorName={item.authorName}
+                  courseInfo={item}
+                  setOpenEditModal={setOpenEditModal}
+                  setSelectedCourse={setSelectedCourse}
+                  getCourses={getCourses}
+                  uploadModalTrigger={handleClickedUploadModal}
+                  handleClickContributor={handleClickContributor}
+                />
+                </Link>
+              </>):(<></>)}
+            </>
+          )
         })  
     }
     {handleDisplayUploadMOdal()}
