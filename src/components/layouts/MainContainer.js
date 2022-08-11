@@ -7,6 +7,7 @@ import FullScreenLoader from '../loaders/FullScreenLoader'
 export default function MainContainer({children, headerVisible = true, fluid, loading = false, activeHeader, style}) {
   const containerClass = fluid ? "container-fluid" : "container "
   const header = headerVisible ? '' : 'no-header'
+  console.log(fluid, '!!!', )
   return (
     <div className="main-container">
       {headerVisible && <Header activeHeader={activeHeader}/>}
