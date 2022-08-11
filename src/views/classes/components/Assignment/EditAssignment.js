@@ -33,7 +33,7 @@ function EditAssignment({sequenceNo, setSequenceNo, setRate, rate, setModal, mod
 
   const updateTask = async (e) =>{
     e.preventDefault()
-    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || assignmentName === '' || sequenceNo === ''){
+    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || assignmentName === '' || sequenceNo === '' || sequenceNo === null){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -56,7 +56,7 @@ function EditAssignment({sequenceNo, setSequenceNo, setRate, rate, setModal, mod
     } else{
       let id = assignmentId
       let mId = moduleId
-      let response = await new ClassesAPI().updateAssignment(id, {assignmentName, instructions, rate, isShared})
+      let response = await new ClassesAPI().updateAssignment(id, {assignmentName, instructions, rate, isShared, sequenceNo})
         if(response.ok){
           // alert('Assingment Updated')
           // setEditNotify(true)
@@ -226,7 +226,7 @@ function EditAssignment({sequenceNo, setSequenceNo, setRate, rate, setModal, mod
 
   return (
     <div>
-        <Modal  size="lg" show={modal} onHide={() => setModal(false)} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal  size="lg" show={modal} onHide={() => handleCloseModalEdit()} aria-labelledby="example-modal-sizes-title-lg">
           <Modal.Header className='class-modal-header' closeButton>
             <Modal.Title id="example-modal-sizes-title-lg" >
               Edit Assignment
