@@ -3,6 +3,7 @@ import { Button, Form, FormControl, Modal } from 'react-bootstrap';
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import CoursesAPI from "../../../api/CoursesAPI";
 import { toast } from 'react-toastify';
+import GradeAPI from "../../../api/GradeAPI";
 
 export default function CourseEdit({getCourses, setCourse, openEditModal, setOpenEditModal, selectedCourse}){
 
@@ -14,11 +15,22 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 	const [status, setStatus] = useState('')
 	const [locked, setLockStatus]= useState(false)
 	const [validated, setValidated] = useState(false);
+	const [gradeLevelid, setGradeLevelId] = useState('')
+	const [grade, setGrade] = useState([])
 
 	const handleCloseModal = e => {
     e.preventDefault()
     setOpenEditModal(false)
   }
+
+	const getGradeLevel = async () =>{
+		let response = await new GradeAPI().getGrade()
+		if(response.ok){
+			setGrade(response.data)
+		}else{
+			alert(response.data.errorMessage)
+		}
+	}
 
 	const viewSubjectArea = async() => {
     setLoading(true)
@@ -69,7 +81,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 			let response = await new CoursesAPI().editCourse
 			(
 				sessionCourse,
-				{courseName, description, subjectAreaId, status, locked, isTechFactors}
+				{courseName, description, subjectAreaId, status, locked, gradeLevelid, isTechFactors}
 			)
 			if(response.ok){
 				successSave()
@@ -93,6 +105,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 
 	useEffect(() => {
     viewSubjectArea()
+		getGradeLevel()
   }, [])
 
 	useEffect(() => {
@@ -103,6 +116,7 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 			setSubjectArea(selectedCourse?.subjectAreaId)
 			setLockStatus(selectedCourse?.locked)
 			setStatus(selectedCourse?.status)
+			setGradeLevelId(selectedCourse?.gradeLevelid)
 		}
   }, [selectedCourse])
 
@@ -118,6 +132,8 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 			});
 
 	}
+
+	console.log('selectedCourse:', selectedCourse)
 
 	const closeModal = () => {
 		setOpenEditModal(false)
@@ -144,7 +160,16 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 								/>
 							</Form.Group>
 							{' '}
-
+							<Form.Group className="mb-3">
+									<Form.Label>Grade Level</Form.Label>
+										<Form.Select defaultValue={selectedCourse?.gradeLevelid} required size="lg"  onChange={(e) => setGradeLevelId(e.target.value)}>
+											<option value={''}>-- Select Grade Level Here --</option>
+											{grade.map(item =>{
+													return(<option value={item.id}>{item.gradeName}</option>)
+													})
+												}
+										</Form.Select>
+									</Form.Group>
 							<Form.Group className="m-b-20">
 								<Form.Label for="description">
 									Description
