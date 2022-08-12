@@ -43,6 +43,7 @@ const CONFIG = {
 
 const Field = (props) => {
   const {inputType, value, placeholder, onChange} = props
+  console.log(inputType, '------')
   switch (inputType) {
     case EQUATION:
       return (
@@ -50,19 +51,21 @@ const Field = (props) => {
           className='custom-input'
           size='lg'
           value={value.split(EQUATION_TAG)[1] || ""}
-          placeholder={placeholder}
+          placeholder='Enter equation'
           autoCommands="pi theta sqrt sum prod alpha beta gamma rho"
           autoOperatorNames="sin cos tan"
           onChange={(text) => onChange(`${EQUATION_TAG}${text}`)}
+          required
         />
       );
-    default:
+    case RICH_TEXT:
       return <FroalaEditor 
       value={value}
       model={value}
       config={{
         key: config.FROALA_LICENSE,
         placeholderText: placeholder,
+        charCounterCount: false,
         charCounterCount: false,
         pluginsEnabled: [
           'fullscreen',
@@ -102,22 +105,36 @@ const Field = (props) => {
         toolbarButtonsXS: CONFIG,
       }}
       onModelChange={onChange}/>;
+    default:
+      return (
+        <Form.Control
+          size='lg'
+          value={value}
+          type='text'
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+          required
+        />
+      );
   }
 }
 
 export default function ContentField(props) {
-  console.log(props.value.includes(EQUATION_TAG), 'wwwwww')
+
   const setDefaultType = () => {
-    if(props?.value.includes(EQUATION_TAG))
+    if(props.value.substring(0, 2) === '<p')
+      return RICH_TEXT  
+    if(props.value.includes(EQUATION_TAG))
       return EQUATION
-    return ""
+    if(window.location.pathname.includes('exam'))
+      return ""
+    return RICH_TEXT
   }
+
+  console.log(setDefaultType(), '-=')
 
   const [inputType, setInputType] = useState(setDefaultType());
   
-  useEffect(() => {
-    setInputType(setDefaultType())
-  },[props.value])
   
   const updateInputType = (type) => {
     switch (type) {
@@ -136,33 +153,36 @@ export default function ContentField(props) {
     setInputType(type)
   }
 
+  console.log(inputType, '--')
   return (
     <div className={props.className}>
 
     <div key={`inline-radio`} className="mb-3" >
-      {/* <Form.Check
+      {window.location.pathname.includes('exam') && <Form.Check
         inline
         label="Text Editor"
+        name="inputType"
         type={"radio"}
         value=""
         checked={inputType === ""}
         onChange={e => updateInputType(e.target.value)}
-      /> */}
+      />}
       <Form.Check
         inline
         label="Rich Text Editor"
+        name="inputType"
         type={"radio"}
         value="rich-text"
-        checked={inputType === RICH_TEXT || inputType === ""}
-        onChange={e => updateInputType("")}
+        checked={inputType === RICH_TEXT}
+        onChange={e => updateInputType(RICH_TEXT)}
       />
-
       <Form.Check
         inline
         label="Equation Editor"
+        name="inputType"
         type={"radio"}
         value="equation"
-        checked={inputType === EQUATION}
+        checked={inputType == EQUATION}
         onChange={e => updateInputType(EQUATION)}
       />
     </div>
