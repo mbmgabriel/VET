@@ -335,7 +335,7 @@ function FilesContent(props) {
               return(
                 <tr key={index+item.name}>
                   <td className='ellipsis w-75 file-name font-size-22'>{item.name}</td>
-                  {displayButtons && window.location.pathname.includes("course") &&  subsType == 'LMS' ? <>
+                  {displayButtons && window.location.pathname.includes("course") &&  subsType.includes('LMS') ? <>
                     {<td style={{paddingRight:'15px'}} >
                         <OverlayTrigger
                           placement="right"
@@ -387,7 +387,7 @@ function FilesContent(props) {
                 <tr key={index+item.name}>
                   <td className='ellipsis w-75 colored-class font-size-22' onClick={()=> props.clickedFolder(item)}><i className="fas fa-folder" /><span className='font-size-22'> {item.name}</span></td>
                 {
-                  displayButtons && window.location.pathname.includes("course") &&  subsType == 'LMS' ? <td>
+                  displayButtons && window.location.pathname.includes("course") &&  subsType.includes('LMS') ? <td>
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 1, hide: 0 }}

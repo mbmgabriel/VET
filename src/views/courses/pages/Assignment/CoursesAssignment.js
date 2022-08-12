@@ -39,6 +39,7 @@ export default function CoursesAssignment() {
   const subsType = user.subsType;
   const {id} = useParams()
   const [isContributor, setIsContributor] = useState(true);
+  const [sequenceNo, setSequenceNo] = useState(null)
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(courseid)
@@ -75,14 +76,17 @@ export default function CoursesAssignment() {
     setOpenCreateAssignmentModal(!openCreateAssignmentModal)
   }
 
-  const handleOpenEditAssignmentModal = (e, assignmentName, instructions, assignmentId, rate) =>{
+  const handleOpenEditAssignmentModal = (e, assignmentName, instructions, assignmentId, rate, sequenceNo) =>{
     e.preventDefault()
     setAssignmentName(assignmentName)
     setInstructions(instructions)
     setAssignmentId(assignmentId)
     setRate(rate)
+    setSequenceNo(sequenceNo)
     setOpenEditAssignmentModal(!openEditAssignmentModal)
   }
+
+  console.log('assignmentInfo:', assignmentInfo)
 
   const getAssignmentInfo = async(e, data) => {
     setLoading(true)
@@ -218,6 +222,8 @@ export default function CoursesAssignment() {
         setInstructions={setInstructions}
         rate={rate}
         setRate={setRate}
+        sequenceNo={sequenceNo}
+        setSequenceNo={setSequenceNo}
         setAssignmentInfo={setAssignmentInfo} selectedAssignment={selectedAssignment} openEditAssignmentModal={openEditAssignmentModal} setOpenEditAssignmentModal={setOpenEditAssignmentModal}/>
         <Accordion defaultActiveKey="0">
           {moduleInfo.map((item, index) => {
@@ -248,7 +254,7 @@ export default function CoursesAssignment() {
                                 placement="bottom"
                                 delay={{ show: 1, hide: 25 }}
                                 overlay={renderTooltipEdit}>
-                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id, as?.rate)}><i className="fa fa-edit"></i></Button>
+                                  <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditAssignmentModal(e, as?.assignmentName, as?.instructions, as?.id, as?.rate, as?.sequenceNo)}><i className="fa fa-edit"></i></Button>
                               </OverlayTrigger>
                               <OverlayTrigger
                                 placement="bottom"

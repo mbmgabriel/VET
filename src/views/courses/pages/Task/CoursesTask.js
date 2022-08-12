@@ -36,6 +36,7 @@ export default function CoursesTask() {
   const courseid = sessionStorage.getItem('courseid')
   const subsType = user.subsType;
   const [isContributor, setIsContributor] = useState(true);
+  const [sequenceNo, setSequenceNo] = useState(null)
 
   const getContributor = async() => {
     let response = await new CoursesAPI().getContributor(id)
@@ -70,12 +71,13 @@ export default function CoursesTask() {
     setCreateTaskModal(!openCreateTaskModal)
   }
 
-  const handleOpenEditTaskModal = (e, taskName, instructions, taskId, rate) =>{
+  const handleOpenEditTaskModal = (e, taskName, instructions, taskId, rate, sequenceNo) =>{
     e.preventDefault()
     setTaskName(taskName)
     setInstructions(instructions)
     setTaskId(taskId)
     setRate(rate)
+    setSequenceNo(sequenceNo)
     setOpenEditTaskModal(!openEditTaskModal)
   }
 
@@ -200,6 +202,8 @@ export default function CoursesTask() {
       setTaskName={setTaskName}
       rate={rate}
       setRate={setRate}
+      sequenceNo={sequenceNo}
+      setSequenceNo={setSequenceNo}
       setTaskInfo={setTaskInfo} selectedTask={selectedTask} openEditTaskModal={openEditTaskModal} setOpenEditTaskModal={setOpenEditTaskModal}/>
       <CreateTask setTaskInfo={setTaskInfo} openCreateTaskModal={openCreateTaskModal} setCreateTaskModal={setCreateTaskModal}/>
       <Accordion defaultActiveKey="0">
@@ -230,7 +234,7 @@ export default function CoursesTask() {
                           placement="bottom"
                           delay={{ show: 1, hide: 25 }}
                           overlay={renderTooltipEdit}>
-                          <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti?.taskName, ti?.instructions, ti?.id, ti?.rate)}><i className="fa fa-edit"></i></Button>
+                          <Button className="m-r-5 color-white tficolorbg-button" size="sm" onClick={(e) => handleOpenEditTaskModal(e, ti?.taskName, ti?.instructions, ti?.id, ti?.rate, ti?.sequenceNo)}><i className="fa fa-edit"></i></Button>
                       </OverlayTrigger>
                       <OverlayTrigger
                           placement="bottom"

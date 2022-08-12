@@ -21,6 +21,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
   const [showFiles, setShowFiles] = useState(false);
   const [displayFolder, setDisplayFolder] = useState([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const [sequenceNo, setSequenceNo] =  useState(null)
   const {id} = useParams()
 
   let sessionCourse = sessionStorage.getItem('courseid')
@@ -36,7 +37,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
 
 	const saveTask = async(e) => {
     e.preventDefault()
-    if(rate === '') {
+    if(rate === '' || sequenceNo === null ) {
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -63,7 +64,7 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
       let isShared = false
       let response = await new CoursesAPI().createTask(
         sessionModule,
-        {taskName, instructions, rate, isShared:false}
+        {taskName, instructions, rate, sequenceNo, isShared:false}
       )
       if(response.ok){
         handleCloseModal()
@@ -172,6 +173,20 @@ export default function CreateTask({openCreateTaskModal, setCreateTaskModal, set
                     onChange={(e) => setRate(e.target.value)}
                   />
               </Form.Group>
+              <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
+                  />
+                </Form.Group>
               <div>
                 <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
               </div>

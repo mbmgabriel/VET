@@ -26,6 +26,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [courseId, setCourseId] = useState(null)
   const {id} = useParams();
+  const [sequenceNo, setSequenceNo] = useState(null)
 
   const closeNotify = () =>{
     setAddNotity(false)
@@ -34,7 +35,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
     e.preventDefault()
     setIsButtonDisabled(true)
     setTimeout(()=> setIsButtonDisabled(false), 1000)
-    if(moduleId == '' || assignmentName === '' || instructions === '' || instructions === '{{type=equation}}' || rate === '' ){
+    if(moduleId == '' || assignmentName === '' || instructions === '' || instructions === '{{type=equation}}' || rate === '' || sequenceNo === null ){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -55,7 +56,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
         progress: undefined,
         });
     } else{
-      let response = await new ClassesAPI().createAssignment(moduleId, id, {assignment:{assignmentName, instructions, rate}, classAssignment:{}} )
+      let response = await new ClassesAPI().createAssignment(moduleId, id, {assignment:{assignmentName, instructions, rate, sequenceNo}, classAssignment:{}} )
       if(response.ok){
         success()
         setModuleId('')
@@ -139,6 +140,20 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
                 <Form.Label>Rate</Form.Label>
                   <Form.Control defaultValue={rate}  onChange={(e) => setRate(e.target.value)} type='number' placeholder='Enter Rate here'/>
                 </Form.Group>
+                <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
+                  />
+              </Form.Group>
               <Form.Group className="mb-4">
                 <Form.Label >Instruction</Form.Label>
                   <ContentField  value={instructions} placeholder='Enter instruction here' onChange={value => setInstructions(value)} />

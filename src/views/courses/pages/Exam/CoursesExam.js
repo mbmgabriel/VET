@@ -213,7 +213,7 @@ export default function CoursesExam() {
                       return(
                         <>
                         <Row>
-                          <Col className="" md={9}>
+                          <Col className="" md={11}>
                           <Link className="lesson-header" to={`/course/${id}/exam/${ei.id}`}>
                               {ei?.testName}
                             </Link>
@@ -224,7 +224,7 @@ export default function CoursesExam() {
                             </div> */}
                           </Col>
                           {isContributor &&
-                            <Col className="align-right-content" md={3}>
+                            <Col className="align-right-content" md={1}>
                               <OverlayTrigger
                                 placement="bottom"
                                 delay={{ show: 1, hide: 25 }}

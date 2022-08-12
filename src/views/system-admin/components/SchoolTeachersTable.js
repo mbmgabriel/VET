@@ -59,8 +59,9 @@ export default function TeachersList() {
   const handleGetAllTeachers = async () => {
     let response = await new SchoolAPI().getTeachersList();
     if (response.ok) {
-      setTeachers(response.data)
-      console.log(response.data, '=======')
+      // setTeachers(response.data)
+      console.log(response.data, '=======');
+      handleGetAllTeachersAccounts(response.data);
     } else {
       toast.error("Something went wrong while fetching exam information")
     }
@@ -85,6 +86,17 @@ export default function TeachersList() {
       setNewPass('');
       toast.error(response.data?.errorMessage ? response.data?.errorMessage : 'Something went wrong while changing password.')
     }
+  }
+
+  const handleGetAllTeachersAccounts = async(data) => {
+    let response = await new SchoolAPI().getAllTeacher();
+    if(response.ok){
+      let temp = response.data;
+      const tempList = data.map(t1 => ({...t1, ...temp.find(t2 => t2.id === t1.userAccountID), id: t1.id}))
+      console.log(data, '=======', temp, '====', tempList )
+      setTeachers(tempList)
+    }
+    console.log(response)
   }
 
   const handleGetUploadedFile = (file) => {
@@ -585,7 +597,9 @@ export default function TeachersList() {
     <>
       <span className='m-t-5'>Teachers List</span>|{' '}
       <button onClick={() => { setShowEditModal('Register'); setFormType('Register') }} className="tficolorbg-button btn btn-info btn-sm m-r-5">Register Teacher{' '}<i class="fas fa-plus"></i></button>|{' '}
-      <button onClick={() => setShowUploadModal(true)} className="tficolorbg-button btn btn-info btn-sm m-r-5">Upload Teachers{' '}<i class="fas fa-plus"></i></button>
+      <button onClick={() => setShowUploadModal(true)} className="tficolorbg-button btn btn-info btn-sm m-r-5">Upload Teachers{' '}<i class="fas fa-plus"></i></button> |{' '}
+      <input type="checkbox" id={'cboxspassword'} name={'cboxspassword'} checked={showPassword} onChange={() => setShowPassword(!showPassword) } />{' '}
+      <label className="form-check-label" for={'cboxspassword'} >Show passwords</label>
       <ReactTable pageCount={100}
         list={teachers}
         filterable
@@ -610,8 +624,27 @@ export default function TeachersList() {
                 accessor: d => d.lname,
               },
               {
-                Header: 'Position',
+                Header: 'Employee No.',
+                id: 'eNo',
+                accessor: d => d.employeeNo,
+              },
+              {
+                Header: 'Username',
+                id: 'username',
+                accessor: d => d.username,
+              },
+              {
+                Header: 'Password',
                 id: 'password',
+                accessor: 
+                showPassword ?
+                d => <input type="text" className="form-control form-control-lg font-16" placeholder="Password" name="password" value={d.password} required disabled />
+                :
+                d => <input type="password" className="form-control form-control-lg font-16" placeholder="Password" name="password" value={d.password} required disabled />
+              },
+              {
+                Header: 'Position',
+                id: 'position',
                 accessor: d => d.positionID,
                 Cell: row => (
                   <div className="d-flex justify-content-center align-items-center">

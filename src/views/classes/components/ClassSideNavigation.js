@@ -128,7 +128,7 @@ export default function ClassSideNavigation({children}) {
               </Col>
             </Row>
           </ListGroup.Item>
-        {subsType == 'LMS' &&
+        {subsType.includes('LMS') &&
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               Feed
@@ -237,9 +237,9 @@ export default function ClassSideNavigation({children}) {
       :
       <Col className='row-course-bg course-widget-font' sm={1}>
         <Col className="text-align-right mb-2">
-          <i className="fas fa-chevron-right" style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
+          <i className="fas fa-chevron-right cursor-pointer " style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
         </Col>
-        {subsType == 'LMS' &&
+        {subsType.includes('LMS') &&
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               <OverlayTrigger
