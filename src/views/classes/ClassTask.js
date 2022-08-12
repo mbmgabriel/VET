@@ -19,6 +19,7 @@ import ClassSideNavigation from './components/ClassSideNavigation';
 import ContentViewer from '../../components/content_field/ContentViewer'
 import FullScreenLoader from '../../components/loaders/FullScreenLoader';
 import Status from '../../components/utilities/Status';
+import { toast } from 'react-toastify';
 
 function ClassTask() {
   const [modal, setModal] = useState(false)
@@ -53,9 +54,69 @@ function ClassTask() {
   const [loading, setLoading] = useState(false);
   const subsType =  user.subsType;
   const [sequenceNo, setSequenceNo] =  useState(null)
+  
 
   const onSearch = (text) => {
     setSearchTerm(text)
+  }
+
+  const updateShareTask = async (share, taskName, instructions, taskId, rate, sequenceNo, moduleId) => {
+    if(share === null || share === false){
+      let isShared = true
+      let response = await new ClassesAPI().updateTask(taskId, {
+        taskName,
+        instructions,
+        rate,
+        sequenceNo,
+        isShared
+      })
+      if(response.ok){
+        getTaskModule(null, moduleId)
+        successShared()
+ 
+      }else{ 
+        alert(response.data.errorMessage)
+      }
+    }else{
+      let isShared = null
+      let response = await new ClassesAPI().updateTask(taskId, {
+        taskName,
+        instructions,
+        rate,
+        sequenceNo,
+        isShared
+      })
+      if(response.ok){
+        getTaskModule(null, moduleId)
+        successUnShared()
+      }else{
+        alert(response.data.errorMessage)
+      }
+    }   
+  }
+
+  const successShared = () =>{
+    toast.success('Successfully shared task!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
+  const successUnShared = () => {
+    toast.success('Successfully unshared task!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
   
     useEffect(() => {
@@ -183,6 +244,19 @@ function ClassTask() {
       Delete
     </Tooltip>
   )
+  const renderTooltipUnShare = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Unshare
+    </Tooltip>
+  )
+
+  const renderTooltipShare = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Share
+    </Tooltip>
+  )
+
+  console.log('taskModule:', taskModule)
 
   return (
     <ClassSideNavigation>
@@ -255,40 +329,72 @@ function ClassTask() {
                             overlay={renderTooltipView}>
                           <Button onClick={() => viewTaskTaggle(moduleitem?.task, moduleitem?.taskAssignment)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button>
                         </OverlayTrigger>
-                        <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipEdit}>
-                          <Button onClick={(e) => toggle(e, moduleitem?.task?.taskName,  moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.module?.moduleName, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo )} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
-                        </OverlayTrigger>
                         {moduleitem?.taskAssignment?(
                           <>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipReasign}>
-                              <Button onClick={(e) => editAssignTaskToggle(e,moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
+                            <OverlayTrigger
+                              placement="bottom"
+                              delay={{ show: 1, hide: 0 }}
+                              overlay={renderTooltipReasign}>
+                                <Button onClick={(e) => editAssignTaskToggle(e,moduleitem)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-clock"></i></Button>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                              placement="bottom"
+                              delay={{ show: 1, hide: 0 }}
+                              overlay={moduleitem.task.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                                <Button onClick={() => updateShareTask(moduleitem.task.isShared, moduleitem?.task?.taskName, moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo, moduleitem?.module?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${moduleitem.task.isShared && "rotate"}`}></i></Button>
                             </OverlayTrigger>
                           </>
                         ):
                           <>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipAsign}>
-                            <Button onClick={(e) => assignTaskToggle(e, moduleitem.task.id, moduleitem?.task?.taskName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
-                          </OverlayTrigger>
-                          </>
+                            {moduleitem.task.isShared === true? (
+                            <>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={renderTooltipAsign}>
+                                  <Button onClick={(e) => assignTaskToggle(e, moduleitem.task.id, moduleitem?.task?.taskName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                              </OverlayTrigger>
+                              {moduleitem.task.classId == id ?(<>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={moduleitem.task.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                                  <Button onClick={() => updateShareTask(moduleitem.task.isShared, moduleitem?.task?.taskName, moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo, moduleitem?.module?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${moduleitem.task.isShared && "rotate"}`}></i></Button>
+                              </OverlayTrigger>
+                              </>):(<></>)}
+                            </>
+                            ):(
+                            <>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={renderTooltipAsign}>
+                                <Button onClick={(e) => assignTaskToggle(e, moduleitem.task.id, moduleitem?.task?.taskName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                              </OverlayTrigger>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={renderTooltipEdit}>
+                                  <Button onClick={(e) => toggle(e, moduleitem?.task?.taskName,  moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.module?.moduleName, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo )} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-edit"></i></Button>
+                              </OverlayTrigger>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={moduleitem.task.isShared ? renderTooltipUnShare : renderTooltipShare}>
+                                  <Button onClick={() => updateShareTask(moduleitem.task.isShared, moduleitem?.task?.taskName, moduleitem?.task?.instructions, moduleitem?.task?.id, moduleitem?.task?.rate, moduleitem?.task?.sequenceNo, moduleitem?.module?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class={`fas fa-share ${moduleitem.task.isShared && "rotate"}`}></i></Button>
+                              </OverlayTrigger>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 1, hide: 0 }}
+                                overlay={renderTooltipDelete}>
+                                  <Button onClick={() => handleDeleteNotify(moduleitem?.task?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
+                              </OverlayTrigger> 
+                            </>
+                            )}
+                        </>
                         }
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 1, hide: 0 }}
-                            overlay={renderTooltipDelete}>
-                              <Button onClick={() => handleDeleteNotify(moduleitem?.task?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
-                          </OverlayTrigger> 
                       </Col>
                       ):
-                 
                       <>
                       {moduleitem.taskAssignment?.startDate?(
                       <>
@@ -366,61 +472,24 @@ function ClassTask() {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                         <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
-                      
+                      {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}
                       </div>   
-                      {/* <Col sm={7} className='due-date-discusstion' >
-                        <div className='inline-flex'>
-                          <div className='text-color-bcbcbc font-16'>
-                            Start Date:&nbsp;
-                          </div>
-                          <div className='text-color-707070 font-16'>
-                           {moment(moduleitem?.taskAssignment?.startDate).format('LL')}&nbsp;
-                          </div>
-                          <div className='text-color-bcbcbc font-16'>
-                            Start Time:&nbsp;
-                          </div>
-                          <div className='text-color-707070 font-16'>
-                            {moduleitem?.taskAssignment?.startTime}
-                          </div>
-                      </div>
-                              <p className='exam-instruction m-0'>
-                              <span className='d-inline-block' style={{ width: 40, fontSize: 16}}>
-                                         Start:
-                                     </span>
-                                     &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.taskAssignment?.startDate).format("MMMM Do YYYY, h:mm:ss a")}</b>
-                                  </p>
-                                  <p className='exam-instruction m-0 mb-3'>
-                                        <span className='d-inline-block' style={{ width: 40 }}>
-                                                      End:
-                                           </span>
-                                           &nbsp;<b style={{ fontSize: '16px' }}>{moment(moduleitem?.taskAssignment?.endDate).format("MMMM Do YYYY, h:mm:ss a")}</b>
-        </p>
-                      </Col> */}
-                      {/* <Col className='posted-date-discusstion'>
-                        <div className='inline-flex'>
-                          <div className='text-color-bcbcbc font-16'>
-                            End Date:&nbsp;
-                          </div>
-                          <div className='text-color-707070 font-16'>
-                            {moment(moduleitem?.taskAssignment?.endDate).format('LL')}&nbsp;
-                          </div>
-                          <div className='text-color-bcbcbc font-16'>
-                            End Time:&nbsp;
-                          </div>
-                          <div className='text-color-707070 font-16'>
-                            {moduleitem?.taskAssignment?.endTime}
-                          </div>
-                        </div>
-                      </Col> */}
                       <div className='text-color-bcbcbc' >
+                        <p></p>
                       <hr></hr>
                       </div>
                     </>
                     ):
                     <>
                       <div className='inline-flex' >
-                       {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status></div>) : (<Status>Created in Class</Status>)}
-                       <Status>Unassigned</Status>
+                       {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status><Status>Unassigned</Status></div>) : (
+                       <>
+                        <Status>Created in Class</Status>
+                        <Status>Unassigned</Status>
+                        {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}
+                        
+                       </>
+                       )}
                       </div>
                       <div className='text-color-bcbcbc' >
                       <hr></hr>

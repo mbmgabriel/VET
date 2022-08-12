@@ -64,7 +64,7 @@ export default function CourseContent({children}) {
   }, [])
 
   useEffect(() => {
-    if (user.isStudent) return (window.location.href = "/404");
+    if (user.isStudent && subsType !== 'TeacherResources') return (window.location.href = "/404");
   }, []);
 
   const renderTooltipFeed = (props) => (
@@ -143,7 +143,7 @@ export default function CourseContent({children}) {
                 </Col>
               </Row>
             </ListGroup.Item> 
-            {subsType == 'LMS' &&
+            {subsType.includes('LMS') &&
               <ListGroup>
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   Learn
@@ -163,12 +163,12 @@ export default function CourseContent({children}) {
                 <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
                   Assignment
                 </Link>
+                <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
+                  Interactive Exercises
+                </Link>
                 {
                   isContributor && 
                   <>
-                  <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
-                    Interactive Exercises
-                  </Link>
                   <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
                     Files 
                   </Link>
@@ -200,9 +200,14 @@ export default function CourseContent({children}) {
             }
             {
               subsType == 'TeacherResources' &&
-              <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
-                Teacher Resources
-              </Link>
+              <ListGroup>
+                <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                  Teacher Resources
+                </Link>
+                <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
+                  Interactive Exercises
+                </Link>
+              </ListGroup>
             }
           </Col>
           :
@@ -210,7 +215,7 @@ export default function CourseContent({children}) {
             <Col className="text-align-right mb-2">
               <i className="fas fa-chevron-right cursor-pointer" onClick={()=> handleClicked(true)}/>
             </Col>
-            {subsType == 'LMS' &&
+            {subsType.includes('LMS') &&
               <ListGroup>
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   <OverlayTrigger
@@ -258,6 +263,14 @@ export default function CourseContent({children}) {
                     delay={{ show: 1, hide: 25 }}
                     overlay={renderTooltipAssignment}>
                     <i className="fas fa-sticky-note" />
+                  </OverlayTrigger>
+                </Link>
+                <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipInteractive}>
+                     <i className='fas fa-chalkboard-teacher' />
                   </OverlayTrigger>
                 </Link>
                 
@@ -312,6 +325,14 @@ export default function CourseContent({children}) {
                     delay={{ show: 1, hide: 25 }}
                     overlay={renderTooltipTeacherResources}>
                     <i className="fas fa-link" />
+                  </OverlayTrigger>
+                </Link>
+                <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 1, hide: 25 }}
+                    overlay={renderTooltipInteractive}>
+                     <i className='fas fa-chalkboard-teacher' />
                   </OverlayTrigger>
                 </Link>
               </ListGroup>

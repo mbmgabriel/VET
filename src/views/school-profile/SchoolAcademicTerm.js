@@ -7,7 +7,7 @@ import AcademicTermTable from './components/AcademicTermTable'
 
 export default function SchoolAcademicTerms() {
   return (
-    <MainContainer title="School" activeHeader={"school"} style='not-scrollable'>
+    <MainContainer title="School" fluid activeHeader={"school"} style='not-scrollable'>
       <Row className="mt-4">
         <Col sm={3}>
           <AdminSideNavigation active="academicTerm"/>
