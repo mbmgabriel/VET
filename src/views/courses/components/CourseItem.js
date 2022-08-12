@@ -32,8 +32,6 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     setOpenEditModal(true)
   }
 
-  console.log(course, '================================================')
-
   const setCourseId = (item) => {
     sessionStorage.setItem('courseid', item)
     sessionStorage.setItem('breadname', "Learn")
@@ -59,12 +57,10 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   const handleClickedUploadModal = (item) => {
     setSelectedCourse(item)
     setUploadModal(true);
-    console.log(item)
     setId(item.id)
   }
 
   const handleUploadCover = async() => {
-    console.log(fileToUpload)
     setUploadModal(false)
     let response = await new CoursesAPI().uploadCover(id, fileToUpload)
     if(response.ok){
@@ -76,7 +72,6 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   }
 
   const getTeacherList = async() => {
-    console.log(fileToUpload)
     setUploadModal(false)
     let response = await new SchoolAPI().getTeachers()
     if(response.ok){
@@ -96,7 +91,6 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   }
 
   const handleSetFiles = (file) => {
-    console.log(file);
     if(file != ''){
       getBase64(file).then(
         data => {
@@ -115,7 +109,6 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     if(response.ok){
       setCourseInfo(response.data)
       setAuthorId(response.data.createdBy)
-      console.log(response, '-=-=-')
     }else{
       alert("Something went wrong while fetching course information")
     }
@@ -131,7 +124,6 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   }
 
   const addContributor = async(item) => {
-    console.log(item)
     let data = {
       "courseId": courseID,
       "userAccountId": item.userAccountID,
@@ -154,7 +146,6 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
   }
 
   const handleRemoveContributor = async(data) => {
-    console.log(data)
     if(data.distributorInformation.userAccountId == authorId){
       toast.error("You can't remove the author of this course.")
     }else{
@@ -219,21 +210,21 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
               </Col>
               <Col md={6}>
                 <div className='contributors-container'>
-                <p className="font-20">Teacher/s</p>
-                {
-                  teachersList.map((teacher, key) => {
-                    return (
-                    <Row className="mb-3">
-                      <Col md={8}>
-                        <span className="w-75">{teacher.fname} {teacher.lname}</span>
-                      </Col>
-                      <Col>
-                        <span><i onClick={() => addContributor(teacher)} className="fa fa-plus tficolorbg-button color-white d-flex justify-content-center align-items-center br-3" style={{width: 23, height: 23}}/></span>
-                      </Col>
-                    </Row>
+                  <p className="font-20">Teacher/s</p>
+                  {
+                    teachersList.map((teacher, key) => {
+                      return (
+                        <Row className="mb-3">
+                          <Col md={8}>
+                            <span className="w-75">{teacher.fname} {teacher.lname}</span>
+                          </Col>
+                          <Col>
+                            <span><i onClick={() => addContributor(teacher)} className="fa fa-plus tficolorbg-button color-white d-flex justify-content-center align-items-center br-3" style={{width: 23, height: 23}}/></span>
+                          </Col>
+                        </Row>
                       )
-                  })
-                }
+                    })
+                  }
                 </div>
               </Col>
            </Row>
@@ -251,6 +242,9 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     if(user.isTeacher && subsType == 'TeacherResources'){
       return `/courses/${id}/resources`
     }
+    if(user.isStudent && subsType == 'TeacherResources'){
+      return `/courses/${id}/interactive`
+    }
     if(user.isTeacher && subsType == 'Interactives'){
       return `/courses`
     }
@@ -266,30 +260,33 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     <React.Fragment>
         { subjectAreaName.filter(item =>
           item.courseName.toLowerCase().includes(filter.toLowerCase())).map
-          ((item, index) => {  
-        return(
-          <>
-          {item?.status?(<>
-          {/* user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}` */}
-            <Link to={handleReturnLink(item.id)} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
-              <CoursesItemCard 
-              courseCover={item.courseCover}
-              courseId={item.id}
-              courseName={item.courseName}
-              subjectAreaName={item.subjectArea.subjectAreaName}
-              description={item.description}
-              authorName={item.authorName}
-              courseInfo={item}
-              setOpenEditModal={setOpenEditModal}
-              setSelectedCourse={setSelectedCourse}
-              getCourses={getCourses}
-              uploadModalTrigger={handleClickedUploadModal}
-              handleClickContributor={handleClickContributor}
-            />
-            </Link>
-          </>):(<></>)}
-          </>
-        )
+          ((item, index) => {
+          let ifSameGrade = item.gradeLevelid === user.student?.gradeLevelId ? true : false;
+          let ifFilterByGradeId = subsType == 'TeacherResources' && user.isStudent ? ifSameGrade : true
+          return(
+            ifFilterByGradeId && 
+            <>
+              {item?.status?(<>
+              {/* user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}` */}
+                <Link to={handleReturnLink(item.id)} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
+                  <CoursesItemCard 
+                  courseCover={item.courseCover}
+                  courseId={item.id}
+                  courseName={item.courseName}
+                  subjectAreaName={item.subjectArea.subjectAreaName}
+                  description={item.description}
+                  authorName={item.authorName}
+                  courseInfo={item}
+                  setOpenEditModal={setOpenEditModal}
+                  setSelectedCourse={setSelectedCourse}
+                  getCourses={getCourses}
+                  uploadModalTrigger={handleClickedUploadModal}
+                  handleClickContributor={handleClickContributor}
+                />
+                </Link>
+              </>):(<></>)}
+            </>
+          )
         })  
     }
     {handleDisplayUploadMOdal()}

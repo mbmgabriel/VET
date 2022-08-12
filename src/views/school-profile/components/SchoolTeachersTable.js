@@ -38,11 +38,25 @@ export default function StudentsList() {
     setToResetId(id)
   }
 
+  const handleGetAllTeachersListInfo = async (data) => {
+    let response = await new SchoolAPI().getTeachersList();
+    if (response.ok) {
+      let temp = response.data;
+      const tempList = temp.map(t1 => ({...t1, ...data.find(t2 => t2.id === t1.userAccountID)}))
+      console.log(response.data, '=======', data, '====', tempList )
+      setTeachers(tempList)
+    } else {
+      toast.error("Something went wrong while fetching exam information")
+    }
+    console.log(response)
+  }
+
   const handleGetAllTeachers = async() => {
     let response = await new SchoolAPI().getAllTeacher();
     if(response.ok){
       setTeachers(response.data)
       console.log(response.data)
+      handleGetAllTeachersListInfo(response.data)
     }else{
       toast.error("Something went wrong while fetching exam information")
     }
@@ -93,6 +107,21 @@ export default function StudentsList() {
           columns:
           [
             {
+              Header: 'Firstname',
+              id: 'fname',
+              accessor: d => d.fname,
+            },
+            {
+              Header: 'Lastname',
+              id: 'lname',
+              accessor: d => d.lname,
+            },
+            {
+              Header: 'Employee No.',
+              id: 'eNo',
+              accessor: d => d.employeeNo,
+            },
+            {
               Header: 'Username',
               id: 'username',
               accessor: d => d.username,
@@ -111,14 +140,14 @@ export default function StudentsList() {
               id: 'edit',
               accessor: d => d.id,
               Cell: row => (
-                <div className="">
+                <Col className="">
                   <button onClick={() => handleClickedit(row.original.id)} className="btn btn-info btn-sm m-r-5" >
-                    Change Password
+                    Change
                   </button>
                   <button onClick={() => handleClikedReset(row.original.id)} className="btn btn-warning btn-sm m-r-5">
-                    Reset Password
+                    Reset
                   </button>
-                </div>
+                </Col>
               )
             }
           ]

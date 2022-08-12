@@ -357,6 +357,19 @@ function ClassAssignment() {
                   </OverlayTrigger>
                   </>  
                 ):
+                // <OverlayTrigger
+                //   placement="bottom"
+                //   delay={{ show: 1, hide: 0 }}
+                //   overlay={renderTooltipAsign}>
+                //     <Button onClick={(e) => assignAssignmentToggle(e, assigItem?.assignment?.id, assigItem?.assignment?.assignmentName)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-user-clock"></i></Button>
+                // </OverlayTrigger>
+                // } 
+                // <OverlayTrigger
+                //   placement="bottom"
+                //   delay={{ show: 1, hide: 0 }}
+                //   overlay={renderTooltipDelete}>
+                //     <Button onClick={() => handleDeleteNotify(assigItem?.assignment?.id, item?.id)} className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-trash-alt"></i></Button>
+                // </OverlayTrigger>
                 <>
                 {assigItem?.assignment?.isShared === true? (
                   <>

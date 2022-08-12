@@ -6,7 +6,7 @@ import SchoolProfileContent from './components/SchoolProfileContent'
 
 export default function SchoolProfile() {
   return (
-    <MainContainer title="School" activeHeader={"school"}>
+    <MainContainer title="School" fluid activeHeader={"school"}>
       <Row className="mt-4">
         <Col sm={3}>
           <AdminSideNavigation active="school-profile"/>

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Col, Row, Modal, Form, Button, InputGroup } from 'react-bootstrap'
 import ReactTable from 'react-table-v6'
 import 'react-table-v6/react-table.css'
-import SchoolAPI from '../../../api/SchoolAPI'
+import SchoolAPI from '../../../api/SchoolAPI';
+import GradeAPI from '../../../api/GradeAPI'
+
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from "react-toastify";
 import moment from "moment"
@@ -46,9 +48,12 @@ export default function StudentsList() {
   const [userAccountID, setUserAccountID] = useState('')
 
   const [formType, setFormType] = useState('Edit')
+  const [gradeLevelId, setGetGradeLevel] = useState('')
+  const [grade, setGrade] = useState([])
 
   useEffect(() => {
-    handleGetAllStudents()
+    handleGetAllStudents();
+    getGrade();
   }, [])
 
   const handleDeleteStudent = async () => {
@@ -65,10 +70,22 @@ export default function StudentsList() {
   const handleGetAllStudents = async () => {
     let response = await new SchoolAPI().getStudentsList();
     if (response.ok) {
-      setStudents(response.data)
-      console.log(response.data, '=======')
+      // setStudents(response.data)
+      // console.log(response.data, '=======')
+      handleGetAllStudentsAccounts(response.data);
     } else {
       toast.error("Something went wrong while fetching exam information")
+    }
+    console.log(response)
+  }
+
+  const handleGetAllStudentsAccounts = async(data) => {
+    let response = await new SchoolAPI().getAllStudents();
+    if(response.ok){
+      let temp =response.data;
+      const tempList = data.map(t1 => ({...t1, ...temp.find(t2 => t2.id === t1.userAccountID), id: t1.id}))
+      // console.log(response.data, '=======', data, '===', tempList )
+      setStudents(tempList)
     }
     console.log(response)
   }
@@ -137,12 +154,22 @@ export default function StudentsList() {
     setEmergencyNo('');
     setEmergencyNo('');
     setUserAccountID('');
+    setGetGradeLevel(null);
+  }
+
+  const getGrade = async() =>{
+    let response = await new GradeAPI().getGrade()
+    if(response.ok){
+      setGrade(response.data)
+    }else{
+      alert("Something went wrong while fetching all Grade")
+    }
   }
 
   const form = () => {
     return (
-      formType === 'Edit' ? <Modal size="lg" show={showEditModal} onHide={() => { setShowEditModal(false); clearState(); }} aria-labelledby="example-modal-sizes-title-lg">
-        <Modal.Header className='class-modal-header' closeButton>Edit Profile</Modal.Header>
+      <Modal size="lg" show={showEditModal} onHide={() => { setShowEditModal(false); clearState(); }} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header className='class-modal-header' closeButton>{formType === 'Edit' ? 'Edit Profile' : 'Register Student'}</Modal.Header>
         <Modal.Body>
           <h3><label className="control-label">Personal Information </label></h3>
           <label className="control-label">Name</label>
@@ -250,6 +277,18 @@ export default function StudentsList() {
                 </InputGroup>
               </Form.Group>
             </div>
+            <div className="col-md-4 m-b-15">
+                <Form.Group className="mb-3">
+                  <Form.Label>Grade Level</Form.Label>
+                    <Form.Select value={gradeLevelId} onChange={(e) => setGetGradeLevel(e.target.value)}>
+                      <option value={''}>Select Grade Level</option>
+                      {grade.map(item =>{
+                        return(<option value={item.id}>{item.gradeName}</option>)
+                        })
+                      }
+                  </Form.Select>
+                </Form.Group>
+              </div>
           </div>
           <hr />
           <h3><label className="control-label">Contact Information </label></h3>
@@ -306,201 +345,16 @@ export default function StudentsList() {
                 </InputGroup>
               </Form.Group>
             </div>
-          </div>
-          <button className="btn float-right tficolorbg-button mb-4" onClick={() => handleSaveEdit()}>Save Edit</button>
+          </div> 
+          {
+            formType === 'Edit' ? 
+            <button className="btn float-right tficolorbg-button mb-4" onClick={() => handleSaveEdit()}>Save Edit</button>
+            :
+            <button className="btn float-right tficolorbg-button mb-4" onClick={() => handleRegisterStudent()}>Register</button>
+          }
           <button className="btn float-right btn-danger mb-4 m-r-10" onClick={() => setShowEditModal(false)}>Cancel</button>
         </Modal.Body>
       </Modal>
-        : <Modal size="lg" show={showEditModal} onHide={() => { setShowEditModal(false); clearState(); }} aria-labelledby="example-modal-sizes-title-lg">
-          <Modal.Header className='class-modal-header' closeButton>Register Student</Modal.Header>
-          <Modal.Body>
-            <h3><label className="control-label">Personal Information </label></h3>
-            <label className="control-label">Name</label>
-            <div className="row row-space-10">
-              <div className="col-md-4 m-b-15">
-                <InputGroup className="mb-4">
-                  <Form.Control type="text" value={fname} onChange={(e) => setFname(e.target.value)} placeholder="First name" />
-                </InputGroup>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <InputGroup className="mb-4">
-                  <Form.Control type="text" value={lname} onChange={(e) => setLname(e.target.value)} placeholder="Last name" />
-                </InputGroup>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <InputGroup className="mb-4">
-                  <Form.Control type="text" value={mname} onChange={(e) => setMname(e.target.value)} placeholder="Middle initial" />
-                </InputGroup>
-              </div>
-            </div>
-            <div className="row row-space-10">
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Gender
-                  </Form.Label>
-                  <Form.Select value={gender} onChange={(e) => setGender(e.target.value)}>
-                    <option value="">Select Gender</option>
-                    <option value='Male'>Male</option>
-                    <option value='Female'>Female</option>
-                  </Form.Select>
-                </Form.Group>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Birthdate
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="date" format='yyyy-MM-dd' value={birthdate} onChange={(e) => setBirthdate(e.target.value)} />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-            </div>
-            <div className="row row-space-10">
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Citizenship
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="text" value={citizenship} onChange={(e) => setCitizenship(e.target.value)} placeholder='Citizenship' />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Status
-                  </Form.Label>
-                  <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                    <option>Select status</option>
-                    <option value='Single'>Single</option>
-                    <option value='Married'>Married</option>
-                  </Form.Select>
-                </Form.Group>
-              </div>
-            </div>
-            <label className="control-label">Mother's Name</label>
-            <div className="row row-space-10">
-              <div className="col-md-4 m-b-15">
-                <InputGroup className="mb-4">
-                  <Form.Control type="text" value={motherFname} onChange={(e) => setMotherFname(e.target.value)} placeholder="Mother's First name" />
-                </InputGroup>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <InputGroup className="mb-4">
-                  <Form.Control type="text" value={motherLname} onChange={(e) => setMotherLname(e.target.value)} placeholder="Mother's Last name" />
-                </InputGroup>
-              </div>
-            </div>
-            <label className="control-label">Fathe's Name</label>
-            <div className="row row-space-10">
-              <div className="col-md-4 m-b-15">
-                <InputGroup className="mb-4">
-                  <Form.Control type="text" value={fatherFname} onChange={(e) => setFatherFname(e.target.value)} placeholder="Father's First name" />
-                </InputGroup>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <InputGroup className="mb-4">
-                  <Form.Control type="text" value={fatherLname} onChange={(e) => setFatherLname(e.target.value)} placeholder="Father's Last name" />
-                </InputGroup>
-              </div>
-            </div>
-            <hr />
-            <h3><label className="control-label">Account Information </label></h3>
-            <div className="row row-space-10">
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Student Number
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="number" min={1} max={12} value={studentNo} onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Username
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Password
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-            </div>
-            <hr />
-            <h3><label className="control-label">Contact Information </label></h3>
-            <div className="row row-space-10">
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Permanent Addres
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="text" value={permanentAddress} onChange={(e) => setPermanentAddress(e.target.value)} placeholder="Permamnent Address" />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Present Addres
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="text" value={presentAddress} onChange={(e) => setPresentAddress(e.target.value)} placeholder="Present Address" />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Contact Number
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="number" value={contactNo} onChange={(e) => setContactNo(e.target.value)} placeholder="Contact No." />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-            </div>
-            <div className="row row-space-10">
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Email Address
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-              <div className="col-md-4 m-b-15">
-                <Form.Group className="m-b-20">
-                  <Form.Label for="status">
-                    Emergency Number
-                  </Form.Label>
-                  <InputGroup className="mb-4">
-                    <Form.Control type="number" value={emergencyNo} onChange={(e) => setEmergencyNo(e.target.value)} placeholder="Emergency No." />
-                  </InputGroup>
-                </Form.Group>
-              </div>
-            </div>
-            <button className="btn float-right tficolorbg-button mb-4" onClick={() => handleRegisterStudent()}>Register</button>
-            <button className="btn float-right btn-danger mb-4 m-r-10" onClick={() => setShowEditModal(false)}>Cancel</button>
-          </Modal.Body>
-        </Modal>
     )
   }
 
@@ -524,6 +378,7 @@ export default function StudentsList() {
       mothersLname: motherLname,
       fathersFname: fatherFname,
       fathersLname: fatherLname,
+      gradeLevelId,
       "emergencyContactNo": emergencyNo,
       "userAccountID": userAccountID,
     }
@@ -551,6 +406,7 @@ export default function StudentsList() {
       setEmergencyNo('');
       setUserAccountID('');
       setShowEditModal(false);
+      setGetGradeLevel('');
     } else {
       // setLoading(false);
       toast.error(response?.data?.errorMessage);
@@ -574,6 +430,7 @@ export default function StudentsList() {
         bday: birthdate === 'Invalid date' ? '' : birthdate,
         contactNo,
         emailAdd: email,
+        gradeLevelId,
         mothersFname: motherFname,
         mothersLname: motherLname,
         fathersFname: fatherFname,
@@ -614,6 +471,7 @@ export default function StudentsList() {
     setFatherLname(data.fathersLName);
     setEmergencyNo(data.emergencyContactNo);
     setUserAccountID(data.userAccountID);
+    setGetGradeLevel(data.gradeLevelId);
     setShowEditModal(true);
   }
 
@@ -621,7 +479,8 @@ export default function StudentsList() {
     <>
       <span className='m-t-5'>Students List</span> |{' '}
       <button onClick={() => { setShowEditModal('Register'); setFormType('Register') }} className="tficolorbg-button btn btn-info btn-sm m-r-5">Register Students{' '}<i class="fas fa-plus"></i></button>|{' '}
-      <button onClick={() => setShowUploadModal(true)} className="tficolorbg-button btn btn-info btn-sm m-r-5">Upload Students{' '}<i class="fas fa-plus"></i></button>
+      <button onClick={() => setShowUploadModal(true)} className="tficolorbg-button btn btn-info btn-sm m-r-5">Upload Students{' '}<i class="fas fa-plus"></i></button> | {' '}
+      <input type="checkbox" id={'cboxspassword'} name={'cboxspassword'} checked={showPassword} onChange={() => setShowPassword(!showPassword) } />{' '}<label className="form-check-label" for={'cboxspassword'}>Show passwords</label>
       <ReactTable pageCount={100}
         list={Students} 
         filterable
@@ -644,6 +503,20 @@ export default function StudentsList() {
                 Header: 'Lastname',
                 id: 'lname',
                 accessor: d => d.lname,
+              },
+              {
+                Header: 'Username',
+                id: 'username',
+                accessor: d => d.username,
+              },
+              {
+                Header: 'Password',
+                id: 'password',
+                accessor: 
+                showPassword ?
+                d => <input type="text" className="form-control form-control-lg font-16" placeholder="Password" name="password" value={d.password} required disabled />
+                :
+                d => <input type="password" className="form-control form-control-lg font-16" placeholder="Password" name="password" value={d.password} required disabled />
               },
               {
                 Header: 'Actions',
