@@ -177,17 +177,8 @@ function CreateClassModal({setModal, modal, getClasses}) {
                   }
               </Form.Select>
             </Form.Group>
-
           	<Form.Group className="mb-4">
             	<Form.Label>Course</Form.Label>
-                {/* <Form.Select onChange={(e) => setGetCourseId(e.target.value)}>
-                  <option>-- Select Course Level Here --</option>
-                  {course.map(item =>{
-                      return(<option value={item.id}>{item.courseName}</option>)
-                      })
-                    }
-                </Form.Select> */}
-                {/* <Form.Control autoComplete='off' list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" /> */}
                 <Form.Control autoComplete='off' required list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
                 <datalist id="courses">
                   {course.map(item =>{
@@ -202,9 +193,6 @@ function CreateClassModal({setModal, modal, getClasses}) {
                   {
                     academicTerm.map(item =>{
                       return(
-                      //   subsType == 'LMS' ?
-                      // <option value={item.id}>{item.academicTermName}</option>
-                      // :
                       item.isCurrentTerm && <option value={item.id}>{item.academicTermName}</option>
                       )
                     })
@@ -215,10 +203,6 @@ function CreateClassModal({setModal, modal, getClasses}) {
           		<Form.Label >Class Name</Form.Label>
                 <Form.Control required onChange={(e) => setClassName(e.target.value)} type="text" placeholder='Enter class name here'/>
             </Form.Group>
-            {/* <Form.Group className="mb-4">
-            <Form.Label >Class Description</Form.Label>
-              <Form.Control type="text" placeholder='Enter class Description here' />
-            </Form.Group> */}
               <Form.Group className='mb-4'>
                 <Form.Label >Class Code</Form.Label>&nbsp;{' '}
                 	<Button  className='tficolorbg-button' onClick={getClassCode}>
