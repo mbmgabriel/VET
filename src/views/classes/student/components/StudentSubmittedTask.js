@@ -25,7 +25,7 @@ function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnsw
         <Modal  size="lg" show={submittedTaskModal} onHide={() => setSubmittedTaskModal(false)} aria-labelledby="example-modal-sizes-title-lg">
           <Modal.Header className='class-modal-header' closeButton>
             <Modal.Title id="example-modal-sizes-title-lg" >
-             Task
+             Task 
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -69,7 +69,7 @@ function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnsw
               }
             </Form.Group>
             <Form.Group className='right-btn'>
-              <Button onClick={() => submittedTaskToggle()} className='tficolorbg-button' type='submit'>OK</Button>
+              <Button onClick={() => setSubmittedTaskModal(false)} className='tficolorbg-button'>OK</Button>
             </Form.Group>
    
           </Modal.Body>
