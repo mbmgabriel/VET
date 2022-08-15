@@ -9,8 +9,6 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
 import AssignTask from './components/Task/AssignTask'
 import EditAssignTask from './components/Task/EditAssignTask'
-import StundentAnswerTask from './student/components/StundentAnswerTask'
-import StudentSubmittedTask from './student/components/StudentSubmittedTask'
 import StudentTask from './student/StudentTask'
 import { UserContext } from '../../context/UserContext'
 import ViewTask from './components/Task/ViewTask'
@@ -32,7 +30,6 @@ function ClassTask() {
   const [taskModule, setTaskModule] = useState([])
   const [editTask, setEditTask] = useState()
   const {id} = useParams();
-  // const classId = classInfo?.classInformation?.classId;
   const [deleteNotify, setDeleteNotify] = useState(false)
   const [itemId, setItemId] = useState('')
   const dateCompareNow = moment().format("YYYY-MM-DD")
@@ -156,9 +153,6 @@ function ClassTask() {
     setModal(!modal)
   }
 
-  console.log('taskModule:', taskModule)
-
-
   const editAssignTaskToggle = (e, item) => {
     setEditAssignTaskItem(item)
     setEditAssignTaskModal(!editAssignTaskModal)
@@ -212,7 +206,6 @@ function ClassTask() {
     if(response.ok){
       getTaskModule(null, item1)
       setDeleteNotify(false)
-      // alert('Task Deleted')
     }else{
       alert("Something went wrong while Deleting a task")
     }
@@ -256,8 +249,6 @@ function ClassTask() {
     </Tooltip>
   )
 
-  console.log('taskModule:', taskModule)
-
   return (
     <ClassSideNavigation>
         {loading && <FullScreenLoader />}
@@ -297,7 +288,7 @@ function ClassTask() {
                   <Row style={{margin:'10px'}}>
                     <Col sm={8}>
                       <div className='title-exam'>
-                        {moduleitem?.task?.taskName}
+                        {moduleitem?.task?.taskName}12
                       </div>
                     </Col>
                     <Col sm={9} className='instruction-exam' >
@@ -322,7 +313,6 @@ function ClassTask() {
                     </Col>
                     {moduleitem.task.classId?( 
                     <Col sm={3} className='icon-exam'>
-                      {/* Student Modal Answers */}
                           <OverlayTrigger
                             placement="bottom"
                             delay={{ show: 1, hide: 0 }}
@@ -399,7 +389,6 @@ function ClassTask() {
                       {moduleitem.taskAssignment?.startDate?(
                       <>
                       <Col sm={3} className='icon-exam'>
-                        {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
                         <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 1, hide: 0 }}
@@ -417,7 +406,6 @@ function ClassTask() {
                       ):
                       <>
                       <Col sm={3} className='icon-exam'>
-                        {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
                         <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 1, hide: 0 }}
