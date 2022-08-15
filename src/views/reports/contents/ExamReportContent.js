@@ -29,6 +29,7 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
   const [perfect, setPerfect] = useState([])
   const [passed, setPassed] = useState(0)
   const [failed, setFailed] = useState(0)
+  const [notSubmitted, setNotSubmitted] = useState(0)
   let sessionClass = pageURL.searchParams.get("classId")
   let sessionTestId = sessionStorage.getItem("testid")
 
@@ -121,6 +122,20 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     setFailed(count);
   }
 
+  const getNotSubmittedStudent = (data) => {
+    let count = 0;
+    data.map(item =>{
+      let rawScore = item?.studentTests[0].rawScore/2
+      let score = item?.studentTests[0].score
+      let isSubmitted = item?.studentTests[0].isSubmitted
+        if(isSubmitted === false){
+          count = count + 1;
+        }
+    })
+    setNotSubmitted(count);
+  }
+  
+
   const downloadxls = () => {
     const ws =utils.json_to_sheet(dataDownload);
     const wb =utils.book_new();
@@ -156,6 +171,7 @@ useEffect(()=>{
     getPassedScore(testReport)
     getFailedScore(testReport);
     getPecfectScore(testReport)
+    getNotSubmittedStudent(testReport)
 }, [testReport])
 
 const handleClickIcon = () =>{
@@ -249,7 +265,7 @@ const handleClickIcon = () =>{
     {user.student === null ?
       <>
       <Row>
-        <Col sm={4}>
+        <Col sm={3}>
         <Card>
           <Card.Body>
             <div className='header-analysis-card' ><i class='fa fa-star' style={{marginRight:"10px", fontSize:'30px'}}></i> PERFECT</div>
@@ -260,7 +276,7 @@ const handleClickIcon = () =>{
           </Card.Body>
         </Card>    
         </Col>
-        <Col sm={4}>
+        <Col sm={3}>
         <Card>
           <Card.Body>
               <div className='header-analysis-card' ><i class='fa fa-arrow-circle-up' style={{marginRight:"10px", fontSize:'30px'}}></i>PASSED</div>
@@ -273,13 +289,24 @@ const handleClickIcon = () =>{
           </Card.Body>
         </Card>
         </Col>
-        <Col sm={4}>
+        <Col sm={3}>
         <Card>
           <Card.Body>
             <div className='header-analysis-card' ><i class='fa fa-arrow-circle-down' style={{marginRight:"10px", fontSize:'30px'}}></i>FAILED</div>
             <Card.Text>
               <hr></hr>
               <p><b> {failed} </b></p>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+        </Col>
+        <Col sm={3}>
+        <Card>
+          <Card.Body>
+            <div className='header-analysis-card' ><i class='fa fa-times-circle' style={{marginRight:"10px", fontSize:'30px'}}></i>NOT SUBMITTED</div>
+            <Card.Text>
+              <hr></hr>
+              <p><b> {notSubmitted} </b></p>
             </Card.Text>
           </Card.Body>
         </Card>
