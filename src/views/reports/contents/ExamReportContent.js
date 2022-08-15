@@ -12,13 +12,10 @@ import FrequencyOferror from './FrequencyOferror';
 
 function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHeader, getExamAnalysis, testName}) {
   
-  const [examAnalysis, setExamAnalysis] = useState([])
-  const [showExamAnalysis, setShowExamAnalysis] = useState(false)
   const [loading, setLoading] = useState(false)
   const [sweetError, setSweetError] = useState(false)
   const [studentId, setStudentId] = useState(false)
   const [examReport, setExamReport] = useState([])
-  const [isChecked, setIschecked] = useState(false)
   const [frequencyItem, setFrequencyItem] = useState([])
   const [frequencyModal, setFrequencyModal] = useState(false)
   const [showAnalysis, setShowAnalysis] = useState(false)
@@ -29,7 +26,7 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
   const {user,themeColor} = userContext.data
   const [dataDownload, setDataDownload] = useState({});
   const pageURL = new URL(window.location.href);
-  const [perfect, setPerfect] = useState(0)
+  const [perfect, setPerfect] = useState([])
   const [passed, setPassed] = useState(0)
   const [failed, setFailed] = useState(0)
   let sessionClass = pageURL.searchParams.get("classId")
@@ -53,10 +50,6 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     }
   }
 
-  const handleFrequencyModal = () => {
-    setFrequencyModal(true)
-    getFrequencyReport()
-  }
 
   const retakeExam = async(classid, testid, studentid) => {
     let isConsider = true
@@ -79,8 +72,8 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
       let name = `${ st.student.lname} ${ st.student.fname}`
       let score = `${st.studentTests[0].score}/${st.studentTests[0].rawScore}`
       let isSubmitted = st.studentTests[0].isSubmitted;
-      let ifPassed = st.studentTests[0].rawScore/2 <= st.studentTests[0].score ? 'Passed': 'Failed';
-      let status = isSubmitted ? ifPassed : 'Not Submitted'
+      let ifPecfect = st.studentTests[0].rawScore == st.studentTests[0].score ? 'Perfect' : st.studentTests[0].rawScore/2 <= st.studentTests[0].score ? 'Passed' : 'Failed' ;
+      let status = isSubmitted ? ifPecfect : 'Not Submitted'
       temp[`Student Name`] = name;
       temp.Grade = isSubmitted ? score : 'Not Submitted';
       temp.Status = status;
@@ -89,44 +82,49 @@ function ExamReportContent({ selectedClassId, showReportHeader, setShowReportHea
     setDataDownload(tempData);
   }
 
-  const getPerfectScore = (data) =>{ 
-    data.map(item =>{
+  const getPecfectScore = (data) =>{
+    let count = 0;
+     data.map(item =>{
       let rawScore = item?.studentTests[0].rawScore
       let score = item?.studentTests[0].score
       let isSubmitted = item?.studentTests[0].isSubmitted
-        if(isSubmitted === true && rawScore === score){
-          return setPerfect(perfect+1)
+        if(isSubmitted === true && rawScore == score ){
+          count = count + 1
         }
     })
+    setPerfect(count)
   }
 
   const getPassedScore = (data) =>{
+    let count = 0;
      data.map(item =>{
       let rawScore = item?.studentTests[0].rawScore/2
       let score = item?.studentTests[0].score
       let isSubmitted = item?.studentTests[0].isSubmitted
-        if(isSubmitted === true && rawScore <= score){
-          return setPassed(passed+1)
+        if(isSubmitted === true && rawScore <= score ){
+          count = count + 1
         }
     })
+    setPassed(count)
   }
 
   const getFailedScore = (data) => {
+    let count = 0;
     data.map(item =>{
       let rawScore = item?.studentTests[0].rawScore/2
       let score = item?.studentTests[0].score
       let isSubmitted = item?.studentTests[0].isSubmitted
         if(isSubmitted === true && rawScore > score){
-          return setFailed(failed+1)
+          count = count + 1;
         }
     })
+    setFailed(count);
   }
 
   const downloadxls = () => {
     const ws =utils.json_to_sheet(dataDownload);
     const wb =utils.book_new();
     utils.book_append_sheet(wb, ws, "SheetJS");
-    /* generate XLSX file and send to client */
     writeFileXLSX(wb, `${testName}_exam_report.xlsx`);
   };
   
@@ -152,14 +150,12 @@ const arrageNoneAlphabetical = (data) => {
   setSorted(temp)
 }
 
-console.log("testReport:", testReport)
-
 useEffect(()=>{
     arrageNoneAlphabetical(testReport);
     arrageAlphabetical(testReport);
-    getPerfectScore(testReport)
     getPassedScore(testReport)
-    getFailedScore(testReport)
+    getFailedScore(testReport);
+    getPecfectScore(testReport)
 }, [testReport])
 
 const handleClickIcon = () =>{
@@ -171,13 +167,6 @@ const handleClickIcon = () =>{
     arrageNoneAlphabetical(testReport);
   }
 }
-
-// useEffect(()=>{
-//   getPerfectScore(testReport)
-//   getPassedScore(testReport)
-//   getFailedScore(testReport)
-// }, [])
-
 
   const getTestReport = async(e, sessionClass,testid) => {
     setLoading(true)
@@ -255,29 +244,6 @@ const handleClickIcon = () =>{
     handleShowResult(e.target.checked, startDate, startTime, endDate, endTime, timeLimit)
   }
   
-  const showResultStudent = () => 
-  toast.success('Show Result for all Student!', {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  });
-
-  const disableResultStudent = () => 
-  toast.info('Disable Result for all Student!', {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  });
-
-  // if(showExamAnalysis === false){
   return(
     <>
     {user.student === null ?
@@ -375,9 +341,12 @@ const handleClickIcon = () =>{
                         {
                           st.isSubmitted ?
                           <>
-                          {st.rawScore/2 <= st.score && <Badge bg="success">PASSED</Badge>}&nbsp;
-                          {st.rawScore === st.score && <Badge bg="success">Perfect</Badge>}
+                          {st.rawScore === st.score ? (<Badge bg="success">PERFECT</Badge>):(
+                          <>
+                            {st.rawScore/2 <= st.score ? (<Badge bg="success">PASSED</Badge>):(<></>)}
+                          </>)}
                           {st.rawScore/2 > st.score && <Badge bg="warning">FAILED</Badge>}
+                          {}
                           </>
                           :
                           <Badge bg="danger">Not Submitted</Badge>
@@ -435,10 +404,6 @@ const handleClickIcon = () =>{
                   <td >
                     <i className="fas fa-user-circle td-icon-report-person m-r-10"></i>
                       <span style={{cursor:'pointer'}}
-                      // onClick={(e) => {
-                      //   getExamAnalysis(item.student.id, sessionClass, st.test.id, item.student.lname, item.student.fname);
-                      //   sessionStorage.setItem('studentid', item.student.id)
-                      //   }}
                         >
                       { item.student.lname} { item.student.fname}
                       </span> 
@@ -448,7 +413,11 @@ const handleClickIcon = () =>{
                     {
                       st.isSubmitted ?
                       <>
-                      {st.rawScore/2 <= st.score && <><Badge bg="success">PASSED</Badge></>}
+                      {st.rawScore === st.score ? (<Badge bg="success">PERFECT</Badge>):(
+                        <>
+                          {st.rawScore/2 <= st.score ? (<Badge bg="success">PASSED</Badge>):(<></>)}
+                        </>
+                      )}
                       {st.rawScore/2 > st.score && <><Badge bg="warning">FAILED</Badge></> }
                       </>
                       :
