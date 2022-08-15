@@ -19,12 +19,19 @@ function ClassHeader({getClasses, onSearch}) {
 		history.push('/classes')
 	}
 
+	const handleRefreshClassCard = () => {
+		getClasses()
+	}
+
 	return (
 		<div>
 			<Row style={{paddingTop:'15px'}}>
         <Col className='title-header' >
-        <p className='title-header' >Classes <Button className={user.isTeacher ? 'btn-create-class' : 'd-none'} variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Class  </Button></p> 
-        </Col>
+        <p className='title-header' >Classes <Button className={user.isTeacher ? 'btn-create-class' : 'd-none'} variant="link" onClick={() => setModal(true) }> <i className="fa fa-plus"></i>  Create Class</Button>
+				<Button onClick={() => handleRefreshClassCard()}  className='ml-3'>
+            <i className="fa fa-sync"></i>
+        </Button></p> 
+				</Col>
         <Col style={{textAlign:'right'}} className={user.isSchoolAdmin ? 'd-none' : ''}>
           <Button className='btn-Enrolled' onClick={() => handleHistoryList()} size='lg' variant="outline-warning"><b>Active</b></Button>
           <Button  className='btn-Enrolled' onClick={() => handleHistoryArchive()}  size='lg' variant="outline-warning"><b>Archive</b></Button>
