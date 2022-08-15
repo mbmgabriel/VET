@@ -60,7 +60,7 @@ const EnumerationForm = ({
         </div>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>
-            <ContentField value={question} placeholder="Enter exam question" onChange={value => setQuestion(value)} />
+            <ContentField withTextInput={true} value={question} placeholder="Enter exam question" onChange={value => setQuestion(value)} />
           </Form.Group>
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Points</Form.Label>

@@ -85,7 +85,7 @@ export default function AddPartModal({
               placeholder='Enter exam instructions'
               onChange={(e) => setInstructions(e.target.value)}
             /> */}
-            <ContentField value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
+            <ContentField withTextInput={true} value={instructions}  placeholder='Enter instruction here'  onChange={value => setInstructions(value)} />
           </Form.Group>
           {selectedPart == null &&<Form.Group className="mb-3">
             <Form.Label for='description'>Upload Excel File</Form.Label>

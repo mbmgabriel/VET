@@ -86,7 +86,7 @@ export default function EditExam({
               placeholder='Enter exam instruction'
               onChange={(e) => setTestInstructions(e.target.value)}
             /> */}
-            <ContentField value={testInstructions}  placeholder='Enter instruction here'  onChange={value => setTestInstructions(value)} />
+            <ContentField withTextInput={true} value={testInstructions}  placeholder='Enter instruction here'  onChange={value => setTestInstructions(value)} />
           </Form.Group>
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>

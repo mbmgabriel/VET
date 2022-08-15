@@ -126,7 +126,7 @@ export default function ContentField(props) {
       return RICH_TEXT  
     if(props.value.includes(EQUATION_TAG))
       return EQUATION
-    if(window.location.pathname.includes('exam'))
+    if(props.withTextInput)
       return ""
     return RICH_TEXT
   }
@@ -143,25 +143,24 @@ export default function ContentField(props) {
         props.onChange(EQUATION_TAG);
         break;
       case RICH_TEXT:
-        props.onChange("")
+        props.onChange(props.value);
         break;
       default:
-        props.onChange("")
+        props.onChange(props.value);
         break;
     }
     
     setInputType(type)
   }
 
-  console.log(inputType, '--')
+  console.log(inputType == '', '--', window.location.pathname.includes('exam'))
   return (
     <div className={props.className}>
 
     <div key={`inline-radio`} className="mb-3" >
-      {window.location.pathname.includes('exam') && <Form.Check
+      {props.withTextInput && <Form.Check
         inline
         label="Text Editor"
-        name="inputType"
         type={"radio"}
         value=""
         checked={inputType === ""}
@@ -170,7 +169,6 @@ export default function ContentField(props) {
       <Form.Check
         inline
         label="Rich Text Editor"
-        name="inputType"
         type={"radio"}
         value="rich-text"
         checked={inputType === RICH_TEXT}
@@ -179,10 +177,9 @@ export default function ContentField(props) {
       <Form.Check
         inline
         label="Equation Editor"
-        name="inputType"
         type={"radio"}
         value="equation"
-        checked={inputType == EQUATION}
+        checked={inputType === EQUATION}
         onChange={e => updateInputType(EQUATION)}
       />
     </div>
