@@ -9,6 +9,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from "react-toastify";
 import moment from "moment"
 import MainContainer from '../../../components/layouts/MainContainer';
+import GradeAPI from '../../../api/GradeAPI';
 
 
 export default function SystemAdminCourses() {
@@ -31,12 +32,25 @@ export default function SystemAdminCourses() {
   const [courseID, setCourseID] = useState('');
   const [courseInfo, setCourseInfo] = useState({});
   const [authorId, setAuthorId] = useState('');
+  const [gradeLevelid, setGradeLevelId] = useState('')
+	const [grade, setGrade] = useState([])
   
 	useEffect(() => {
     viewSubjectArea()
     getCourses()
     getTeacherList()
+    getGradeLevel()
   }, [])
+
+  const getGradeLevel = async () =>{
+		let response = await new GradeAPI().getGrade()
+		if(response.ok){
+			setGrade(response.data)
+			console.log('GradeLevel:', response.data)
+		}else{
+			alert(response.data.errorMessage)
+		}
+	}
 
   const handleDeleteTeacher = async() => {
     let response = await new CoursesAPI().deleteCourse(toDeleteId);
@@ -83,6 +97,16 @@ export default function SystemAdminCourses() {
 									onChange={(e) => setCourseName(e.target.value)}
 								/>
 							</Form.Group>
+              <Form.Group className="mb-3">
+									<Form.Label>Grade Level</Form.Label>
+										<Form.Select defaultValue={gradeLevelid} size="lg"  onChange={(e) => setGradeLevelId(e.target.value)}>
+											<option value={''}>-- Select Grade Level Here --</option>
+											{grade.map(item =>{
+													return(<option value={item.id}>{item.gradeName}</option>)
+													})
+												}
+										</Form.Select>
+									</Form.Group>
 							<Form.Group className="m-b-20">
 								<Form.Label for="description">
 									Description
@@ -140,6 +164,7 @@ export default function SystemAdminCourses() {
     setCourseName(data.courseName);
     setDescription(data.description);
     setSubjectArea(data.subjectAreaId)
+    setGradeLevelId(data.gradeLevelid)
     setShowEditModal(true);
   }
 
@@ -160,7 +185,7 @@ export default function SystemAdminCourses() {
 
   const saveEditCourse = async(e) => {
     e.preventDefault();
-		if(description == '' || courseName == '' || subjectAreaId == ''){
+		if(description == '' || courseName == '' || subjectAreaId == '' || gradeLevelid === ''){
 			toast.error('Please insert all the required fields', {
 				position: "top-right",
 				autoClose: 5000,
@@ -176,7 +201,7 @@ export default function SystemAdminCourses() {
         description,
         status,
         subjectAreaId,
-        // gradeLevelId: 5
+        gradeLevelid
       }
       let response = await new CoursesAPI().editCourse(selectedCourse.id, data);
 			if(response.ok){
@@ -187,6 +212,16 @@ export default function SystemAdminCourses() {
         setCourseName('');
         setDescription('');
         setSubjectArea('')
+        setGradeLevelId('')
+        toast.success('Successfully updated course', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
 			}else{
 				toast.error(response.data.errorMessage, {
 					position: "top-right",

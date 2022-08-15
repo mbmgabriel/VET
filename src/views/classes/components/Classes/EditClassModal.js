@@ -126,6 +126,8 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
     }
   }, [seletedClass])
 
+  console.log('seletedClass:', seletedClass)
+
   const handleGetSelected = (data) => {
     console.log(data)
     let selected = course.find(e => e.courseName == data);
