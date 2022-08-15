@@ -22,9 +22,9 @@ function CourseFiles() {
 
   useEffect(() => {
     handleGetCourseFiles('')
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const handleRefetch = () => {

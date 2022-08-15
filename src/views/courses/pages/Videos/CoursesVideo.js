@@ -133,9 +133,9 @@ export default function CoursesVideos() {
   useEffect(() => {
     getCourseUnitInformation();
     getCourseInformation();
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const notifyDeleteVideo= () => 

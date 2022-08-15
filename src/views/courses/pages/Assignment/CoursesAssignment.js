@@ -63,9 +63,9 @@ export default function CoursesAssignment() {
   useEffect(() => {
     getContributor();
     getCourseInformation();
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const handleOpenCreateUnitModal = () =>{

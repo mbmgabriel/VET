@@ -118,9 +118,9 @@ function ClassTask() {
   
     useEffect(() => {
       getClassInfo()
-      if(subsType != 'LMS'){
-        window.location.href = "/classes"
-      }
+      // if(subsType != 'LMS'){
+      //   window.location.href = "/classes"
+      // }
     }, [])
 
   const getClassInfo = async() => {

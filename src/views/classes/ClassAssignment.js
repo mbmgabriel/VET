@@ -117,9 +117,9 @@ function ClassAssignment() {
 
   useEffect(() => {
     getClassInfo(); 
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
 
   const getClassInfo = async() => {
@@ -134,7 +134,6 @@ function ClassAssignment() {
     setLoading(false)
   }
 
-  console.log('this is assignment:', assignment)
 
   const viewAssignmentToggle = (item, item1) => {
     setViewAssignmentItem(item)
@@ -222,7 +221,6 @@ function ClassAssignment() {
     }  
   }, [])
 
-  console.log('item?.id:', assignment)
   const renderTooltipView = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       View

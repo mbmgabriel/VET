@@ -149,9 +149,9 @@ const getComment = (item, item1, item3) => {
   useEffect(() => {
     setSelectedClassId(id)
     getFeedClass();
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
 
   const deleteAnnouncement = async (item) => {

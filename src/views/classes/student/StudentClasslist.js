@@ -10,7 +10,7 @@ function StudentClasslist({item}) {
   const subsType = user.subsType;
 
   const handleRedirect = (id) => {
-    if(subsType.includes('LMS')){
+    if(subsType.includes('LMS') || subsType == 'ContainerwithTR'){
       return `/classescontent/${id}/feed`
     }
     if(subsType == 'Ebooks'){

@@ -21,7 +21,6 @@ export default function ClassSideNavigation({children}) {
     // setLoading(true)
     let response = await new DiscussionAPI().getClassInfo(id)
     if(response.ok){
-      console.log(response.data, '--------------------------------')
       setClassInfo(response.data)
     }else{
       alert("Something went wrong while fetching all courses")
@@ -97,7 +96,6 @@ export default function ClassSideNavigation({children}) {
   }, [window.location.pathname])
   
   useEffect(() => {
-    console.log(localStorage.getItem('collaps'))
     setShowTab(localStorage.getItem('collaps') == 'false' ? false : true)
   }, [collapseSide])
 
@@ -128,7 +126,7 @@ export default function ClassSideNavigation({children}) {
               </Col>
             </Row>
           </ListGroup.Item>
-        {subsType.includes('LMS') &&
+        {subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               Feed
@@ -239,7 +237,7 @@ export default function ClassSideNavigation({children}) {
         <Col className="text-align-right mb-2">
           <i className="fas fa-chevron-right cursor-pointer " style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
         </Col>
-        {subsType.includes('LMS') &&
+        {subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               <OverlayTrigger

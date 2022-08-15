@@ -26,7 +26,7 @@ export default function StudentLinks({activeHeader}) {
           <Link className={activeHeader === "reports" && 'active'} to="/reports">Reports</Link> */}
          </>
         }
-        {subsType.includes('LMS') &&
+        {subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
           <>
             <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
             <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>

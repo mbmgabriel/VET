@@ -50,9 +50,9 @@ function CourseLinks() {
 
   useEffect(() => {
     getConfe()
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const getVideos = async() => {

@@ -10,7 +10,7 @@ export default function TeacherLinks({activeHeader}) {
   if(user.isTeacher){
     return (
       <div className="header-links">
-        {subsType.includes('LMS') && 
+        {subsType.includes('LMS') || subsType == 'ContainerwithTR' && 
           <>
             <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 
