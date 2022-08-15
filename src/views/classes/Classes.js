@@ -98,7 +98,7 @@ export default function Classes() {
         <div className='containerpages'>
           {user.isStudent &&
           <>
-          <StudentClassListHeader setJoinClassesModal={setJoinClassesModal} onSearch={onSearch} getPendingClasses={getPendingClasses}  joinClassesToggle={joinClassesToggle} joinClassestModal={joinClassestModal} />
+          <StudentClassListHeader getClassesStudent={getClassesStudent} setJoinClassesModal={setJoinClassesModal} onSearch={onSearch} getPendingClasses={getPendingClasses}  joinClassesToggle={joinClassesToggle} joinClassestModal={joinClassestModal} />
           <CardGroup className='card-group2'>
           {studentClasses.length?
             studentClasses.filter((item) => {
