@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Form, FormControl, Modal } from 'react-bootstrap';
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import CoursesAPI from "../../../api/CoursesAPI";
 import { toast } from 'react-toastify';
 import GradeAPI from "../../../api/GradeAPI";
+import { UserContext } from './../../../context/UserContext'
 
 export default function CourseEdit({getCourses, setCourse, openEditModal, setOpenEditModal, selectedCourse}){
 
@@ -17,6 +18,9 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 	const [validated, setValidated] = useState(false);
 	const [gradeLevelid, setGradeLevelId] = useState('')
 	const [grade, setGrade] = useState([])
+	const userContext = useContext(UserContext)
+	const {user} = userContext.data
+	
 
 	const handleCloseModal = e => {
     e.preventDefault()
@@ -160,16 +164,17 @@ export default function CourseEdit({getCourses, setCourse, openEditModal, setOpe
 								/>
 							</Form.Group>
 							{' '}
+							{(user?.teacher?.positionID == 7 ?(							
 							<Form.Group className="mb-3">
-									<Form.Label>Grade Level</Form.Label>
-										<Form.Select defaultValue={selectedCourse?.gradeLevelid} required size="lg"  onChange={(e) => setGradeLevelId(e.target.value)}>
-											<option value={''}>-- Select Grade Level Here --</option>
-											{grade.map(item =>{
-													return(<option value={item.id}>{item.gradeName}</option>)
-													})
-												}
-										</Form.Select>
-									</Form.Group>
+								<Form.Label>Grade Level</Form.Label>
+									<Form.Select defaultValue={selectedCourse?.gradeLevelid} required size="lg"  onChange={(e) => setGradeLevelId(e.target.value)}>
+										<option value={''}>-- Select Grade Level Here --</option>
+										{grade.map(item =>{
+												return(<option value={item.id}>{item.gradeName}</option>)
+												})
+											}
+								</Form.Select>
+							</Form.Group>):(<></>))}
 							<Form.Group className="m-b-20">
 								<Form.Label for="description">
 									Description

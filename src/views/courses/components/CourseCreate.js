@@ -162,16 +162,18 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 										</Form.Select>
 								</Form.Group>
 								{' '}
+								{(user?.teacher?.positionID == 7 ?(
 								<Form.Group className="mb-3">
 									<Form.Label>Grade Level</Form.Label>
 										<Form.Select required size="lg"  onChange={(e) => setGradeLevelId(e.target.value)}>
-											<option value={''}>-- Select Grade Level Here --</option>
-											{grade.map(item =>{
-													return(<option value={item.id}>{item.gradeName}</option>)
-													})
-												}
+										<option value={''}>-- Select Grade Level Here --</option>
+										{grade.map(item =>{
+												return(<option value={item.id}>{item.gradeName}</option>)
+												})
+											}
 										</Form.Select>
-									</Form.Group>
+								</Form.Group>
+								):(<></>))}
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
 												Course Name
