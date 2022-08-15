@@ -91,6 +91,7 @@ const MultipleChoiceForm = ({
           <Form.Group className='m-b-20'>
             <Form.Label for='question'>Question</Form.Label>
             <ContentField
+              withTextInput={true}
               value={question}
               placeholder='Enter exam question'
               onChange={(value) => setQuestion(value)}
@@ -158,6 +159,7 @@ const MultipleChoiceForm = ({
                       <div />
                     </div>
                     <ContentField
+                      withTextInput={true}
                       className='flex-1'
                       value={choice.testChoices}
                       placeholder='Enter exam choices'
