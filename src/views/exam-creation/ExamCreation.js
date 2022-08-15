@@ -26,6 +26,7 @@ export default function ExamCreation() {
   const [courseInfos, setCourseInfos] = useState([])
   const courseid = sessionStorage.getItem('courseid')
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const EQUATION_TAG = "{{type=equation}}"
   
   const getCourseInformation = async () =>{
     let response = await new CoursesAPI().getCourseInformation(courseid)
@@ -141,16 +142,22 @@ export default function ExamCreation() {
     const data = {
       instructions
     }
-    let response = await new ExamAPI().editPart(selectedPart.questionPart.id, data)
-    if(response.ok){
-      toast.success("Successfully Updated Part")
-      setShowModal(false)
-      getExamInformation()
-      setTypeId('1')
-      setSelectedPart(null);
+    let isEquation = instructions.includes(EQUATION_TAG),
+      validateEquation = isEquation ? instructions.split(EQUATION_TAG)[1] != '' : true
+    if(instructions && validateEquation){
+      let response = await new ExamAPI().editPart(selectedPart.questionPart.id, data)
+      if(response.ok){
+        toast.success("Successfully Updated Part")
+        setShowModal(false)
+        getExamInformation()
+        setTypeId('1')
+        setSelectedPart(null);
+      }else{
+        toast.error(response.data?.errorMessage || "Something went wrong while creating the part")
+        setLoading(false)
+      }
     }else{
-      toast.error(response.data?.errorMessage || "Something went wrong while creating the part")
-      setLoading(false)
+      toast.error('Please input all the required fields.');
     }
   }
 

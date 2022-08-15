@@ -107,14 +107,24 @@ const Field = (props) => {
       onModelChange={onChange}/>;
     default:
       return (
-        <Form.Control
-          size='lg'
-          value={value}
-          type='text'
-          placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          required
-        />
+        <div class="form-group">
+            <textarea
+              class="form-control"
+              placeholder={placeholder}
+              value={value}
+              id="exampleFormControlTextarea123"
+              rows="3"
+              onChange={(e)=>onChange(e.target.value)}>
+            </textarea>
+          </div>
+        // <Form.Control
+        //   size='lg'
+        //   value={value}
+        //   type='textarea'
+        //   placeholder={placeholder}
+        //   onChange={(e) => onChange(e.target.value)}
+        //   required
+        // />
       );
   }
 }
