@@ -31,7 +31,7 @@ function EditTask({sequenceNo, setSequenceNo, setRate, rate, moduleName, setTask
 
   const updateTask = async (e) =>{
     e.preventDefault()
-    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || taskName === '' || sequenceNo === null){
+    if(instructions === '' || instructions === '{{type=equation}}' || rate === '' || taskName === '' || sequenceNo === null || sequenceNo === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,

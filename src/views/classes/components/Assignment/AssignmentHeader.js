@@ -9,7 +9,7 @@ function AssignmentHeader({ module, getAssignmentList, refmoduleId, onSearch, on
 	const { user } = userContext.data
 
 	const toggle = () => {
-		setModal(!modal)
+		setModal(true)
 	}
 
 	return (
@@ -37,7 +37,7 @@ function AssignmentHeader({ module, getAssignmentList, refmoduleId, onSearch, on
 					</InputGroup>
 				</div>
 			</div>
-			<CreateAssignment toggle={toggle} modal={modal} module={module} getAssignmentList={getAssignmentList} refmoduleId={refmoduleId} />
+			<CreateAssignment setModal={setModal} toggle={toggle} modal={modal} module={module} getAssignmentList={getAssignmentList} refmoduleId={refmoduleId} />
 		</div>
 	)
 }

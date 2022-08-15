@@ -76,7 +76,7 @@ export default function CoursesExam() {
   const handleOpenEditExamModal = (e, item) =>{
     e.preventDefault()
     setSelectedExam(item)
-    setOpenEditExamModal(!openEditExamModal)
+    setOpenEditExamModal(true)
   }
 
   const getCourseUnitInformation = async(e) => {
