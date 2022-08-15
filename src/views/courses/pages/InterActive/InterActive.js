@@ -54,7 +54,6 @@ function InterActive() {
     let response = await new ClassesAPI().getModule(id);
     if(response.ok){
       setModule(response.data)
-      console.log('QQQQQ:', response.data)
     }else{
       alert('error')
     }
@@ -66,7 +65,7 @@ function InterActive() {
       setInterActiveItems(response.data)
       setModuleId(id)
     }else{
-      alert('ERROR')
+      toast.error('Something went wrong while fetching data.')
     } 
   }
 
@@ -84,7 +83,6 @@ function InterActive() {
   }, [])
 
   const handleRefresh = () => {
-    getIndteractive(moduleId)
     getModule(id)
   }
 
@@ -129,7 +127,7 @@ function InterActive() {
 
   return (
     <CourseContent>
-      <CourseBreadcrumbs />
+      <CourseBreadcrumbs title='' onClick={() => console.log('')}/>
       <InterActiveHeader onSearch={onSearch} refresh={() => handleRefresh()} />
     <Accordion defaultActiveKey="0">
       {module?.map((item, index) =>{

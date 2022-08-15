@@ -261,10 +261,10 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
         { subjectAreaName.filter(item =>
           item.courseName.toLowerCase().includes(filter.toLowerCase())).map
           ((item, index) => {
-          let ifSameGrade = item.gradeLevelid === user.student?.gradeLevelId ? true : false;
-          let ifFilterByGradeId = subsType == 'TeacherResources' && user.isStudent ? ifSameGrade : true
+          // let ifSameGrade = item.gradeLevelid === user.student?.gradeLevelId ? true : false;
+          // let ifFilterByGradeId = subsType == 'TeacherResources' && user.isStudent ? ifSameGrade : true
           return(
-            ifFilterByGradeId && 
+            // ifFilterByGradeId && 
             <>
               {item?.status?(<>
               {/* user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}` */}

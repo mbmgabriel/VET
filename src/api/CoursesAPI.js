@@ -3,7 +3,14 @@ import Base from './Base';
 export default class CoursesAPI extends Base {
   getCourses = async () => {
     return this.sendRequest({
-      path: `/api/Course`,
+      path: `/api/Course/`,
+      method: 'GET'
+    });
+  };
+
+  getCoursesPerGradeLevel = async (gradeLevelId) => {
+    return this.sendRequest({
+      path: `/api/Course/gradelevel/${gradeLevelId}`,
       method: 'GET'
     });
   };

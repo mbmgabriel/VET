@@ -201,9 +201,9 @@ export default function CourseContent({children}) {
             {
               subsType == 'TeacherResources' &&
               <ListGroup>
-                <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                {user.isTeacher && <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
                   Teacher Resources
-                </Link>
+                </Link>}
                 <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
                   Interactive Exercises
                 </Link>
