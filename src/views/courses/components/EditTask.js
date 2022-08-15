@@ -42,6 +42,16 @@ export default function EditTask({rate, setRate, setTaskName,setInstructions, ta
         draggable: true,
         progress: undefined,
         });
+    }else if (sequenceNo === '' || sequenceNo === null){
+      toast.error('Please insert all the required fields', {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				});
     }else{
       let response = await new CoursesAPI().editTask(
         taskId,

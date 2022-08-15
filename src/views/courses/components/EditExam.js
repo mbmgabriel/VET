@@ -12,6 +12,7 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
   const [modulePages, setModulePages] = useState([])
 	const [testName, setTestName] = useState('')
 	const [testInstructions, setTestInstructions] = useState('')
+  const [sequenceNo, setSequenceNo] = useState('')
   const [showFiles, setShowFiles] = useState(false);
   
   let sessionCourse = sessionStorage.getItem('courseid')
@@ -20,16 +21,29 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
 
 	const handleCloseModal = () => {
     setOpenEditExamModal(false)
-    setTestName('')
+    // setTestName('')
+    // setTestInstructions('')
+    // setSequenceNo(null)
     setShowFiles(false)
   }
 
 	const saveEditExam = async(e) => {
     e.preventDefault()
-    setLoading(true)
+    if(sequenceNo === '' || sequenceNo === null){
+      toast.error('Please input all the required fields.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }else{
+      setLoading(true)
     let response = await new CoursesAPI().editExam(
       selectedExam?.id,
-      {testName, testInstructions}
+      {testName, testInstructions, sequenceNo}
     )
     if(response.ok){
 			handleCloseModal()
@@ -47,6 +61,7 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
         });
     }
     setLoading(false)
+    }
   }
 
   const getExamInfo = async(e, data) => {
@@ -80,8 +95,11 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
     if(selectedExam !== null) {
 			setTestName(selectedExam?.testName)
 			setTestInstructions(selectedExam?.testInstructions)
+      setSequenceNo(selectedExam?.sequenceNo)
 		}
   }, [selectedExam])
+
+  console.log('setSequenceNo:', sequenceNo)
 
   const notifyUpdateExam = () => 
   toast.success('Successfully updated the exam!', {
@@ -118,6 +136,21 @@ export default function EditExam({examInfo, setExamInfo, openEditExamModal, setO
                       onChange={(e) => setTestName(e.target.value)}
                     />
 								</Form.Group>
+                <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control 
+                    defaultValue={selectedExam?.sequenceNo}
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
+                  />
+                </Form.Group>
                   <div>
                     <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
                   </div>

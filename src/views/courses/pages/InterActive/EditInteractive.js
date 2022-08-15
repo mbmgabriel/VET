@@ -16,12 +16,15 @@ function EditInteractive({
   setOpenEditModal,
   getIndteractive,
   moduleId,
-  setModuleId
+  setModuleId,
+  sequenceNo,
+  setSequenceNo
 }) {
 
   const handleCloseEditInterActiveModal = () => {
     setInteractiveName('')
     setPath('')
+    setSequenceNo('')
     setInterActiveId()
     setOpenEditModal(false)
     getIndteractive(moduleId)
@@ -29,7 +32,7 @@ function EditInteractive({
 
   const editInteractive = async(e) => {
     e.preventDefault()
-    if(interactiveName === '' || path === ''){
+    if(interactiveName === '' || path === '' || sequenceNo === ''){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -40,7 +43,7 @@ function EditInteractive({
         progress: undefined,
         });
     }else{
-      let response = await new CoursesAPI().updateInterActive(interActiveId, {interactiveName, path, rate})
+      let response = await new CoursesAPI().updateInterActive(interActiveId, {interactiveName, path, rate, sequenceNo})
       if(response.ok){
         handleCloseEditInterActiveModal()
         notifyUpdateInteractive()
@@ -81,6 +84,21 @@ function EditInteractive({
                 placeholder="Enter Interactive Name"
                 onChange={(e) => setInteractiveName(e.target.value)}
               />
+          </Form.Group>
+          <Form.Group className="m-b-20">
+            <Form.Label for="courseName">
+                Sequence no.
+            </Form.Label>
+            <Form.Control 
+              defaultValue={sequenceNo}
+              className="custom-input" 
+              size="lg" 
+              type="number" 
+              placeholder="Enter Sequence no."
+              // min="0"
+              // step="1" 
+              onChange={(e) => setSequenceNo(e.target.value)}
+            />
           </Form.Group>
           <Form.Group className="m-b-20">
               {/* <Form.Label for="courseName">
