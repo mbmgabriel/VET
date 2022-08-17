@@ -38,12 +38,9 @@ export default function CreateVideos({moduleId, getVideoInfo, openCreateVideoMod
    if(!doneUpload){
     setInterval(() => {
       if (counter > 95) {
-        //this.takeTableDataCallInterval();
         counter = 95;
       }
       else {
-        // timer.innerHTML = `${counter} seconds left`;
-        console.log(counter++);
         setUploading(doneUpload ? 100 : counter++);
       }
     }, 1000);
@@ -55,10 +52,10 @@ export default function CreateVideos({moduleId, getVideoInfo, openCreateVideoMod
     if(response.ok){
       setDoneUpload(true)
       setTimeout(() => {
-        // setOpenCreateVideoModal(false)
+        setOpenCreateVideoModal(false)
         getVideoInfo(sessionCourse, sessionModule)
         notifySaveVideo()
-        // setUploadStarted(false);
+        setUploadStarted(false);
       }, 1000);
     }else{
       toast.error(response.data.errorMessage, {
