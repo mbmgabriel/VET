@@ -35,6 +35,13 @@ export default function TeacherLinks({activeHeader}) {
           </>
         }
         {
+          subsType == 'InteractivesandLearn' && 
+          <>
+            <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
+            {/* <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link> */}
+          </>
+        }
+        {
            subsType == 'Interactives' &&
            <>
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 

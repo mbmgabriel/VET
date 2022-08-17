@@ -505,8 +505,9 @@ function ClassAssignment() {
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
-                  }  
-                  {assigItem?.assignment?.isShared == true?(<Status>Shared</Status>):(<Status>Not Shared</Status>)} 
+                  } 
+                  {assigItem?.assignment?.classId == null ?(<></>):(<>{assigItem?.assignment?.isShared == true?(<Status>Shared</Status>):(<Status>Not Shared</Status>)} </>)} 
+                  
                 </div>
                 <div className='text-color-bcbcbc' >
                   <hr></hr>

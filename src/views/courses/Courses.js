@@ -195,7 +195,8 @@ export default function Courses() {
   }
 
   useEffect(() => {
-    if(subsType == 'TeacherResources' && user.isStudent)
+    let coursePerGradeid = subsType == 'TeacherResources' || subsType == 'InteractivesandLearn'
+    if(coursePerGradeid && user.isStudent)
       return getCoursesPerGradeLevel();
     return getCourses()
   }, [])
@@ -204,9 +205,9 @@ export default function Courses() {
     setSubjectAreaName(subject)
   }
 
-  useEffect(() => {
-    if (user.isStudent && user.subsType !== "TeacherResources") return (window.location.href = "/404");
-  }, []);
+  // useEffect(() => {
+  //   if (user.isStudent && user.subsType !== "TeacherResources") return (window.location.href = "/404");
+  // }, []);
   
   return (
     <MainContainer loading={loading} activeHeader={'courses'}>

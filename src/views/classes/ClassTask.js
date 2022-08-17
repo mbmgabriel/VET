@@ -288,7 +288,7 @@ function ClassTask() {
                   <Row style={{margin:'10px'}}>
                     <Col sm={8}>
                       <div className='title-exam'>
-                        {moduleitem?.task?.taskName}12
+                        {moduleitem?.task?.taskName}
                       </div>
                     </Col>
                     <Col sm={9} className='instruction-exam' >
@@ -460,7 +460,8 @@ function ClassTask() {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                         <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
-                      {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}
+                      {moduleitem?.task?.classId == null ? (<></>):(<>{moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}</>)}
+                      
                       </div>   
                       <div className='text-color-bcbcbc' >
                         <p></p>
@@ -470,12 +471,16 @@ function ClassTask() {
                     ):
                     <>
                       <div className='inline-flex' >
-                       {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status><Status>Unassigned</Status></div>) : (
+                       {moduleitem?.task?.classId == null ? ( 
+                       <>
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status><Status>Unassigned</Status></div>
+                        {/* {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)} */}
+                       </>
+                       ) : (
                        <>
                         <Status>Created in Class</Status>
                         <Status>Unassigned</Status>
                         {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}
-                        
                        </>
                        )}
                       </div>

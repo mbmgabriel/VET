@@ -57,6 +57,20 @@ export default function FloatingOptions() {
       </div>
     }
     {
+      subsType == 'InteractivesandLearn' && 
+      <div className="floating-options">
+        <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
+          {profileImage ?
+          <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
+          :
+          <div>
+            <i class="fas fa-user"></i>
+          </div>
+          }
+        </Link>
+      </div>
+    }
+    {
       subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
       <div className="floating-options">
         <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >

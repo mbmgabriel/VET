@@ -49,17 +49,6 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
     }
   }
 
-	// const getCourses = async() => {
-  //   setLoading(true)
-  //   let response = await new CoursesAPI().getCourses()
-  //   setLoading(false)
-  //   if(response.ok){
-  //     setCourse(response.data)
-  //   }else{
-  //     alert("Something went wrong while fetching all courses")
-  //   }
-  // }
-
 	const saveCourse = async(e) => {
 		e.preventDefault();
 		const form = e.currentTarget;
@@ -69,7 +58,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
     }
     setValidated(true);
 
-		if(description === '' || gradeLevelid === ''){
+		if(description === ''){
 			toast.error('Please insert all the required fields', {
 				position: "top-right",
 				autoClose: 5000,
@@ -104,7 +93,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 					pauseOnHover: true,
 					draggable: true,
 					progress: undefined,
-					});
+					});		
 			}
 			setLoading(false)
 		}
@@ -221,25 +210,6 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 										</Form.Select>
 								</Form.Group>
 								{' '}
-
-								{/* <Form.Group className="m-b-20">
-										<Form.Label for="lock">
-												Lock Status
-										</Form.Label>
-										<Form.Select size="lg" onChange={(e) => setLockStatus(e.target.value)}>
-											<option>
-											Select lock status here...
-											</option>
-											<option value={true}>
-												Locked
-											</option>
-											<option value={false}> 
-												Unlocked
-											</option>
-										</Form.Select>
-								</Form.Group> */}
-								{' '}
-
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
 												Save Course
