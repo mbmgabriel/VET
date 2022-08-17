@@ -36,7 +36,10 @@ export default function CoursesVideos() {
   const [courseInfo, setCourseInfo] = useState("");
   const subsType = user.subsType;
   const [isContributor, setIsContributor] = useState(false);
-  const handleOpenCreateVideoModal = () =>{
+
+
+  const handleOpenCreateVideoModal = (moduleId) =>{
+    setLocalModuleId(moduleId)
     setOpenCreateVideoModal(!openCreateVideoModal)
   }
 
@@ -185,7 +188,7 @@ export default function CoursesVideos() {
         </div>
       </div>
       <EditVideos getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} selectedVideo={selectedVideo} openEditVideoModal={openEditVideoModal} setOpenEditVideoModal={setOpenEditVideoModal}/>
-      <CreateVideos getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
+      <CreateVideos localModuleId={localModuleId} getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
       <Accordion defaultActiveKey="0">
         {moduleInfo.map((item, index) => {
           return(
@@ -193,7 +196,7 @@ export default function CoursesVideos() {
             <Accordion.Item eventKey={item.id}> 
               <Accordion.Header onClick={(e) => getVideoInfo(e, item.id)}>
                 <span className="unit-title">{item.moduleName} 
-                {isContributor && <Button className="btn-create-class" variant="link" onClick={handleOpenCreateVideoModal}><i className="fa fa-plus"></i> Add Video</Button>}
+                {isContributor && <Button className="btn-create-class" variant="link" onClick={() =>  handleOpenCreateVideoModal(item?.id)}><i className="fa fa-plus"></i> Add Video</Button>}
                 </span>
               </Accordion.Header>
               <Accordion.Body>

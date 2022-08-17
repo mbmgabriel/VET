@@ -8,7 +8,7 @@ import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './AssignmentFileHeader';
 import { useParams } from "react-router";
 
-export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCreateVideoModal, setOpenCreateVideoModal}){
+export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCreateVideoModal, setOpenCreateVideoModal, localModuleId}){
 
   const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
@@ -22,6 +22,8 @@ export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCre
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
+  console.log('localModuleId:', localModuleId)
+
 
 	const handleCloseModal = e => {
     e.preventDefault()
@@ -32,12 +34,12 @@ export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCre
     e.preventDefault()
     setLoading(true)
     let response = await new CoursesAPI().createVideo(
-      sessionCourse, sessionModule,
+      sessionCourse, localModuleId,
       {title, sequenceNo, fileName: fileName+extFilename, base64String}
     )
     if(response.ok){
 			setOpenCreateVideoModal(false)
-      getVideoInfo(sessionCourse, sessionModule)
+      getVideoInfo(sessionCourse, localModuleId)
       notifySaveVideo()
     }else{
       toast.error(response.data.errorMessage, {
@@ -53,17 +55,17 @@ export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCre
     setLoading(false)
   }
 
-  const getCourseUnitPages = async(e, data, data1) => {
-    setLoading(true)
-    let response = await new CoursesAPI().getCourseUnitPages(sessionCourse, sessionModule)
-    setLoading(false)
-    if(response.ok){
-      setModulePages(response.data)
-      console.log(response.data)
-    }else{
-      alert("Something went wrong while fetching all pages")
-    }
-  }
+  // const getCourseUnitPages = async(e, data, data1) => {
+  //   setLoading(true)
+  //   let response = await new CoursesAPI().getCourseUnitPages(sessionCourse, sessionModule)
+  //   setLoading(false)
+  //   if(response.ok){
+  //     setModulePages(response.data)
+  //     console.log(response.data)
+  //   }else{
+  //     alert("Something went wrong while fetching all pages")
+  //   }
+  // }
 
   const notifySaveVideo = () => 
   toast.success('Video Saved!', {
