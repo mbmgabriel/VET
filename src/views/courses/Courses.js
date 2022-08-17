@@ -218,7 +218,7 @@ export default function Courses() {
             <>
             			<Row style={{paddingTop:'15px'}}>
         <Col className='title-header' >
-        <h1>Courses {subsType.includes('LMS') || subsType == 'ContainerwithTR'  && <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button>}</h1>
+        <h1>Courses {subsType.includes('LMS') || subsType == 'ContainerwithTR' ? <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button> : ''}</h1>
         </Col>
         {subsType.includes('LMS') && <Col style={{textAlign:'right'}} className={user.isSchoolAdmin ? 'd-none' : ''}>
           <Button onClick={() => handleShowActive()} className='btn-Enrolled'  size='lg' variant="outline-warning"><b>Active</b></Button>

@@ -126,7 +126,7 @@ export default function ClassSideNavigation({children}) {
               </Col>
             </Row>
           </ListGroup.Item>
-        {subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
+        {subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               Feed
@@ -181,6 +181,8 @@ export default function ClassSideNavigation({children}) {
               </>
             }
           </ListGroup>
+          :
+          null
         }
         {
           subsType == 'Ebooks' &&
@@ -237,7 +239,7 @@ export default function ClassSideNavigation({children}) {
         <Col className="text-align-right mb-2">
           <i className="fas fa-chevron-right cursor-pointer " style={{color: '#EE9337'}} onClick={()=> handleClicked(true)}/>
         </Col>
-        {subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
+        {subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
           <ListGroup>
             <Link className={currentLoc.includes('feed') ? "active-nav-item" : 'nav-item'} to={`/classescontent/${id}/feed`}>
               <OverlayTrigger
@@ -343,6 +345,8 @@ export default function ClassSideNavigation({children}) {
               </Link>
             </>}
           </ListGroup>
+          :
+          null
         }
         {
           subsType == 'Ebooks' &&

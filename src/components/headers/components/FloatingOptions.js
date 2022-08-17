@@ -71,7 +71,7 @@ export default function FloatingOptions() {
       </div>
     }
     {
-      subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
+      subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
       <div className="floating-options">
         <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >
           <div><i class="far fa-calendar"></i></div>
@@ -89,6 +89,8 @@ export default function FloatingOptions() {
           }
         </Link>
       </div>
+      :
+      null
       }
       {
       subsType == 'Interactives' &&

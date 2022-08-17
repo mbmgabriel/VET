@@ -143,7 +143,7 @@ export default function CourseContent({children}) {
                 </Col>
               </Row>
             </ListGroup.Item> 
-            {subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
+            {subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
               <>
                 {
                   courseInfo.isTechfactors && subsType == 'ContainerwithTR' ?
@@ -198,6 +198,8 @@ export default function CourseContent({children}) {
                   </ListGroup>
                 }
               </>
+              :
+              null
             }
             {
               subsType == 'Ebooks' &&
@@ -241,7 +243,7 @@ export default function CourseContent({children}) {
             <Col className="text-align-right mb-2">
               <i className="fas fa-chevron-right cursor-pointer" onClick={()=> handleClicked(true)}/>
             </Col>
-            {subsType.includes('LMS') || subsType == 'ContainerwithTR' &&
+            {subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
               <ListGroup>
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   <OverlayTrigger
@@ -328,6 +330,8 @@ export default function CourseContent({children}) {
                   </Link>
                 }
               </ListGroup>
+              :
+              null
             }
             {
               subsType == 'Ebooks' &&
