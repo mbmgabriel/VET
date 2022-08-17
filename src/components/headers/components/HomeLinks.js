@@ -46,6 +46,7 @@ export default function HomeLinks() {
   const handleRedirect = () => {
     if(subsType == 'TeacherResources' && user.isTeacher) return '/courses'
     if(subsType == 'TeacherResources' && user.isStudent) return '/classes'
+    if(subsType == 'InteractivesandLearn' && user.isStudent) return '/courses'
     if(subsType.includes('LMS')) return '/teacherdashboard';
       return '/classes';
   }
@@ -59,7 +60,7 @@ export default function HomeLinks() {
       </Link> 
       <div className="school-year-container">
         <span>S.Y.</span>
-          {subsType == 'Ebooks'  || subsType == 'TeacherResources' || subsType == 'Interactives' ?
+          {subsType == 'Ebooks'  || subsType == 'TeacherResources' || subsType == 'Interactives' || subsType == 'InteractivesandLearn' ?
             <p className='school-year-dropdown'> {currentAcademicTerm}</p>
             :
             <Dropdown>
