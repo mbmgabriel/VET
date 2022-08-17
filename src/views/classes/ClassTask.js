@@ -288,7 +288,7 @@ function ClassTask() {
                   <Row style={{margin:'10px'}}>
                     <Col sm={8}>
                       <div className='title-exam'>
-                        {moduleitem?.task?.taskName}12
+                        {moduleitem?.task?.taskName}
                       </div>
                     </Col>
                     <Col sm={9} className='instruction-exam' >
