@@ -21,9 +21,9 @@ function ClassGrading() {
   
   useEffect(() => {
     handleGetAllTerms();
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, []);
 
   const handleGetAllTerms = async () => {

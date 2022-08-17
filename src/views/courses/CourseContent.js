@@ -143,49 +143,63 @@ export default function CourseContent({children}) {
                 </Col>
               </Row>
             </ListGroup.Item> 
-            {subsType.includes('LMS') &&
-              <ListGroup>
-                <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
-                  Learn
-                </Link>
-                <Link className={currentLoc.includes('exam') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/exam`}>
-                  Exam
-                </Link>
-                <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
-                  Task
-                </Link>
-                <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
-                  Teacher Resources
-                </Link>
-                <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/discussion`}>
-                  Discussion
-                </Link>
-                <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
-                  Assignment
-                </Link>
-                <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
-                  Interactive Exercises
-                </Link>
+            {subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
+              <>
                 {
-                  isContributor && 
-                  <>
-                  <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
-                    Files 
-                  </Link>
-                  </>
-
-                  
+                  courseInfo.isTechfactors && subsType == 'ContainerwithTR' ?
+                  <ListGroup>
+                    <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                      Teacher Resources
+                    </Link>
+                    <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
+                      Interactive Exercises
+                    </Link>
+                  </ListGroup>
+                  :
+                  <ListGroup>
+                    <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
+                      Learn
+                    </Link>
+                    <Link className={currentLoc.includes('exam') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/exam`}>
+                      Exam
+                    </Link>
+                    <Link className={currentLoc.includes('task') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/task`}>
+                      Task
+                    </Link>
+                    <Link className={currentLoc.includes('resources') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/resources`}>
+                      Teacher Resources
+                    </Link>
+                    <Link className={currentLoc.includes('discussion') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/discussion`}>
+                      Discussion
+                    </Link>
+                    <Link className={currentLoc.includes('assignment') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/assignment`}>
+                      Assignment
+                    </Link>
+                    <Link className={currentLoc.includes('interactive') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/interactive`}>
+                      Interactive Exercises
+                    </Link>
+                    {
+                      isContributor && 
+                      <>
+                      <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
+                        Files 
+                      </Link>
+                      </>
+                    }
+                    <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
+                      Links
+                    </Link>
+                    {
+                      courseInfo.isTechfactors && 
+                      <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
+                        Videos Upload 
+                      </Link>
+                    }
+                  </ListGroup>
                 }
-                <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
-                  Links
-                </Link>
-                {
-                  courseInfo.isTechfactors && 
-                  <Link className={currentLoc.includes('videos') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/videos`}>
-                    Videos Upload 
-                  </Link>
-                }
-              </ListGroup>
+              </>
+              :
+              null
             }
             {
               subsType == 'Ebooks' &&
@@ -229,7 +243,7 @@ export default function CourseContent({children}) {
             <Col className="text-align-right mb-2">
               <i className="fas fa-chevron-right cursor-pointer" onClick={()=> handleClicked(true)}/>
             </Col>
-            {subsType.includes('LMS') &&
+            {subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
               <ListGroup>
                 <Link className={currentLoc.includes('learn') ? "active-nav-item" : 'nav-item'} to={`/coursecontent/${id}/learn`}>
                   <OverlayTrigger
@@ -316,6 +330,8 @@ export default function CourseContent({children}) {
                   </Link>
                 }
               </ListGroup>
+              :
+              null
             }
             {
               subsType == 'Ebooks' &&

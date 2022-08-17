@@ -10,7 +10,7 @@ export default function TeacherLinks({activeHeader}) {
   if(user.isTeacher){
     return (
       <div className="header-links">
-        {subsType.includes('LMS') && 
+        {subsType.includes('LMS') || subsType == 'ContainerwithTR' ? 
           <>
             <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 
@@ -18,6 +18,8 @@ export default function TeacherLinks({activeHeader}) {
             <Link className={activeHeader === "files" && 'active'} to="/files">Files</Link> 
             <Link className={activeHeader === "reports" && 'active'} to="/reports">Reports</Link>
           </>
+          :
+          null
         }
         {
           subsType == 'Ebooks' && 

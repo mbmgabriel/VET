@@ -72,7 +72,7 @@ function ClassCard({item, setOpenCoverPhotoModal,  setOpenEditModal, setSeletedC
   });
 
   const handleredirect = (id) => {
-    if(subsType.includes('LMS')) return `/classescontent/${id}/feed`;
+    if(subsType.includes('LMS') || subsType == 'ContainerwithTR') return `/classescontent/${id}/feed`;
     if(subsType == 'Ebooks') return `/classes/${id}/learn`;
     if(subsType == 'Interactives') return `/classes/${id}/interactives`;
     if(subsType == 'TeacherResources' && user.isTeacher) return `/classes/${id}/resources`;

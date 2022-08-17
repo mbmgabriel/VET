@@ -114,7 +114,6 @@ function ClassFeed() {
     let response = await new ClassesAPI().getClassInformation(id)
     if(response.ok){
       setCourseId(response?.data?.courseId)
-      console.log({response})
     }
     // setLoading(false)
   }
@@ -124,13 +123,12 @@ function ClassFeed() {
     getClassInfo();
     setSelectedClassId(id);
     getFeedClass();
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
 
   }, [])
 
-  console.log('classInfo:', classInfo)
 
 const getComment = (item, item1, item3) => {
   setRefId(item)
@@ -140,7 +138,6 @@ const getComment = (item, item1, item3) => {
 }
 
   const getFeedClass = async () => {
-    console.log(id, 'classssssssss')
     setLoading(true);
     let response = await new ClassesAPI().getFeedClass(id)
     if(response.ok){
@@ -297,7 +294,6 @@ const getComment = (item, item1, item3) => {
   }
 
   const renderTooltipLike= (props) => (
-    console.log('props', props),
     <Tooltip id="button-tooltip" {...props}>
       Like
     </Tooltip>

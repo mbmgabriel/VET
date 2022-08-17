@@ -56,15 +56,14 @@ export const ClassExam = () => {
     if(response.ok){
       setModules(response.data)
     }else{
-      alert("Something went wrong while fetching modules");
       toast.error('Something went wrong while fetching modules')
     }
   }
   useEffect(() => {
     getModuleClass()
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
 
 
@@ -88,8 +87,6 @@ export const ClassExam = () => {
   useEffect(() => {
     fetchExams();
   }, []);
-
-  console.log('exams:', exams)
 
   return (
     <ClassSideNavigation>
