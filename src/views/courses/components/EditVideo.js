@@ -45,7 +45,7 @@ export default function EditVideos({ getVideoInfo, openEditVideoModal, setOpenEd
     if(response.ok){
 			handleCloseModal(e)
       notifyUpdateVideo()
-      getVideoInfo(sessionCourse, sessionModule)
+      getVideoInfo(sessionCourse, moduleId)
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -67,6 +67,7 @@ export default function EditVideos({ getVideoInfo, openEditVideoModal, setOpenEd
     if(selectedVideo !== null) {
 			setTitle(selectedVideo?.title)
 			setSequenceNo(selectedVideo?.sequenceNo)
+      setModuleId(selectedVideo?.moduleId)
 		}
   }, [selectedVideo])
 
@@ -81,6 +82,8 @@ export default function EditVideos({ getVideoInfo, openEditVideoModal, setOpenEd
     progress: undefined,
   });
 
+  console.log('selectedVideo:', selectedVideo)
+
 	return (
 		<div>
 			<Modal size="lg" className="modal-all" show={openEditVideoModal} onHide={()=> setOpenEditVideoModal(!openEditVideoModal)} >
@@ -91,10 +94,9 @@ export default function EditVideos({ getVideoInfo, openEditVideoModal, setOpenEd
 						<Form onSubmit={saveEditVideo}>
             <Form.Group className="mb-3">
           <Form.Label>Unit</Form.Label>
-            <Form.Select onChange={(e) => setModuleId(e.target.value)}>
-              <option>Select Unit Here </option>
+            <Form.Select defaultValue={selectedVideo?.moduleId} onChange={(e) => setModuleId(e.target.value)}>
                 {module.map(item => {
-                  return(<option value={item.id}>{item.moduleName}</option>)
+                  return(<option value={item?.moduleId}>{item.moduleName}</option>)
                 })}
             </Form.Select>
               </Form.Group>
