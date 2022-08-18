@@ -43,7 +43,7 @@ export default function CreateVideos({moduleId, getVideoInfo, openCreateVideoMod
       else {
         setUploading(doneUpload ? 100 : counter++);
       }
-    }, 1000);
+    }, 5000);
   }
     let response = await new CoursesAPI().createVideo(
       id, moduleId,
@@ -53,9 +53,10 @@ export default function CreateVideos({moduleId, getVideoInfo, openCreateVideoMod
       setDoneUpload(true)
       setTimeout(() => {
         setOpenCreateVideoModal(false)
-        getVideoInfo(sessionCourse, sessionModule)
+        getVideoInfo(id, moduleId)
         notifySaveVideo()
         setUploadStarted(false);
+        setUploading(5);
       }, 1000);
     }else{
       toast.error(response.data.errorMessage, {
