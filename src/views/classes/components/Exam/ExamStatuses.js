@@ -27,14 +27,14 @@ export default function ExamStatuses({ user, exam, startDate, endDate, noAssigne
           {endDate < new Date() && <Status>Ended</Status>}
         </>
       )}
-      {user.isStudent && (
+      {user.isStudent === true ?(
         <>
           <Status>{exam?.isLoggedUserDone ? "Completed" : "Not Completed"}</Status>
           
         </> 
-      )}
-      {user.isTeacher && exam?.test?.classId && exam?.test?.isShared ? (<Status>Shared</Status>):(<>{exam?.test?.classId == null ? (<></>) : (<><Status>Not Shared</Status></>)}</>)}
-      
+      ):(<>
+        {user.isTeacher && exam?.test?.classId && exam?.test?.isShared ? (<Status>Shared</Status>):(<>{exam?.test?.classId == null ? (<></>) : (<><Status>Not Shared</Status></>)}</>)}
+      </>)}
     </div>
   );
 }
