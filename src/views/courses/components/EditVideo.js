@@ -82,7 +82,7 @@ export default function EditVideos({ getVideoInfo, openEditVideoModal, setOpenEd
     progress: undefined,
   });
 
-  console.log('selectedVideo:', selectedVideo)
+  console.log('module:', module)
 
 	return (
 		<div>
@@ -96,7 +96,7 @@ export default function EditVideos({ getVideoInfo, openEditVideoModal, setOpenEd
           <Form.Label>Unit</Form.Label>
             <Form.Select defaultValue={selectedVideo?.moduleId} onChange={(e) => setModuleId(e.target.value)}>
                 {module.map(item => {
-                  return(<option value={item?.moduleId}>{item.moduleName}</option>)
+                  return(<option value={item?.id}>{item.moduleName}</option>)
                 })}
             </Form.Select>
               </Form.Group>
