@@ -76,7 +76,6 @@ function ClassInteractive() {
     let response = await new ClassesAPI().getSchoolCode()
     if(response.ok){
       setSchoolCode(response.data)
-      console.log("Haru", response.data)
     }else{
       alert("Something went wrong while fetching all courses")
     }
@@ -102,10 +101,6 @@ function ClassInteractive() {
     }
   }
   
-  console.log('interactive:', interactive)
-  
-  
-  
   const getIndteractive = async (e, item) =>{
     let response = await new ClassesAPI().getInteractive(id, item)
     if(response.ok){
@@ -122,9 +117,9 @@ function ClassInteractive() {
         getIndteractive()
         )
       } 
-    if(subsType == 'Ebooks'){
-      window.location.href = "/classes"
-    }
+    // if(subsType == 'Ebooks'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
 
   useEffect(() => {
@@ -157,7 +152,6 @@ function ClassInteractive() {
     let response = await new ClassesAPI().teacherMiranda()
     if(response.ok){
       setTMiranda(response.data)
-      console.log(response.data)
     }else{
       // alert("Teacher Miranda Error")
     }
@@ -518,8 +512,6 @@ const goToMirandaStudent = async(sCode, sRoom, sUser, sPass) => {
     }
 
 }
-
-console.log('interactive:', interactive)
 
   return (
     <ClassSideNavigation>

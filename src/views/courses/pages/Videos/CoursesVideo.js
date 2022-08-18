@@ -50,7 +50,7 @@ export default function CoursesVideos() {
 
   const getVideoInfo = async(e, data) => {
     setLoading(true)
-    setLocalModuleId(data)
+    setModuleId(data)
     // sessionStorage.setItem("moduleid", data)
     let moduleId = data
     let response = await new CoursesAPI().getVideoInformation(courseid, moduleId)
@@ -97,7 +97,7 @@ export default function CoursesVideos() {
     if(response.ok){
       // setLessonInfo(response.data)
       notifyDeleteVideo()
-      getVideoInfo(null, localModuleId)
+      getVideoInfo(null, moduleId)
     }else{
       alert(response.data.errorMessage)
     }
@@ -135,9 +135,9 @@ export default function CoursesVideos() {
   useEffect(() => {
     getCourseUnitInformation();
     getCourseInformation();
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const notifyDeleteVideo= () => 
@@ -195,7 +195,7 @@ export default function CoursesVideos() {
             <Accordion.Item eventKey={item.id}> 
               <Accordion.Header onClick={(e) => getVideoInfo(e, item.id)}>
                 <span className="unit-title">{item.moduleName} 
-                {isContributor && <Button className="btn-create-class" variant="link" onClick={()=>handleOpenCreateVideoModal(item.id)}><i className="fa fa-plus"></i> Add Video</Button>}
+                {isContributor && <Button className="btn-create-class" variant="link" onClick={()=>handleOpenCreateVideoModal(item?.id)}><i className="fa fa-plus"></i> Add Video</Button>}
                 </span>
               </Accordion.Header>
               <Accordion.Body>

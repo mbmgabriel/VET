@@ -33,7 +33,7 @@ export default function ExamStatuses({ user, exam, startDate, endDate, noAssigne
           
         </> 
       )}
-      {user.isTeacher && exam?.test?.classId && exam?.test?.isShared && <Status>Shared</Status>}
+      {user.isTeacher && exam?.test?.classId && exam?.test?.isShared ? (<Status>Shared</Status>):(<>{exam?.test?.classId == null ? (<></>) : (<><Status>Not Shared</Status></>)}</>)}
       
     </div>
   );

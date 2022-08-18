@@ -62,9 +62,9 @@ export default function CoursesTask() {
     if(courseid != null){
       getCourseInformation();
     }
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const handleOpenCreateTaskModal = () =>{

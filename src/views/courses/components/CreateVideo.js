@@ -24,6 +24,8 @@ export default function CreateVideos({moduleId, getVideoInfo, openCreateVideoMod
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
+  // console.log('localModuleId:', localModuleId)
+
 
 	const handleCloseModal = e => {
     e.preventDefault()
@@ -72,17 +74,17 @@ export default function CreateVideos({moduleId, getVideoInfo, openCreateVideoMod
     setLoading(false)
   }
 
-  const getCourseUnitPages = async(e, data, data1) => {
-    setLoading(true)
-    let response = await new CoursesAPI().getCourseUnitPages(sessionCourse, sessionModule)
-    setLoading(false)
-    if(response.ok){
-      setModulePages(response.data)
-      console.log(response.data)
-    }else{
-      alert("Something went wrong while fetching all pages")
-    }
-  }
+  // const getCourseUnitPages = async(e, data, data1) => {
+  //   setLoading(true)
+  //   let response = await new CoursesAPI().getCourseUnitPages(sessionCourse, sessionModule)
+  //   setLoading(false)
+  //   if(response.ok){
+  //     setModulePages(response.data)
+  //     console.log(response.data)
+  //   }else{
+  //     alert("Something went wrong while fetching all pages")
+  //   }
+  // }
 
   const notifySaveVideo = () => 
   toast.success('Video Saved!', {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import {Row, Col, Accordion, Button, InputGroup, FormControl, Tooltip, OverlayTrigger} from 'react-bootstrap'
+import {Row, Col, Accordion, Button, Tooltip, OverlayTrigger} from 'react-bootstrap'
 import HeaderDiscussion from './components/Discussion/HeaderDiscussion'
 import { useParams } from 'react-router'
 import ClassesAPI from '../../api/ClassesAPI'
@@ -67,9 +67,9 @@ function ClassDiscussion() {
 
   useEffect(() => {
     getClassInfo()
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
   
   const onSearch = (text) => {
@@ -95,7 +95,6 @@ function ClassDiscussion() {
   const toggle = (e, item, item2) =>{
     setEditDiscussionItem(item)
     setInstructions(item2)
-    console.log('item:', item)
     setModal(!modal)
   }
 
@@ -181,7 +180,6 @@ function ClassDiscussion() {
     </Tooltip>
   )
 
-  console.log('discussionModule:', discussionModule)
 
   return (
     <ClassSideNavigation>

@@ -16,7 +16,6 @@ import ClassBreadcrumbs from "./components/ClassBreedCrumbs";
 
 const getPercentageByDescription = (description, template) => {
   return template.templateTypes.reduce((total, item) => {
-    console.log({ item });
     if (item.description === description) {
       return total + item.percentage;
     } else {
@@ -54,7 +53,6 @@ export default function ClassGradingInformation() {
     setLoading(true);
 
     let response = await new ClassTermAPI().getTemplate(id, term_id);
-    console.log({ getTemplateResponse: response });
     if (response.ok) {
       if (response.data.length === 0)
         return history.push(`/classes/${id}/class_grading/${term_id}/new`);
@@ -65,12 +63,11 @@ export default function ClassGradingInformation() {
     setLoading(false);
   };
 
-  console.log({ gradingTemplate });
   useEffect(() => {
     getGradingTemplate();
-  if(subsType != 'LMS'){
-    window.location.href = "/classes"
-  }
+  // if(subsType != 'LMS'){
+  //   window.location.href = "/classes"
+  // }
   }, []);
 
   if (user.isTeacher) {

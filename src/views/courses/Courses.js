@@ -195,7 +195,8 @@ export default function Courses() {
   }
 
   useEffect(() => {
-    if(subsType == 'TeacherResources' && user.isStudent)
+    let coursePerGradeid = subsType == 'TeacherResources' || subsType == 'InteractivesandLearn'
+    if(coursePerGradeid && user.isStudent)
       return getCoursesPerGradeLevel();
     return getCourses()
   }, [])
@@ -204,9 +205,9 @@ export default function Courses() {
     setSubjectAreaName(subject)
   }
 
-  useEffect(() => {
-    if (user.isStudent && user.subsType !== "TeacherResources") return (window.location.href = "/404");
-  }, []);
+  // useEffect(() => {
+  //   if (user.isStudent && user.subsType !== "TeacherResources") return (window.location.href = "/404");
+  // }, []);
   
   return (
     <MainContainer loading={loading} activeHeader={'courses'}>
@@ -217,7 +218,7 @@ export default function Courses() {
             <>
             			<Row style={{paddingTop:'15px'}}>
         <Col className='title-header' >
-        <h1>Courses {subsType.includes('LMS') && <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button>}</h1>
+        <h1>Courses {subsType.includes('LMS') || subsType == 'ContainerwithTR' ? <Button variant='link' className="btn-create-class" onClick={handleOpenModal}><i className="fa fa-plus"></i> Create Course</Button> : ''}</h1>
         </Col>
         {subsType.includes('LMS') && <Col style={{textAlign:'right'}} className={user.isSchoolAdmin ? 'd-none' : ''}>
           <Button onClick={() => handleShowActive()} className='btn-Enrolled'  size='lg' variant="outline-warning"><b>Active</b></Button>

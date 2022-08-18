@@ -117,9 +117,9 @@ function ClassAssignment() {
 
   useEffect(() => {
     getClassInfo(); 
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
 
   const getClassInfo = async() => {
@@ -134,7 +134,6 @@ function ClassAssignment() {
     setLoading(false)
   }
 
-  console.log('this is assignment:', assignment)
 
   const viewAssignmentToggle = (item, item1) => {
     setViewAssignmentItem(item)
@@ -222,7 +221,6 @@ function ClassAssignment() {
     }  
   }, [])
 
-  console.log('item?.id:', assignment)
   const renderTooltipView = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       View
@@ -507,8 +505,9 @@ function ClassAssignment() {
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isAfter(moment(assigItem?.classAssignment?.startDate + ' ' + assigItem?.classAssignment?.startTime, 'YYYY-MM-DD HH:mm')) &&
                     moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(assigItem?.classAssignment?.endDate + ' ' + assigItem?.classAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                       <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
-                  }  
-                  {assigItem?.assignment?.isShared == true?(<Status>Shared</Status>):(<Status>Not Shared</Status>)} 
+                  } 
+                  {assigItem?.assignment?.classId == null ?(<></>):(<>{assigItem?.assignment?.isShared == true?(<Status>Shared</Status>):(<Status>Not Shared</Status>)} </>)} 
+                  
                 </div>
                 <div className='text-color-bcbcbc' >
                   <hr></hr>

@@ -43,9 +43,9 @@ function ClassLinks() {
   
   useEffect(() => {
     getConfe()
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
     getVideos()
     getLinks()
   }, [])
