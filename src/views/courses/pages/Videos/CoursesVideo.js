@@ -32,14 +32,13 @@ export default function CoursesVideos() {
   const userContext = useContext(UserContext);
   const {user} = userContext.data;
   const courseid = sessionStorage.getItem('courseid')
-  const moduleid = sessionStorage.getItem('moduleid')
+  // const moduleid = sessionStorage.getItem('moduleid')
+  const [moduleId, setModuleId] = useState(null);
   const [courseInfo, setCourseInfo] = useState("");
   const subsType = user.subsType;
   const [isContributor, setIsContributor] = useState(false);
-
-
-  const handleOpenCreateVideoModal = (moduleId) =>{
-    setLocalModuleId(moduleId)
+  const handleOpenCreateVideoModal = (id) =>{
+    setModuleId(id);
     setOpenCreateVideoModal(!openCreateVideoModal)
   }
 
@@ -51,7 +50,7 @@ export default function CoursesVideos() {
 
   const getVideoInfo = async(e, data) => {
     setLoading(true)
-    // setLocalModuleId(data)
+    setModuleId(data)
     // sessionStorage.setItem("moduleid", data)
     let moduleId = data
     let response = await new CoursesAPI().getVideoInformation(courseid, moduleId)
@@ -98,7 +97,7 @@ export default function CoursesVideos() {
     if(response.ok){
       // setLessonInfo(response.data)
       notifyDeleteVideo()
-      getVideoInfo(null, localModuleId)
+      getVideoInfo(null, moduleId)
     }else{
       alert(response.data.errorMessage)
     }
@@ -188,7 +187,7 @@ export default function CoursesVideos() {
         </div>
       </div>
       <EditVideos getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} selectedVideo={selectedVideo} openEditVideoModal={openEditVideoModal} setOpenEditVideoModal={setOpenEditVideoModal}/>
-      <CreateVideos localModuleId={localModuleId} getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
+      <CreateVideos moduleId={moduleId} getVideoInfo={getVideoInfo} setVideoInfo={setVideoInfo} openCreateVideoModal={openCreateVideoModal} setOpenCreateVideoModal={setOpenCreateVideoModal}/>
       <Accordion defaultActiveKey="0">
         {moduleInfo.map((item, index) => {
           return(
@@ -196,7 +195,7 @@ export default function CoursesVideos() {
             <Accordion.Item eventKey={item.id}> 
               <Accordion.Header onClick={(e) => getVideoInfo(e, item.id)}>
                 <span className="unit-title">{item.moduleName} 
-                {isContributor && <Button className="btn-create-class" variant="link" onClick={() =>  handleOpenCreateVideoModal(item?.id)}><i className="fa fa-plus"></i> Add Video</Button>}
+                {isContributor && <Button className="btn-create-class" variant="link" onClick={()=>handleOpenCreateVideoModal(item?.id)}><i className="fa fa-plus"></i> Add Video</Button>}
                 </span>
               </Accordion.Header>
               <Accordion.Body>

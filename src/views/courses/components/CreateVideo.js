@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Modal, InputGroup } from 'react-bootstrap';
+import { Button, Form, Modal, InputGroup, ProgressBar } from 'react-bootstrap';
 import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { toast } from 'react-toastify';
@@ -8,7 +8,7 @@ import FilesAPI from '../../../api/FilesApi';
 import FileHeader from './AssignmentFileHeader';
 import { useParams } from "react-router";
 
-export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCreateVideoModal, setOpenCreateVideoModal, localModuleId}){
+export default function CreateVideos({moduleId, getVideoInfo, openCreateVideoModal, setCreateVideoModal, setOpenCreateVideoModal}){
 
   const [loading, setLoading] = useState(false)
   const [modulePages, setModulePages] = useState([])
@@ -17,12 +17,14 @@ export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCre
   const [title, setTitle] = useState('')
   const [base64String, setBase64String] = useState([]);
   const [extFilename, setExtFilename] = useState('');
-
+  const [uploadStarted, setUploadStarted] = useState(false);
+  const [uploading, setUploading] = useState(5);
+  const [doneUpload, setDoneUpload] = useState(false);
   const {id} = useParams()
   let sessionCourse = sessionStorage.getItem('courseid')
   let sessionModule = sessionStorage.getItem('moduleid')
 
-  console.log('localModuleId:', localModuleId)
+  // console.log('localModuleId:', localModuleId)
 
 
 	const handleCloseModal = e => {
@@ -33,14 +35,31 @@ export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCre
 	const saveVideo = async(e) => {
     e.preventDefault()
     setLoading(true)
+    setUploadStarted(true);
+    let counter = 10;
+   if(!doneUpload){
+    setInterval(() => {
+      if (counter > 95) {
+        counter = 95;
+      }
+      else {
+        setUploading(doneUpload ? 100 : counter++);
+      }
+    }, 5000);
+  }
     let response = await new CoursesAPI().createVideo(
-      sessionCourse, localModuleId,
+      id, moduleId,
       {title, sequenceNo, fileName: fileName+extFilename, base64String}
     )
     if(response.ok){
-			setOpenCreateVideoModal(false)
-      getVideoInfo(sessionCourse, localModuleId)
-      notifySaveVideo()
+      setDoneUpload(true)
+      setTimeout(() => {
+        setOpenCreateVideoModal(false)
+        getVideoInfo(id, moduleId)
+        notifySaveVideo()
+        setUploadStarted(false);
+        setUploading(5);
+      }, 1000);
     }else{
       toast.error(response.data.errorMessage, {
         position: "top-right",
@@ -173,11 +192,21 @@ export default function CreateVideos({getVideoInfo, openCreateVideoModal, setCre
                       onChange={(e) => setSequenceNo(e.target.value)}
                     />
 								</Form.Group>
-
-								<span style={{float:"right"}}>
-										<Button className="tficolorbg-button" type="submit">
-												Save
-										</Button>
+                {
+                  uploadStarted &&
+                  <>
+                    {
+                      doneUpload ?
+                      <ProgressBar variant="" now={'100'} label={`100% uploaded`}/>
+                      :
+                      <ProgressBar variant="" now={uploading} label={`Uploading ...`}/>
+                    }
+                  </>
+                }
+								<span style={{float:"right", marginTop: 15}}>
+                  <Button disabled={uploadStarted} className="tficolorbg-button" type="submit">
+                    Upload
+                  </Button>
 								</span>
 						</Form>
 				</Modal.Body>
