@@ -14,13 +14,10 @@ export default function EditExam({
   fetchExams,
   setLoading
 }) {
-  console.log({ exam });
   const [testInstructions, setTestInstructions] = useState(exam.test.testInstructions);
   const [testName, setTestName] = useState(exam.test.testName);
   const [sequenceNo, setSequenceNo] = useState(exam?.test?.sequenceNo)
   const [showFiles, setShowFiles] = useState(false);
-
-  console.log('sequenceNo:', sequenceNo)
 
   useEffect(()=> {
     setTestInstructions(exam.test?.testInstructions)
@@ -40,7 +37,6 @@ export default function EditExam({
         testName,
         sequenceNo
       }
-      console.log({data})
       let response = await new ExamAPI().updateExam(exam.test.id, data)
       if(response.ok){
         toast.success("Successfully updated the exam!")
