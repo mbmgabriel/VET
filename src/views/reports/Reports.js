@@ -29,11 +29,16 @@ export default function Reports({children}) {
   }, []);
 
   useEffect(() => {
+    console.log(user)
     getAcademicTerm();
     if(user.role === "Teacher"){
       getClasses()
-    }else if(user.role === "Student"){
+    }
+    if(user.role === "Student"){
       getClassesStudent()
+    }
+    if(user.role === "School Admin"){
+      getSchoolAdminClasses();
     }
   }, [])
 
@@ -44,10 +49,23 @@ export default function Reports({children}) {
       setClasses(response.data)
       setLoading(false);
     }else{
-      alert("Something went wrong while fetching all courses")
+      alert("Something went wrong while fetching all classes")
       setLoading(false);
     }
   }
+
+  const getSchoolAdminClasses = async() => {
+    setLoading(true)
+    let response = await new ClassesAPI().getAllClass();
+    setLoading(false)
+    if(response.ok){
+      setClasses(response.data)
+    }else{
+      alert("Something went wrong while fetching all Classes")
+    }
+    setLoading(false);
+  }
+
 
   const getClassesStudent = async() => {
     setLoading(true)

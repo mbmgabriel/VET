@@ -344,7 +344,7 @@ const handleClickIcon = () =>{
             <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
               <th>Grade</th>
               <th>Status</th>
-              <th>Action</th>
+              {user.isTeacher && <th>Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -379,7 +379,7 @@ const handleClickIcon = () =>{
                           <Badge bg="danger">Not Submitted</Badge>
                         }
                       </td>
-                      <td>
+                      {user.isTeacher && <td>
                         {
                           st.isSubmitted && 
                           <Button style={{color:"white" }} className='tficolorbg-button' variant="" size="sm" onClick={() => {setSweetError(true); setStudentId(item.student.id)}}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
@@ -397,7 +397,7 @@ const handleClickIcon = () =>{
                         >
                           Retake the exam?
                         </SweetAlert>
-                      </td>
+                      </td>}
                       <td>
 
                       </td>

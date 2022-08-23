@@ -112,7 +112,7 @@ const arrageNoneAlphabetical = (data) => {
           <th><div className='class-enrolled-header'> Student Name{' '} <i onClick={() => handleClickIcon()} className={`${!alphabetical ? 'fas fa-sort-alpha-down' : 'fas fa-sort-alpha-up'} td-file-page`}></i></div></th>
             <th>Grade</th>
             <th>Status</th>
-            <th>Action</th>
+            {user.isTeacher && <th>Action</th>}
           </tr>
         </thead>
         <tbody>
@@ -136,11 +136,11 @@ const arrageNoneAlphabetical = (data) => {
                     {st?.studentAnswer === null ? <Badge bg="danger">Not Submitted</Badge>:
                       <Badge bg="success">Submitted</Badge>
                     }</td>
-                  <td>
+                  {user.isTeacher && <td>
                     {st?.studentAnswer === null ? <span />:
                       <Button style={{color:"white"}} variant="warning" size="sm" onClick={(e) => reTakeAssigment(e, st?.assignment?.id, item?.student?.id)}><i class="fas fa-redo"style={{paddingRight:'10px'}} ></i>Retake</Button>
                     }
-                  </td>
+                  </td>}
                   </>
                   )
 
