@@ -49,7 +49,7 @@ function StudentSubmittedAssigment({submittedAssignmentToggle, submittedAssignme
             <Form.Control defaultValue={studentAnswer?.assignmentGrade} type='text' disabled  />
           </Form.Group>
           <Form.Group className="mb-1">
-            <Form.Label>File/s</Form.Label>&nbsp;&nbsp;&nbsp;
+            <Form.Label>Clink to view the files</Form.Label>&nbsp;&nbsp;&nbsp;
             {
               studentAnswer?.uploadedFiles?.map( itm => {
                 return (
@@ -60,7 +60,7 @@ function StudentSubmittedAssigment({submittedAssignmentToggle, submittedAssignme
                       <i class="fas fa-download td-file-page" onClick={() => downloadImage(itm.filePath)}></i>
                       : */}
                       <a href={itm.filePath} download={true} target='_blank'>
-                        <i class="fas fa-download td-file-page mb-2"></i>
+                       <spam style={{fontSize:'25px'}} ><i class="fas fa-download td-file-page mb-2"></i> </spam>
                       </a> 
                     {/* } */}
                   </>
