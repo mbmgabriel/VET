@@ -5,11 +5,13 @@ import { toast } from 'react-toastify'
 import ProfileDropdown from './ProfileDropdown'
 import ProfileInfoAPI from '../../../api/ProfileInfoAPI';
 import { UserContext } from '../../../context/UserContext'
+import NotifDropdown from './NotifDropdown';
 
 export default function FloatingOptions() {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const [profileDropdownVisibility, setProfileDropdownVisibility] = useState(false)
+  const [notifDropdown, setNotifDropdown] = useState(false)
   const [profileImage, setprofileImage] = useState('');
   const subsType = user.subsType;
 
@@ -26,6 +28,16 @@ export default function FloatingOptions() {
       getImage()
     }
   },[])
+
+  const openProfileDropdown = () =>{
+    setProfileDropdownVisibility(!profileDropdownVisibility)
+    setNotifDropdown(false)
+  }
+
+  const openNotifDropdown = () =>{
+    setNotifDropdown(!notifDropdown)
+    setProfileDropdownVisibility(false)
+  }
   
   return (
     <div>
@@ -76,10 +88,13 @@ export default function FloatingOptions() {
         <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >
           <div><i class="far fa-calendar"></i></div>
         </Link>
-        <Link className={`floating-option ${window.location.pathname == `/notifications` ? 'active' : ''}`} to="/notifications">
+        {/* <Link className={`floating-option ${window.location.pathname == `/notifications` ? 'active' : ''}`} to="/notifications">
+          <div><i class="fas fa-bell"></i></div>
+        </Link> */}
+        <Link className={`floating-option`} to="#" onClick={() => openNotifDropdown()} >
           <div><i class="fas fa-bell"></i></div>
         </Link>
-        <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
+        <Link className={`floating-option`} to="#" onClick={() => openProfileDropdown()}>
           {profileImage ?
             <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
             :
@@ -98,10 +113,13 @@ export default function FloatingOptions() {
         <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >
           <div><i class="far fa-calendar"></i></div>
         </Link>
-        <Link className={`floating-option ${window.location.pathname == `/notifications` ? 'active' : ''}`} to="/notifications">
+        {/* <Link className={`floating-option ${window.location.pathname == `/notifications` ? 'active' : ''}`} to="/notifications">
+          <div><i class="fas fa-bell"></i></div>
+        </Link> */}
+        <Link className={`floating-option`} to="#" onClick={() => openNotifDropdown()} >
           <div><i class="fas fa-bell"></i></div>
         </Link>
-        <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
+        <Link className={`floating-option`} to="#" onClick={() => openProfileDropdown()}>
           {profileImage ?
             <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
             :
@@ -113,6 +131,7 @@ export default function FloatingOptions() {
       </div>
       }
       <ProfileDropdown visible={profileDropdownVisibility}/>
+      <NotifDropdown visible={notifDropdown} />
     </div>
   )
 }

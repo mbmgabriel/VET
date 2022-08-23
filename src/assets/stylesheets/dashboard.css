@@ -138,6 +138,16 @@ code {
   right: 18px;
 }
 
+.notif-link{
+  text-decoration: none !important;
+  font-size: 20px;
+  color: var(--primary-color);
+}
+
+.notif-link:hover{
+  color: var(--primary-color) !important
+}
+
 .header .floating-options .floating-option{
   display: inline-block;
   text-decoration: none !important;
@@ -171,6 +181,12 @@ code {
   right: 32px;
   border: none !important;
   border-radius: 10px !important;
+}
+
+.profile-dropdown-container .notif-header{
+  /* padding: 10px; */
+  padding-left: 10px;
+  display: flex;
 }
 
 .profile-dropdown-container .user-header{
