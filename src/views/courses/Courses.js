@@ -66,7 +66,7 @@ export default function Courses() {
       const sorted = response.data.sort((a,b) => a.courseName.toLowerCase() > b.courseName.toLowerCase() ? 1 : -1);
       setSubjectAreaName(sorted);
       const sortedCourse = response.data.sort((a,b) => a.courseName.toLowerCase() > b.courseName.toLowerCase() ? 1 : -1);
-      setCourse(sortedCourse);
+      setCourse(...sortedCourse);
 
       const inActive = response.data.filter((item) => item?.status == false && item?.isTechfactors == false)
       setInActive(inActive)
@@ -208,6 +208,12 @@ export default function Courses() {
   // useEffect(() => {
   //   if (user.isStudent && user.subsType !== "TeacherResources") return (window.location.href = "/404");
   // }, []);
+
+  const handleRefetchCourse = () => {
+    setLoading(true);
+    setCourse([])
+    getCourses()
+  }
   
   return (
     <MainContainer loading={loading} activeHeader={'courses'}>
@@ -264,11 +270,11 @@ export default function Courses() {
              <Button onClick={() => handleOnclick(tleItem)} className="m-r-5 color-white btn-filter" size="sm">TLE</Button>
            </div>
             <CardGroup className="justify-content-center">
-              <CourseCreate  subjectAreaName={subjectAreaName} setSubjectAreaName={setSubjectAreaName} getCourses={getCourses} setCourse={setCourse} openModal={openModal} setOpenModal={setOpenModal} /> 
+              <CourseCreate  subjectAreaName={subjectAreaName} setSubjectAreaName={setSubjectAreaName} getCourses={()=>handleRefetchCourse()} setCourse={setCourse} openModal={openModal} setOpenModal={setOpenModal} /> 
               <CourseEdit getCourses={getCourses} handleOnclick={handleOnclick} setCourse={setCourse} openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} selectedCourse={selectedCourse} /> 
               {showActive === false? 
                 (<CoursesItem 
-                  getCourses={getCourses} 
+                  getCourses={()=>getCourses()} 
                   subjectAreaName={subjectAreaName} 
                   filter={filter} setFilter={setFilter} 
                   course={course} setLoading={setLoading} 
