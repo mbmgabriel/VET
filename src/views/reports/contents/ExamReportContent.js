@@ -191,7 +191,7 @@ const handleClickIcon = () =>{
     setLoading(false)
     if(response.ok){
       setTestReport(response.data)
-      setExamReport(response.data[0].studentTests)
+      setExamReport(response.data[0]?.studentTests)
     }else{
       alert('response.data.errorMessage')
     }
@@ -321,7 +321,7 @@ const handleClickIcon = () =>{
         {showAnalysis === false? (<>
           <div style={{display:'flex', paddingRight:'20px'}}>
             <div style={{float:'right', paddingTop:'35px'}}>
-          {examReport[0] &&
+          {examReport &&
             examReport?.map(item => {
               return(
               <Form>

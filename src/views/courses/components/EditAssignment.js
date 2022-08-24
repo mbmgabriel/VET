@@ -120,23 +120,6 @@ export default function EditAssignment({setSequenceNo, sequenceNo, rate, setRate
     progress: undefined,
   });
 
-  useEffect(() => {
-    handleGetCourseFiles()
-  }, [])
-
-  const handleGetCourseFiles = async() => {
-    // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(id)
-    // setLoading(false)
-    if(response.ok){
-      console.log(response, '-----------------------')
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
-    }else{
-      alert("Something went wrong while fetching class files1111111111.")
-    }
-  }
-
 	return (
 		<div>
 			<Modal size="lg" className="modal-all" show={openEditAssignmentModal} onHide={()=> setOpenEditAssignmentModal(!openEditAssignmentModal)} >
