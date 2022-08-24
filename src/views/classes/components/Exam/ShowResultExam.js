@@ -49,7 +49,7 @@ function ShowResultExam({examAnalysis, setViewAnalysis, viewAnalysis}) {
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Student Answer :</span>
                         <span className='font-exam-analysis-content-24'>{ad.studentAnswer === null ? <>Student has no answer</>:<ContentViewer>{ad.studentAnswer}</ContentViewer>}
                         </span> 
-                          <span style={{marginRight:10}}>{ad.studentScore >= 1 && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}{ad.isConsider == true && <spam style={{color:"green", marginLeft:"10px"}} >Consider by teacher</spam>}</span>
+                          <span style={{marginRight:10}}>{ad.studentScore >= 1 && <i className="fa fa-1x fa-check-circle" style={{color:"green", marginLeft:"10px"}}></i>}{ad.isConsider == true && <spam style={{color:"green", marginLeft:"10px"}} >Considered by teacher</spam>}</span>
                           <span style={{marginRight:10}}>{ad.studentScore == 0 && <i class='fa fa-times-circle' style={{color:"red", marginLeft:"10px"}}></i>}</span>
                       </div>
                       <br />
