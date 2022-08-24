@@ -38,7 +38,7 @@ export default function HomeLinks() {
     localStorage.setItem('academicTerm', data);
     setCurrentAcademicTerm(data)
     let path = window.location.pathname
-    if(path == '/teacherdashboard' || path == '/classes'){
+    if(path == '/dashboard' || path == '/classes'){
       window.location.reload();
     }
   }
@@ -47,7 +47,7 @@ export default function HomeLinks() {
     if(subsType == 'TeacherResources' && user.isTeacher) return '/courses'
     if(subsType == 'TeacherResources' && user.isStudent) return '/classes'
     if(subsType == 'InteractivesandLearn' && user.isStudent) return '/courses'
-    if(subsType.includes('LMS')) return '/teacherdashboard';
+    if(subsType.includes('LMS')) return '/dashboard';
       return '/classes';
   }
 

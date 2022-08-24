@@ -18,6 +18,7 @@ export default function TeacherDashboardSidePanel({setStudentCount}) {
   const [courses, setCourses] = useState([])
   const [studentClasses, setStudentClasses] = useState([])
   const {user} = userContext.data
+  const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
   let studentId = user?.student?.id
 
   const getClasses = async() => {
@@ -74,6 +75,8 @@ export default function TeacherDashboardSidePanel({setStudentCount}) {
   // }
 
   useEffect(() => {
+    let temp = localStorage.getItem('academicTerm')
+    setCurrentAcademicTerm(temp)
     if(user?.student === null)
       return(
         getClasses(),
@@ -101,8 +104,8 @@ export default function TeacherDashboardSidePanel({setStudentCount}) {
    
   }, [])
 
-
-  const classesCount = studentClasses.length
+  const filteredStudentClass = studentClasses.filter((item) => item.termName == currentAcademicTerm);
+  const classesCount = filteredStudentClass.length
 
   return (
     <React.Fragment>
