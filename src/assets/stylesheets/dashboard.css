@@ -145,7 +145,22 @@ code {
 }
 
 .notif-link:hover{
-  color: var(--primary-color) !important
+  color: var(--primary-color) !important;
+  opacity: 0.7 !important;
+}
+
+.notif-icon{
+  color: var(--primary-color) !important;
+  font-size: 30px;
+  padding-top: 10px;
+}
+
+.notif-p{
+  font-size: 18px;
+}
+
+.notif-text-color{
+  color: var(--primary-color) !important;
 }
 
 .header .floating-options .floating-option{

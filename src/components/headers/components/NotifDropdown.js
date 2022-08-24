@@ -33,7 +33,7 @@ function NotifDropdown({visible}) {
     <div className={`profile-dropdown-container dropdown-menu shadow ${visible && 'show'}`} >
       <div className='notif-header' >
         <div style={{fontSize:'24px', color:'#BCBCBC'}} >
-        <p> Notificatios </p>
+        <p> Notifications </p>
         </div>
          <div style={{fontSize:'20px', color:'#EE9337', paddingLeft:'140px', paddingTop:'4px'}} >
           <Link className='notif-link' to="/notifications" >
@@ -48,13 +48,13 @@ function NotifDropdown({visible}) {
             return(
               <Col key={key}>
                 <Row>
-                  <Col md={2} style={{color:'#EE9337', fontSize:'30px', paddingTop:'10px'}} >
+                  <Col md={2} className='notif-icon' >
                   <i class='fas fa-file-alt'></i>
                   </Col>
                   <Col md={10}>
-                    <p style={{fontSize:'18px'}} ><span style={{color:'#EE9337'}} >{e.updatedBy}</span> has assigned an&nbsp;
-                    <span style={{ color:'#EE9337'}} >{e.title}</span> to&nbsp;
-                    <span style={{ color:'#EE9337'}} >{e.class }</span><br /> <span style={{fontSize:'16px', color:'#BCBCBC'}} >{moment(e.dateUpdated).startOf().fromNow()}</span> </p>
+                    <p className='notif-p' ><span className='notif-text-color' >{e.updatedBy}</span> has assigned an&nbsp;
+                    <span className='notif-text-color' >{e.title}</span> to&nbsp;
+                    <span className='notif-text-color' >{e.class }</span><br /> <span style={{fontSize:'16px', color:'#BCBCBC'}} >{moment(e.dateUpdated).startOf().fromNow()}</span> </p>
                   </Col>
                 </Row>
               </Col>
