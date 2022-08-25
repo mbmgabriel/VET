@@ -248,6 +248,9 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     if(user.isStudent && subsType == 'TeacherResources'){
       return `/courses/${id}/interactive`
     }
+    if(user.isStudent && subsType == 'ContainerwithTR'){
+      return `/courses/${id}/interactive`
+    }
     if(user.isTeacher && subsType == 'Interactives'){
       return `/courses`
     }
