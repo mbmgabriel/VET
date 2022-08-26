@@ -84,7 +84,7 @@ export default function StudentsList() {
     if(response.ok){
       let temp =response.data;
       const tempList = data.map(t1 => ({...t1, ...temp.find(t2 => t2.id === t1.userAccountID), id: t1.id}))
-      // console.log(response.data, '=======', data, '===', tempList )
+      console.log(response.data, '=======', data, '===', tempList )
       setStudents(tempList)
     }
     console.log(response)
@@ -273,7 +273,7 @@ export default function StudentsList() {
                   Student Number
                 </Form.Label>
                 <InputGroup className="mb-4">
-                  <Form.Control type="number" value={studentNo} onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
+                  <Form.Control type="text" value={studentNo} onChange={(e) => setStudentNo(e.target.value)} placeholder="Student No." />
                 </InputGroup>
               </Form.Group>
             </div>
@@ -503,6 +503,11 @@ export default function StudentsList() {
                 Header: 'Lastname',
                 id: 'lname',
                 accessor: d => d.lname,
+              },
+              {
+                Header: 'Student No.',
+                id: 'sNo',
+                accessor: d => d.studentNo,
               },
               {
                 Header: 'Username',

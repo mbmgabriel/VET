@@ -87,12 +87,10 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
       {classCode, className, courseId, gradeLevelId, academicTermId, teacherId }
     )
     if(response.ok){
-      // setAddNotity(true)
       success()
       getClasses()
       handleCloseModal()
     }else{
-      // alert(response.data.errorMessage)
       toast.error(response.data.errorMessage, {
         position: "top-right",
         autoClose: 5000,
@@ -126,6 +124,8 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
     }
   }, [seletedClass])
 
+  console.log('seletedClass:', seletedClass)
+
   const handleGetSelected = (data) => {
     console.log(data)
     let selected = course.find(e => e.courseName == data);
@@ -154,14 +154,6 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
             </Form.Group>
             <Form.Group className="mb-4">
               <Form.Label>Course</Form.Label>
-              	{/* <Form.Select onChange={(e) => setCourseId(e.target.value)} >
-                  <option value={seletedClass?.courseId}>{seletedClass?.courseName}</option>
-                     {course.map(item =>{
-                      return (<option value={item.id}>{item.courseName}</option>)
-                      })
-                    }
-                </Form.Select> */}
-
               <Form.Control list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder={seletedClass?.courseName} name="course" id="courseInput2" />
                 <datalist id="courses" onChange={(e) => console.log(e, 'sample')}>
                   {course.map(item =>{
@@ -173,10 +165,11 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
 
             <Form.Group className="mb-4">
             	<Form.Label>School Year</Form.Label>
-                <Form.Select required onChange={(e) => setAcademicTermId(e.target.value)}>
-                <option value={seletedClass?.academicTermId}>{seletedClass?.termName}</option>
+                <Form.Select value={seletedClass?.academicTermId} required onChange={(e) => setAcademicTermId(e.target.value)}>
                   {academicTerm.map(item =>{
-                      return(<option value={item.id}>{item.academicTermName}</option>)
+                      return(
+                      item.isCurrentTerm && <option value={item.id}>{item.academicTermName}</option>
+                      )
                       })
                     }
                 </Form.Select>       
@@ -187,10 +180,6 @@ function EditClassModal({seletedClass, openEditModal, setOpenEditModal, getClass
             	<Form.Label >Class Name</Form.Label>
                 <Form.Control required defaultValue={seletedClass?.className} onChange={(e) => setClassName(e.target.value)} type="text" placeholder='Enter class name here'/>
             </Form.Group>
-            {/* <Form.Group className="mb-4">
-            	<Form.Label >Class Description</Form.Label>
-                <Form.Control type="text" placeholder='Enter class Description here'/>
-            </Form.Group> */}
               <Form.Group className='mb-4'>
               	<Form.Label >Class Code</Form.Label>{' '}
                 	<Button className='tficolorbg-button' disabled>

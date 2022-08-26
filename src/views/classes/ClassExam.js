@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, version } from "react";
 import ClassExamHeader from "./components/Exam/ClassExamHeader";
 import { Accordion } from "react-bootstrap";
 import { useEffect } from "react";
@@ -56,15 +56,14 @@ export const ClassExam = () => {
     if(response.ok){
       setModules(response.data)
     }else{
-      alert("Something went wrong while fetching modules");
       toast.error('Something went wrong while fetching modules')
     }
   }
   useEffect(() => {
     getModuleClass()
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
 
 
@@ -89,8 +88,6 @@ export const ClassExam = () => {
     fetchExams();
   }, []);
 
-  console.log('exams:', exams)
-
   return (
     <ClassSideNavigation>
       {loading && <FullScreenLoader />}
@@ -114,14 +111,15 @@ export const ClassExam = () => {
                 <Accordion.Body>
                   {exams
                     .filter((item) => module.id === item.module.id)
-                    .filter((item) =>
-                      item.test.testName
-                        .toLowerCase()
-                        .includes(filter.toLowerCase())
-                    )
-                    .map((exam, index) => (
-                      <ExamItem key={index} exam={exam} deleteExam={deleteExam} setLoading={setLoading} fetchExams={fetchExams}/>
-                    ))}
+                    // .filter((item) =>
+                    //   item.test.testName
+                    //     .toLowerCase()
+                    //     .includes(filter.toLowerCase())
+                    // )
+                    .map((exam, index) => {
+                      let examName = exam?.test?.testName.toLowerCase().includes(filter.toLowerCase());
+                      return examName && <ExamItem key={index} exam={exam} deleteExam={deleteExam} setLoading={setLoading} fetchExams={fetchExams}/>}
+                    )}
                 </Accordion.Body>
               </Accordion.Item>
             );

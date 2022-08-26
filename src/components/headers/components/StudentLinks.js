@@ -21,17 +21,24 @@ export default function StudentLinks({activeHeader}) {
         }
          {subsType == 'TeacherResources' &&
          <>
-         <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
+          <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
           {/* <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
           <Link className={activeHeader === "reports" && 'active'} to="/reports">Reports</Link> */}
          </>
         }
-        {subsType.includes('LMS') &&
+        {subsType == 'InteractivesandLearn' &&
+         <>
+          <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
+         </>
+        }
+        {subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
           <>
             <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
             <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
             <Link className={activeHeader === "reports" && 'active'} to="/reports">Reports</Link>
           </>
+          :
+          null
         }
       </div>
     )

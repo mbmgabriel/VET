@@ -24,8 +24,8 @@ export default function ExamItemContent({
       >
        <span dangerouslySetInnerHTML={{__html:exam.test.testName }} /> 
       </Link>
-      <p className='exam-course-name'>{exam.module?.moduleName}</p>
       <ContentViewer className='mb-2'>{exam.test.testInstructions}</ContentViewer>
+      <b><p style={{fontSize: '16px'}} className='exam-course-name'>{exam.module?.moduleName}</p></b>
       {/* <p className='exam-instruction 'dangerouslySetInnerHTML={{__html:exam.test.testInstructions }} /> */}
       {startDate && (
         <p className='exam-instruction m-0'>

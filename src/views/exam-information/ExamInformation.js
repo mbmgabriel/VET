@@ -23,6 +23,8 @@ export default function ExamInformation() {
   const { user, takeExam, endExam } = userContext.data;
   const { class_id, id } = useParams();
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+
   const getExamInformation = async () => {
     Logger.info("Getting exam information");
     setLoading(true);
@@ -158,6 +160,7 @@ export default function ExamInformation() {
   };
 
   const submitPartsAnswer = async (part) => {
+    setIsButtonDisabled(true)
     console.log("SUBMIT PART", { part });
     let payload = [];
     let unique = true;
@@ -218,8 +221,10 @@ export default function ExamInformation() {
     setLoading(false);
     if (response.ok) {
       completePart(part);
+      setIsButtonDisabled(false)
     } else {
       alert("Something went wrong in submitting answer");
+      setIsButtonDisabled(false)
     }
   };
 
@@ -320,6 +325,7 @@ export default function ExamInformation() {
             onAnswer={onAnswer}
             submitPartsAnswer={submitPartsAnswer}
             onSubmit={endTest}
+            isButtonDisabled={isButtonDisabled}
           />
         </div>
       </div>

@@ -17,6 +17,7 @@ function ClassExamHeader({ onSearch, modules = [], fetchExams, onRefresh },) {
   const [module, setModule] = useState(modules[0]?.id)
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [showFiles, setShowFiles] = useState(false);
+  const [sequenceNo, setSequenceNo] = useState(null)
 
   useEffect(() => {
     setModule(modules[0]?.id)
@@ -24,30 +25,36 @@ function ClassExamHeader({ onSearch, modules = [], fetchExams, onRefresh },) {
 
   const submitForm = async (e) => {
     e.preventDefault()
-    setIsButtonDisabled(true)
-    setTimeout(() => setIsButtonDisabled(false), 2000)
-    const data = {
-      "test": {
-        "moduleItemId": module,
-        testName,
-        testInstructions,
-        "classId": id,
-        isShared: false
+    if(sequenceNo === null || sequenceNo === ''){
+      toast.error('Please input all the required fields.')
+    }else{
+      setIsButtonDisabled(true)
+      setTimeout(() => setIsButtonDisabled(false), 2000)
+      const data = {
+        "test": {
+          "moduleItemId": module,
+          testName,
+          testInstructions,
+          sequenceNo,
+          "classId": id,
+          isShared: false
+        }
       }
-    }
-    let response = await new ExamAPI().createExam(id, module, data)
-    if (response.ok) {
-      toast.success("Successfully created the exam")
-      await fetchExams()
-      closeModal()
-      console.log("")
-    } else {
-      toast.error(response.data.errorMessage || 'Please input all the required fields.')
+      let response = await new ExamAPI().createExam(id, module, data)
+      if (response.ok) {
+        toast.success("Successfully created the exam")
+        await fetchExams()
+        closeModal()
+        console.log("")
+      } else {
+        toast.error(response.data.errorMessage || 'Please input all the required fields.')
+      }
     }
   }
 
   const closeModal = ()=>{
     setShowModal(false)
+    setSequenceNo(null)
     setModule(modules[0]?.id)
     setTestName('')
     setTestInstructions('')
@@ -126,6 +133,20 @@ function ClassExamHeader({ onSearch, modules = [], fetchExams, onRefresh },) {
                 onChange={(e) => setTestName(e.target.value)}
               />
             </Form.Group>
+            <Form.Group className="m-b-20">
+                  <Form.Label for="courseName">
+                      Sequence no.
+                  </Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="lg" 
+                    type="number" 
+                    placeholder="Enter Sequence no."
+                    // min="0"
+                    // step="1" 
+                    onChange={(e) => setSequenceNo(e.target.value)}
+                  />
+                </Form.Group>
             <div>
               <Button className='float-right my-2' onClick={() => setShowFiles(!showFiles)}>File Library</Button>
             </div>
@@ -139,7 +160,7 @@ function ClassExamHeader({ onSearch, modules = [], fetchExams, onRefresh },) {
                 placeholder="Enter exam instructions"
                 onChange={(e) => setTestInstructions(e.target.value)}
               /> */}
-              <ContentField value={testInstructions} placeholder='Enter instruction here' onChange={value => setTestInstructions(value)} />
+              <ContentField withTextInput={true} value={testInstructions} placeholder='Enter instruction here' onChange={value => setTestInstructions(value)} />
             </Form.Group>
 
             <span style={{ float: "right" }}>

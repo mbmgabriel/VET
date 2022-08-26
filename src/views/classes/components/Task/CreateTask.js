@@ -37,6 +37,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
     setModuleId('')
     setTaskName('') 
     setInstructions('')
+    setSequenceNo('')
     setRate(100)
   }
 
@@ -54,9 +55,7 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
 
   const saveTask = async (e) =>{
     e.preventDefault()
-    setIsButtonDisabled(true)
-    setTimeout(()=> setIsButtonDisabled(false), 1000)
-    if(instructions === '' || instructions === '{{type=equation}}' || moduleId === '' || rate === '' || taskName === '' || sequenceNo === null ){
+    if(instructions === '' || instructions === '{{type=equation}}' || moduleId === '' || rate === '' || taskName === '' || sequenceNo === null || sequenceNo === '' ){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -77,14 +76,12 @@ function CreateTask({setModal, modal, toggle, module, getTaskModule, classId}) {
         progress: undefined,
         });
     } else{
+      setIsButtonDisabled(true)
+      setTimeout(()=> setIsButtonDisabled(false), 1000)
       let response = await new ClassesAPI().creatTask(moduleId, id, {task:{taskName, instructions, rate, sequenceNo}, taskAssignment:{allowLate}} )
       if(response.ok){
-        setModuleId("")
-        setTaskName("")
-        setRate('')
-        setInstructions("")
         getTaskModule(null, moduleId)
-        toggle(e)
+        handleCloseModal()
         success()
       }else{
         // alert(response.data.errorMessage)

@@ -64,9 +64,9 @@ export default function CoursesExam() {
     if(courseid != null){
       getCourseInformation();
     }
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   const handleOpenCreateExamModal = () =>{
@@ -76,7 +76,7 @@ export default function CoursesExam() {
   const handleOpenEditExamModal = (e, item) =>{
     e.preventDefault()
     setSelectedExam(item)
-    setOpenEditExamModal(!openEditExamModal)
+    setOpenEditExamModal(true)
   }
 
   const getCourseUnitInformation = async(e) => {

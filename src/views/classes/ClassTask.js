@@ -9,8 +9,6 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import moment from 'moment'
 import AssignTask from './components/Task/AssignTask'
 import EditAssignTask from './components/Task/EditAssignTask'
-import StundentAnswerTask from './student/components/StundentAnswerTask'
-import StudentSubmittedTask from './student/components/StudentSubmittedTask'
 import StudentTask from './student/StudentTask'
 import { UserContext } from '../../context/UserContext'
 import ViewTask from './components/Task/ViewTask'
@@ -32,7 +30,6 @@ function ClassTask() {
   const [taskModule, setTaskModule] = useState([])
   const [editTask, setEditTask] = useState()
   const {id} = useParams();
-  // const classId = classInfo?.classInformation?.classId;
   const [deleteNotify, setDeleteNotify] = useState(false)
   const [itemId, setItemId] = useState('')
   const dateCompareNow = moment().format("YYYY-MM-DD")
@@ -121,9 +118,9 @@ function ClassTask() {
   
     useEffect(() => {
       getClassInfo()
-      if(subsType != 'LMS'){
-        window.location.href = "/classes"
-      }
+      // if(subsType != 'LMS'){
+      //   window.location.href = "/classes"
+      // }
     }, [])
 
   const getClassInfo = async() => {
@@ -155,9 +152,6 @@ function ClassTask() {
     setSequenceNo(item5)
     setModal(!modal)
   }
-
-  console.log('taskModule:', taskModule)
-
 
   const editAssignTaskToggle = (e, item) => {
     setEditAssignTaskItem(item)
@@ -212,7 +206,6 @@ function ClassTask() {
     if(response.ok){
       getTaskModule(null, item1)
       setDeleteNotify(false)
-      // alert('Task Deleted')
     }else{
       alert("Something went wrong while Deleting a task")
     }
@@ -255,8 +248,6 @@ function ClassTask() {
       Share
     </Tooltip>
   )
-
-  console.log('taskModule:', taskModule)
 
   return (
     <ClassSideNavigation>
@@ -322,7 +313,6 @@ function ClassTask() {
                     </Col>
                     {moduleitem.task.classId?( 
                     <Col sm={3} className='icon-exam'>
-                      {/* Student Modal Answers */}
                           <OverlayTrigger
                             placement="bottom"
                             delay={{ show: 1, hide: 0 }}
@@ -399,7 +389,6 @@ function ClassTask() {
                       {moduleitem.taskAssignment?.startDate?(
                       <>
                       <Col sm={3} className='icon-exam'>
-                        {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
                         <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 1, hide: 0 }}
@@ -417,7 +406,6 @@ function ClassTask() {
                       ):
                       <>
                       <Col sm={3} className='icon-exam'>
-                        {/* <Button className="m-r-5 color-white tficolorbg-button" size="sm"><i class="fas fa-eye" ></i>{' '}</Button> */}
                         <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 1, hide: 0 }}
@@ -472,7 +460,8 @@ function ClassTask() {
                         moment(dateCompareNow + ' ' + timeNow, 'YYYY-MM-DD HH:mm').isBefore(moment(moduleitem?.taskAssignment?.endDate + ' ' + moduleitem?.taskAssignment?.endTime, 'YYYY-MM-DD HH:mm')) &&
                         <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Ongoing</Status></div>
                       }
-                      {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}
+                      {moduleitem?.task?.classId == null ? (<></>):(<>{moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}</>)}
+                      
                       </div>   
                       <div className='text-color-bcbcbc' >
                         <p></p>
@@ -482,12 +471,16 @@ function ClassTask() {
                     ):
                     <>
                       <div className='inline-flex' >
-                       {moduleitem?.task?.classId == null ? ( <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status><Status>Unassigned</Status></div>) : (
+                       {moduleitem?.task?.classId == null ? ( 
+                       <>
+                        <div style={{color:'#EE9337', fontSize:'15px'}}><Status>Created in Course</Status><Status>Unassigned</Status></div>
+                        {/* {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)} */}
+                       </>
+                       ) : (
                        <>
                         <Status>Created in Class</Status>
                         <Status>Unassigned</Status>
                         {moduleitem?.task?.isShared == true?(<><Status>Shared</Status></>):(<><Status>Not Shared</Status></>)}
-                        
                        </>
                        )}
                       </div>

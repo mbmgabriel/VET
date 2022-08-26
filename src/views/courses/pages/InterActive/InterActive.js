@@ -28,12 +28,14 @@ function InterActive() {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [interActiveId, setInterActiveId] = useState()
   const [sweetError, setSweetError] = useState(false)
+  const [sequenceNo, setSequenceNo] = useState('')
   
-  const handleOpenEditModel = (interactiveName, path, rate, interActiveId) => {
+  const handleOpenEditModel = (interactiveName, path, rate, interActiveId, sequenceNo) => {
     setInteractiveName(interactiveName)
     setPath(path)
     setRate(rate)
     setOpenEditModal(true)
+    setSequenceNo(sequenceNo)
     setInterActiveId(interActiveId)
   }
 
@@ -52,7 +54,6 @@ function InterActive() {
     let response = await new ClassesAPI().getModule(id);
     if(response.ok){
       setModule(response.data)
-      console.log('QQQQQ:', response.data)
     }else{
       alert('error')
     }
@@ -64,7 +65,7 @@ function InterActive() {
       setInterActiveItems(response.data)
       setModuleId(id)
     }else{
-      alert('ERROR')
+      toast.error('Something went wrong while fetching data.')
     } 
   }
 
@@ -82,7 +83,6 @@ function InterActive() {
   }, [])
 
   const handleRefresh = () => {
-    getIndteractive(moduleId)
     getModule(id)
   }
 
@@ -127,7 +127,7 @@ function InterActive() {
 
   return (
     <CourseContent>
-      <CourseBreadcrumbs />
+      <CourseBreadcrumbs title='' onClick={() => console.log('')}/>
       <InterActiveHeader onSearch={onSearch} refresh={() => handleRefresh()} />
     <Accordion defaultActiveKey="0">
       {module?.map((item, index) =>{
@@ -196,7 +196,7 @@ function InterActive() {
                           placement="bottom"
                           delay={{ show: 1, hide: 25 }}
                           overlay={renderTooltipEdit}>
-                          <Button className="m-r-5 color-white tficolorbg-button" onClick={() => handleOpenEditModel(item?.interactiveName, item?.path, item?.rate, item?.id)} size="sm" ><i className="fa fa-edit"></i></Button>
+                          <Button className="m-r-5 color-white tficolorbg-button" onClick={() => handleOpenEditModel(item?.interactiveName, item?.path, item?.rate, item?.id, item?.sequenceNo)} size="sm" ><i className="fa fa-edit"></i></Button>
                       </OverlayTrigger>
                       <OverlayTrigger
                           placement="bottom"
@@ -247,6 +247,8 @@ function InterActive() {
       getIndteractive={getIndteractive}
       moduleId={moduleId}
       setModuleId={setModuleId}
+      sequenceNo={sequenceNo}
+      setSequenceNo={setSequenceNo}
     />
     </CourseContent>
   )

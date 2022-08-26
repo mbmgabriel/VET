@@ -4,6 +4,7 @@ import CoursesAPI from "../../../api/CoursesAPI";
 import SubjectAreaAPI from "../../../api/SubjectAreaAPI";
 import { UserContext } from './../../../context/UserContext'
 import { toast } from 'react-toastify';
+import GradeAPI from '../../../api/GradeAPI';
 
 export default function CourseCreate({getCourses, setCourse, openModal, setOpenModal}){
 
@@ -16,6 +17,8 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 	const [locked, setLockStatus]= useState(false)
 	const userContext = useContext(UserContext)
 	const [validated, setValidated] = useState(false);
+	const [grade, setGrade] = useState([])
+	const [gradeLevelid, setGradeLevelId] = useState('')
   const {user} = userContext.data
 
 	const handleCloseModal = e => {
@@ -23,6 +26,16 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
     setOpenModal(false)
 		setValidated(false)
   }
+
+	const getGradeLevel = async () =>{
+		let response = await new GradeAPI().getGrade()
+		if(response.ok){
+			setGrade(response.data)
+			console.log('GradeLevel:', response.data)
+		}else{
+			alert(response.data.errorMessage)
+		}
+	}
 
 	const viewSubjectArea = async() => {
     setLoading(true)
@@ -35,17 +48,6 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
       alert("Something went wrong while fetching all courses")
     }
   }
-
-	// const getCourses = async() => {
-  //   setLoading(true)
-  //   let response = await new CoursesAPI().getCourses()
-  //   setLoading(false)
-  //   if(response.ok){
-  //     setCourse(response.data)
-  //   }else{
-  //     alert("Something went wrong while fetching all courses")
-  //   }
-  // }
 
 	const saveCourse = async(e) => {
 		e.preventDefault();
@@ -70,7 +72,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 			setLoading(true)
 			let isTechFactors = user.role !== "Teacher" && true
 			let response = await new CoursesAPI().createCourse(
-				{courseName, description, subjectAreaId, status, locked, isTechFactors}
+				{courseName, description, subjectAreaId, status, locked, gradeLevelid, isTechFactors}
 			)
 			if(response.ok){
 			successSave()
@@ -79,6 +81,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 			setDescription('')
 			setSubjectArea('')
 			setStatus('')
+			setGradeLevelId('')
 			setLockStatus(false)
 			getCourses()
 			}else{
@@ -90,7 +93,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 					pauseOnHover: true,
 					draggable: true,
 					progress: undefined,
-					});
+					});		
 			}
 			setLoading(false)
 		}
@@ -98,6 +101,7 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 
 	useEffect(() => {
     viewSubjectArea()
+		getGradeLevel()
   }, [])
 
 	const successSave = () => {
@@ -147,7 +151,18 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 										</Form.Select>
 								</Form.Group>
 								{' '}
-								
+								{(user?.teacher?.positionID == 7 ?(
+								<Form.Group className="mb-3">
+									<Form.Label>Grade Level</Form.Label>
+										<Form.Select required size="lg"  onChange={(e) => setGradeLevelId(e.target.value)}>
+										<option value={''}>-- Select Grade Level Here --</option>
+										{grade.map(item =>{
+												return(<option value={item.id}>{item.gradeName}</option>)
+												})
+											}
+										</Form.Select>
+								</Form.Group>
+								):(<></>))}
 								<Form.Group className="m-b-20">
 										<Form.Label for="courseName">
 												Course Name
@@ -195,25 +210,6 @@ export default function CourseCreate({getCourses, setCourse, openModal, setOpenM
 										</Form.Select>
 								</Form.Group>
 								{' '}
-
-								{/* <Form.Group className="m-b-20">
-										<Form.Label for="lock">
-												Lock Status
-										</Form.Label>
-										<Form.Select size="lg" onChange={(e) => setLockStatus(e.target.value)}>
-											<option>
-											Select lock status here...
-											</option>
-											<option value={true}>
-												Locked
-											</option>
-											<option value={false}> 
-												Unlocked
-											</option>
-										</Form.Select>
-								</Form.Group> */}
-								{' '}
-
 								<span style={{float:"right"}}>
 										<Button className="tficolorbg-button" type="submit">
 												Save Course

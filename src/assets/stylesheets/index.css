@@ -975,10 +975,10 @@ border-top-right-radius: 0px !important;
   color:var(--primary-color);
   font-size: 24px;
 }
-.title-exam:hover{
+/* .title-exam:hover{
   color: #5B84C4;
   cursor: pointer;
-}
+} */
 .code-exam{
   color: #BCBCBC;
   font-size: 20px;

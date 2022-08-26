@@ -68,7 +68,6 @@ export default function CoursesVideos() {
     setLoading(false)
     if(response.ok){
       setModuleInfo(response.data)
-      console.log(response.data, "herrrrerreer")
     }else{
       alert("Something went wrong while fetching course unit")
     }
@@ -109,9 +108,9 @@ export default function CoursesVideos() {
 
   useEffect(() => {
     getCourseUnitInformation();
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
   }, [])
 
   const notifyDeleteVideo= () => 

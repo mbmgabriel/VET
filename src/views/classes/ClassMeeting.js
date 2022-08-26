@@ -30,7 +30,6 @@ function ClassMeeting() {
     setLoading(true);
     let response = await new ClassesAPI().getClassInformation(id)
     if(response.ok){
-      console.log({response})
       setValue('meeting_link', response.data?.meeting_Link);
       setValue('meeting_id', response.data?.meeting_Id);
       setValue('meeting_password', response.data?.password);
@@ -41,14 +40,13 @@ function ClassMeeting() {
   }
 
   useEffect(() => {
-    if(subsType != 'LMS'){
-      window.location.href = "/classes"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/classes"
+    // }
     getClassInformation()
   }, []);
 
   const onSubmit = async(data) => {
-    console.log(data);
     const body = {
       "meeting_Id": data.meeting_id,
       "meeting_Link": data.meeting_link,

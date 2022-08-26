@@ -14,34 +14,39 @@ export default function EditExam({
   fetchExams,
   setLoading
 }) {
-  console.log({ exam });
   const [testInstructions, setTestInstructions] = useState(exam.test.testInstructions);
   const [testName, setTestName] = useState(exam.test.testName);
+  const [sequenceNo, setSequenceNo] = useState(exam?.test?.sequenceNo)
   const [showFiles, setShowFiles] = useState(false);
 
   useEffect(()=> {
     setTestInstructions(exam.test?.testInstructions)
     setTestName(exam.test?.testName)
+    setSequenceNo(exam?.test?.sequenceNo)
   }, [])
   
   const updateExam = async(e) => {
     e.preventDefault();
-    setLoading(true)
-    const data = {
-      isShared: false,
-      testInstructions,
-      testName,
-    }
-    console.log({data})
-    let response = await new ExamAPI().updateExam(exam.test.id, data)
-    if(response.ok){
-      toast.success("Successfully updated the exam!")
-      setShowEditModal(false)
-      setShowFiles(false)
-      fetchExams()
+    if(sequenceNo === '' || sequenceNo === null){
+      toast.error('Please input all the required fields.')
     }else{
-      toast.error(response?.data?.errorMessage || 'Please input all the required fields.')
-      setLoading(false)
+      setLoading(true)
+      const data = {
+        isShared: false,
+        testInstructions,
+        testName,
+        sequenceNo
+      }
+      let response = await new ExamAPI().updateExam(exam.test.id, data)
+      if(response.ok){
+        toast.success("Successfully updated the exam!")
+        setShowEditModal(false)
+        setShowFiles(false)
+        fetchExams()
+      }else{
+        toast.error(response?.data?.errorMessage || 'Please input all the required fields.')
+        setLoading(false)
+      }
     }
   }
 
@@ -72,6 +77,21 @@ export default function EditExam({
               onChange={(e) => setTestName(e.target.value)}
             />
           </Form.Group>
+          <Form.Group className="m-b-20">
+            <Form.Label for="courseName">
+                Sequence no.
+            </Form.Label>
+            <Form.Control 
+              defaultValue={sequenceNo}
+              className="custom-input" 
+              size="lg" 
+              type="number" 
+              placeholder="Enter Sequence no."
+              // min="0"
+              // step="1" 
+              onChange={(e) => setSequenceNo(e.target.value)}
+            />
+          </Form.Group>
             <div>
               <Button className='float-right my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
             </div>
@@ -86,7 +106,7 @@ export default function EditExam({
               placeholder='Enter exam instruction'
               onChange={(e) => setTestInstructions(e.target.value)}
             /> */}
-            <ContentField value={testInstructions}  placeholder='Enter instruction here'  onChange={value => setTestInstructions(value)} />
+            <ContentField withTextInput={true} value={testInstructions}  placeholder='Enter instruction here'  onChange={value => setTestInstructions(value)} />
           </Form.Group>
           <span style={{ float: "right" }}>
             <Button className='tficolorbg-button' type='submit'>

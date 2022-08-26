@@ -28,9 +28,9 @@ export default function CourseExamCreation() {
 
   useEffect(() => {
     getCourseInformation();
-    if(subsType != 'LMS'){
-      window.location.href = "/courses"
-    }
+    // if(subsType != 'LMS'){
+    //   window.location.href = "/courses"
+    // }
   }, [])
 
   return (

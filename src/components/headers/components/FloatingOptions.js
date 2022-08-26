@@ -26,7 +26,7 @@ export default function FloatingOptions() {
       getImage()
     }
   },[])
-console.log(subsType.includes('LMS'), '----')
+  
   return (
     <div>
       {subsType == 'Ebooks' && 
@@ -57,7 +57,21 @@ console.log(subsType.includes('LMS'), '----')
       </div>
     }
     {
-      subsType.includes('LMS') &&
+      subsType == 'InteractivesandLearn' && 
+      <div className="floating-options">
+        <Link className={`floating-option`} to="#" onClick={e => setProfileDropdownVisibility(!profileDropdownVisibility)}>
+          {profileImage ?
+          <Image className='profileImage' style={{width: 64, height: 64, borderRadius: 32}} src={`${profileImage}?${new Date().getTime()}`} /> 
+          :
+          <div>
+            <i class="fas fa-user"></i>
+          </div>
+          }
+        </Link>
+      </div>
+    }
+    {
+      subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
       <div className="floating-options">
         <Link className={`floating-option ${window.location.pathname == `/calendar` ? 'active' : ''}`} to="/calendar" >
           <div><i class="far fa-calendar"></i></div>
@@ -75,6 +89,8 @@ console.log(subsType.includes('LMS'), '----')
           }
         </Link>
       </div>
+      :
+      null
       }
       {
       subsType == 'Interactives' &&

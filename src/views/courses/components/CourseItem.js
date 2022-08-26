@@ -238,7 +238,10 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     localStorage.setItem('typeresource', 'course')
   });
 
-  const handleReturnLink = (id) => {
+  const handleReturnLink = (id, isTFI) => {
+    if(user.isTeacher && subsType == 'ContainerwithTR' && isTFI) {
+      return `/courses/${id}/resources`
+    }
     if(user.isTeacher && subsType == 'TeacherResources'){
       return `/courses/${id}/resources`
     }
@@ -247,6 +250,9 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     }
     if(user.isTeacher && subsType == 'Interactives'){
       return `/courses`
+    }
+    if(subsType == 'InteractivesandLearn'){
+      return `coursecontent/${id}/learn`
     }
     if(user.isTeacher){
       return `coursecontent/${id}/learn`
@@ -261,14 +267,14 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
         { subjectAreaName.filter(item =>
           item.courseName.toLowerCase().includes(filter.toLowerCase())).map
           ((item, index) => {
-          let ifSameGrade = item.gradeLevelid === user.student?.gradeLevelId ? true : false;
-          let ifFilterByGradeId = subsType == 'TeacherResources' && user.isStudent ? ifSameGrade : true
+          // let ifSameGrade = item.gradeLevelid === user.student?.gradeLevelId ? true : false;
+          // let ifFilterByGradeId = subsType == 'TeacherResources' && user.isStudent ? ifSameGrade : true
           return(
-            ifFilterByGradeId && 
+            // ifFilterByGradeId && 
             <>
               {item?.status?(<>
               {/* user.isTeacher ? `coursecontent/${item.id}/learn` : `/school_courses/${item.id}` */}
-                <Link to={handleReturnLink(item.id)} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
+                <Link to={handleReturnLink(item.id, item.isTechfactors)} onClick={() => setCourseId(item.id)} course={course} setLoading={setLoading} className="active card-title">
                   <CoursesItemCard 
                   courseCover={item.courseCover}
                   courseId={item.id}

@@ -10,7 +10,7 @@ import ContentField from '../../../../components/content_field/ContentField'
 import { toast } from 'react-toastify';
 import ClassCourseFileLibrary from '../ClassCourseFileLibrary';
 
-function CreateAssignment({modal, toggle, module, getAssignmentList, question, setQuestion}) {
+function CreateAssignment({modal, toggle, module, getAssignmentList, question, setQuestion, setModal}) {
   const [moduleId, setModuleId] = useState('')
   const [assignmentName, setAssignmentName] = useState('')
   const [instructions, setInstructions] = useState('')
@@ -35,7 +35,7 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
     e.preventDefault()
     setIsButtonDisabled(true)
     setTimeout(()=> setIsButtonDisabled(false), 1000)
-    if(moduleId == '' || assignmentName === '' || instructions === '' || instructions === '{{type=equation}}' || rate === '' || sequenceNo === null ){
+    if(moduleId == '' || assignmentName === '' || instructions === '' || instructions === '{{type=equation}}' || rate === '' || sequenceNo === null || sequenceNo === '' ){
       toast.error('Please input all the required fields.', {
         position: "top-right",
         autoClose: 5000,
@@ -59,14 +59,10 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
       let response = await new ClassesAPI().createAssignment(moduleId, id, {assignment:{assignmentName, instructions, rate, sequenceNo}, classAssignment:{}} )
       if(response.ok){
         success()
-        setModuleId('')
-        setAssignmentName('')
-        setInstructions('')
-        setRate(100)
         // alert('Save Assingment')
         // setAddNotity(true)
         getAssignmentList(null, moduleId)
-        toggle(e)
+        handleCloseModalCreate()
       }else{
         // alert(response.data.errorMessage)
         toast.error(response.data.errorMessage, {
@@ -106,10 +102,18 @@ function CreateAssignment({modal, toggle, module, getAssignmentList, question, s
     </Tooltip>
   )
 
+  const handleCloseModalCreate = () => {
+    setModal(false)
+    setModuleId('')
+    setAssignmentName('')
+    setInstructions('')
+    setSequenceNo('')
+    setRate(100)
+  }
 
 	return (
     <div>
-    	<Modal size="lg" show={modal} onHide={toggle} aria-labelledby="example-modal-sizes-title-lg">
+    	<Modal size="lg" show={modal} onHide={handleCloseModalCreate} aria-labelledby="example-modal-sizes-title-lg">
         <Modal.Header className='class-modal-header' closeButton>
           <Modal.Title id="example-modal-sizes-title-lg" >
             Create Assignment
