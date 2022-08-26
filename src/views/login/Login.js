@@ -26,8 +26,8 @@ export default function Login() {
     )
     if(response.ok){
       // console.log(response.data)
-      await window.localStorage.setItem('token', response.data.token)
-      await window.localStorage.setItem('subsType', response.data.subscriptionType)
+      await window.localStorage.setItem('token', response.data.token);
+      await window.localStorage.setItem('subsType', response.data.subscriptionType);
       //response.data.subscriptionType Ebooks, TeacherResources, Interactives, InteractivesandLearn, ContainerwithTR
       await refreshUser()
     }else{
