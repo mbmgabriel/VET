@@ -257,8 +257,23 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
     if(user.isTeacher){
       return `coursecontent/${id}/learn`
     }
-    if(user.isSchoolAdmin){
+    if(user.isSchoolAdmin && subsType.includes('LMS')){
       return `/school_courses/${id}`
+    }
+    if(user.isSchoolAdmin && subsType == 'ContainerwithTR'){
+      return `/school_courses/${id}`
+    }
+    if(user.isSchoolAdmin && subsType == 'Ebooks'){
+      return `/school_courses/${id}`
+    }
+    if(user.isSchoolAdmin && subsType == 'InteractivesandLearn'){
+      return `/school_courses/${id}`
+    }
+    if(user.isSchoolAdmin && subsType == 'Interactives'){
+      return `/school_courses/${id}/interactive`
+    }
+    if(user.isSchoolAdmin && subsType == 'TeacherResources'){
+      return `/school_courses/${id}/resources`
     }
   }
   
