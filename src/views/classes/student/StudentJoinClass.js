@@ -6,20 +6,25 @@ import { toast } from 'react-toastify';
 
 function StudentJoinClass({joinClassesToggle, joinClassestModal, getPendingClasses}) {
   const [code, setCode] = useState('')
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const submitRequest = async (e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
     let response = await new ClassesAPI().submitRequest(code, {code})
       if(response.ok){
         getPendingClasses()
         setCode('')
         joinClassesToggle()
         toast.success('Done!');
+        setIsButtonDisabled(false)
       }else{
         if(code === ''){
           toast.error('Please enter the classcode');
+          setIsButtonDisabled(false)
         }else{
           toast.error(response.data.errorMessage);
+          setIsButtonDisabled(false)
         } 
       }
   }
@@ -38,7 +43,7 @@ function StudentJoinClass({joinClassesToggle, joinClassestModal, getPendingClass
               <Form.Control onChange={(e) => setCode(e.target.value)} type="text" placeholder='Enter class Code here'/>
           </Form.Group>
           <Form.Group className='right-btn'>
-						<Button className='tficolorbg-button' type='submit'>Request</Button>
+						<Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>Request</Button>
           </Form.Group>
         </Form>  
         </Modal.Body>
