@@ -324,7 +324,7 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                       defaultValue={studentScore}
                       className="custom-input" 
                       size="lg" 
-                      type="text" 
+                      type="textarea" 
                       placeholder="Enter points"
                       onChange={(e) => setStudentScore(e.target.value)}
                     />
