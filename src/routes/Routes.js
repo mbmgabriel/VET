@@ -117,6 +117,7 @@ import ClassEbooksFiles from '../views/classes/EbooksFiles';
 import StudentEbooks from '../views/Ebooks/StudentEbooks';
 
 import SystemAdminEbooks from '../views/system-admin/courses/CourseEbooks';
+import SchoolResources from "../views/school-courses/SchoolResources";
 
 export default function Routes() {
   const userContext = useContext(UserContext);
@@ -194,6 +195,8 @@ export default function Routes() {
             <PrivateRoute path='/school_courses/:id/task' exact component={SchoolTask}/>
             <PrivateRoute path='/school_courses/:id/interactive' exact component={SchoolInteractive}/>
             <PrivateRoute path='/school_courses/:id/files' exact component={SchoolFiles}/>
+            <PrivateRoute path='/school_courses/:id/resources' exact component={SchoolResources}/>
+
             <PrivateRoute path='/schoolTeacher' exact component={SchoolTeacher} />
             <PrivateRoute path='/studentsList' exact component={StudentsList} />
             <PrivateRoute path='/schoolAdmin' exact component={SchoolAdminList} />

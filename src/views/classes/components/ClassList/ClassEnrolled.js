@@ -153,7 +153,7 @@ function ClassEnrolled({enrolledStudent, getStudentEnrolled, getStudentWaiting, 
               <td >
                 <div className='class-waiting-list' style={{fontSize:'24px', color:'#707070', marginLeft:'25px'}} >
                   <i class="fas fa-user-circle fas-1x" style={{color: themeColor,fontSize:'36px'}}></i>&nbsp;
-                    <Button className='btn-student-portfolio' onClick={() => openPortfolioToggle(item, enrolledStudent?.classInformation, item.id)} variant="link">{item.fname} {item.lname}</Button>
+                    <Button className='btn-student-portfolio' onClick={() => openPortfolioToggle(item, enrolledStudent?.classInformation, item.id)} variant="link">{item.lname} {item.fname}</Button>
                 </div>
               </td>
               <td>

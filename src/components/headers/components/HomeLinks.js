@@ -44,9 +44,12 @@ export default function HomeLinks() {
   }
 
   const handleRedirect = () => {
-    if(subsType == 'TeacherResources' && user.isTeacher) return '/courses'
-    if(subsType == 'TeacherResources' && user.isStudent) return '/classes'
-    if(subsType == 'InteractivesandLearn' && user.isStudent) return '/courses'
+    console.log(user)
+    if(subsType == 'TeacherResources' && user.isTeacher) return '/courses';
+    if(subsType == 'TeacherResources' && user.isStudent) return '/classes';
+    if(subsType == 'InteractivesandLearn' && user.isStudent) return '/courses';
+    if(user.isSchoolAdmin)return '/dashboard';
+    if(user.isSystemAdmin)return '/system-admin/dashboard';
     if(subsType.includes('LMS')) return '/teacherdashboard';
       return '/classes';
   }

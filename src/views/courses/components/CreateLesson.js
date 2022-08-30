@@ -97,29 +97,6 @@ export default function CreateLesson({isTFI, openCreateLessonModal, setCreateLes
     progress: undefined,
   });
 
-  useEffect(() => {
-    handleGetClassFiles()
-  }, [])
-
-  // useEffect(() =>{
-  //   if(sessionCourse != null){
-  //     handleGetClassFiles()
-  //   }
-
-  // }, [])
-
-  const handleGetClassFiles = async() => {
-    // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(id)
-    // setLoading(false)
-    if(response.ok){
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
-    }else{
-      alert("Something went wrong while fetching class files111111111111 ;;.")
-    }
-  } 
-
   return (
 		<div>
 			<Modal size="lg" className="modal-all" show={openCreateLessonModal} onHide={(e)=> handleCloseModal()} >

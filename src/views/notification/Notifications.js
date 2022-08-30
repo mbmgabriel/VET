@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useContext } from 'react';
-import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import { UserContext } from '../../context/UserContext';
 import MainContainer from '../../components/layouts/MainContainer'
-import { Col, Row, ListGroup, Form, Input, Button, Table } from 'react-bootstrap';
-import {  Doughnut, Line } from 'react-chartjs-2';
-import SchoolAPI from '../../api/SchoolAPI';
+import { Col, Row} from 'react-bootstrap';
 import FeedsAPI from '../../api/FeedsAPI';
-import { getDataDetail } from '@microsoft/signalr/dist/esm/Utils';
 import moment from 'moment'
 import { toast } from 'react-toastify';
 
@@ -36,11 +32,6 @@ export default function Dashboard() {
     setLoading(false)
   }
 
-  const handleConvertDate = (date) => {
-    let temp = moment(date).toNow(true);
-    return temp;
-  }
-
     return (
       <MainContainer loading={loading} title="" activeHeader={""}>
         <Col className='px-4' sm={12}>
@@ -55,7 +46,6 @@ export default function Dashboard() {
                     <p>{e.description ? e.description : 'No description available.'}</p>
                   </Col>
                   <Col md={2}>
-                    {/* <p className='float-end'>{handleConvertDate(e.startDate)}</p> */}
                     <p className='float-end'>{moment(e.dateUpdated).startOf().fromNow()}</p>
                   </Col>
                 </Row>

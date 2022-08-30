@@ -72,7 +72,7 @@ export default function ProfileDropdown({visible}) {
           </div>
           Help & Support
         </a>
-        {user.isStudent == null && user.isTeacher == null && <Link to="#" className="profile-dropdown-link" onClick={() => toast.error("Feature under development")}>
+        {user.isStudent == null && user.isTeacher == null && <Link to="/school" className="profile-dropdown-link">
           <div className="profile-dropdown-link-icon">
             <i class="fas fa-tv"></i>
           </div>
