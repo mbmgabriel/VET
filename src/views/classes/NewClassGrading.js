@@ -14,6 +14,7 @@ import ClassSideNavigation from "./components/ClassSideNavigation";
 import ClassBreadcrumbs from "./components/ClassBreedCrumbs";
 
 const getPercentageByDescription = (description, template) => {
+  console.log(template, description, '---------')
   return template.templateTypes.reduce((total, item) => {
     if (item.description === description) {
       return total + item.percentage;

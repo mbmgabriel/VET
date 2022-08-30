@@ -89,7 +89,7 @@ export default function ClassGradingComputation() {
       <ClassSideNavigation>
         <ClassBreadcrumbs title='Grading Component' secondItem='Computation' clickedSecond={()=> history.push(`/classes/${id}/class_grading/${term_id}`)} clicked={() => history.push(`/classes/${id}/class_grading`)} />
         <div className='rounded-white-container container-fluid mt-4'>
-          <h2 className='primary-color '>Grading Component --</h2>
+          <h2 className='primary-color '>Grading Component</h2>
           <table className='grading-table'>
             <thead>
               <tr>
