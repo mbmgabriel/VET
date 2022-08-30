@@ -160,7 +160,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
             </Col>
             <hr></hr>
             <Col className='mb-3'>
-              <Row>
+             Click to view the files: &nbsp;
                 {
                   taskAnswer?.uploadedFiles?.map( itm => {
                     return (
@@ -171,14 +171,14 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
                           <i class="fas fa-download td-file-page" onClick={() => downloadImage(itm.filePath)}></i>
                           : */}
                           <a href={itm.filePath} download={true} target='_blank'>
-                            <i class="fas fa-download td-file-page"></i>
+                            <spam style={{fontSize:'30px'}} ><i class="fas fa-download td-file-page"></i></spam>
                           </a> 
                         {/* } */}
                       </>
                     )
                   })
                 }
-              </Row>
+     
             </Col>
             <Col md={12}>Feedback: {taskAnalysis.studentTask?.feedback}</Col>
           </>

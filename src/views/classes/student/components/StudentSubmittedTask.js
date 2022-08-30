@@ -49,7 +49,7 @@ function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnsw
               <Form.Control defaultValue={taskAnswerItem?.taskGrade} type='text' disabled  />
             </Form.Group>
             <Form.Group className="mb-1">
-            <Form.Label>File/s</Form.Label>&nbsp;&nbsp;&nbsp;
+            <Form.Label>Clink to view the files</Form.Label>&nbsp;&nbsp;&nbsp;
               {
                 taskAnswerItem?.uploadedFiles?.map( itm => {
                   return (
@@ -60,7 +60,7 @@ function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnsw
                         <i class="fas fa-download td-file-page" onClick={() => downloadImage(itm.filePath)}></i>
                         : */}
                         <a href={itm.filePath} download={true} target='_blank'>
-                          <i class="fas fa-download td-file-page mb-2"></i>
+                          <span style={{fontSize:'30px'}} ><i class="fas fa-download td-file-page mb-2"></i></span>
                         </a> 
                       {/* } */}
                     </>
