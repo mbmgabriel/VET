@@ -11,7 +11,7 @@ export default function SchoolAdminLinks({activeHeader}) {
     return (
       <div className="header-links">
         {
-          subsType.includes('LMS') &&
+          subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
           <>
             <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link>
             <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
@@ -19,6 +19,8 @@ export default function SchoolAdminLinks({activeHeader}) {
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
             <Link className={activeHeader === "classes" && 'active'} to="/schoolAdminClasses">Classes</Link>
           </>
+          :
+          null
         }
         {
           subsType === 'Interactives' &&
@@ -27,7 +29,17 @@ export default function SchoolAdminLinks({activeHeader}) {
             <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
             <Link className={activeHeader === "grading" && 'active'} to="/admin/grading">Grading</Link>
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
-            <Link className={activeHeader === "classes" && 'active'} to="/schoolAdminClasses">Classes</Link>
+            {/* <Link className={activeHeader === "classes" && 'active'} to="/schoolAdminClasses">Classes</Link> */}
+          </>
+        }
+        {
+          subsType === 'InteractivesandLearn' &&
+          <>
+            <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link>
+            <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
+            {/* <Link className={activeHeader === "grading" && 'active'} to="/admin/grading">Grading</Link> */}
+            <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
+            {/* <Link className={activeHeader === "classes" && 'active'} to="/schoolAdminClasses">Classes</Link> */}
           </>
         }
         {
