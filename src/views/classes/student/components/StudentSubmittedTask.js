@@ -60,7 +60,7 @@ function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnsw
                         <i class="fas fa-download td-file-page" onClick={() => downloadImage(itm.filePath)}></i>
                         : */}
                         <a href={itm.filePath} download={true} target='_blank'>
-                          <span style={{fontSize:'30px'}} ><i class="fas fa-download td-file-page mb-2"></i></span>
+                        <span style={{fontSize:'30px'}} ><i class="fas fa-download td-file-page mb-2"></i></span>
                         </a> 
                       {/* } */}
                     </>

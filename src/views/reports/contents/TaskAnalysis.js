@@ -160,7 +160,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
             </Col>
             <hr></hr>
             <Col className='mb-3'>
-             Click to view the files: &nbsp;
+            Click to view the files: &nbsp;
                 {
                   taskAnswer?.uploadedFiles?.map( itm => {
                     return (
@@ -178,7 +178,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
                     )
                   })
                 }
-     
+       
             </Col>
             <Col md={12}>Feedback: {taskAnalysis.studentTask?.feedback}</Col>
           </>
