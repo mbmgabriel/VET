@@ -77,7 +77,7 @@ export default function ClassGradingInformation() {
     let response = await new ClassTermAPI().deleteClassTerm(id, term_id);
     if (response.ok) {
       toast.success('Grading term deleted successfully');
-      // history.push(`/classes/${id}/class_grading`);
+      history.push(`/classes/${id}/class_grading`);
     } else {
       toast.error("Error deleting grading term template");
     }
@@ -100,7 +100,7 @@ export default function ClassGradingInformation() {
                   Edit
                 </Tooltip>}
             >
-              <i className="fa fa-edit p-2 primary-color"/>
+              <i className="fa fa-edit p-2 primary-color" onClick={() => history.push(`/classes/${id}/class_grading/${term_id}/edit`)}/>
             </OverlayTrigger> | 
             <OverlayTrigger
               placement="bottom"

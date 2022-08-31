@@ -118,6 +118,9 @@ import StudentEbooks from '../views/Ebooks/StudentEbooks';
 
 import SystemAdminEbooks from '../views/system-admin/courses/CourseEbooks';
 
+import EditClassGrading from "../views/classes/EditClassGrading";
+
+
 export default function Routes() {
   const userContext = useContext(UserContext);
   const {loading, refreshUser} = userContext.data
@@ -162,6 +165,7 @@ export default function Routes() {
             <PrivateRoute path='/classes/:id/class_grading/:term_id' exact component={ClassGradingInformation} />
             <PrivateRoute path='/classes/:id/class_grading/:term_id/computation' exact component={ClassGradingComputation} />
             <PrivateRoute path='/classes/:id/class_grading/:term_id/new' exact component={NewClassGrading} />
+            <PrivateRoute path='/classes/:id/class_grading/:term_id/edit' exact component={EditClassGrading} />
             <PrivateRoute path='/classes/:id/class_meeting' exact component={ClassMeeting} />
             <PrivateRoute path='/classes/:id/files' exact component={ClassFiles} />
             <PrivateRoute path='/classes/:id/videos' exact component={ClassVideos} />
