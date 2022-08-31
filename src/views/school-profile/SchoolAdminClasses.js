@@ -110,7 +110,7 @@ export default function Classes() {
             pendingClasses.filter((item) => {
               if(searchTerm == ''){
                 return item
-              } else if (item.className.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())){
+              } else if (item.className.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) || item?.classCode.toLowerCase().includes(searchTerm.toLowerCase())){
                 return item
               }
             }).map(item =>{
@@ -128,9 +128,9 @@ export default function Classes() {
           <CardGroup className='card-group2'>
             {classes.length?
               classes.filter((item) => {
-                if(searchTerm == '') {
+                if(searchTerm == ''){
                   return item
-                } else if (item?.className.toLowerCase().includes(searchTerm.toLowerCase())){
+                } else if (item.className.toLowerCase().includes(searchTerm.toLowerCase()) || item?.classCode.toLowerCase().includes(searchTerm.toLowerCase())){
                   return item
                 }
               }).map(item => {
