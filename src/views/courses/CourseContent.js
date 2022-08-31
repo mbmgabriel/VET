@@ -19,7 +19,7 @@ export default function CourseContent({children}) {
   const userContext = useContext(UserContext)
   const {user} = userContext.data
   const subsType = user.subsType;
-  const [isContributor, setIsContributor] = useState(true);
+  const [isContributor, setIsContributor] = useState(false);
 
   const getCourseUnitInformation = async(e) => {
     let response = await new CoursesAPI().getCourseUnit(id)
@@ -302,14 +302,15 @@ export default function CourseContent({children}) {
                   </OverlayTrigger>
                 </Link>
                 
-                <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
+                {isContributor && <Link className={currentLoc.includes('files') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/files`}>
                   <OverlayTrigger
                     placement="right"
                     delay={{ show: 1, hide: 25 }}
                     overlay={renderTooltipFiles}>
                     <i className="fas fa-folder-open" />
                   </OverlayTrigger>
-                </Link>
+                  </Link>
+                }
                 <Link className={currentLoc.includes('links') ? "active-nav-item" : 'nav-item'} to={`/courses/${id}/links`}>
                   <OverlayTrigger
                     placement="right"

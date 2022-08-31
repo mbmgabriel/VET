@@ -160,7 +160,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
             </Col>
             <hr></hr>
             <Col className='mb-3'>
-              <Row>
+            Click to view the files: &nbsp;
                 {
                   taskAnswer?.uploadedFiles?.map( itm => {
                     return (
@@ -171,14 +171,14 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
                           <i class="fas fa-download td-file-page" onClick={() => downloadImage(itm.filePath)}></i>
                           : */}
                           <a href={itm.filePath} download={true} target='_blank'>
-                            <i class="fas fa-download td-file-page"></i>
+                            <spam style={{fontSize:'30px'}} ><i class="fas fa-download td-file-page"></i></spam>
                           </a> 
                         {/* } */}
                       </>
                     )
                   })
                 }
-              </Row>
+       
             </Col>
             <Col md={12}>Feedback: {taskAnalysis.studentTask?.feedback}</Col>
           </>
@@ -212,14 +212,27 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
               />
             </Form.Group>
             <Form.Group className="m-b-20">
-              <Form.Control 
+              {/* <Form.Control 
                 defaultValue={feedback}
                 className="custom-input" 
                 size="lg" 
-                type="text" 
+                type="textarea" 
                 placeholder="Enter feedback"
                 onChange={(e) => setFeedback(e.target.value)}
-              />
+              /> */}
+               <div class="form-group">
+                <textarea
+                  class="form-control"
+                  // value={value}
+                  placeholder="Enter feedback"
+                  rows="3"
+                  defaultValue={feedback}
+                  className="custom-input" 
+                  size="lg" 
+                  type="textarea" 
+                  onChange={(e) => setFeedback(e.target.value)}>
+                </textarea>
+              </div>
             </Form.Group>
 
             {    

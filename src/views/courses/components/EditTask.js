@@ -82,7 +82,6 @@ export default function EditTask({rate, setRate, setTaskName,setInstructions, ta
     setLoading(false)
     if(response.ok){
       setModulePages(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all pages")
     }
@@ -94,21 +93,10 @@ export default function EditTask({rate, setRate, setTaskName,setInstructions, ta
     setLoading(false)
     if(response.ok){
       setTaskInfo(response.data)
-      console.log(response.data)
     }else{
       alert("Something went wrong while fetching all task")
     }
   }
-
-	useEffect(() => {
-  }, [])
-
-  // useEffect(() => {
-  //   if(selectedTask !== null) {
-	// 		setTaskName(selectedTask?.taskName)
-	// 		setInstructions(selectedTask?.instructions)
-	// 	}
-  // }, [selectedTask])
 
   const notifyUpdateTask = () => 
   toast.success('Successfully updated task!', {
@@ -120,25 +108,6 @@ export default function EditTask({rate, setRate, setTaskName,setInstructions, ta
     draggable: true,
     progress: undefined,
   });
-
-  useEffect(() => {
-    handleGetCourseFiles()
-  }, [])
-
-  console.log('selectedTask:', selectedTask)
-
-  const handleGetCourseFiles = async() => {
-    // setLoading(true)
-    let response = await new FilesAPI().getCourseFiles(id)
-    // setLoading(false)
-    if(response.ok){
-      console.log(response, '-----------------------')
-      setDisplayFiles(response.data.files)
-      setDisplayFolder(response.data.folders)
-    }else{
-      alert("Something went wrong while fetching class files1111111111111.")
-    }
-  } 
 
 	return (
 		<div>

@@ -31,9 +31,7 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
     getExamAnalysis(testId)
     setViewAnalysis(true)
   }
-  console.log('classId:', id)
   const getExamAnalysis = async(testid) => {
-    // console.log(selectedClassId)
     sessionStorage.setItem('analysis','true')
     let studentId = user?.student?.id
     let classId = id
@@ -41,15 +39,12 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
     let response = await new ClassesAPI().getExamAnalysis(studentId, classId, testid)
     if(response.ok){
       setExamAnalysis(response.data)
-      console.log(response.data)
-      
     }else{
       alert(response.data.errorMessage)
     }
   }
 
   const toggleShare = async () => {
-    console.log({exam})
     setLoading(true);
     let response = await new CoursesAPI().editExam(exam.test?.id, {
       isShared: !exam.test?.isShared,
@@ -77,8 +72,6 @@ export default function ExamItem({ exam, deleteExam, setLoading, fetchExams }) {
       alert("Something went wrong while fetching Exam Item");
     }
   }
-
-  console.log('questionPartDto:', questionPartDto)
 
   return (
     <div className='exam-item-container'>

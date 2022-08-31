@@ -12,6 +12,7 @@ export default function ExamForm({
   onSubmit,
   examStarted,
   submitPartsAnswer,
+  isButtonDisabled,
 }) {
   const [showAlert, setShowAlert] = useState(false);
 
@@ -54,6 +55,7 @@ export default function ExamForm({
                   className='btn btn-primary my-4 mx-3'
                   variant='primary'
                   size='lg'
+                  disabled={isButtonDisabled}
                   onClick={() => submitPartsAnswer(part)}
                 >
                   SUBMIT
