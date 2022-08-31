@@ -48,7 +48,7 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
       getAssignmentAnswer(studentidsession, paramsId, assignmentAnalysis?.assignment?.id)
     }
     
-  }, [])
+  }, [assignmentAnalysis])
 
   const getAssignmentAnswer = async (studentid, classid, assignmentid) => {
     let response = await new ClassesAPI().getStudentAssignmentAnswer(studentid, paramsId, assignmentid)
@@ -117,6 +117,8 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
       progress: undefined,
     });
 
+    console.log('1012:', assignmentAnalysis)
+
   return (
     <>
       <ToastContainer />
@@ -150,19 +152,20 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
               }
             </Col>
             <Col className='mb-3'>
-              <Row>
+              Click to view the files: &nbsp;
+         
                 {
                   assignmentAnswer?.uploadedFiles?.map(itm => {
                     return (
                       <>
                         <a href={itm.filePath} download={true} target='_blank'>
-                          <i class="fas fa-download td-file-page"></i>
+                          <span style={{fontSize:'30px'}} ><i class="fas fa-download td-file-page"></i></span>
                         </a>
                       </>
                     )
                   })
                 }
-              </Row>
+          
             </Col>
             <hr></hr>
             <Col md={12}>Feedback: {assignmentAnalysis.studentAssignment?.feedback}</Col>
