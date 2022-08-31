@@ -38,13 +38,12 @@ export default function HomeLinks() {
     localStorage.setItem('academicTerm', data);
     setCurrentAcademicTerm(data)
     let path = window.location.pathname
-    if(path == '/teacherdashboard' || path == '/classes'){
+    if(path == '/dashboard' || path == '/classes'){
       window.location.reload();
     }
   }
 
   const handleRedirect = () => {
-    console.log(user)
     if(subsType == 'TeacherResources' && user.isTeacher) return '/courses';
     if(subsType == 'TeacherResources' && user.isStudent) return '/classes';
     if(subsType == 'InteractivesandLearn' && user.isStudent) return '/courses';
