@@ -15,6 +15,7 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
   const {id} = useParams();
   const [alphabetical, setAlphabetical] = useState(true);
   const userContext = useContext(UserContext)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const {user, themeColor} = userContext.data
 
   const cancelSweetAlert = () => {
@@ -31,7 +32,7 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
   }
 
   const addStudent = async(e, item) =>{
-    console.log('this studentId', item)
+    setIsButtonDisabled(true)
     let studentId = item
     let isAccepted = true
     let response = await new ClassesAPI().acceptStudent(id, isAccepted, [studentId]) 
@@ -41,8 +42,10 @@ function ClassWaiting({waitingStudent, getStudentEnrolled, getStudentWaiting, se
       toast.success('Successfully added student.')
       getStudentEnrolled()
       getStudentWaiting()
+      setIsButtonDisabled(false)
     }else{
       toast.error("Something went wrong while fetching all Add Student")
+      setIsButtonDisabled(false)
     }
   }
 
@@ -150,7 +153,7 @@ const handleClickIcon = () =>{
                     placement="bottom"
                     delay={{ show: 1, hide: 0 }}
                     overlay={renderTooltipAdd}>
-                      <Button onClick={(e) => addStudent(e, item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-user-plus"></i> </Button>
+                      <Button disabled={isButtonDisabled} onClick={(e) => addStudent(e, item.id)} className="m-r-5 color-white tficolorbg-button" size="sm"> <i class="fas fa-user-plus"></i> </Button>
                   </OverlayTrigger>
                   <OverlayTrigger
                     placement="bottom"
