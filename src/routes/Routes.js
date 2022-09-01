@@ -189,6 +189,7 @@ export default function Routes() {
             <PrivateRoute path='/files/course' exact component={FilesCourse} />
             <PrivateRoute path='/teacherdashboard' exact component={TeacherDashboard}/>
             <PrivateRoute path='/dashboard' exact component={Dashboard}/>
+            <PrivateRoute path='/teacherdashboard' exact component={Dashboard}/>
             <PrivateRoute path='/schoolannouncement' exact component={SchoolAnnouncement}/>
             <PrivateRoute path='/school' exact component={SchoolProfile}/>
             <PrivateRoute path='/school_courses/:id' exact component={SchoolCourses}/>
