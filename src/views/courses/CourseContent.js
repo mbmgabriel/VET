@@ -39,6 +39,8 @@ export default function CourseContent({children}) {
         let contriList = await new CoursesAPI().getContributor(id)
         let ifContri = contriList.data.find(i => i.userInformation?.userId == user.userId);
         setIsContributor(ifContri ? true : false);
+      }else{
+        setIsContributor(true);
       }
     }else{
       toast.error("Something went wrong while fetching course information.")
