@@ -39,6 +39,9 @@ export default function ClassesDashboard({studentClasses, teacherClasses}) {
       )
   }, [])
 
+  const filteredStudentClass = studentClasses.filter((item) => item.termName == currentAcademicTerm);
+  const filteredTeacherClass = teacherClasses.filter((item) => item.termName == currentAcademicTerm);
+
   return (
     <React.Fragment>
     <div className='dash-side-panel'>
@@ -53,8 +56,8 @@ export default function ClassesDashboard({studentClasses, teacherClasses}) {
       </Row>
       {user?.isTeacher &&
       <>
-        {teacherClasses.length?
-          teacherClasses.slice(0, 8).map(item => {
+        {filteredTeacherClass.length?
+          filteredTeacherClass.slice(0, 8).map(item => {
             return(
               item.termName == currentAcademicTerm && <React.Fragment>
                 <div className='dash-content' >
@@ -70,13 +73,13 @@ export default function ClassesDashboard({studentClasses, teacherClasses}) {
       }
       {user?.student &&
       <>
-        {studentClasses.length? 
-          studentClasses.slice(0, 8).map(item => {
+        {filteredStudentClass.length ? 
+          filteredStudentClass.slice(0, 8).map(item => {
             return(
               <>
-              <div className='dash-content' >
-                <Link to={`/classescontent/${item.classId}/feed`}>{item?.className}</Link>
-              </div>
+                <div className='dash-content' >
+                  <Link to={`/classescontent/${item.classId}/feed`}>{item?.className}</Link>
+                </div>
               </>
             )
           }):

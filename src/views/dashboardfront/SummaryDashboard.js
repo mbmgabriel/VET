@@ -16,6 +16,7 @@ export default function SummaryDashboard({studentCount}) {
   const [classes, setClasses] = useState([])
   const [courses, setCourses] = useState([])
   const {user} = userContext.data
+  const [currentAcademicTerm, setCurrentAcademicTerm] = useState('');
 
 	const getClasses = async() => {
     setLoading(true)
@@ -42,6 +43,8 @@ export default function SummaryDashboard({studentCount}) {
   }
 
   useEffect(() => {
+    let temp = localStorage.getItem('academicTerm')
+    setCurrentAcademicTerm(temp)
     if(user?.student === null)
       return(
         getClasses(),
@@ -50,7 +53,8 @@ export default function SummaryDashboard({studentCount}) {
    
   }, [])
 
-	const classesCount = classes.length
+  const filteredStudentClass = classes.filter((item) => item.termName == currentAcademicTerm);
+	const classesCount = filteredStudentClass.length
   const coursesCount = courses.length
 		
 

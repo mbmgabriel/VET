@@ -12,7 +12,7 @@ export default function TeacherLinks({activeHeader}) {
       <div className="header-links">
         {subsType.includes('LMS') || subsType == 'ContainerwithTR' ? 
           <>
-            <Link className={activeHeader === "teacherdashboard" && 'active'} to="/teacherdashboard">Dashboard</Link> 
+            <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link> 
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link> 
             <Link className={activeHeader === "classes" && 'active'} to="/classes">Classes</Link>
             <Link className={activeHeader === "files" && 'active'} to="/files">Files</Link> 

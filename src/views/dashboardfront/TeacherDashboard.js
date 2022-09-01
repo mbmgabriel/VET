@@ -13,7 +13,7 @@ export default function TeacherDashboard() {
   const [studentCount, setStudentCount] = useState(0)
 
   return (
-    <MainContainer fluid title="Teacher Dashboard" activeHeader={'teacherdashboard'} >
+    <MainContainer fluid title="Teacher Dashboard" activeHeader={'dashboard'} >
         {user?.isTeacher &&
           <>
             <Col sm={12}>
