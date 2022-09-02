@@ -212,15 +212,15 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
               />
             </Form.Group>
             <Form.Group className="m-b-20">
-              {/* <Form.Control 
+              <Form.Control 
                 defaultValue={feedback}
                 className="custom-input" 
                 size="lg" 
-                type="textarea" 
+                as="textarea" 
                 placeholder="Enter feedback"
                 onChange={(e) => setFeedback(e.target.value)}
-              /> */}
-               <div class="form-group">
+              />
+               {/* <div class="form-group">
                 <textarea
                   class="form-control"
                   // value={value}
@@ -232,7 +232,7 @@ function TaskAnalysis({taskAnalysis, setTaskAnalysis}) {
                   type="textarea" 
                   onChange={(e) => setFeedback(e.target.value)}>
                 </textarea>
-              </div>
+              </div> */}
             </Form.Group>
 
             {    
