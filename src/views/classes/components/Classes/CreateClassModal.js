@@ -8,6 +8,7 @@ import { UserContext } from '../../../../context/UserContext'
 import AcademicTermAPI from '../../../../api/AcademicTermAPI';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { toast } from 'react-toastify';
+import FacebookPlayer from 'react-player/facebook';
 
 function CreateClassModal({setModal, modal, getClasses}) {
   const [addNotify, setAddNotity] = useState(false)
@@ -21,6 +22,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
   const [academicTermId, setAcademicTermId] = useState('')
   const [validated, setValidated] = useState(false);
   const userContext = useContext(UserContext)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const {user} = userContext.data
   const subsType = user.subsType;
@@ -100,6 +102,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
 
   const addClass = async(e) => {
     e.preventDefault()
+    setIsButtonDisabled(true)
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.preventDefault();
@@ -126,7 +129,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
         toggle(e)
         getClasses()
         setGetCode('')
-  
+        setIsButtonDisabled(false)
       }else{
         toast.error(response.data.errorMessage, {
           position: "top-right",
@@ -137,6 +140,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
           draggable: true,
           progress: undefined,
           });
+          setIsButtonDisabled(false)
       }
     }
 
@@ -217,7 +221,7 @@ function CreateClassModal({setModal, modal, getClasses}) {
                 
             </Form.Group>
             <Form.Group className='right-btn'>
-							<Button className='tficolorbg-button' type='submit'>Save Class</Button>
+							<Button disabled={isButtonDisabled} className='tficolorbg-button' type='submit'>Save Class</Button>
             </Form.Group>
           </Form>  
         </Modal.Body>
