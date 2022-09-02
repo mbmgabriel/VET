@@ -232,7 +232,21 @@ function ClassLearn() {
                 }
             
                 {/* Creators */}
-                {cName === 'Creators 1 (First Edition)' &&
+                {cName === 'Creators 1 (1st Edition)' &&
+                  <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
+                    {user?.teacher ?
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator Teacher Link
+                    </Link>
+                    :
+                    <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaStudent(sMiranda.connectionCode, sMiranda.roomNumber, sMiranda.username, sMiranda.password)}}>
+                      <i class="fas fa-tv"></i> Robotics Simulator
+                    </Link>
+                    }
+                  </Card>
+                }
+
+                {cName === 'Creators 1 (1st Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -246,7 +260,7 @@ function ClassLearn() {
                   </Card>
                 }
                 
-                {cName === 'Creators 1 (Second Edition)' &&
+                {cName === 'Creators 1 (2nd Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -260,7 +274,7 @@ function ClassLearn() {
                   </Card>
                 }
 
-                {cName === 'Creators 2 (First Edition)' &&
+                {cName === 'Creators 2 (1st Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -274,7 +288,7 @@ function ClassLearn() {
                   </Card>
                 }
 
-                {cName === 'Creators 2 (Second Edition)' &&
+                {cName === 'Creators 2 (2nd Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -290,7 +304,7 @@ function ClassLearn() {
                 
 
                 {/* Innovators */}
-                {cName === 'Innovators 1 (Second Edition)' &&
+                {cName === 'Innovators 1 (2nd Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -304,7 +318,7 @@ function ClassLearn() {
                   </Card>
                 }
 
-                {cName === 'Innovators 2 (Second Edition)' &&
+                {cName === 'Innovators 2 (2nd Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -318,7 +332,7 @@ function ClassLearn() {
                   </Card>
                 }
 
-                {cName === 'Innovators 3 (Second Edition)' &&
+                {cName === 'Innovators 3 (2nd Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -332,7 +346,7 @@ function ClassLearn() {
                   </Card>
                 }   
 
-                {cName === 'Innovators 4 (Second Edition)' &&
+                {cName === 'Innovators 4 (2nd Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -346,7 +360,7 @@ function ClassLearn() {
                   </Card>
                 }   
 
-                {cName === 'Innovators 5 (Second Edition)' &&
+                {cName === 'Innovators 5 (2nd Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -360,7 +374,7 @@ function ClassLearn() {
                   </Card>
                 }
 
-                {cName === 'Innovators 1 (First Edition)' &&
+                {cName === 'Innovators 1 (1st Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -374,7 +388,7 @@ function ClassLearn() {
                   </Card>
                 }
 
-                {cName === 'Innovators 2 (First Edition)' &&
+                {cName === 'Innovators 2 (1st Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -388,7 +402,7 @@ function ClassLearn() {
                   </Card>
                 }
 
-                {cName === 'Innovators 3 (First Edition)' &&
+                {cName === 'Innovators 3 (1st Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -402,7 +416,7 @@ function ClassLearn() {
                   </Card>
                 }   
 
-                {cName === 'Innovators 4 (First Edition)' &&
+                {cName === 'Innovators 4 (1st Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
@@ -416,7 +430,7 @@ function ClassLearn() {
                   </Card>
                 }   
 
-                {cName === 'Innovators 5 (First Edition)' &&
+                {cName === 'Innovators 5 (1st Edition)' &&
                   <Card className='calendar kb-0px'style={{backgroundColor:'white', padding:5}}>
                     {user?.teacher ?
                     <Link style={{textDecoration:'none'}} to="#" className="profile-dropdown-link" onClick={() => {goToMirandaTeacher(tMiranda.connectionCode, tMiranda.username, tMiranda.password)}}>
