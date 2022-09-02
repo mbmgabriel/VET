@@ -17,6 +17,21 @@ export default class ClassTermAPI extends Base {
     });
   }
 
+  editTemplate = async (id, termId, data) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/grade/term/${termId}/template`,
+      method: 'PUT',
+      data
+    });
+  }
+
+  deleteClassTerm = async (id, termId) => {
+    return this.sendRequest({
+      path: `/api/Class/${id}/grade/term/${termId}/template`,
+      method: 'DELETE'
+    });
+  }
+
   getAssignment = async (id) => {
     return this.sendRequest({
       path: `/api/Class/${id}/assignment`,
