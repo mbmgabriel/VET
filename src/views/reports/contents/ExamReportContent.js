@@ -321,7 +321,7 @@ const handleClickIcon = () =>{
         {showAnalysis === false? (<>
           <div style={{display:'flex', paddingRight:'20px'}}>
             <div style={{float:'right', paddingTop:'35px'}}>
-          {examReport &&
+          {examReport && user.isTeacher &&
             examReport?.map(item => {
               return(
               <Form>
