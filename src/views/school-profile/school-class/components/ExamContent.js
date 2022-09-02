@@ -2,6 +2,7 @@ import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import ContentViewer from "../../../../components/content_field/ContentViewer";
 
 export default function ExamItemContent({
   id,
@@ -20,7 +21,7 @@ export default function ExamItemContent({
         {exam.test.testName}
       </Link>
       <p className='exam-course-name'>{exam.module?.moduleName}</p>
-      <p className='exam-instruction '>{exam.test.testInstructions}</p>
+      <p className='exam-instruction '><ContentViewer>{exam.test.testInstructions}</ContentViewer></p>
       {startDate && (
         <p className='exam-instruction m-0'>
           <span className='d-inline-block' style={{ width: 40 }}>
