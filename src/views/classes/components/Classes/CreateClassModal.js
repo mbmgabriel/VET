@@ -182,7 +182,10 @@ function CreateClassModal({setModal, modal, getClasses}) {
                 <Form.Control autoComplete='off' required list="courses"  onChange={(e) => handleGetSelected(e.target.value)} placeholder='-- Select Course Level Here --' name="course" id="courseInput" />
                 <datalist id="courses">
                   {course.map(item =>{
-                      return <option value={item.courseName} />
+                    let filteredBySubs = subsType == 'ContainerwithTR';
+                    let filteredByIfTFI = item.isTechfactors
+                    let filtered = filteredBySubs ? !filteredByIfTFI : true
+                      return filtered && <option value={item.courseName} />
                       })
                     }
                 </datalist>
