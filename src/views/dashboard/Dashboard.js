@@ -20,7 +20,7 @@ export default function Dashboard() {
   const [dateFrom, setDateFrom] = useState("")
 
   useEffect(() => {
-    if (user.isStudent) return (window.location.href = "/404");
+    // if (user.isStudent) return (window.location.href = "/404");
   }, [])
 
   useEffect(() => {
