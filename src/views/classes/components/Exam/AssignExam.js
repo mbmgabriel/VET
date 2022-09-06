@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import ExamAPI from "../../../../api/ExamAPI";
 import { UserContext } from "../../../../context/UserContext";
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 export default function AssignExam({ showModal, setShowModal, exam, id, setLoading, fetchExams, closeModal }) {
   const [endDate, setEndDate] = useState("");
@@ -14,6 +15,16 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
   const [timeLimit, setTimeLimit] = useState("");
   const userContext = useContext(UserContext)
   const {notify} = userContext.data
+  const [openSweetAlert, setOpenSweetAlert] = useState(false)
+
+  const hanldeSweetAlert = () => {
+    setOpenSweetAlert(true)
+  }
+
+  const handleAssignNotify = () => {
+    setOpenSweetAlert(false)
+    assignExam()
+  }
 
   // const toggle = () => {
   //   setShowModal(false)
@@ -37,8 +48,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
     }
   }, [exam])
 
-  const assignExam = async(e) => {
-    e.preventDefault();
+  const assignExam = async() => {
     if(endDate == '' || endTime == '' || startDate== '' || startTime == '' || timeLimit == ''){
       toast.error('Please input all the required fields.')
     }else if(timeLimit <= 1){
@@ -109,6 +119,21 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
   }
 
   return (
+  <>
+        <SweetAlert
+          warning
+          showCancel
+          show={openSweetAlert}
+          confirmBtnText="Yes, Assign it!"
+          confirmBtnBsStyle="danger"
+          title="Are you sure?"
+          onConfirm={(e) => handleAssignNotify()}
+          onCancel={() => setOpenSweetAlert(false)}
+          focusCancelBtn
+        >
+          Once this quiz is assigned,You can no longer update/edit this exam.
+Would you like to continue?        
+        </SweetAlert>
     <Modal
       size='lg'
       className='modal-all'
@@ -119,7 +144,7 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
         {exam.classTest == null ? 'Assign Exam' :' Reassign Exam'}
       </Modal.Header>
       <Modal.Body className='modal-label b-0px'>
-        <Form onSubmit={assignExam}>
+        
         <Form.Group className='m-b-20'>
             <Form.Label for='courseName'>Start Date </Form.Label>
             <Form.Control
@@ -185,12 +210,13 @@ export default function AssignExam({ showModal, setShowModal, exam, id, setLoadi
           </Form.Group>
 
           <span style={{ float: "right" }}>
-            <Button className='tficolorbg-button' type='submit'>
+            <Button className='tficolorbg-button' type='submit' onClick={ exam.classTest == null ? hanldeSweetAlert : assignExam}>
             {exam.classTest == null ? 'Save Exam' :' Update Exam'}
             </Button>
           </span>
-        </Form>
+        
       </Modal.Body>
     </Modal>
+    </>
   );
 }
