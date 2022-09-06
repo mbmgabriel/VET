@@ -66,7 +66,7 @@ export default function Courses() {
       const sorted = response.data.sort((a,b) => a.courseName.toLowerCase() > b.courseName.toLowerCase() ? 1 : -1);
       setSubjectAreaName(sorted);
       const sortedCourse = response.data.sort((a,b) => a.courseName.toLowerCase() > b.courseName.toLowerCase() ? 1 : -1);
-      setCourse(...sortedCourse);
+      setCourse(sortedCourse);
 
       const inActive = response.data.filter((item) => item?.status == false && item?.isTechfactors == false)
       setInActive(inActive)
