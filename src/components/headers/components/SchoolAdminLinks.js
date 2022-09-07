@@ -13,7 +13,7 @@ export default function SchoolAdminLinks({activeHeader}) {
         {
           subsType.includes('LMS') || subsType == 'ContainerwithTR' ?
           <>
-            <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link>
+            <Link className={activeHeader === "dashboard" && 'active'} to="/admin_dashboard">Dashboard</Link>
             <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
             <Link className={activeHeader === "grading" && 'active'} to="/admin/grading">Grading</Link>
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
@@ -26,7 +26,7 @@ export default function SchoolAdminLinks({activeHeader}) {
         {
           subsType === 'Interactives' &&
           <>
-            <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link>
+            <Link className={activeHeader === "dashboard" && 'active'} to="/admin_dashboard">Dashboard</Link>
             <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
             <Link className={activeHeader === "grading" && 'active'} to="/admin/grading">Grading</Link>
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
@@ -37,7 +37,7 @@ export default function SchoolAdminLinks({activeHeader}) {
         {
           subsType === 'InteractivesandLearn' &&
           <>
-            <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link>
+            <Link className={activeHeader === "dashboard" && 'active'} to="/admin_dashboard">Dashboard</Link>
             <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
             {/* <Link className={activeHeader === "grading" && 'active'} to="/admin/grading">Grading</Link> */}
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
@@ -47,7 +47,7 @@ export default function SchoolAdminLinks({activeHeader}) {
         {
           subsType === 'Ebooks' &&
           <>
-            <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link>
+            <Link className={activeHeader === "dashboard" && 'active'} to="/admin_dashboard">Dashboard</Link>
             <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
           </>
@@ -55,7 +55,7 @@ export default function SchoolAdminLinks({activeHeader}) {
         {
           subsType === 'TeacherResources' &&
           <>
-            <Link className={activeHeader === "dashboard" && 'active'} to="/dashboard">Dashboard</Link>
+            <Link className={activeHeader === "dashboard" && 'active'} to="/admin_dashboard">Dashboard</Link>
             <Link className={activeHeader === "school" && 'active'} to="/school">School</Link>
             <Link className={activeHeader === "courses" && 'active'} to="/courses">Courses</Link>
           </>

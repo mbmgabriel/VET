@@ -6,9 +6,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment'
 import ContentViewer from '../../../components/content_field/ContentViewer';
+import userEvent from '@testing-library/user-event';
+import { UserContext } from '../../../context/UserContext';
 
 function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examAnalysis, setExamAnalysis, getExamAnalysis}) {
   
+  const userContext = useContext(UserContext)
+  const {user} = userContext.data
   const [showExamAnalysis, setShowExamAnalysis] = useState([])
   const [considerAnswer, setConsiderAnswer] = useState("")
   const [loading, setLoading] = useState(false)
@@ -249,50 +253,50 @@ function ExamAnalysis({classesModules, setClassesModules, selectedClassId, examA
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}>Correct Answer :</span>
                         <span className='font-exam-analysis-content-24' style={{marginRight:10}}><ContentViewer>{ad?.assignedAnswer}</ContentViewer></span>
                         </div>
-
-                       
-
-                            {ad?.studentScore === 0 && ad?.isConsider === false ?(
+                          { user.isTeacher &&
                             <>
-                              <Form>
-                                <div style={{display:'inline-flex'}}>
-                                <Form.Group className="m-b-20">
-                                  <Form.Check
-                                  label="Consider"
-                                  name={"answerid" + ad.id}
-                                  type="checkbox"
-                                  checked={ad.isConsider}
-                                  onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
-                                  /> 
-                                </Form.Group>
-                                </div>
-                              </Form>
-                            </>
+                              {ad?.studentScore === 0 && ad?.isConsider === false ?(
+                                <>
+                                  <Form>
+                                    <div style={{display:'inline-flex'}}>
+                                    <Form.Group className="m-b-20">
+                                      <Form.Check
+                                      label="Consider"
+                                      name={"answerid" + ad.id}
+                                      type="checkbox"
+                                      checked={ad.isConsider}
+                                      onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
+                                      /> 
+                                    </Form.Group>
+                                    </div>
+                                  </Form>
+                                </>
+                                ):
+                                <></>
+                              }
+                              {ad?.studentScore >= 0 && ad.isConsider === true ?(
+                                <>
+                                  <Form>
+                                    <div style={{display:'inline-flex'}}>
+                                    <Form.Group className="m-b-20">
+                                      <Form.Check
+                                      label="Unconsider"
+                                      name={"answerid" + ad.id}
+                                      // className='progress-bar'
+                                      type="checkbox"
+                                      checked={ad.isConsider}
+                                      style={{}}
+                                      onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
+                                      /> 
+                                    </Form.Group>
+                                    </div>
+                                  </Form>
+                                </>
                               ):
                               <></>
-                              }
-                          {ad?.studentScore >= 0 && ad.isConsider === true ?(
-                            <>
-                              <Form>
-                                <div style={{display:'inline-flex'}}>
-                                <Form.Group className="m-b-20">
-                                  <Form.Check
-                                  label="Unconsider"
-                                  name={"answerid" + ad.id}
-                                  // className='progress-bar'
-                                  type="checkbox"
-                                  checked={ad.isConsider}
-                                  style={{}}
-                                  onChange={(e) => handleInputChange(e, ad.questionId, ad.id, ad.studentId, item.testPart.testId, qd.questionRate)}
-                                  /> 
-                                </Form.Group>
-                                </div>
-                              </Form>
-                            </>
-                              ):
-                              <></>
-                              }
-
+                            }
+                          </>
+                        }
                       </Col>
                     </Row>
                     <hr></hr>
