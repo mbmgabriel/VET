@@ -76,7 +76,6 @@ export default function ExamInformation() {
           }
         }
 
-        console.log({differenceInSeconds, remainingSeconds, duration}, '------')
         if(remainingSeconds <= 0){
           endTest()
           setRemainingTime(duration)

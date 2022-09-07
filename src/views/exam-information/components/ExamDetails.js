@@ -32,7 +32,6 @@ export default function ExamDetails({
   const { startDate, endDate } = getStartAndEndDateFromClassTest(additionalExamInfo);
   const userContext = useContext(UserContext);
   const { user } = userContext.data;
-  console.log({ startDate, endDate, exam, additionalExamInfo, remainingTime });
   return exam != null && !loading ? (
     <div className='exam-information-container'>
       <div className='d-flex justify-content-between '>
