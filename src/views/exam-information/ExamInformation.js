@@ -76,7 +76,6 @@ export default function ExamInformation() {
           }
         }
 
-        console.log({differenceInSeconds, remainingSeconds, duration})
         if(remainingSeconds <= 0){
           endTest()
           setRemainingTime(duration)
@@ -257,6 +256,7 @@ export default function ExamInformation() {
         const differenceInSecondsEndTime = getDifferenceOfTwoDatesInSeconds(endTime, new Date())
         if(remainingSeconds > differenceInSecondsEndTime){
           remainingSeconds = differenceInSecondsEndTime
+          window.location.reload();
         }
       }
       setRemainingTime(remainingSeconds);
@@ -278,6 +278,7 @@ export default function ExamInformation() {
   }, []);
 
   useEffect(() => {
+    console.log({examStarted, remainingTime})
     if (remainingTime > 0) {
       setTimeout(() => {
         if (!examStarted) return;
