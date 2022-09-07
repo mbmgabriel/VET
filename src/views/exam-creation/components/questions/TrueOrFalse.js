@@ -54,7 +54,7 @@ const TrueOrFalseForm = ({
           <Button className='float-right file-library-btn my-2' onClick={()=> setShowFiles(!showFiles)}>File Library</Button>
         </div>
           <Form.Group className='m-b-20'>
-            <Form.Label for='question'>Question1</Form.Label>
+            <Form.Label for='question'>Question</Form.Label>
             <ContentField withTextInput={true} placeholder='Enter exam question' value={question} onChange={value => setQuestion(value)} />
           </Form.Group>
           <Form.Group className='m-b-20'>
@@ -159,8 +159,6 @@ export default function TrueOrFalse({
 
   const submitQuestion = async (e) => {
     e.preventDefault();
-    setIsButtonDisabled(true)
-    setTimeout(()=> setIsButtonDisabled(false), 1000)
     setLoading(true);
     const data = {
       question: {
@@ -187,16 +185,23 @@ export default function TrueOrFalse({
   };
 
   const updateQuestion = async (selectedQuestion, data) => {
+    console.log('data1213:', data)
+    setIsButtonDisabled(true)
     let response = await new ExamAPI().editTrueOrFalse(
       selectedQuestion.question.id,
       data.question
     );
+    // let a = selectedQuestion.choices[0].isCorrect === true  && selectedQuestion.choices[0].testChoices === "True" ? selectedQuestion.choices[1].id : selectedQuestion.choices[0].id
+    // let b = selectedQuestion.choices[0].isCorrect === true  && selectedQuestion.choices[0].testChoices === "True" ? selectedQuestion.choices[1].testChoices : selectedQuestion.choices[0].testChoices
+      let a = data.answer === 'false' ? selectedQuestion.choices[1].id : selectedQuestion.choices[0].id
+      let b = data.answer === 'false' ? selectedQuestion.choices[1].testChoices : selectedQuestion.choices[0].testChoices 
+
     if (response.ok) {
       response = await new ExamAPI().editTrueOrFalseAnswer(
-        selectedQuestion.choices[0].id,
+        a,
         {
           isCorrect: true,
-          testChoices: data.answer,
+          testChoices: b,
         }
       );
       if (response.ok) {
@@ -207,12 +212,14 @@ export default function TrueOrFalse({
         setQuestion("");
         setAnswer("true");
         setSelectedQuestion(null);
+        setIsButtonDisabled(false)
       } else {
         toast.error(
           response.data?.errorMessage ||
             "Something went wrong while updating the question"
         );
         setLoading(false);
+        setIsButtonDisabled(false)
       }
     } else {
       toast.error(
@@ -220,6 +227,7 @@ export default function TrueOrFalse({
           "Something went wrong while updating the question"
       );
       setLoading(false);
+      setIsButtonDisabled(false)
     }
   };
 
