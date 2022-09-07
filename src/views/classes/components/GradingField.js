@@ -5,7 +5,8 @@ export default function GradingField({
   field,
   setCustomFieldLabel,
   setCustomFieldValue,
-  deleteItemByIndex
+  deleteItemByIndex,
+  disableDelete
 }) {
   return (
     <div className='grading-field' key={index}>
@@ -25,7 +26,7 @@ export default function GradingField({
           onChange={(e) => setCustomFieldValue(index, e.target.value)}
         />
       </div>
-      <div className="">
+      <div className={disableDelete ? 'd-none' : ''}>
         <button className="btn btn-danger" onClick={() => deleteItemByIndex(index)}>
         <i class="fas fa-trash"></i>
         </button>

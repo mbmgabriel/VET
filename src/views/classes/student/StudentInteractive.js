@@ -223,6 +223,7 @@ function StudentInteractive({interactive, searchTerm, classInfo}) {
     })
     //get data
     .then(response => {
+    console.log(response, 'generate token');
     setResultToken(response.data.Token)
     gParkStartGame(response.data.Token, path)
     },(error) => {

@@ -40,7 +40,7 @@ function StudentSubmittedTask({submittedTaskToggle, submittedTaskModal, taskAnsw
               <Form.Label>Feed Back</Form.Label>
             </Form.Group>
             <Form.Group className="mb-2">
-              <Form.Control defaultValue={taskAnswerItem?.feedback} type='text' disabled  />
+              <Form.Control defaultValue={taskAnswerItem?.feedback} as='textarea' disabled  />
             </Form.Group>
             <Form.Group className="mb-1">
               <Form.Label>Grade</Form.Label>

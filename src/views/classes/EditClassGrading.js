@@ -12,10 +12,11 @@ import ClassTermAPI from "../../api/ClassTermAPI";
 import { useHistory, useParams } from "react-router-dom";
 import ClassSideNavigation from "./components/ClassSideNavigation";
 import ClassBreadcrumbs from "./components/ClassBreedCrumbs";
+import TrueOrFalse from "../exam-creation/components/questions/TrueOrFalse";
 
 const getPercentageByDescription = (description, template) => {
   console.log(template, description, '---------')
-  return template.templateTypes.reduce((total, item) => {
+  return template.classGradeTypes.reduce((total, item) => {
     if (item.description === description) {
       return total + item.percentage;
     } else {
@@ -74,35 +75,34 @@ export default function NewClassGrading() {
 
     let response = await new ClassTermAPI().getTemplate(id, term_id);
     if (response.ok) {
-      if(response.data.length > 0) return history.push(`/classes/${id}/class_grading/${term_id}`)
-
-      new GradingTemplateAPI().getTemplates().then((response) => {
-        if (response.ok) {
+      console.log(response.data,'!!');
+      // if(response.data.length > 0) return history.push(`/classes/${id}/class_grading/${term_id}`)
+      // new GradingTemplateAPI().getTemplates().then((response) => {
+      //   if (response.ok) {
           const template = response.data[response.data.length - 1];
           setGradingTemplate(template);
-          setExam(getPercentageByDescription("Test", template));
-          setAssignment(getPercentageByDescription("Assignment", template));
-          setTasks(getPercentageByDescription("Task", template));
+          // setExam(getPercentageByDescription("Test", template));
+          // setAssignment(getPercentageByDescription("Assignment", template));
+          // setTasks(getPercentageByDescription("Task", template));
           setCustomFields(
-            template.templateTypes
-              .filter(
-                (item) =>
-                  item.description !== "Assignment" &&
-                  item.description !== "Test" &&
-                  item.description !== "Task"
-              )
+            template.classGradeTypes
+              // .filter(
+              //   (item) =>
+              //     item.description !== "Assignment" &&
+              //     item.description !== "Test" &&
+              //     item.description !== "Task"
+              // )
               .map((item) => ({
+                id: item.id,
                 label: item.description,
                 value: item.percentage,
               }))
           );
+          console.log(template.classGradeTypes, '----')
         } else {
           toast.error("Something went wrong while fetching grading template");
         }
         setLoading(false);
-      });
-    } else {
-    }
   };
 
   useEffect(() => {
@@ -115,21 +115,10 @@ export default function NewClassGrading() {
   const handleSubmit = async () => {
     const data = {
       classGradeTypes: [
-        {
-          description: "Test",
-          percentage: exam,
-        },
-        {
-          description: "Assignment",
-          percentage: assignment,
-        },
-        {
-          description: "Task",
-          percentage: tasks,
-        },
         ...customFields.map((item) => ({
+          id: item.id,
           description: item.label,
-          percentage: item.value,
+          percentage: parseInt(item.value),
         })),
       ],
     };
@@ -157,7 +146,7 @@ export default function NewClassGrading() {
     }
 
     setLoading(true);
-    let response = await new ClassTermAPI().createTemplate(id, term_id, data);
+    let response = await new ClassTermAPI().editTemplate(id, term_id, data);
     if (response.ok) {
       toast.success("Successfully created grading template");
       history.push(`/classes/${id}/class_grading/${term_id}`);
@@ -170,13 +159,13 @@ export default function NewClassGrading() {
   if (user.isTeacher) {
     return (
       <ClassSideNavigation title='Grading System' activeHeader={"grading"}>
-        <ClassBreadcrumbs title='New Class Grading' clicked={() => history.push(`/classes/${id}/class_grading`)} />
+        <ClassBreadcrumbs title='Edit Class Grading' clicked={() => history.push(`/classes/${id}/class_grading`)} />
         {/* {loading && <FullScreenLoader />} */}
         <div className='rounded-white-container mt-4'>
           <h2 className='primary-color '>Create New Grading Component</h2>
           <Row className='mt-4'>
             <Col className='' sm={6} lg={6}>
-              <div className='grading-field'>
+              {/* <div className='grading-field'>
                 <div className='grading-field-label'>Exam</div>
                 <div className='grading-field-value'>
                   <input
@@ -229,11 +218,12 @@ export default function NewClassGrading() {
                     <i class='fas fa-trash'></i>
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {customFields.map((field, index) => {
                 return (
                   <GradingField
+                    disableDelete={true}
                     key={index}
                     index={index}
                     field={field}
@@ -243,7 +233,7 @@ export default function NewClassGrading() {
                   />
                 );
               })}
-              <div className='grading-field'>
+              {/* <div className='grading-field'>
                 <div
                   className='grading-field-button'
                   onClick={() =>
@@ -259,7 +249,7 @@ export default function NewClassGrading() {
                   className='grading-field-value bg-white'
                   style={{ flex: 1 }}
                 />
-              </div>
+              </div> */}
             </Col>
             <Col className='' sm={6} lg={6}>
               <div className='grading-field'>

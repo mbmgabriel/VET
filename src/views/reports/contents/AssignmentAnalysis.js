@@ -202,7 +202,7 @@ function AssignmentAnalysis({ assignmentAnalysis, setAssignmentAnalysis }) {
                 defaultValue={feedback}
                 className="custom-input"
                 size="lg"
-                type="text"
+                as="textarea"
                 placeholder="Enter feedback"
                 onChange={(e) => setFeedback(e.target.value)}
               />

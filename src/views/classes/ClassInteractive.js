@@ -348,10 +348,11 @@ const goToMirandaStudent = async(sCode, sRoom, sUser, sPass) => {
     })
     //get data
     .then(response => {
+    console.log(response, 'generate token');
     setResultToken(response.data.Token)
     gParkStartGame(response.data.Token, path)
     },(error) => {
-       
+      console.log(error, 'generate token');
     })
   }
 
