@@ -47,7 +47,7 @@ export default function HomeLinks() {
     if(subsType == 'TeacherResources' && user.isTeacher) return '/courses';
     if(subsType == 'TeacherResources' && user.isStudent) return '/classes';
     if(subsType == 'InteractivesandLearn' && user.isStudent) return '/courses';
-    if(user.isSchoolAdmin)return '/dashboard';
+    if(user.isSchoolAdmin)return '/admin_dashboard';
     if(user.isSystemAdmin)return '/system-admin/dashboard';
     if(subsType.includes('LMS')) return '/teacherdashboard';
       return '/classes';
