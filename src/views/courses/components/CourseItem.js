@@ -279,7 +279,7 @@ export default function CoursesItem({subjectAreaName, filter, getCourses, setFil
       return `/school_courses/${id}/resources`
     }
   }
-  
+  console.log('123123:', subjectAreaName)
   return (
     <React.Fragment>
         { subjectAreaName.filter(item =>
