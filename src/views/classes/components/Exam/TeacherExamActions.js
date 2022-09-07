@@ -1,7 +1,8 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { UserContext } from "../../../../context/UserContext";
 import { useParams } from "react-router-dom";
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 export default function TeacherExamActions({
   exam,
@@ -15,6 +16,11 @@ export default function TeacherExamActions({
   const { data } = useContext(UserContext);
   const { user } = data;
   const {id} = useParams();
+  const [openSweetAlert, setOpenSweetAlert] = useState(false)
+
+  const hanldeSweetAlert = () => {
+    setOpenSweetAlert(true)
+  }
 
   let ifUserCreatedExam = exam.test.classId == id;
   const renderTooltipEdit = (props) => (
@@ -61,7 +67,27 @@ export default function TeacherExamActions({
 
   console.log('exam123:', exam)
 
+  const handleAssignNotify = () => {
+    setOpenSweetAlert(false)
+    toggleShare()
+  }
+
   return (
+    <>
+        <SweetAlert
+          warning
+          showCancel
+          show={openSweetAlert}
+          confirmBtnText={exam.test.isShared ? "Yes, UnShare it!" : "Yes, Share it!"}
+          confirmBtnBsStyle="danger"
+          title="Are you sure?"
+          onConfirm={(e) => handleAssignNotify()}
+          onCancel={() => setOpenSweetAlert(false)}
+          focusCancelBtn
+        >
+          {exam.test.isShared ? "Once this quiz is Unshared, You can update/edit this exam. Would you like to continue?" : "Once this quiz is shared, You can no longer update/edit this exam. Would you like to continue?"}
+        
+        </SweetAlert>
     <div className='exam-actions'>
       <OverlayTrigger
         placement="bottom"
@@ -86,7 +112,7 @@ export default function TeacherExamActions({
           href='#share'
           onClick={(e) => {
             e.preventDefault();
-            toggleShare();
+            hanldeSweetAlert();
           }}
         >
           <i class={`fas fa-share ${exam.test.isShared && "rotate"}`}></i>
@@ -165,5 +191,6 @@ export default function TeacherExamActions({
         </>
       )}
     </div>
+    </>
   );
 }
