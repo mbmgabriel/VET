@@ -105,10 +105,9 @@ function ReportHeader() {
       {loading && <FullScreenLoader />}
       <ReportBreedCrumbs title={testName ? testName : ''} secondItem={studentName ? studentName : ''} clicked={() => handleClickBreedFirstItem()} clickedSecondItem={() => handleClickSecondItem()} />
       <div>
-        <div className="row m-b-20">
+        <div className="row">
           {
             display == 'accordion' ?
-              <>
               <div>
                 <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>Grade Report - Exam </p>
                   <div>
@@ -128,7 +127,6 @@ function ReportHeader() {
                   </div>
                 </div>
               </div>
-              </>
               :
               <div className="col-md-10 pages-header fd-row mr-3"><p className='title-header m-0'>{testname}</p>
                 {
