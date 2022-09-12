@@ -838,8 +838,8 @@ border-top-right-radius: 0px !important;
 
 .custom-label{
   color: #707070;
-  font-size: 24px;
-  margin-bottom: 20px !important;
+  font-size: 16px;
+  margin-bottom: 5px !important;
 }
 
 .custom-input{
@@ -886,7 +886,7 @@ border-top-right-radius: 0px !important;
 .btn-auth{
   background-color: var(--primary-color) !important;
   border-color: var(--primary-color) !important;
-  font-size: 36px !important;
+  font-size: 20px !important;
 }
 
 .login-with-qr-container{
@@ -1782,4 +1782,9 @@ input::-webkit-inner-spin-button {
 }
 .row{
   flex-direction: row !important;
+}
+.login-screen-right{
+  margin-top:350px !important;
+  padding:20px;
+  justify-content: center;
 }

@@ -37,8 +37,51 @@ export default function Login() {
   }
   
   return (
-    <MainContainer headerVisible={false} loading={loading}>
-      <div className="auth-container">
+    <MainContainer fluid headerVisible={false} loading={loading}>
+      <Row>
+        <Col md={6} className='login-screen-left'>
+          A
+        </Col>
+        <Col md={6} className='login-screen-right'>
+          <Row>
+            <Col md={3}></Col>
+            <Col md={6}>
+            <div>
+            <h1 className="title"><span className="orange">Haru</span>Gabriel</h1>
+            {/* <p className="subtitle">Welcome back to TekTeach! Making learning, a great experience!</p> */}
+              <Form onSubmit={login}>
+                <Form.Group controlId="exampleForm.ControlInput1">
+                  <Form.Label className="custom-label">E-mail / Username</Form.Label>
+                  <Form.Control 
+                    className="custom-input" 
+                    size="md" 
+                    type="text" 
+                    placeholder="Enter e-mail or username here"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group controlId="exampleForm.ControlInput1">
+                  <Form.Label className="custom-label">Password</Form.Label>
+                  <InputGroup>
+                    <Form.Control 
+                      className="custom-input" 
+                      size="md" 
+                      type={showPassword ? 'text' : "password"} 
+                      placeholder="Enter password here"
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <InputGroup.Text className='custom-input border-0'><i className={showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={()=> setShowPassword(!showPassword)}/></InputGroup.Text>
+                  </InputGroup>
+                </Form.Group>
+                <Link className="link-orange font-24 d-none" to="/forgot_password" >Forgot Password</Link>
+                <Button className="btn btn-md btn-primary btn-auth w-100 d-block mt-4 mb-4" size="md" variant="primary" type="submit">Log In</Button>
+              </Form>
+            </div>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      {/* <div className="auth-container">
         <div className="login-container login-bg-image">
           <div className="mt-5">
             <Row>
@@ -76,21 +119,10 @@ export default function Login() {
                 </Form>
               </Col>
               <Col/>
-              {/* <Col size="md" className="login-with-qr-container">
-                <div className="qr-container ">
-                  <img src={qrScanner} alt="qr-code"/>
-                </div>
-                <div className="mx-3">
-                  <p className="qr-text mt-3">
-                    Click on the scanner icon to activate the QR code reader.
-                  </p>
-                  <p className="qr-text d-none">Scan this code with the <a href="https://google.com" target="blank" className="link-orange">TekTeach mobile app</a> to log in instantly</p>
-                </div>
-              </Col> */}
             </Row>
           </div>
         </div>
-      </div>
+      </div> */}
     </MainContainer>
   )
 }
