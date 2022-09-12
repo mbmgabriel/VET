@@ -120,13 +120,12 @@ function ClassLearn() {
             let subdomain1 =  /:\/\/([^\/]+)/.exec(window.location.href)[1]
             let subdomain2 = window.location.pathname;
             let subdomain =  window.location.host.split('.')[1] ? window.location.host.split('.')[0] : false;
-
-  
   
   return (
     <ClassSideNavigation setLoading={()=> console.log('sample')}>
       <ClassBreedCrumbs title={''} clicked={() => console.log('')}/>
       <div style={{position:'relative'}} className='not-scrollable'>
+        
         <Row>
           <Col className='scrollable vh-80 pb-5' style={{marginLeft:'15px'}} >
             <ClassLearnHeader content={content}  classInfo={classInfo}/> 
